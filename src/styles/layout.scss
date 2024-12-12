@@ -1,0 +1,22 @@
+:root {
+  font-family: 'Pretendard', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+
+.nav-bar {
+  height: 48px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+

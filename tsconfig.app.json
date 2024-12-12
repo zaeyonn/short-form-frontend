@@ -10,7 +10,8 @@
     "paths": {
       "components/*": ["src/components/*"],
       "pages/*": ["src/pages/*"],
-      "xtend/*": ["src/xtend/*"]
+      "xtend/*": ["src/xtend/*"],
+      "styles/*": ["src/styles/*"]
     },
 
     /* Bundler mode */
