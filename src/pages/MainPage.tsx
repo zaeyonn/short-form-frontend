@@ -1,6 +1,10 @@
+import LayoutNavigationBar from "components/layouts/LayoutNavigationBar"
+
 const MainPage = () => {
   return (
-    <h1>Main Page</h1>
+    <>
+      <LayoutNavigationBar/>
+    </>
   )
 }
 

@@ -18,5 +18,39 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  .left-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+
+    .title {
+      font-size: 17px;
+      line-height: 22px;
+      font-weight: 700;
+    }
+
+  }
+
+  .right-section {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+
+    button {
+      width: 52px;
+      height: 28px;
+    }
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+
 }
 
