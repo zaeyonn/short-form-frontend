@@ -11,7 +11,8 @@
       "components/*": ["src/components/*"],
       "pages/*": ["src/pages/*"],
       "xtend/*": ["src/xtend/*"],
-      "styles/*": ["src/styles/*"]
+      "styles/*": ["src/styles/*"],
+      "common/*": ["src/common/*"]
     },
 
     /* Bundler mode */

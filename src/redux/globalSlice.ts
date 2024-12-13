@@ -1,0 +1,28 @@
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  
+  // ui
+  displayPopName: '',
+  navigationBar: {title: 'Logo', leftBtn: {icon: 'icon_hamburger.svg', event: () => 0}, rightBtn: {icon: 'icon_search.svg', event: () => 0}, loginBtn: true}
+}
+
+const globalSlice = createSlice({
+  name: 'global',
+  initialState: initialState,
+  reducers: {
+    initGlobalState() {
+      return { ...initialState };
+    },
+    setDisplayPopName(state, action) {
+      state.displayPopName = action.payload;
+    },
+    setNavigationBar(state, action) {
+      state.navigationBar = action.payload;
+    }
+  }
+})
+
+export const { initGlobalState, setDisplayPopName, setNavigationBar } = globalSlice.actions;
+export default globalSlice.reducer;
+

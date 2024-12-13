@@ -9,7 +9,7 @@ const PopLogin = () => {
   }
   return (
     <>
-      <div className="pop">
+      <div className="popup-wrap">
         <div>로그인 팝업</div>
         <button onClick={() => handleButtonClick()}>뒤로 가기</button>
       </div>

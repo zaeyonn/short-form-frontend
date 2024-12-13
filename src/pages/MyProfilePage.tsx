@@ -1,13 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../redux/store';
 import { displayPopType } from 'src/common/define';
 import * as globalSlice from '../redux/globalSlice';
 import PopLogin from 'components/pop/PopLogin';
 import PopPurchasePoint from 'components/pop/PopPurchasePoint';
 
 const MyProfilePage = () => {
-  const { displayPopName } = useSelector((state: RootState) => state.global);
-  const user = useSelector((state: RootState) => state.user);
+  const { displayPopName } = useSelector((state: any) => state.global);
+  const user = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
 
   const handleButtonClick = (displayPopName: string) => {
@@ -33,7 +32,7 @@ const MyProfilePage = () => {
       <div className='viewrlist'>
         <div>시청 기록</div>
         <div className='videolist'>
-          { user.listVideoWatched.map((item) => (<img src={item}/>))}
+          { user.listVideoWatched.map((item: string) => (<img src={item}/>))}
         </div>
       </div>
 

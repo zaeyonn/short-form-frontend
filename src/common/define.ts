@@ -1,0 +1,5 @@
+export const displayPopType = {
+  POPUP_SHORT_FORM_PLAYER: { name: 'POPUP_SHORT_FORM_PLAYER' },
+  POPUP_LOGIN: {name: "POPUP_LOGIN"},
+  POPUP_PURCHASE_POINT: {name: "POPUP_PURCHASE_POINT"},
+}
