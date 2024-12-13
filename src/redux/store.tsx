@@ -1,11 +1,15 @@
 // app/store.ts
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import globalReducer from '../redux/globalSlice';
 import userReducer from '../redux/userSlice';
 
+const reducer = combineReducers({
+    global: globalReducer,
+    user: userReducer,
+})
+
 export const store = configureStore({
-  reducer: {
-    user: userReducer, // 슬라이스 리듀서를 등록
-  },
+  reducer: reducer
 });
 
 // RootState 및 AppDispatch 타입 내보내기

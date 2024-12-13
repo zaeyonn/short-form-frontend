@@ -1,7 +1,5 @@
-// features/counterSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// slice 생성
 const userSlice = createSlice({
   name: 'user',
   initialState: {
@@ -9,7 +7,9 @@ const userSlice = createSlice({
 
     nickName: "게스트",
     uid: "adfsadfasdfasfd",
-    point: 9999999,
+    point: 100000000,
+
+    listVideoWatched: [],
   },
   reducers: {
 
