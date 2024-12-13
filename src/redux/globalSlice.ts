@@ -4,7 +4,7 @@ const initialState = {
   
   // ui
   displayPopName: '',
-  navigationBar: {title: 'Logo', leftBtn: {icon: 'icon_hamburger.svg', event: () => 0}, rightBtn: {icon: 'icon_search.svg', event: () => 0}, loginBtn: true}
+  navigationBar: {visible: true, title: 'Logo', leftBtn: {icon: 'icon_hamburger.svg', event: () => 0}, rightBtn: {icon: 'icon_search.svg', event: () => 0}, loginBtn: true}
 }
 
 const globalSlice = createSlice({

@@ -240,13 +240,18 @@
 .popup-wrap {
   box-sizing: border-box;
   position: absolute;
-  padding-top: 50px;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   background-color: #000000;
   overflow-y: hidden;
+
+  .short-form-slider {
+    width: 100vw;
+    height: 100vh;
+    overflow-y: scroll;
+  }
 
   .short-form-video {
     width: 100%;
@@ -260,5 +265,120 @@
     transform: translate(-50%, -50%);
     width: 90px;
     height: 90px;
+  }
+
+  .right-menu {
+    position: absolute;
+    right: 11px;
+    bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .btn-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    font-weight: 500;
+    font-size: 11px;
+  }
+
+  .list-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .header {
+    box-sizing: border-box;
+    position: fixed;
+    top: 0px;
+    width: 100vw;
+    height: 48px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    z-index: 1;
+  
+    .left-section {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 14px;
+  
+      .title {
+        font-size: 14px;
+        line-height: 22px;
+        font-weight: 500;
+      }
+    }
+  
+    .right-section {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+  
+      button {
+        width: 52px;
+        height: 28px;
+      }
+    }
+  
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .progress-bar {
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 30px;
+    width: 100vw;
+    height: 28px;
+    padding: 5px 10px;
+
+    input {
+      appearance: none;
+      width: 100%;
+      height: 2px;
+      background: #535353;
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+            
+      &::-webkit-slider-thumb {
+        appearance: none;
+        width: 10px;
+        height: 10px;
+        background: #FF3064;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      &::-moz-range-thumb {
+        width: 10px;
+        height: 10px;
+        background: #FF3064;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      &::-ms-thumb {
+        width: 10px;
+        height: 10px;
+        background: #FF3064;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+    }
   }
 }
