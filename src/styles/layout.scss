@@ -54,3 +54,46 @@ body {
 
 }
 
+.profile {
+  display: flex;
+  height: 10vh;
+
+  img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .userinfo {
+    float: left;
+    white-space: pre;
+    width: 50%;
+  }
+
+  .login {
+    margin-left: auto;
+  }
+}
+
+.wallet {
+  border-radius: 10px;
+  background-color:gray;
+  height: 15vh;
+
+  .head {
+    margin-top: auto;
+    height: 70%;
+  }
+
+  .body {
+    display: flex;
+    height: 30%;
+
+    .purchase-point{
+      margin-left: auto;
+    }
+  }
+}
+
+.viewrlist {
+  height: 30vh;
+}
