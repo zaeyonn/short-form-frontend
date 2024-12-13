@@ -32,6 +32,9 @@ const MyProfilePage = () => {
 
       <div className='viewrlist'>
         <div>시청 기록</div>
+        <div className='videolist'>
+          { user.listVideoWatched.map((item) => (<img src={item}/>))}
+        </div>
       </div>
 
       { displayPopType.POPUP_LOGIN.name === displayPopName && (<PopLogin/>)}

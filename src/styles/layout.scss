@@ -95,5 +95,16 @@ body {
 }
 
 .viewrlist {
+  width: 100vw;
   height: 30vh;
+
+  .videolist {
+    overflow-x: auto;
+    white-space: nowrap;
+
+    img {
+      width: 100px;
+      height: 80%;
+    }
+  }
 }

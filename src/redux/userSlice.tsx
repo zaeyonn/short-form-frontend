@@ -9,7 +9,7 @@ const userSlice = createSlice({
     uid: "adfsadfasdfasfd",
     point: 100000000,
 
-    listVideoWatched: [],
+    listVideoWatched: ["resources/icons/icon_profile.svg", "resources/icons/icon_profile.svg", "resources/icons/icon_profile.svg", "resources/icons/icon_profile.svg", "resources/icons/icon_profile.svg", "resources/icons/icon_profile.svg", "resources/icons/icon_profile.svg", "resources/icons/icon_profile.svg", "resources/icons/icon_profile.svg", "resources/icons/icon_profile.svg", "resources/icons/icon_profile.svg", "resources/icons/icon_profile.svg", "resources/icons/icon_profile.svg"],
   },
   reducers: {
 
