@@ -1,26 +1,59 @@
 import { useEffect, useState, useRef } from "react"
 import { useDispatch } from "react-redux"
+
 import * as globalSlice from 'src/redux/globalSlice';
-
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-import Slider from "react-slick";
-
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import UIShortFormSwiper from "components/ui/UIShortFormSwiper";
 
 interface Props {
 
 }
 
+const SHORT_FORM_LIST = [
+  {
+    title: '사랑은 거짓말 처럼',
+    ep: 1,
+    url: 'resources/videos/short_form_ex_1.mp4'
+  },
+  {
+    title: '사랑은 거짓말 처럼',
+    ep: 2,
+    url: 'resources/videos/short_form_ex_2.mp4'
+  },
+  {
+    title: '사랑은 거짓말 처럼',
+    ep: 3,
+    url: 'resources/videos/short_form_ex_3.mp4'
+  },
+  {
+    title: '사랑은 거짓말 처럼',
+    ep: 4,
+    url: 'resources/videos/short_form_ex_4.mp4'
+  },
+  {
+    title: '사랑은 거짓말 처럼',
+    ep: 5,
+    url: 'resources/videos/short_form_ex_5.mp4'
+  },
+  {
+    title: '사랑은 거짓말 처럼',
+    ep: 6,
+    url: 'resources/videos/short_form_ex_6.mp4'
+  },
+  {
+    title: '사랑은 거짓말 처럼',
+    ep: 7,
+    url: 'resources/videos/short_form_ex_7.mp4'
+  }
+]
+
 const UIPopShortFormPlayer = ({}: Props) => {
   const [playing, setPlaying] = useState<boolean>(true);
   const [visibleTools, setVisibleTools] = useState(true);
   const [progress, setProgress] = useState<number>(0);
-  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [currentEp, setCurrentEp] = useState<any>(SHORT_FORM_LIST[0]);
 
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const hideToolsTimeout = useRef<any>();
 
   const dispatch = useDispatch();
 
@@ -48,7 +81,9 @@ const UIPopShortFormPlayer = ({}: Props) => {
   }
 
   // 재생 / 일시정지 토글
-  const togglePlay = () => {
+  const togglePlay = (e: any) => {
+    e.stopPropagation();
+
     if(videoRef.current && videoRef.current.paused) {
       videoRef.current.play();
       setPlaying(true);
@@ -70,6 +105,7 @@ const UIPopShortFormPlayer = ({}: Props) => {
 
   // 재생바 드래그로 위치 변경
   const handleProgressChange = (e: any) => {
+    e.stopPropagation();
     const newProgess = e.target.value;
 
     if(videoRef.current) {
@@ -79,55 +115,48 @@ const UIPopShortFormPlayer = ({}: Props) => {
     }
   }
 
-  // 마우스가 눌렸을 때 상태 변경
-  const handleMouseDown = () => {
-    console.log('마우스 누름')
-    setIsMouseDown(true);
-  };
-
-  // 마우스가 떼어졌을 때 상태 변경
-  const handleMouseUp = (e) => {
-    // setIsMouseDown(false);
-    console.log('마우스 버튼이 떼졌습니다!');
-
-    let scrollTop = e.target.scrollTop;
-    const documentHeight = e.target.innerHeight;
-
-    if(scrollTop > 100) {
-      containerRef.current.scrollTo({
-        top: documentHeight,
-        behavior: "smooth"
-      })
-    }
-  };
-
-  // 스크롤 이벤트 핸들러
-  const handleScroll = (e) => {
-    let scrollTop = e.target.scrollTop;
-    const documentHeight = e.target.innerHeight;
-    console.log("scroll ", isMouseDown); 
-    const container = containerRef.current;
-    if(scrollTop && !isMouseDown) {
-      setIsMouseDown(true);
-    }
-
-    if (isMouseDown) {
-      console.log('스크롤 중, 마우스 버튼이 눌린 상태!');
-    }
-  };
   
-  const handleScrollCapture = (e) => {
-    let scrollTop = e.target.scrollTop;
-    const documentHeight = e.target.innerHeight;
-    console.log('scrollLocation', scrollTop);
-
-    if(scrollTop > 100) {
-      containerRef.current.scrollTo({
-        top: documentHeight,
-        behavior: "smooth"
-      })
+  const handleProgressTouchStart = () => {
+    setPlaying(false);
+    if(videoRef.current) {
+      videoRef.current.pause();
     }
   }
+
+  const handleProgressTouchEnd = () => {
+    setPlaying(true);
+    if(videoRef.current) {
+      videoRef.current.play();
+    }
+  }
+
+
+  // Short Form Slide 변경
+  const handleSlideChange = (swiper: any) => {
+    const slidedVideo = document.getElementById(`slide-idx-${swiper.activeIndex}`);
+
+    if(videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.pause();
+
+      videoRef.current = slidedVideo;
+      videoRef.current.play();
+      setPlaying(true);
+    }
+
+    setCurrentEp(SHORT_FORM_LIST[swiper.activeIndex])
+  }
+
+  useEffect(() => {
+    if(visibleTools && playing) {
+      hideToolsTimeout.current = setTimeout(() => {
+        setVisibleTools(false);
+      }, 3000)
+    } else if(!playing && visibleTools) {
+      clearTimeout(hideToolsTimeout.current);
+    } 
+
+  }, [visibleTools, playing])
 
 
   useEffect(() => {
@@ -135,35 +164,25 @@ const UIPopShortFormPlayer = ({}: Props) => {
       visible: false
     }
 
-    window.addEventListener('mouseup', handleMouseUp);
-
     dispatch(globalSlice.setNavigationBar(navBar));
-
-    return () => {
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
   }, [])
-
-  useEffect(() => {
-    containerRef.current?.addEventListener('scroll', handleScroll);
-  }, [isMouseDown])
 
   return (
     <div className='popup-wrap'>
-      <div ref={containerRef} className='short-form-slider'  onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
-        <video ref={videoRef} autoPlay={true} className="short-form-video" onTimeUpdate={handleTimeUpdate} onClick={toggleTools}>
-          <source src='resources/videos/short_form_1.mp4'/>
-        </video>
-        <video ref={videoRef} autoPlay={false} className="short-form-video" onTimeUpdate={handleTimeUpdate} onClick={toggleTools}>
-          <source src='resources/videos/short_form_1.mp4'/>
-        </video>
+      <div className='short-form-swiper'>
+        <UIShortFormSwiper
+        handleSlideChange={handleSlideChange}
+        shortFormList={SHORT_FORM_LIST}
+        videoRef={videoRef}
+        handleTimeUpdate={handleTimeUpdate}
+        toggleTools={toggleTools}/>
       </div>
       {visibleTools && (
-        <div>
+        <>
           <div className='header'>
             <div className="left-section">
               <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={handleClose}/>
-              <span className="title">{'김비서가 왜 그럴까 [10회]'}</span>
+              <span className="title">{`${currentEp.title} [${currentEp.ep}]`}</span>
             </div>
             <div className='right-section'>
               <img src={`resources/icons/icon_kebab.svg`} onClick={() => 0}/>
@@ -182,9 +201,9 @@ const UIPopShortFormPlayer = ({}: Props) => {
             </div>
           </div>
           <div className='progress-bar'>
-            <input style={{background: `linear-gradient(to right, #FF3064 ${progress}%, #535353 ${progress}%)`}} type='range' min='0' max='100' step='0.1' value={progress} onChange={handleProgressChange}/>
+            <input style={{background: `linear-gradient(to right, #FF3064 ${progress}%, #535353 ${progress}%)`}} type='range' min='0' max='100' step='0.1' value={progress} onChange={handleProgressChange} onTouchEnd={handleProgressTouchEnd} onTouchStart={handleProgressTouchStart}/>
           </div>
-        </div>
+        </>
       )}
     </div>
   )
