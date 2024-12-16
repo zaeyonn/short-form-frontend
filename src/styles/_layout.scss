@@ -55,6 +55,19 @@ body {
     }
   }
 
+  .center-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+
+    .title {
+      font-size: 17px;
+      line-height: 22px;
+      font-weight: 700;
+    }
+  }
+
   img {
     width: 24px;
     height: 24px;

@@ -68,7 +68,6 @@ const UIPopShortFormPlayer = ({}: Props) => {
         icon: 'icon_search.svg',
         event: () => 0,
       },
-      loginBtn: true
     }
     dispatch(globalSlice.setDisplayPopName(''));
     dispatch(globalSlice.setNavigationBar(navBar));

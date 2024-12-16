@@ -152,6 +152,11 @@
       }
     }
   }
+
+  .more {
+    float: left;
+    width: 40px;
+  }
 }
 
 .vertical-content-list-wrap {
@@ -386,6 +391,26 @@
         cursor: pointer;
         transition: transform 0.2s ease;
       }
+    }
+  }
+}
+
+.profile-etc {
+  button {
+    width: 100vw;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1); /* 호버 시 배경색 */
+    }
+
+    img {
+      width: 26px;
+      height: 26px;
+      float: left;
     }
   }
 }

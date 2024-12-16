@@ -1,7 +1,9 @@
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-
+import * as globalSlice from 'src/redux/globalSlice';
 import UISmallContentItem from './UISmallContentItem';
+import { useDispatch, useSelector } from 'react-redux';
+import { displayPopType } from 'common/define';
 
 interface Props {
   contentList: any[];
@@ -10,6 +12,9 @@ interface Props {
 }
 
 const UISmallContentSlider = ({contentList, headerTitle, highlight}: Props) => {
+  const user = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
+
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -34,6 +39,10 @@ const UISmallContentSlider = ({contentList, headerTitle, highlight}: Props) => {
     }
   };
 
+  const handleButtonClick = () => {
+    dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_VIDEO_WATCH.name));
+  }
+
   return (
     <div className='small-content-slider-wrap'>
       <div className='header'>
@@ -43,6 +52,10 @@ const UISmallContentSlider = ({contentList, headerTitle, highlight}: Props) => {
       <div className='small-content-list'>
       { contentList.map((i: any, index: number) => <UISmallContentItem item={i} key={index} highlight={highlight}/>) }
       </div>
+
+      {(20 < user.listVideoWatched.length) && (
+        <button className='more'>더보기</button>
+      )}
     </div>
   )
 }
