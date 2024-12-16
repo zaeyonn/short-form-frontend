@@ -52,7 +52,7 @@ const UIPopShortFormPlayer = ({}: Props) => {
   const [progress, setProgress] = useState<number>(0);
   const [currentEp, setCurrentEp] = useState<any>(SHORT_FORM_LIST[0]);
 
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const videoRef = useRef<any>(null);
   const hideToolsTimeout = useRef<any>();
 
   const dispatch = useDispatch();
