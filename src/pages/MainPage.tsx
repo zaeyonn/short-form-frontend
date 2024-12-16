@@ -8,6 +8,9 @@ import UIMainContentSlider from "components/ui/UIMainContentSlider"
 import UISmallContentSlider from "components/ui/UISmallContentSlider"
 import UIVerticalContentList from "components/ui/UIVerticalContentList"
 import UIPopShortFormPlayer from "components/ui/popup/UIPopShortFormPlayer"
+import UIPopMyProfile from 'components/ui/popup/UIPopMyProfilePage';
+import UIPopLogin from 'components/ui/popup/UIPopLogin';
+import UIPopPurchasePoint from 'components/ui/popup/UIPopPurchasePoint';
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -160,6 +163,10 @@ const MainPage = () => {
     { displayPopName === displayPopType.POPUP_SHORT_FORM_PLAYER.name && (
       <UIPopShortFormPlayer/>
     )}
+
+      { displayPopName === displayPopType.POPUP_MYPROFILE.name && (<UIPopMyProfile/>)}
+      { displayPopName === displayPopType.POPUP_LOGIN.name && (<UIPopLogin/>)}
+      { displayPopName === displayPopType.POPUP_PURCHASE_POINT.name && (<UIPopPurchasePoint/>)}
     </>
   )
 }

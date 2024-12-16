@@ -15,6 +15,7 @@ const globalSlice = createSlice({
       return { ...initialState };
     },
     setDisplayPopName(state, action) {
+      console.log(action.payload);
       state.displayPopName = action.payload;
     },
     setNavigationBar(state, action) {
