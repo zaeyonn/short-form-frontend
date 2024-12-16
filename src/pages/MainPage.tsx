@@ -139,31 +139,28 @@ const MainPage = () => {
 
   return (
     <>
-    <div className='page-wrap' style={{height: displayPopName ? 500 : 'auto'}}>
-      <UIMainContentSlider
-      contentList={contentList}
-      handleShortFormOpen={handleShortFormOpen}/>
-      <UISmallContentSlider
-      headerTitle='지금 뜨고있는 TOP 10'
-      contentList={hotContentList}
-      highlight='HOT'/>
-      <UISmallContentSlider
-      headerTitle='새로 올라온 콘텐츠'
-      contentList={hotContentList}
-      highlight='NEW'/>
-      <UISmallContentSlider
-      headerTitle='비밀을 가진 사람들'
-      contentList={hotContentList}
-      highlight=''/>
-      <UIVerticalContentList
-      headerTitle='요즘 뜨는 환생 드라마'
-      contentList={verticalContentList}/>
-    </div>
+      <div className='page-wrap' style={{height: displayPopName ? 500 : 'auto'}}>
+        <UIMainContentSlider
+          contentList={contentList}
+          handleShortFormOpen={handleShortFormOpen}/>
+        <UISmallContentSlider
+          headerTitle='지금 뜨고있는 TOP 10'
+          contentList={hotContentList}
+          highlight='HOT'/>
+        <UISmallContentSlider
+          headerTitle='새로 올라온 콘텐츠'
+          contentList={hotContentList}
+          highlight='NEW'/>
+        <UISmallContentSlider
+          headerTitle='비밀을 가진 사람들'
+          contentList={hotContentList}
+          highlight=''/>
+        <UIVerticalContentList
+          headerTitle='요즘 뜨는 환생 드라마'
+          contentList={verticalContentList}/>
+      </div>
 
-    { displayPopName === displayPopType.POPUP_SHORT_FORM_PLAYER.name && (
-      <UIPopShortFormPlayer/>
-    )}
-
+      { displayPopName === displayPopType.POPUP_SHORT_FORM_PLAYER.name && (<UIPopShortFormPlayer/>)}
       { displayPopName === displayPopType.POPUP_MYPROFILE.name && (<UIPopMyProfile/>)}
       { displayPopName === displayPopType.POPUP_LOGIN.name && (<UIPopLogin/>)}
       { displayPopName === displayPopType.POPUP_PURCHASE_POINT.name && (<UIPopPurchasePoint/>)}

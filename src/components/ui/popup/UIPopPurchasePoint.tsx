@@ -3,12 +3,12 @@ import * as globalSlice from "../../../redux/globalSlice";
 import { useEffect } from "react";
 import { displayPopType } from "common/define";
 
-const UIPopPurchasePoint = ({prevPage = ''}) => {
+const UIPopPurchasePoint = () => {
   const dispatch = useDispatch();
 
 const handleClose = () => {
     const navBar = {
-      title: 'Logo',
+      title: 'My profile',
       leftBtn: {
         icon: 'icon_hamburger.svg',
       },
@@ -16,12 +16,8 @@ const handleClose = () => {
         icon: 'icon_search.svg',
         event: () => 0,
       },
-      loginBtn: true
     }
-
-    if(prevPage === displayPopType.POPUP_MYPROFILE.name) {
-      dispatch(globalSlice.setDisplayPopName(prevPage));
-    }
+    dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_MYPROFILE.name));
     dispatch(globalSlice.setNavigationBar(navBar));
   }
 
@@ -34,7 +30,6 @@ const handleClose = () => {
         event: handleClose
       },
     }
-
     dispatch(globalSlice.setNavigationBar(navBar));
   }, [])
 

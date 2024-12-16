@@ -16,7 +16,6 @@ const UIPopVideoKeeped = ({prevPage = ''}) => {
           icon: 'icon_search.svg',
           event: () => 0,
         },
-        loginBtn: true
       }
 
       if(prevPage === displayPopType.POPUP_MYPROFILE.name) {

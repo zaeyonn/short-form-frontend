@@ -3,12 +3,12 @@ import * as globalSlice from "../../../redux/globalSlice";
 import { useEffect } from "react";
 import { displayPopType } from "common/define";
 
-const UIPopVideoWatched = ({prevPage = ''}) => {
+const UIPopVideoWatchedManage = ({prevPage = ''}) => {
   const dispatch = useDispatch();
 
   const handleClose = () => {
     const navBar = {
-      title: '소장',
+      title: '관람 기록',
       leftBtn: {
         icon: 'icon_hamburger.svg',
       },
@@ -18,7 +18,7 @@ const UIPopVideoWatched = ({prevPage = ''}) => {
       },
     }
         
-    if(prevPage === displayPopType.POPUP_VIDEO_KEEP.name) {
+    if(prevPage === displayPopType.POPUP_VIDEO_WATCH.name) {
       dispatch(globalSlice.setDisplayPopName(prevPage));
     }
     dispatch(globalSlice.setNavigationBar(navBar));
@@ -26,15 +26,13 @@ const UIPopVideoWatched = ({prevPage = ''}) => {
       
   useEffect(() => {
     const navBar = {
-    title: '관람 기록',
-      leftBtn: {
-        icon: 'icon_arrow_left_m.svg',
+      title: '선택',
+      rightBtn: {
         event: handleClose
       },
     }
-    
     dispatch(globalSlice.setNavigationBar(navBar));
   }, [])
 }
 
-export default UIPopVideoWatched;
+export default UIPopVideoWatchedManage;
