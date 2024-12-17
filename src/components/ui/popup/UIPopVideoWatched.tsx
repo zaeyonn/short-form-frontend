@@ -2,39 +2,29 @@ import { useDispatch } from "react-redux";
 import * as globalSlice from "../../../redux/globalSlice";
 import { useEffect } from "react";
 import { displayPopType } from "common/define";
+import UIVideoWatchedList from "../UIVideoWatchedList";
 
-const UIPopVideoWatched = ({prevPage = ''}) => {
+const UIPopVideoWatched = () => {
   const dispatch = useDispatch();
 
-  const handleClose = () => {
-    const navBar = {
-      title: '소장',
-      leftBtn: {
-        icon: 'icon_hamburger.svg',
-      },
-      rightBtn: {
-        icon: 'icon_search.svg',
-        event: () => 0,
-      },
-    }
-        
-    if(prevPage === displayPopType.POPUP_VIDEO_KEEP.name) {
-      dispatch(globalSlice.setDisplayPopName(prevPage));
-    }
-    dispatch(globalSlice.setNavigationBar(navBar));
-  }
-      
-  useEffect(() => {
-    const navBar = {
-    title: '관람 기록',
-      leftBtn: {
-        icon: 'icon_arrow_left_m.svg',
-        event: handleClose
-      },
-    }
-    
-    dispatch(globalSlice.setNavigationBar(navBar));
-  }, [])
+  return ( 
+    <>
+      <div className="popup-wrap">
+        <div className='header'>
+          <div className="left-section">
+            <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={() => {dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_VIDEO_KEEP.name))}}/>
+            <span className="title">시청 기록</span>
+          </div>
+
+          <div className="right-section">
+            <button>리스트 관리</button>
+          </div>
+        </div>
+
+        <UIVideoWatchedList/>
+      </div>
+    </>
+  )
 }
 
 export default UIPopVideoWatched;

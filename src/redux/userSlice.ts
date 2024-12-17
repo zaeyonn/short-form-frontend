@@ -19,7 +19,7 @@ const userSlice = createSlice({
 
     addVideoKeeped(state, action: PayloadAction<any>) {
       state.listVideoKeeped = [...state.listVideoKeeped, {...action.payload}];
-    }
+    },
   }
 });
 

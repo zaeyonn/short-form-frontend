@@ -11,11 +11,12 @@ import UIPopShortFormPlayer from "components/ui/popup/UIPopShortFormPlayer"
 import UIPopMyProfile from 'components/ui/popup/UIPopMyProfilePage';
 import UIPopLogin from 'components/ui/popup/UIPopLogin';
 import UIPopPurchasePoint from 'components/ui/popup/UIPopPurchasePoint';
+import UIPopVideoWatched from 'components/ui/popup/UIPopVideoWatched';
 
 const MainPage = () => {
   const dispatch = useDispatch();
 
-  const { displayPopName } = useSelector((state: any) => state.global)
+  const { displayPopName, isLogin } = useSelector((state: any) => state.global)
 
   const contentList = [
     {
@@ -139,31 +140,45 @@ const MainPage = () => {
 
   return (
     <>
-      <div className='page-wrap' style={{height: displayPopName ? 500 : 'auto'}}>
-        <UIMainContentSlider
-          contentList={contentList}
-          handleShortFormOpen={handleShortFormOpen}/>
-        <UISmallContentSlider
-          headerTitle='지금 뜨고있는 TOP 10'
-          contentList={hotContentList}
-          highlight='HOT'/>
-        <UISmallContentSlider
-          headerTitle='새로 올라온 콘텐츠'
-          contentList={hotContentList}
-          highlight='NEW'/>
-        <UISmallContentSlider
-          headerTitle='비밀을 가진 사람들'
-          contentList={hotContentList}
-          highlight=''/>
-        <UIVerticalContentList
-          headerTitle='요즘 뜨는 환생 드라마'
-          contentList={verticalContentList}/>
-      </div>
+      {(displayPopName === '') && (      
+        <div className='page-wrap' style={{height: displayPopName ? 500 : 'auto'}}>
+          <div className='header'>
+            <div className="left-section">
+              <img src={`resources/icons/icon_arrow_left_m.svg`}/>
+              <span className="title">Logo</span>
+            </div>
+      
+            <div className='right-section'>
+              <button onClick={() => {dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_MYPROFILE.name))}}>{isLogin ? ' 로그아웃' : '로그인'}</button>
+            </div>
+          </div>
+
+          <UIMainContentSlider
+            contentList={contentList}
+            handleShortFormOpen={handleShortFormOpen}/>
+          <UISmallContentSlider
+            headerTitle='지금 뜨고있는 TOP 10'
+            contentList={hotContentList}
+            highlight='HOT'/>
+          <UISmallContentSlider
+            headerTitle='새로 올라온 콘텐츠'
+            contentList={hotContentList}
+            highlight='NEW'/>
+          <UISmallContentSlider
+            headerTitle='비밀을 가진 사람들'
+            contentList={hotContentList}
+            highlight=''/>
+          <UIVerticalContentList
+            headerTitle='요즘 뜨는 환생 드라마'
+            contentList={verticalContentList}/>
+        </div>
+      )}
 
       { displayPopName === displayPopType.POPUP_SHORT_FORM_PLAYER.name && (<UIPopShortFormPlayer/>)}
       { displayPopName === displayPopType.POPUP_MYPROFILE.name && (<UIPopMyProfile/>)}
       { displayPopName === displayPopType.POPUP_LOGIN.name && (<UIPopLogin/>)}
       { displayPopName === displayPopType.POPUP_PURCHASE_POINT.name && (<UIPopPurchasePoint/>)}
+      { displayPopName === displayPopType.POPUP_VIDEO_WATCH.name && (<UIPopVideoWatched/>)}
     </>
   )
 }
