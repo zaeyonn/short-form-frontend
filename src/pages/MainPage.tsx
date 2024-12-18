@@ -12,6 +12,7 @@ import UIPopMyProfile from 'components/ui/popup/UIPopMyProfilePage';
 import UIPopLogin from 'components/ui/popup/UIPopLogin';
 import UIPopPurchasePoint from 'components/ui/popup/UIPopPurchasePoint';
 import UIPopVideoWatched from 'components/ui/popup/UIPopVideoWatched';
+import UIPopVideoKeeped from 'components/ui/popup/UIPopVideoKeeped';
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -177,6 +178,7 @@ const MainPage = () => {
       { displayPopName === displayPopType.POPUP_MYPROFILE.name && (<UIPopMyProfile/>)}
       { displayPopName === displayPopType.POPUP_LOGIN.name && (<UIPopLogin/>)}
       { displayPopName === displayPopType.POPUP_PURCHASE_POINT.name && (<UIPopPurchasePoint/>)}
+      { displayPopName === displayPopType.POPUP_VIDEO_KEEP.name && (<UIPopVideoKeeped/>)}
       { displayPopName === displayPopType.POPUP_VIDEO_WATCH.name && (<UIPopVideoWatched/>)}
     </>
   )

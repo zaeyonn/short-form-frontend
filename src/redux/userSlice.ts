@@ -22,11 +22,12 @@ const userSlice = createSlice({
     },
 
     changeBookmarkState(state, action: PayloadAction<any>) {
-      if(state.watchedVideos[action.payload.index].bookmark) {
-        state.watchedVideos[action.payload.index].bookmark = false;
+      let index = action.payload.index;
+      if(state.watchedVideos[index].bookmark) {
+        state.watchedVideos[index].bookmark = false;
       }
       else {
-        state.watchedVideos[action.payload.index].bookmark = true;
+        state.watchedVideos[index].bookmark = true;
       }
     }
   }

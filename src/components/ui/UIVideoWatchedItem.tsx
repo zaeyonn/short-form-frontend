@@ -11,6 +11,8 @@ const UIVideoWatchedItem = ({item}: Props) => {
 
   const handleClick = (item : any) => {
     dispatch(userSlice.changeBookmarkState({item: item, index: user.watchedVideos.indexOf(item)}));
+
+
   }
 
   return (
@@ -19,7 +21,8 @@ const UIVideoWatchedItem = ({item}: Props) => {
       <img src={item.url}/>
       <div className="info-wrap">
         <div>{item.title}</div>
-        <div>{`${item.cur_ep} / ${item.full_ep}`}</div>
+        <div>{`${item.cur_ep}화 / 총 ${item.full_ep}화`}</div>
+        <div>{item.keyword.map((item: string) => item)}</div>
       </div>
       <img src={`resources/icons/icon_bookmark${item.bookmark ? '_fill' : ''}.svg`} onClick={() => handleClick(item)}/>
     </div>
