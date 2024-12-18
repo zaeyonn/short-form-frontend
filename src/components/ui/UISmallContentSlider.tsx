@@ -49,7 +49,7 @@ const UISmallContentSlider = ({contentList, headerTitle, highlight}: Props) => {
       <div className='small-content-list'>
         { contentList.map((i: any, index: number) => <UISmallContentItem item={i} key={index} highlight={highlight}/>) }
 
-        {(displayPopName === displayPopType.POPUP_MYPROFILE.name) && (20 < user.listVideoWatched.length) && (
+        {(displayPopName === displayPopType.POPUP_MYPROFILE.name) && (20 < contentList.length) && (
           <button className='more' onClick={() => {dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_VIDEO_WATCH.name))}}>더보기</button>
         )}
       </div>

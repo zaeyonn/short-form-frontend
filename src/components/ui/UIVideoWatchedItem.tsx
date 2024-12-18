@@ -1,8 +1,17 @@
+import { useDispatch, useSelector } from "react-redux";
+import * as userSlice from "src/redux/userSlice";
+
 interface Props {
-  item: any
+  item: any,
 }
   
 const UIVideoWatchedItem = ({item}: Props) => {
+  const user = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
+
+  const handleClick = (item : any) => {
+    dispatch(userSlice.changeBookmarkState({item: item, index: user.watchedVideos.indexOf(item)}));
+  }
 
   return (
   <>
@@ -12,7 +21,7 @@ const UIVideoWatchedItem = ({item}: Props) => {
         <div>{item.title}</div>
         <div>{`${item.cur_ep} / ${item.full_ep}`}</div>
       </div>
-      <img src={`resources/icons/icon_bookmark${item.bookmark ? '_fill' : ''}.svg`}/>
+      <img src={`resources/icons/icon_bookmark${item.bookmark ? '_fill' : ''}.svg`} onClick={() => handleClick(item)}/>
     </div>
   </>
     

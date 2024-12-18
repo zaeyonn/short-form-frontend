@@ -91,7 +91,7 @@ const UIPopMyProfile = () => {
         <div className='viewrlist'>
           <UISmallContentSlider
             headerTitle='시청 기록'
-            contentList={user.listVideoWatched}
+            contentList={user.watchedVideos}
             highlight=''/>
         </div>
 

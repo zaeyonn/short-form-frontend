@@ -7,7 +7,7 @@ const UIVideoWatchedList = () => {
   return (
     <div className='watched-video-list-wrap'>
       <div className='vertical-content-list'>
-        {user.listVideoWatched.map((i: any, index: number) => <UIVideoWatchedItem item={i} key={index}/>)}
+        {user.watchedVideos.map((i: any, index: number) => <UIVideoWatchedItem item={i} key={index}/>)}
       </div>
     </div>
   )

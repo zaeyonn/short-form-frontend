@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { displayPopType } from 'common/define';
 
@@ -15,8 +15,7 @@ import UIPopVideoWatched from 'components/ui/popup/UIPopVideoWatched';
 
 const MainPage = () => {
   const dispatch = useDispatch();
-
-  const { displayPopName, isLogin } = useSelector((state: any) => state.global)
+  const { displayPopName, isLogin } = useSelector((state: any) => state.global);
 
   const contentList = [
     {

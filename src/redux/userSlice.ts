@@ -9,21 +9,30 @@ const userSlice = createSlice({
     uid: "adfsadfasdfasfd",
     point: 100000000,
 
-    listVideoWatched: new Array<any>(),
-    listVideoKeeped: new Array<any>(),
+    watchedVideos: new Array<any>(),
+    keepedVideos: new Array<any>(),
   },
   reducers: {
     addVideoWatched(state, action: PayloadAction<any>) {
-      state.listVideoWatched = [...state.listVideoWatched, {...action.payload}];
+      state.watchedVideos = [...state.watchedVideos, {...action.payload}];
     },
 
     addVideoKeeped(state, action: PayloadAction<any>) {
-      state.listVideoKeeped = [...state.listVideoKeeped, {...action.payload}];
+      state.keepedVideos = [...state.keepedVideos, {...action.payload}];
     },
+
+    changeBookmarkState(state, action: PayloadAction<any>) {
+      if(state.watchedVideos[action.payload.index].bookmark) {
+        state.watchedVideos[action.payload.index].bookmark = false;
+      }
+      else {
+        state.watchedVideos[action.payload.index].bookmark = true;
+      }
+    }
   }
 });
 
 export const {
-  addVideoWatched, addVideoKeeped,
+  addVideoWatched, addVideoKeeped, changeBookmarkState,
 } = userSlice.actions;
 export default userSlice.reducer;
