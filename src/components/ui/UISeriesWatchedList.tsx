@@ -1,16 +1,16 @@
 import { useSelector } from "react-redux";
-import UIVideoWatchedItem from "./UIVideoWatchedItem";
+import UISeriesWatchedItem from "./UISeriesWatchedItem";
 
-const UIVideoWatchedList = () => {
+const UISeriesWatchedList = () => {
   const user = useSelector((state: any) => state.user);
 
   return (
     <div className='watched-video-list-wrap'>
       <div className='vertical-content-list'>
-        {user.watchedVideos.map((i: any, index: number) => <UIVideoWatchedItem item={i} key={index}/>)}
+        {user.seriesWatched.map((i: any, index: number) => <UISeriesWatchedItem item={i} key={index}/>)}
       </div>
     </div>
   )
 }
 
-export default UIVideoWatchedList;
+export default UISeriesWatchedList;

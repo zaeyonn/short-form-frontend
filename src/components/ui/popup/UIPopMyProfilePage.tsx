@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
 import UISmallContentSlider from '../UISmallContentSlider';
 
 const UIPopMyProfile = () => {
-  const { displayPopName, isLogin } = useSelector((state: any) => state.global);
+  const { isLogin } = useSelector((state: any) => state.global);
   const user = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
 
@@ -21,6 +21,7 @@ const UIPopMyProfile = () => {
     dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_LOGIN.name));
   }
 
+  //test
   const isFirstTime = useRef<boolean>(false);
   useEffect(() => {
     if(isFirstTime.current) 
@@ -28,39 +29,9 @@ const UIPopMyProfile = () => {
 
     isFirstTime.current = true;
 
-    //test
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 1, bookmark: true,}));
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 2, bookmark: true,}));
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 3, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 4, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 5, bookmark: true,}));
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 6, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 7, bookmark: true,}));
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 8, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 9, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 10, bookmark: true,}));
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 11, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 12, bookmark: true,}));
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 13, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 14, bookmark: true,}));
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 15, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 16, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '웹 너무 어지럽다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_2.png', full_ep: 27, cur_ep: 1, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '웹 너무 어지럽다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_2.png', full_ep: 27, cur_ep: 2, bookmark: true,}));
-    dispatch(userSlice.addVideoWatched({ title: '웹 너무 어지럽다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_2.png', full_ep: 27, cur_ep: 3, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '웹 너무 어지럽다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_2.png', full_ep: 27, cur_ep: 4, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '웹 너무 어지럽다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_2.png', full_ep: 27, cur_ep: 5, bookmark: true,}));
-    dispatch(userSlice.addVideoWatched({ title: '퇴근하고 싶다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_3.png', full_ep: 15, cur_ep: 1, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '퇴근하고 싶다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_3.png', full_ep: 15, cur_ep: 2, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '퇴근하고 싶다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_3.png', full_ep: 15, cur_ep: 3, bookmark: true,}));
-    dispatch(userSlice.addVideoWatched({ title: '퇴근하고 싶다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_3.png', full_ep: 15, cur_ep: 4, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '퇴근하고 싶다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_3.png', full_ep: 15, cur_ep: 5, bookmark: true,}));
-    dispatch(userSlice.addVideoWatched({ title: '퇴근하고 싶다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_3.png', full_ep: 15, cur_ep: 6, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '퇴근하고 싶다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_3.png', full_ep: 15, cur_ep: 7, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '퇴근하고 싶다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_3.png', full_ep: 15, cur_ep: 8, bookmark: true,}));
-    dispatch(userSlice.addVideoWatched({ title: '퇴근하고 싶다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_3.png', full_ep: 15, cur_ep: 9, bookmark: false,}));
-    dispatch(userSlice.addVideoWatched({ title: '퇴근하고 싶다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_3.png', full_ep: 15, cur_ep: 10, bookmark: true,}));
-    dispatch(userSlice.addVideoWatched({ title: '퇴근하고 싶다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_3.png', full_ep: 15, cur_ep: 11, bookmark: true,}));
+    dispatch(userSlice.addSeriesWatched({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 1, bookmark: false,}));
+    dispatch(userSlice.addSeriesWatched({ title: '웹 너무 어렵다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_2.png', full_ep: 27, cur_ep: 1, bookmark: false,}));
+    dispatch(userSlice.addSeriesWatched({ title: '퇴근하고 싶다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_3.png', full_ep: 15, cur_ep: 1, bookmark: false,}));
   }, [])
 
   return (
@@ -91,7 +62,7 @@ const UIPopMyProfile = () => {
         <div className='viewrlist'>
           <UISmallContentSlider
             headerTitle='시청 기록'
-            contentList={user.watchedVideos}
+            contentList={user.seriesWatched}
             highlight=''/>
         </div>
 

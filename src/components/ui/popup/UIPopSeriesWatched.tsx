@@ -1,10 +1,9 @@
 import { useDispatch } from "react-redux";
 import * as globalSlice from "../../../redux/globalSlice";
-import { useEffect } from "react";
 import { displayPopType } from "common/define";
-import UIVideoWatchedList from "../UIVideoWatchedList";
+import UISeriesWatchedList from "../UISeriesWatchedList";
 
-const UIPopVideoWatched = () => {
+const UIPopSeriesWatched = () => {
   const dispatch = useDispatch();
 
   return ( 
@@ -17,14 +16,14 @@ const UIPopVideoWatched = () => {
           </div>
 
           <div className="right-section">
-            <button>리스트 관리</button>
+            <button onClick={() => {}}>리스트 관리</button>
           </div>
         </div>
 
-        <UIVideoWatchedList/>
+        <UISeriesWatchedList/>
       </div>
     </>
   )
 }
 
-export default UIPopVideoWatched;
+export default UIPopSeriesWatched;

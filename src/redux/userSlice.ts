@@ -9,31 +9,47 @@ const userSlice = createSlice({
     uid: "adfsadfasdfasfd",
     point: 100000000,
 
-    watchedVideos: new Array<any>(),
-    keepedVideos: new Array<any>(),
+    seriesWatched: new Array<any>(),
+    seriesKeeped: new Array<any>(),
   },
   reducers: {
-    addVideoWatched(state, action: PayloadAction<any>) {
-      state.watchedVideos = [...state.watchedVideos, {...action.payload}];
+    addSeriesWatched(state, action: PayloadAction<any>) {
+      state.seriesWatched = [...state.seriesWatched, {...action.payload}];
     },
 
-    addVideoKeeped(state, action: PayloadAction<any>) {
-      state.keepedVideos = [...state.keepedVideos, {...action.payload}];
+    removeSeriesWatched(state, action: PayloadAction<any>) {
+      console.log(state.seriesWatched.length);
+      let arr = state.seriesWatched.filter((value: any) => value !== action.payload);
+      state.seriesWatched = arr;
+      console.log(state.seriesWatched.length);
+    },
+
+    addSeriesKeeped(state, action: PayloadAction<any>) {
+      state.seriesKeeped = [...state.seriesKeeped, {...action.payload}];
+    },
+
+    removeSeriesKeeped(state, action: PayloadAction<any>) {
+      console.log(state.seriesKeeped.length);
+      let arr = state.seriesKeeped.filter((value: any) => value !== action.payload);
+      state.seriesKeeped = arr;
+      console.log(state.seriesKeeped.length);
     },
 
     changeBookmarkState(state, action: PayloadAction<any>) {
       let index = action.payload.index;
-      if(state.watchedVideos[index].bookmark) {
-        state.watchedVideos[index].bookmark = false;
+      if(state.seriesWatched[index].bookmark) {
+        state.seriesWatched[index].bookmark = false;
       }
       else {
-        state.watchedVideos[index].bookmark = true;
+        state.seriesWatched[index].bookmark = true;
       }
     }
   }
 });
 
 export const {
-  addVideoWatched, addVideoKeeped, changeBookmarkState,
+  addSeriesWatched, removeSeriesWatched,
+  addSeriesKeeped, removeSeriesKeeped, 
+  changeBookmarkState,
 } = userSlice.actions;
 export default userSlice.reducer;

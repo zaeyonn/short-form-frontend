@@ -5,14 +5,18 @@ interface Props {
   item: any,
 }
   
-const UIVideoWatchedItem = ({item}: Props) => {
+const UISeriesWatchedItem = ({item}: Props) => {
   const user = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
 
   const handleClick = (item : any) => {
-    dispatch(userSlice.changeBookmarkState({item: item, index: user.watchedVideos.indexOf(item)}));
-
-
+    if(item.bookmark) {
+      dispatch(userSlice.removeSeriesKeeped(item));
+    }
+    else {
+      dispatch(userSlice.addSeriesKeeped(item));
+    }
+    dispatch(userSlice.changeBookmarkState({item: item, index: user.seriesWatched.indexOf(item)}));
   }
 
   return (
@@ -31,4 +35,4 @@ const UIVideoWatchedItem = ({item}: Props) => {
   )
 }
   
-export default UIVideoWatchedItem;
+export default UISeriesWatchedItem;
