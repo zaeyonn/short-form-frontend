@@ -12,7 +12,8 @@
       "pages/*": ["src/pages/*"],
       "xtend/*": ["src/xtend/*"],
       "styles/*": ["src/styles/*"],
-      "common/*": ["src/common/*"]
+      "common/*": ["src/common/*"],
+      "api/*": ["src/api/*"]
     },
 
     /* Bundler mode */

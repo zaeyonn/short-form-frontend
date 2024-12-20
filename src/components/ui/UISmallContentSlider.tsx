@@ -9,9 +9,10 @@ interface Props {
   contentList: any[];
   headerTitle: string;
   highlight: string;
+  handleShortFormOpen: (series: any) => any;
 }
 
-const UISmallContentSlider = ({contentList, headerTitle, highlight}: Props) => {
+const UISmallContentSlider = ({contentList, headerTitle, highlight, handleShortFormOpen}: Props) => {
   const user = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
 
@@ -50,7 +51,7 @@ const UISmallContentSlider = ({contentList, headerTitle, highlight}: Props) => {
         <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right'/>
       </div>
       <div className='small-content-list'>
-      { contentList.map((i: any, index: number) => <UISmallContentItem item={i} key={index} highlight={highlight}/>) }
+      { contentList.map((i: any, index: number) => <UISmallContentItem item={i} key={index} highlight={highlight} handleShortFormOpen={handleShortFormOpen}/>) }
       </div>
 
       {(20 < user.listVideoWatched.length) && (

@@ -1,57 +1,33 @@
-import { useEffect, useState, useRef } from "react"
-import { useDispatch } from "react-redux"
+import { useEffect, useState, useRef, useCallback } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useSwiper } from "swiper/react"
 
 import * as globalSlice from 'src/redux/globalSlice';
+import * as userSlice from 'src/redux/userSlice';
+
 import UIShortFormSwiper from "components/ui/UIShortFormSwiper";
+import UIBottomSheetEpisodeGrid from "../UIBottomSheetEpisodeGrid";
 
 interface Props {
 
 }
 
-const SHORT_FORM_LIST = [
-  {
-    title: '사랑은 거짓말 처럼',
-    ep: 1,
-    url: 'resources/videos/short_form_ex_1.mp4'
-  },
-  {
-    title: '사랑은 거짓말 처럼',
-    ep: 2,
-    url: 'resources/videos/short_form_ex_2.mp4'
-  },
-  {
-    title: '사랑은 거짓말 처럼',
-    ep: 3,
-    url: 'resources/videos/short_form_ex_3.mp4'
-  },
-  {
-    title: '사랑은 거짓말 처럼',
-    ep: 4,
-    url: 'resources/videos/short_form_ex_4.mp4'
-  },
-  {
-    title: '사랑은 거짓말 처럼',
-    ep: 5,
-    url: 'resources/videos/short_form_ex_5.mp4'
-  },
-  {
-    title: '사랑은 거짓말 처럼',
-    ep: 6,
-    url: 'resources/videos/short_form_ex_6.mp4'
-  },
-  {
-    title: '사랑은 거짓말 처럼',
-    ep: 7,
-    url: 'resources/videos/short_form_ex_7.mp4'
-  }
-]
-
 const UIPopShortFormPlayer = ({}: Props) => {
+
+  const { user } = useSelector((state: any) => state.user);
+  const { episodeListResult, episodeListError, selectedSeries } = useSelector((state: any) => state.global);
+
   const [playing, setPlaying] = useState<boolean>(true);
   const [visibleTools, setVisibleTools] = useState(true);
   const [progress, setProgress] = useState<number>(0);
-  const [currentEp, setCurrentEp] = useState<any>(SHORT_FORM_LIST[0]);
+  const [currentEp, setCurrentEp] = useState<any>();
+  const [episodeList, setEpisodeList] = useState([]);
+  // const [swiper, setSwiper] = useState<any>(null);
+  const [visibleBottomSheet, setVisibleBottomSheet] = useState(false);
+  const [keep, setKeep] = useState(false);
+  const [keepCount, setKeepCount] = useState(selectedSeries.keeps);
 
+  const swiperRef = useRef<any>(null);
   const videoRef = useRef<any>(null);
   const hideToolsTimeout = useRef<any>();
 
@@ -77,6 +53,10 @@ const UIPopShortFormPlayer = ({}: Props) => {
   // 도구 토글
   const toggleTools = () => {
     setVisibleTools(!visibleTools);
+
+    if(!visibleTools) {
+      clearTimeout(hideToolsTimeout.current);
+    }
   }
 
   // 재생 / 일시정지 토글
@@ -114,7 +94,7 @@ const UIPopShortFormPlayer = ({}: Props) => {
     }
   }
 
-  
+  // 재생바 터치 시작 이벤트
   const handleProgressTouchStart = () => {
     setPlaying(false);
     if(videoRef.current) {
@@ -122,6 +102,7 @@ const UIPopShortFormPlayer = ({}: Props) => {
     }
   }
 
+  // 재생바 터지 종료 이벤트
   const handleProgressTouchEnd = () => {
     setPlaying(true);
     if(videoRef.current) {
@@ -143,7 +124,31 @@ const UIPopShortFormPlayer = ({}: Props) => {
       setPlaying(true);
     }
 
-    setCurrentEp(SHORT_FORM_LIST[swiper.activeIndex])
+    setCurrentEp(episodeList[swiper.activeIndex]);
+  }
+
+  const handleEpisodeChange = useCallback((idx: number) => {
+    if(swiperRef.current) swiperRef.current.slideTo(idx, 0);
+    setVisibleBottomSheet(false);
+  }, []);
+
+  const handleBottomSheetOpen = useCallback(() => {
+    setVisibleBottomSheet(true);
+  }, [])
+
+  const handleBottomSheetClose = useCallback(() => {
+    setVisibleBottomSheet(false);
+  } , [])
+
+  const handleSeriesKeep = () => {
+    setKeep(!keep);
+
+    if(keep) {
+      setKeepCount(keepCount-1);
+    } else {
+      setKeepCount(keepCount+1);
+      dispatch(userSlice.addSeriesKeep({ userId: user.uuid, seriesId: selectedSeries.id }));
+    }
   }
 
   useEffect(() => {
@@ -157,6 +162,36 @@ const UIPopShortFormPlayer = ({}: Props) => {
 
   }, [visibleTools, playing])
 
+  // 숏폼 리스트 조회 결과
+  useEffect(() => {
+    if(episodeListError) {
+      console.log('episodeListError ', episodeListError);
+
+      dispatch(globalSlice.clearGlobalState('episodeListError'));
+    }
+
+    if(episodeListResult && episodeListResult.data.code === 200) {
+      console.log('episodeListResult ', episodeListResult);
+      setCurrentEp(episodeListResult.data.data[0])
+      setEpisodeList(episodeListResult.data.data);
+
+      dispatch(globalSlice.clearGlobalState('episodeListResult'));
+    }
+
+  }, [episodeListResult, episodeListError])
+
+  useEffect(() => {
+    if(videoRef.current) {
+
+      // 숏폼 영상 다보면 다음 회차 자동 재생생
+      videoRef.current.addEventListener('ended', (e: any) => {
+        console.log('video ended');
+        if(currentEp.episode_num < episodeList.length) {
+          swiperRef.current.slideTo(currentEp.episode_num, 0);
+        }
+      })
+    }
+  }, [videoRef.current, swiperRef.current])
 
   useEffect(() => {
     const navBar = {
@@ -164,14 +199,16 @@ const UIPopShortFormPlayer = ({}: Props) => {
     }
 
     dispatch(globalSlice.setNavigationBar(navBar));
+    dispatch(globalSlice.episodeList({seriesId: selectedSeries.id}))
   }, [])
 
   return (
     <div className='popup-wrap'>
       <div className='short-form-swiper'>
         <UIShortFormSwiper
+        swiperRef={swiperRef}
         handleSlideChange={handleSlideChange}
-        shortFormList={SHORT_FORM_LIST}
+        episodeList={episodeList}
         videoRef={videoRef}
         handleTimeUpdate={handleTimeUpdate}
         toggleTools={toggleTools}/>
@@ -181,7 +218,7 @@ const UIPopShortFormPlayer = ({}: Props) => {
           <div className='header'>
             <div className="left-section">
               <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={handleClose}/>
-              <span className="title">{`${currentEp.title} [${currentEp.ep}]`}</span>
+              <span className="title">{`${selectedSeries.title} [${currentEp?.episode_num}]`}</span>
             </div>
             <div className='right-section'>
               <img src={`resources/icons/icon_kebab.svg`} onClick={() => 0}/>
@@ -190,11 +227,11 @@ const UIPopShortFormPlayer = ({}: Props) => {
           { playing && (<img className='main-play-btn' src="resources/icons/icon_pause_main.svg" onClick={togglePlay}/>) }
           { !playing && (<img className='main-play-btn' src="resources/icons/icon_play_main.svg" onClick={togglePlay}/>) }
           <div className='right-menu'>
-            <div className='btn-wrap'>
-              <img id='bookmark-btn' src='resources/icons/icon_bookmark_fill.svg'/>
-              100K
+            <div className='btn-wrap' onClick={handleSeriesKeep}>
+              <img id='bookmark-btn' src={`resources/icons/icon_bookmark${keep ? '_fill' : ''}.svg`}/>
+              {keepCount}
             </div>
-            <div className='btn-wrap'>
+            <div className='btn-wrap' onClick={handleBottomSheetOpen}>
               <img id='list-btn' src='resources/icons/icon_list.svg'/>
               List
             </div>
@@ -204,6 +241,13 @@ const UIPopShortFormPlayer = ({}: Props) => {
           </div>
         </>
       )}
+      
+        <UIBottomSheetEpisodeGrid
+        currentEp={currentEp}
+        visibleBottomSheet={visibleBottomSheet}
+        handleBottomSheetClose={handleBottomSheetClose}
+        handleEpisodeChange={handleEpisodeChange}
+        />
     </div>
   )
 }

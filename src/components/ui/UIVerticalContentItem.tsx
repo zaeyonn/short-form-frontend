@@ -1,14 +1,15 @@
 interface Props {
-  item: any
+  item: any;
+  handleShortFormOpen: (series: any) => any;
 }
 
-const UIVerticalContentItem = ({item}: Props) => {
+const UIVerticalContentItem = ({item, handleShortFormOpen}: Props) => {
   return (
-    <div className='vertical-content-item'>
-      <img src={item.url}/>
+    <div className='vertical-content-item' onClick={() => handleShortFormOpen(item)}>
+      <img src={`${import.meta.env.VITE_SERVER_URL}/images/poster/${item.poster_img}`}/>
       <div className='info-wrap'>
         <div className='tag-list'>
-          { item.keyword.map((i: string, index: number) => <span className='tag' key={index}>{i}</span>) }
+          { item.keyword?.map((i: string, index: number) => <span className='tag' key={index}>{i}</span>) }
         </div>
         <div className='title'>
           { item.title }
@@ -17,7 +18,7 @@ const UIVerticalContentItem = ({item}: Props) => {
           { item.description }
         </div>
         <div className='ep-step'>
-          { `${item.cur_ep}/${item.full_ep}` }
+          { `0/${item.ep_count}` }
         </div>
       </div>
     </div>

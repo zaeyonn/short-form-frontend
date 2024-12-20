@@ -1,11 +1,11 @@
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
-import UIMainPosterItem from './UIMainContentItem';
+import UIMainContentItem from './UIMainContentItem';
 
 interface Props {
   contentList: any[];
-  handleShortFormOpen: () => any;
+  handleShortFormOpen: (series: any) => any;
 }
 
 const UIMainContentSlider = ({contentList, handleShortFormOpen}: Props) => {
@@ -47,7 +47,7 @@ const UIMainContentSlider = ({contentList, handleShortFormOpen}: Props) => {
       keyBoardControl={true}
       autoPlay={false}
       >
-      {contentList.map((i: any, index: number) => <UIMainPosterItem item={i} key={index} handleShortFormOpen={handleShortFormOpen}/>)}
+      {contentList.map((i: any, index: number) => <UIMainContentItem item={i} key={index} handleShortFormOpen={handleShortFormOpen}/>)}
     </Carousel>
   )
 }
