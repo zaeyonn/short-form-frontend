@@ -16,8 +16,8 @@ const UILeftMenu = () => {
         <div className="menu-wrap">
           <button onClick={() => handleClick('')}>메인 화면</button>
           <button onClick={() => handleClick(displayPopType.POPUP_VIDEO_WATCH.name)}>시청 기록</button>
-          <button onClick={() => handleClick(displayPopType.POPUP_VIDEO_WATCH.name)}>보관</button>
-          <button onClick={() => handleClick(displayPopType.POPUP_VIDEO_WATCH.name)}>프로필</button>
+          <button onClick={() => handleClick(displayPopType.POPUP_VIDEO_KEEP.name)}>보관</button>
+          <button onClick={() => handleClick(displayPopType.POPUP_MYPROFILE.name)}>프로필</button>
           <button onClick={() => dispatch(globalSlice.setUiPopName(''))}>닫기</button>
         </div>
       </div>

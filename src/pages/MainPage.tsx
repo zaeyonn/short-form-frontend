@@ -12,8 +12,8 @@ import UIPopShortFormPlayer from "components/ui/popup/UIPopShortFormPlayer"
 import UIPopMyProfile from 'components/ui/popup/UIPopMyProfilePage';
 import UIPopLogin from 'components/ui/popup/UIPopLogin';
 import UIPopPurchasePoint from 'components/ui/popup/UIPopPurchasePoint';
-import UIPopSeriesKeeped from 'components/ui/popup/UIPopSeriesKeeped';
-import UIPopSeriesWatched from 'components/ui/popup/UIPopSeriesWatched';
+import UIPopSeriesKeep from 'components/ui/popup/UIPopSeriesKeep';
+import UIPopSeriesWatch from 'components/ui/popup/UIPopSeriesWatch';
 import UILeftMenu from 'components/ui/UILeftMenu';
 
 const MainPage = () => {
@@ -118,8 +118,8 @@ const MainPage = () => {
       { displayPopName === displayPopType.POPUP_MYPROFILE.name && (<UIPopMyProfile/>)}
       { displayPopName === displayPopType.POPUP_LOGIN.name && (<UIPopLogin/>)}
       { displayPopName === displayPopType.POPUP_PURCHASE_POINT.name && (<UIPopPurchasePoint/>)}
-      { displayPopName === displayPopType.POPUP_VIDEO_KEEP.name && (<UIPopSeriesKeeped/>)}
-      { displayPopName === displayPopType.POPUP_VIDEO_WATCH.name && (<UIPopSeriesWatched/>)}
+      { displayPopName === displayPopType.POPUP_VIDEO_KEEP.name && (<UIPopSeriesKeep/>)}
+      { displayPopName === displayPopType.POPUP_VIDEO_WATCH.name && (<UIPopSeriesWatch/>)}
 
       { uiPopName ===  uiPopType.UI_LEFT_MENU.name && (<UILeftMenu/>)}
     </>

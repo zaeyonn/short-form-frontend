@@ -9,8 +9,8 @@ const userSlice = createSlice({
     uuid: "adfsadfasdfasfd",
     point: 100000000,
 
-    seriesWatchList: new Array<any>(),
     seriesKeepList: new Array<any>(),
+    seriesWatchList: new Array<any>(),
   },
   reducers: {
     clearUserState(state: any, action) {
@@ -19,9 +19,7 @@ const userSlice = createSlice({
     setUser(state, action: PayloadAction<any>) {
       state.user = action.payload
     },
-    setSeriesKeepList(state, action: PayloadAction<any>) {
-      state.seriesKeepList = action.payload
-    },
+
     authGuest(state: any) {
       state.loading = true;
     },
@@ -33,9 +31,11 @@ const userSlice = createSlice({
       state.authGuestError = action.payload;
       state.loading = false;
     },
-    addVideoWatched(state, action: PayloadAction<any>) {
-      state.seriesWatchList = [...state.seriesWatchList, {...action.payload}];
+
+    setSeriesKeepList(state, action: PayloadAction<any>) {
+      state.seriesKeepList = action.payload
     },
+
     addSeriesKeep() {
     },
     addSeriesKeepSuccess(state: any, action) {
@@ -43,23 +43,24 @@ const userSlice = createSlice({
     },
     addSeriesKeepFailure(state: any, action) {
       state.addSeriesKeepError = action.payload;
-
-    },
-    addSeriesWatched(state, action: PayloadAction<any>) {
-      state.seriesWatchList = [...state.seriesWatchList, {...action.payload}];
     },
 
-    removeSeriesWatched(state, action: PayloadAction<any>) {
-      console.log(state.seriesWatchList.length);
-      let arr = state.seriesWatchList.filter((value: any) => value !== action.payload);
-      state.seriesWatchList = arr;
-      console.log(state.seriesWatchList.length);
-    },
-    removeSeriesKeeped(state, action: PayloadAction<any>) {
+    removeSeriesKeep(state, action: PayloadAction<any>) {
       console.log(state.seriesKeepList.length);
       let arr = state.seriesKeepList.filter((value: any) => value !== action.payload);
       state.seriesKeepList = arr;
       console.log(state.seriesKeepList.length);
+    },
+
+    addSeriesWatch(state, action: PayloadAction<any>) {
+      state.seriesWatchList = [...state.seriesWatchList, {...action.payload}];
+    },
+
+    removeSeriesWatch(state, action: PayloadAction<any>) {
+      console.log(state.seriesWatchList.length);
+      let arr = state.seriesWatchList.filter((value: any) => value !== action.payload);
+      state.seriesWatchList = arr;
+      console.log(state.seriesWatchList.length);
     },
 
     changeBookmarkState(state, action: PayloadAction<any>) {
@@ -75,9 +76,9 @@ const userSlice = createSlice({
 });
 
 export const {
-  clearUserState, setUser, setSeriesKeepList, authGuest, authGuestSuccess, authGuestFailure,
-  addVideoWatched, addSeriesKeep, addSeriesKeepSuccess, addSeriesKeepFailure,
-  addSeriesWatched, removeSeriesWatched, removeSeriesKeeped, 
+  clearUserState, setUser, authGuest, authGuestSuccess, authGuestFailure,
+  setSeriesKeepList, addSeriesKeep, addSeriesKeepSuccess, addSeriesKeepFailure, removeSeriesKeep,
+  addSeriesWatch, removeSeriesWatch, 
   changeBookmarkState,
 } = userSlice.actions;
 export default userSlice.reducer;

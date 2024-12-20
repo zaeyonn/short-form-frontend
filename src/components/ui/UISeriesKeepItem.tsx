@@ -6,7 +6,7 @@ interface Props {
   removeVideos: any,
 }
   
-const UISeriesKeepedItem = ({item, isManageMode, removeVideos}: Props) => {
+const UISeriesKeepItem = ({item, isManageMode, removeVideos}: Props) => {
   const [isSelect, setSelect] = useState(false);
 
   const handleClick = () => {
@@ -46,4 +46,4 @@ const UISeriesKeepedItem = ({item, isManageMode, removeVideos}: Props) => {
   )
 }
   
-export default UISeriesKeepedItem;
+export default UISeriesKeepItem;
