@@ -397,6 +397,50 @@
     }
   }
 
+  .header-nonfixed {
+    box-sizing: border-box;
+    top: 0px;
+    width: 100vw;
+    height: 48px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    z-index: 1;
+  
+    .left-section {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 14px;
+  
+      .title {
+        font-size: 14px;
+        line-height: 22px;
+        font-weight: 500;
+      }
+    }
+  
+    .right-section {
+      display: flex;
+      flex-direction: row;
+      margin-left: auto;
+      gap: 12px;
+  
+      button {
+        width: 52px;
+        height: 28px;
+      }
+    }
+  
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
   .footer {
     box-sizing: border-box;
     position: fixed;
@@ -477,6 +521,7 @@
   .profile {
     display: flex;
     height: 10%;
+    position: relative;
   
     img {
       width: 36px;

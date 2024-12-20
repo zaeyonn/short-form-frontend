@@ -147,7 +147,8 @@ const UIPopShortFormPlayer = ({}: Props) => {
       setKeepCount(keepCount-1);
     } else {
       setKeepCount(keepCount+1);
-      dispatch(userSlice.addSeriesKeep({ userId: user.uuid, seriesId: selectedSeries.id }));
+      dispatch(userSlice.addSeriesKeep());
+      //{ userId: user.uuid, seriesId: selectedSeries.id }
     }
   }
 
@@ -199,7 +200,8 @@ const UIPopShortFormPlayer = ({}: Props) => {
     }
 
     dispatch(globalSlice.setNavigationBar(navBar));
-    dispatch(globalSlice.episodeList({seriesId: selectedSeries.id}))
+    dispatch(globalSlice.episodeList());
+    //{seriesId: selectedSeries.id}
   }, [])
 
   return (

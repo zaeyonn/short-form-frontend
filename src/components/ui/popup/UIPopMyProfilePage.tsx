@@ -37,7 +37,7 @@ const UIPopMyProfile = () => {
   return (
     <>
       <div className='popup-wrap'>
-        <div className='header'>
+        <div className='header-nonfixed'>
           <div className="left-section">
             <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={() => handleButtonClick('')}/>
             <span className="title">프로필</span>
@@ -61,9 +61,10 @@ const UIPopMyProfile = () => {
 
         <div className='viewrlist'>
           <UISmallContentSlider
-            headerTitle='시청 기록'
             contentList={user.seriesWatchList}
-            highlight=''/>
+            headerTitle='시청 기록'
+            highlight=''
+            handleShortFormOpen={()=>{}}/>
         </div>
 
         <div className='profile-etc'>

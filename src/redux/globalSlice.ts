@@ -49,7 +49,7 @@ const globalSlice = createSlice({
       state.seriesListError = action.payload;
       state.loading = false;
     },
-    episodeList(state) {
+    episodeList(state: any) {
       state.loading = true;
     },
     episodeListSuccess(state: any, action) {

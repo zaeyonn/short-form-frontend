@@ -18,7 +18,7 @@ const UIPopSeriesKeep = () => {
   return (
     <>
       <div className="popup-wrap">
-        <div className='header'>
+        <div className='header-nonfixed'>
           {(isManageMode) ? (
             <>
               <div className="right-section">
