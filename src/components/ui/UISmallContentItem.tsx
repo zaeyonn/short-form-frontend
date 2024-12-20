@@ -1,3 +1,5 @@
+import { displayPopType } from "common/define";
+import { useSelector } from "react-redux";
 
 interface SallContentItemProps {
   item: any;

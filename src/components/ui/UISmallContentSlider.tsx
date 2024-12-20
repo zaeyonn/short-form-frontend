@@ -13,6 +13,7 @@ interface Props {
 }
 
 const UISmallContentSlider = ({contentList, headerTitle, highlight, handleShortFormOpen}: Props) => {
+  const { displayPopName } = useSelector((state: any) => state.global);
   const user = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
 
@@ -40,10 +41,6 @@ const UISmallContentSlider = ({contentList, headerTitle, highlight, handleShortF
     }
   };
 
-  const handleButtonClick = () => {
-    dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_VIDEO_WATCH.name));
-  }
-
   return (
     <div className='small-content-slider-wrap'>
       <div className='header'>
@@ -51,12 +48,12 @@ const UISmallContentSlider = ({contentList, headerTitle, highlight, handleShortF
         <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right'/>
       </div>
       <div className='small-content-list'>
-      { contentList.map((i: any, index: number) => <UISmallContentItem item={i} key={index} highlight={highlight} handleShortFormOpen={handleShortFormOpen}/>) }
-      </div>
+        { contentList.map((i: any, index: number) => <UISmallContentItem item={i} key={index} highlight={highlight} handleShortFormOpen={handleShortFormOpen}/>) }
 
-      {(20 < user.listVideoWatched.length) && (
-        <button className='more'>더보기</button>
-      )}
+        {(displayPopName === displayPopType.POPUP_MYPROFILE.name) && (0 < contentList.length) && (
+          <button className='more' onClick={() => {dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_VIDEO_WATCH.name))}}>더보기</button>
+        )}
+      </div>
     </div>
   )
 }

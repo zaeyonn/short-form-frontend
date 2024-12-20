@@ -12,11 +12,13 @@ import UIPopShortFormPlayer from "components/ui/popup/UIPopShortFormPlayer"
 import UIPopMyProfile from 'components/ui/popup/UIPopMyProfilePage';
 import UIPopLogin from 'components/ui/popup/UIPopLogin';
 import UIPopPurchasePoint from 'components/ui/popup/UIPopPurchasePoint';
+import UIPopSeriesKeeped from 'components/ui/popup/UIPopSeriesKeeped';
+import UIPopSeriesWatched from 'components/ui/popup/UIPopSeriesWatched';
 
 const MainPage = () => {
   const dispatch = useDispatch();
 
-  const { displayPopName, seriesListResult, seriesListError, selectedSeries } = useSelector((state: any) => state.global)
+  const { displayPopName, seriesListResult, seriesListError, selectedSeries, isLogin } = useSelector((state: any) => state.global)
   const { addSeriesKeepResult, addSeriesKeepError, seriesKeepList } = useSelector((state: any) => state.user);
 
   const [seriesList, setSeriesList] = useState([]);
@@ -95,6 +97,8 @@ const MainPage = () => {
       { displayPopName === displayPopType.POPUP_MYPROFILE.name && (<UIPopMyProfile/>)}
       { displayPopName === displayPopType.POPUP_LOGIN.name && (<UIPopLogin/>)}
       { displayPopName === displayPopType.POPUP_PURCHASE_POINT.name && (<UIPopPurchasePoint/>)}
+      { displayPopName === displayPopType.POPUP_VIDEO_KEEP.name && (<UIPopSeriesKeeped/>)}
+      { displayPopName === displayPopType.POPUP_VIDEO_WATCH.name && (<UIPopSeriesWatched/>)}
     </>
   )
 }
