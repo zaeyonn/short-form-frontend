@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { displayPopType } from 'common/define';
+import { displayPopType, uiPopType } from 'common/define';
 
 import * as globalSlice from 'src/redux/globalSlice';
 import * as userSlice from 'src/redux/userSlice';
@@ -14,11 +14,12 @@ import UIPopLogin from 'components/ui/popup/UIPopLogin';
 import UIPopPurchasePoint from 'components/ui/popup/UIPopPurchasePoint';
 import UIPopSeriesKeeped from 'components/ui/popup/UIPopSeriesKeeped';
 import UIPopSeriesWatched from 'components/ui/popup/UIPopSeriesWatched';
+import UILeftMenu from 'components/ui/UILeftMenu';
 
 const MainPage = () => {
   const dispatch = useDispatch();
 
-  const { displayPopName, seriesListResult, seriesListError, selectedSeries, isLogin } = useSelector((state: any) => state.global)
+  const { displayPopName, uiPopName, seriesListResult, seriesListError, selectedSeries, isLogin } = useSelector((state: any) => state.global)
   const { addSeriesKeepResult, addSeriesKeepError, seriesKeepList } = useSelector((state: any) => state.user);
 
   const [seriesList, setSeriesList] = useState([]);
@@ -66,6 +67,26 @@ const MainPage = () => {
     dispatch(globalSlice.seriesList());
   }, [])
 
+  // 메인화면 네비바 조정
+  useEffect(() => {
+    const navBar = {
+      visible: true, 
+      title: 'Logo', 
+      leftBtn: {
+        icon: 'icon_hamburger.svg', 
+        event: () => { 
+          dispatch(globalSlice.setUiPopName(uiPopType.UI_LEFT_MENU.name));
+        }
+      }, 
+      
+      rightBtn: {
+        icon: 'icon_search.svg', 
+        event: () => 0
+      }
+    }
+    dispatch(globalSlice.setNavigationBar(navBar));
+  }, [])
+
   return (
     <>
       <div className='page-wrap' style={{height: displayPopName ? 500 : 'auto'}}>
@@ -99,6 +120,8 @@ const MainPage = () => {
       { displayPopName === displayPopType.POPUP_PURCHASE_POINT.name && (<UIPopPurchasePoint/>)}
       { displayPopName === displayPopType.POPUP_VIDEO_KEEP.name && (<UIPopSeriesKeeped/>)}
       { displayPopName === displayPopType.POPUP_VIDEO_WATCH.name && (<UIPopSeriesWatched/>)}
+
+      { uiPopName ===  uiPopType.UI_LEFT_MENU.name && (<UILeftMenu/>)}
     </>
   )
 }

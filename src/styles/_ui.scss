@@ -732,8 +732,6 @@
           background-color: #111111;
           color: #393939;
 
-          
-
           &::after {
             background-color: #292929;
             width: 16px;
@@ -751,6 +749,30 @@
         }
       }
     }
+  }
+}
 
+.layer-wrap {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow-y: hidden;
+  z-index: 2;
+
+  .menu-wrap {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+  }
+
+  button {
+    gap: 12px;
   }
 }
