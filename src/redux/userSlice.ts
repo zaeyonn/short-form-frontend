@@ -48,20 +48,21 @@ const userSlice = createSlice({
     addSeriesWatched(state, action: PayloadAction<any>) {
       state.seriesWatchList = [...state.seriesWatchList, {...action.payload}];
     },
-
     removeSeriesWatched(state, action: PayloadAction<any>) {
       console.log(state.seriesWatchList.length);
       let arr = state.seriesWatchList.filter((value: any) => value !== action.payload);
       state.seriesWatchList = arr;
       console.log(state.seriesWatchList.length);
     },
-    removeSeriesKeeped(state, action: PayloadAction<any>) {
-      console.log(state.seriesKeepList.length);
-      let arr = state.seriesKeepList.filter((value: any) => value !== action.payload);
-      state.seriesKeepList = arr;
-      console.log(state.seriesKeepList.length);
+    removeSeriesKeep() {
+      
     },
-
+    removeSeriesKeepSuccess(state: any, action: PayloadAction<any>) {
+      state.removeSeriesKeepResult = action.payload;
+    },
+    removeSeriesKeepFailure(state: any, action: PayloadAction<any>) {
+      state.removeSeriesKeepError = action.payload;
+    },
     changeBookmarkState(state, action: PayloadAction<any>) {
       let index = action.payload.index;
       if(state.seriesWatchList[index].bookmark) {
@@ -70,6 +71,13 @@ const userSlice = createSlice({
       else {
         state.seriesWatchList[index].bookmark = true;
       }
+    },
+    userSeriesKeepList() {},
+    userSeriesKeepListSuccess(state: any, action: PayloadAction<any>) {
+      state.userSeriesKeepListResult = action.payload
+    },
+    userSeriesKeepListFailure(state: any, action: PayloadAction<any>) {
+      state.userSeriesKeepListFailure = action.payload
     }
   }
 });
@@ -77,7 +85,7 @@ const userSlice = createSlice({
 export const {
   clearUserState, setUser, setSeriesKeepList, authGuest, authGuestSuccess, authGuestFailure,
   addVideoWatched, addSeriesKeep, addSeriesKeepSuccess, addSeriesKeepFailure,
-  addSeriesWatched, removeSeriesWatched, removeSeriesKeeped, 
-  changeBookmarkState,
+  addSeriesWatched, removeSeriesWatched, removeSeriesKeep, removeSeriesKeepSuccess, removeSeriesKeepFailure, 
+  changeBookmarkState, userSeriesKeepList, userSeriesKeepListSuccess, userSeriesKeepListFailure,
 } = userSlice.actions;
 export default userSlice.reducer;

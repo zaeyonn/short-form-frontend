@@ -14,7 +14,7 @@ interface Props {
 
 const UIPopShortFormPlayer = ({}: Props) => {
 
-  const { user } = useSelector((state: any) => state.user);
+  const { user, seriesKeepList } = useSelector((state: any) => state.user);
   const { episodeListResult, episodeListError, selectedSeries } = useSelector((state: any) => state.global);
 
   const [playing, setPlaying] = useState<boolean>(true);
@@ -24,7 +24,7 @@ const UIPopShortFormPlayer = ({}: Props) => {
   const [episodeList, setEpisodeList] = useState([]);
   // const [swiper, setSwiper] = useState<any>(null);
   const [visibleBottomSheet, setVisibleBottomSheet] = useState(false);
-  const [keep, setKeep] = useState(false);
+  const [keep, setKeep] = useState<boolean>();
   const [keepCount, setKeepCount] = useState(selectedSeries.keeps);
 
   const swiperRef = useRef<any>(null);
@@ -145,9 +145,10 @@ const UIPopShortFormPlayer = ({}: Props) => {
 
     if(keep) {
       setKeepCount(keepCount-1);
+      dispatch(userSlice.removeSeriesKeep({ userId: user.id, seriesId: selectedSeries.id }));
     } else {
       setKeepCount(keepCount+1);
-      dispatch(userSlice.addSeriesKeep({ userId: user.uuid, seriesId: selectedSeries.id }));
+      dispatch(userSlice.addSeriesKeep({ userId: user.id, seriesId: selectedSeries.id }));
     }
   }
 
@@ -194,11 +195,14 @@ const UIPopShortFormPlayer = ({}: Props) => {
   }, [videoRef.current, swiperRef.current])
 
   useEffect(() => {
-    const navBar = {
-      visible: false
-    }
+    // 시리즈 북마크 확인
+    seriesKeepList.forEach((keep: any) => {
+      if (keep.series_id === selectedSeries.id) {
+        setKeep(true);
+        return;
+      }
+    })
 
-    dispatch(globalSlice.setNavigationBar(navBar));
     dispatch(globalSlice.episodeList({seriesId: selectedSeries.id}))
   }, [])
 
@@ -218,7 +222,7 @@ const UIPopShortFormPlayer = ({}: Props) => {
           <div className='header'>
             <div className="left-section">
               <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={handleClose}/>
-              <span className="title">{`${selectedSeries.title} [${currentEp?.episode_num}]`}</span>
+              <span className="title">{`${selectedSeries.title} [${currentEp?.episode_num ? currentEp?.episode_num : ''}]`}</span>
             </div>
             <div className='right-section'>
               <img src={`resources/icons/icon_kebab.svg`} onClick={() => 0}/>
