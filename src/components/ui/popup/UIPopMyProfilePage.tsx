@@ -53,10 +53,17 @@ const UIPopMyProfile = () => {
 
         <div className='viewrlist'>
           {(user.seriesWatchList.length === 0) ? (
-            <div className='no-content'>
-              <div>시청한 컨텐츠가 없습니다.</div>
-              <button onClick={() => {dispatch(globalSlice.setDisplayPopName(''))}}>드라마 보러가기</button>
-            </div>
+            <>
+              <div className='header'>
+                시청 기록
+                <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right'/>
+              </div>
+
+              <div className='no-content'>
+                <div>시청한 컨텐츠가 없습니다.</div>
+                <button onClick={() => {dispatch(globalSlice.setDisplayPopName(''))}}>드라마 보러가기</button>
+              </div>
+            </>
           ) : (
             <UISmallContentSlider
               contentList={user.seriesWatchList}

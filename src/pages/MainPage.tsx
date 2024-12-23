@@ -15,6 +15,7 @@ import UIPopPurchasePoint from 'components/ui/popup/UIPopPurchasePoint';
 import UIPopSeriesKeep from 'components/ui/popup/UIPopSeriesKeep';
 import UIPopSeriesWatch from 'components/ui/popup/UIPopSeriesWatch';
 import UILeftMenu from 'components/ui/UILeftMenu';
+import UILogin from 'components/ui/UILogin';
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -163,6 +164,7 @@ const MainPage = () => {
       { displayPopName === displayPopType.POPUP_VIDEO_WATCH.name && (<UIPopSeriesWatch/>)}
 
       { uiPopName ===  uiPopType.UI_LEFT_MENU.name && (<UILeftMenu/>)}
+      { uiPopName === uiPopType.UI_LOGIN.name && (<UILogin/>)}
     </>
   )
 }

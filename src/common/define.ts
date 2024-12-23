@@ -8,5 +8,6 @@ export const displayPopType = {
 }
 
 export const uiPopType = {
-  UI_LEFT_MENU: { name: "UI_LEFT_MENU"} ,
+  UI_LEFT_MENU: { name: "UI_LEFT_MENU"},
+  UI_LOGIN: {name: "UI_LOGIN"},
 }
