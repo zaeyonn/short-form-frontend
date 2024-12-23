@@ -23,3 +23,27 @@ export function* handleAddSeriesKeep(action) {
     yield put(slice.addSeriesKeepFailure(error));
   }
 }
+
+export function* handleRemoveSeriesKeep(action) {
+  try {
+    const response = yield call(api.removeSeriesKeep, action.payload);
+    console.log(`response: ${JSON.stringify(response)}`);
+
+    yield put(slice.removeSeriesKeepSuccess(response));
+  } catch (error) {
+    yield put(slice.removeSeriesKeepFailure(error));
+  }
+}
+
+
+
+export function* handleUserSeriesKeepList(action) {
+  try {
+    const response = yield call(api.userSeriesKeepList, action.payload);
+    console.log(`response: ${JSON.stringify(response)}`);
+
+    yield put(slice.userSeriesKeepListSuccess(response));
+  } catch (error) {
+    yield put(slice.userSeriesKeepListFailure(error));
+  }
+}

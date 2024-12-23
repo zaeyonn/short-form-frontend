@@ -20,7 +20,7 @@ const MainPage = () => {
   const dispatch = useDispatch();
 
   const { displayPopName, uiPopName, seriesListResult, seriesListError, selectedSeries, isLogin } = useSelector((state: any) => state.global)
-  const { addSeriesKeepResult, addSeriesKeepError, seriesKeepList } = useSelector((state: any) => state.user);
+  const { user, addSeriesKeepResult, addSeriesKeepError, seriesKeepList ,userSeriesKeepListResult, userSeriesKeepListError, removeSeriesKeepResult, removeSeriesKeepError } = useSelector((state: any) => state.user);
 
   const [seriesList, setSeriesList] = useState([]);
 
@@ -29,7 +29,7 @@ const MainPage = () => {
     dispatch(globalSlice.setSelectedSeries(series));
   }
 
-  // 시리즈 북마크 결과
+  // 북마크 등록 결과
   useEffect(() => {
     if(addSeriesKeepError) {
       console.log('addSeriesKeepError ', addSeriesKeepError);
@@ -40,27 +40,68 @@ const MainPage = () => {
     if(addSeriesKeepResult && addSeriesKeepResult.data.code === 201) {
       console.log('addSeriesKeepResult ', addSeriesKeepResult);
       
-      dispatch(userSlice.setSeriesKeepList([...seriesKeepList, selectedSeries]))
+      dispatch(userSlice.setSeriesKeepList([...seriesKeepList, {series_id: selectedSeries.id, user_id: user.id}]));
+      dispatch(globalSlice.seriesList());
 
       dispatch(userSlice.clearUserState('addSeriesKeepResult'));
     }
   }, [addSeriesKeepResult, addSeriesKeepError]);
 
+  // 북마크 삭제 결과
+  useEffect(() => {
+    if(removeSeriesKeepError) {
+      console.log('removeSeriesKeepError ', removeSeriesKeepError);
+
+      dispatch(userSlice.clearUserState('removeSeriesKeepError'));
+    }
+
+    if(removeSeriesKeepResult && removeSeriesKeepResult.data.code === 201) {
+      console.log('removeSeriesKeepResult ', removeSeriesKeepResult);
+      
+      dispatch(userSlice.setSeriesKeepList(seriesKeepList.filter((i: any) => i.seriese_id !== removeSeriesKeepResult.series_id)));
+      dispatch(globalSlice.seriesList());
+
+      dispatch(userSlice.clearUserState('removeSeriesKeepResult'));
+    }
+  }, [removeSeriesKeepResult, removeSeriesKeepError]);
+
+  // 북마크 시리즈 리스트 조회 결과
+  useEffect(() => {
+    if(userSeriesKeepListError) {
+      console.log('userSeriesKeepListError ', userSeriesKeepListError);
+
+      dispatch(userSlice.clearUserState('userSeriesKeepListError'));
+    }
+
+    if(userSeriesKeepListResult && userSeriesKeepListResult.data.code === 200) {
+      console.log('userSeriesKeepListResult ', userSeriesKeepListResult);
+    
+      dispatch(userSlice.setSeriesKeepList(userSeriesKeepListResult.data.data));
+
+      dispatch(globalSlice.clearGlobalState('seriesListResult'));
+    }
+  }, [userSeriesKeepListResult, userSeriesKeepListError]);
+
   // 시리즈 리스트 조회 결과
   useEffect(() => {
     if(seriesListError) {
-      console.log('seriesListError ', seriesListError);
 
       dispatch(globalSlice.clearGlobalState('seriesListError'));
     }
 
     if(seriesListResult && seriesListResult.data.code === 200) {
-      console.log('seriesListResult ', seriesListResult);
 
       setSeriesList(seriesListResult.data.data);
       dispatch(globalSlice.clearGlobalState('seriesListResult'));
     }
   }, [seriesListResult, seriesListError]);
+
+  // 사용자 정보가 있을 경우 북마크 리스트 조회
+  useEffect(() => {
+    if(user) {
+      dispatch(userSlice.userSeriesKeepList({userId: user.id}));
+    }
+  }, [user])
 
   // 시리즈 리스트 조회
   useEffect(() => {
