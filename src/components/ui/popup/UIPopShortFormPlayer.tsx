@@ -203,8 +203,7 @@ const UIPopShortFormPlayer = ({}: Props) => {
       }
     })
 
-    dispatch(globalSlice.episodeList());
-    //{seriesId: selectedSeries.id}
+    dispatch(globalSlice.episodeList({seriesId: selectedSeries.id}));
   }, [])
 
   return (

@@ -1,14 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as globalSlice from "src/redux/globalSlice";
 import UISeriesKeepItem from "./UISeriesKeepItem";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface Props {
   isManageMode: boolean,
+  seriesList: any,
   removeVideos: any,
 }
 
-const UISeriesKeepList = ({isManageMode, removeVideos}: Props) => {
+const UISeriesKeepList = ({isManageMode, seriesList, removeVideos}: Props) => {
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.user);
 
@@ -22,7 +23,7 @@ const UISeriesKeepList = ({isManageMode, removeVideos}: Props) => {
       ) : (
         <>
           <div className='vertical-content-list'>
-            {user.seriesKeepList.map((i: any, index: number) => <UISeriesKeepItem item={i} key={index} isManageMode={isManageMode} removeVideos={removeVideos}/>)}
+            {user.seriesKeepList.map((i: any, index: number) => <UISeriesKeepItem item={i} key={index} isManageMode={isManageMode} seriesList={seriesList} removeVideos={removeVideos}/>)}
           </div>
         </>
 

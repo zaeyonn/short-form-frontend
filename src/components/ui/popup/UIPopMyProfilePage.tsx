@@ -33,51 +33,65 @@ const UIPopMyProfile = () => {
 
         <div className='profile'>   
           <img src='resources/icons/icon_profile.svg'/>
-          <div className='userinfo'>{`게스트\nUID ${user.uid}`}</div> 
-
-          <button className='login' onClick={handleLogInOut}>{isLogin ? '로그아웃' : '로그인'}</button>
+          <div className='userinfo'>{`게스트\nUID ${user.uuid}`}</div> 
         </div>
 
         <div className='wallet'>
-          <div className='head'>내지갑</div>
-          <div className='body'>
-            <div>{`${user.point}`}</div>
-            <button className='purchase-point' onClick={() => handleButtonClick(displayPopType.POPUP_PURCHASE_POINT.name)}>충전</button>
+          <div className='over-section'>
+            <div>보유한 포인트</div>
+              <div className='point-body'>
+                <div className='point'>{`${user.point}`}</div>
+                <img src='resources/icons/icon_point.svg'/>
+              </div>
           </div>
+
+          <div className='under-section'>
+            <div>포인트 구매하기</div>
+            <img src="resources/icons/icon_purchase.svg" className='purchase-point' onClick={() => handleButtonClick(displayPopType.POPUP_PURCHASE_POINT.name)}/>
+            </div>
         </div>
 
         <div className='viewrlist'>
-          <UISmallContentSlider
-            contentList={user.seriesWatchList}
-            headerTitle='시청 기록'
-            highlight=''
-            handleShortFormOpen={()=>{}}/>
+          {(user.seriesWatchList.length === 0) ? (
+            <div className='no-content'>
+              <div>시청한 컨텐츠가 없습니다.</div>
+              <button onClick={() => {dispatch(globalSlice.setDisplayPopName(''))}}>드라마 보러가기</button>
+            </div>
+          ) : (
+            <UISmallContentSlider
+              contentList={user.seriesWatchList}
+              headerTitle='시청 기록'
+              highlight=''
+              handleShortFormOpen={()=>{}}/>
+          )}
+
         </div>
 
         <div className='profile-etc'>
-          <button>
-            <img src="resources/icons/icon_play_main.svg"/>
-            <div>미션 또는 이벤트</div>
-            <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-          </button>
+          <div className='head'>설정</div>
 
-          <button>
-            <img src="resources/icons/icon_play_main.svg"/>
-            <div>고객 센터</div>
-            <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-          </button>
+          <div className='body'>
+            <button>
+              <div>미션 또는 이벤트</div>
+              <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
+            </button>
 
-          <button>
-            <img src="resources/icons/icon_play_main.svg"/>
-            <div>설정</div>
-            <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-          </button>
+            <button>
+              <div>고객 센터</div>
+              <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
+            </button>
 
-          <button>
-            <img src="resources/icons/icon_play_main.svg"/>
-            <div>회사 소개</div>
-            <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-          </button>
+            <button>
+              <div>설정</div>
+              <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
+            </button>
+
+            <button>
+              <div>회사 소개</div>
+              <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
+            </button>
+          </div>
+          
         </div>
       </div>
     </>

@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { displayPopType } from "common/define";
 import UISeriesKeepList from "../UISeriesKeepList";
 
-const UIPopSeriesKeep = () => {
+const UIPopSeriesKeep = ({seriesList} : any) => {
   const dispatch = useDispatch();
 
   const [isManageMode, setManageMode] = useState<boolean>(false);
@@ -47,7 +47,7 @@ const UIPopSeriesKeep = () => {
             </div>
           </div>)}
 
-          <UISeriesKeepList isManageMode={isManageMode} removeVideos={removeVideos}/>
+          <UISeriesKeepList isManageMode={isManageMode} seriesList={seriesList} removeVideos={removeVideos}/>
       </div>
     </>
   )

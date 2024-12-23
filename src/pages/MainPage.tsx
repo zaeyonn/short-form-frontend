@@ -90,7 +90,7 @@ const MainPage = () => {
     }
 
     if(seriesListResult && seriesListResult.data.code === 200) {
-
+      console.log('seriesListResult : ', seriesListResult);
       setSeriesList(seriesListResult.data.data);
       dispatch(globalSlice.clearGlobalState('seriesListResult'));
     }
@@ -159,7 +159,7 @@ const MainPage = () => {
       { displayPopName === displayPopType.POPUP_MYPROFILE.name && (<UIPopMyProfile/>)}
       { displayPopName === displayPopType.POPUP_LOGIN.name && (<UIPopLogin/>)}
       { displayPopName === displayPopType.POPUP_PURCHASE_POINT.name && (<UIPopPurchasePoint/>)}
-      { displayPopName === displayPopType.POPUP_VIDEO_KEEP.name && (<UIPopSeriesKeep/>)}
+      { displayPopName === displayPopType.POPUP_VIDEO_KEEP.name && (<UIPopSeriesKeep seriesList={seriesList}/>)}
       { displayPopName === displayPopType.POPUP_VIDEO_WATCH.name && (<UIPopSeriesWatch/>)}
 
       { uiPopName ===  uiPopType.UI_LEFT_MENU.name && (<UILeftMenu/>)}

@@ -519,6 +519,7 @@
   }
 
   .profile {
+    align-items: center;
     display: flex;
     height: 10%;
     position: relative;
@@ -527,6 +528,8 @@
       width: 36px;
       height: 36px;
       float: left;
+      border-radius: 70%;
+      overflow: hidden;
     }
   
     .userinfo {
@@ -534,26 +537,34 @@
       white-space: pre;
       width: 50%;
     }
-  
-    .login {
-      margin-left: auto;
-    }
   }
 
   .wallet {
     border-radius: 10px;
-    background-color:gray;
-    height: 20%;
+    background-color:#1B1B1B;
+    height: 10%;
   
-    .head {
-      margin-top: auto;
-      height: 70%;
-    }
-  
-    .body {
+    .over-section {
       display: flex;
-      height: 30%;
-  
+      align-items: center;
+      height: 50%;
+
+      .point-body {
+        display: flex;
+        margin-left: auto;
+
+        .point {
+          float: left;
+          margin-left: auto;
+        }
+      }
+    }
+
+    .under-section {
+      display: flex;
+      align-items: center;
+      height: 50%;
+
       .purchase-point{
         margin-left: auto;
       }
@@ -563,6 +574,16 @@
   .viewrlist {
     width: 100vw;
     height: 30%;
+    position: relative;
+
+    .no-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+    }
   
     .small-content-slider-wrap {
       .header{
@@ -584,22 +605,31 @@
   .profile-etc {
     height: 30%;
 
-    button {
-      width: 100vw;
-      height: 23%;
-      background: none;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-  
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
-      }
+    .head {
+      color: #FFFFFF;
+      font-size: 25px;
+      font-weight: 700;
+      height: 20%;
+    }
 
-      img {
-        width: 26px;
-        height: 26px;
-        float: left;
+    .body {
+      button {
+        width: 100vw;
+        height: 23%;
+        background: none;
+        border: none;
+        padding: 12px;
+        cursor: pointer;
+    
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.1);
+        }
+  
+        img {
+          width: 26px;
+          height: 26px;
+          //float: left;
+        }
       }
     }
   }
