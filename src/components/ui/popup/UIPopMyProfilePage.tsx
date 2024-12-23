@@ -21,19 +21,6 @@ const UIPopMyProfile = () => {
     dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_LOGIN.name));
   }
 
-  //test
-  const isFirstTime = useRef<boolean>(false);
-  useEffect(() => {
-    if(isFirstTime.current) 
-      return;
-
-    isFirstTime.current = true;
-
-    dispatch(userSlice.addSeriesWatch({ title: '차곡 차곡 사랑하고 있습니다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_1.png', full_ep: 30, cur_ep: 1, bookmark: false,}));
-    dispatch(userSlice.addSeriesWatch({ title: '웹 너무 어렵다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_2.png', full_ep: 27, cur_ep: 1, bookmark: false,}));
-    dispatch(userSlice.addSeriesWatch({ title: '퇴근하고 싶다.', keyword: ["키워드1", "키워드2"], url: 'resources/images/main_poster_3.png', full_ep: 15, cur_ep: 1, bookmark: false,}));
-  }, [])
-
   return (
     <>
       <div className='popup-wrap'>
