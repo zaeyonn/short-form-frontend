@@ -4,6 +4,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {
     user: null,
+    loading: false,
 
     nickName: "게스트",
     uuid: "adfsadfasdfasfd",
@@ -78,6 +79,33 @@ const userSlice = createSlice({
     },
     userSeriesKeepListFailure(state: any, action: PayloadAction<any>) {
       state.userSeriesKeepListFailure = action.payload
+    },
+    userSeriesProgress(state) {
+      state.loading = true
+    },
+    userSeriesProgressSuccess(state: any, action) {
+      state.userSeriesProgressResult = action.payload
+    },
+    userSeriesProgressFailure(state: any, action) {
+      state.userSeriesProgressError = action.payload
+    },
+    addSeriesProgress(state) {
+      state.loading = true
+    },
+    addSeriesProgressSuccess(state: any, action) {
+      state.addSeriesProgressResult = action.payload
+    },
+    addSeriesProgressFailure(state: any, action) {
+      state.addSeriesProgressError = action.payload
+    },
+    updateSeriesProgress(state) {
+      state.loading = true
+    },
+    updateSeriesProgressSuccess(state: any, action) {
+      state.updateSeriesProgressResult = action.payload
+    },
+    updateSeriesProgressFailure(state: any, action) {
+      state.updateSeriesProgressError = action.payload
     }
   }
 });
@@ -87,5 +115,7 @@ export const {
   addVideoWatched, addSeriesKeep, addSeriesKeepSuccess, addSeriesKeepFailure,
   addSeriesWatched, removeSeriesWatched, removeSeriesKeep, removeSeriesKeepSuccess, removeSeriesKeepFailure, 
   changeBookmarkState, userSeriesKeepList, userSeriesKeepListSuccess, userSeriesKeepListFailure,
+  userSeriesProgress, userSeriesProgressSuccess, userSeriesProgressFailure, addSeriesProgress, addSeriesProgressSuccess, addSeriesProgressFailure,
+  updateSeriesProgress, updateSeriesProgressSuccess, updateSeriesProgressFailure
 } = userSlice.actions;
 export default userSlice.reducer;

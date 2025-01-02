@@ -47,3 +47,36 @@ export function* handleUserSeriesKeepList(action) {
     yield put(slice.userSeriesKeepListFailure(error));
   }
 }
+
+export function* handleUserSeriesProgress(action) {
+  try {
+    const response = yield call(api.userSeriesProgress, action.payload);
+    console.log(`response: ${JSON.stringify(response)}`);
+
+    yield put(slice.userSeriesProgressSuccess(response));
+  } catch (error) {
+    yield put(slice.userSeriesProgressFailure(error));
+  }
+}
+
+export function* handleAddSeriesProgress(action) {
+  try {
+    const response = yield call(api.addSeriesProgress, action.payload);
+    console.log(`resposne: ${JSON.stringify(response)}`);
+
+    yield put(slice.addSeriesProgressSuccess(response));
+  } catch (error) {
+    yield put(slice.addSeriesProgressFailure(error));
+  }
+}
+
+export function* handleUpdateSeriesProgress(action) {
+  try {
+    const response = yield call(api.updateSeriesProgress, action.payload);
+    console.log(`response: ${JSON.stringify(response)}`);
+
+    yield put(slice.updateSeriesProgressSuccess(response));
+  } catch (error) {
+    yield put(slice.updateSeriesProgressFailure(error));
+  }
+}

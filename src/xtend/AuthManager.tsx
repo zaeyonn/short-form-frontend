@@ -7,6 +7,7 @@ const AuthManager = () => {
 
   const { authGuestResult, authGuestError } = useSelector((state: any) => state.user);
 
+  // 게스트 등록 이벤트 
   useEffect(() => {
     if(authGuestError) {
       console.log('authGuestError ', authGuestError);
@@ -25,6 +26,7 @@ const AuthManager = () => {
     }
   }, [authGuestResult, authGuestError]);
 
+  // 실행시 localStorage user-id 값 확인후 없을 경우 게스트 사용자 등록
   useEffect(() => {
     const uuid = localStorage.getItem('user-id');
 
