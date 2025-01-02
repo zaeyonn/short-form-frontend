@@ -3,12 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    user: null,
+    user: {
+      id: null,
+      nickname: null,
+      paid_point: null,
+      free_point: null,
+    },
     loading: false,
-
-    nickName: "게스트",
-    uuid: "adfsadfasdfasfd",
-    point: 100000000,
 
     seriesWatchList: new Array<any>(),
     seriesKeepList: new Array<any>(),

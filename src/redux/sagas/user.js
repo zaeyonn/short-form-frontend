@@ -13,6 +13,16 @@ export function* handleAuthGuest() {
   }
 }
 
+export function* handleUserInfo() {
+  try {
+    const response = yield call(api.userInfo);
+
+    yield put(slice.userInfoSuccess(response));
+  } catch (error) {
+    yield put(slice.userInfoFailure(error));
+  }
+}
+
 export function* handleAddSeriesKeep(action) {
   try {
     const response = yield call(api.addSeriesKeep, action.payload);
