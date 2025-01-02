@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { displayPopType } from 'common/define';
+import { displayPopType, uiPopType } from 'common/define';
 
 import * as globalSlice from 'src/redux/globalSlice';
 import * as userSlice from 'src/redux/userSlice';
@@ -12,13 +12,15 @@ import UIPopShortFormPlayer from "components/ui/popup/UIPopShortFormPlayer"
 import UIPopMyProfile from 'components/ui/popup/UIPopMyProfilePage';
 import UIPopLogin from 'components/ui/popup/UIPopLogin';
 import UIPopPurchasePoint from 'components/ui/popup/UIPopPurchasePoint';
-import UIPopSeriesKeeped from 'components/ui/popup/UIPopSeriesKeeped';
-import UIPopSeriesWatched from 'components/ui/popup/UIPopSeriesWatched';
+import UIPopSeriesKeep from 'components/ui/popup/UIPopSeriesKeep';
+import UIPopSeriesWatch from 'components/ui/popup/UIPopSeriesWatch';
+import UILeftMenu from 'components/ui/UILeftMenu';
+import UILogin from 'components/ui/UILogin';
 
 const MainPage = () => {
   const dispatch = useDispatch();
 
-  const { displayPopName, seriesListResult, seriesListError, selectedSeries, isLogin } = useSelector((state: any) => state.global)
+  const { displayPopName, uiPopName, seriesListResult, seriesListError, selectedSeries, isLogin } = useSelector((state: any) => state.global)
   const { user, addSeriesKeepResult, addSeriesKeepError, seriesKeepList ,userSeriesKeepListResult, userSeriesKeepListError, removeSeriesKeepResult, removeSeriesKeepError } = useSelector((state: any) => state.user);
 
   const [seriesList, setSeriesList] = useState([]);
@@ -57,7 +59,7 @@ const MainPage = () => {
     if(removeSeriesKeepResult && removeSeriesKeepResult.data.code === 201) {
       console.log('removeSeriesKeepResult ', removeSeriesKeepResult);
       
-      dispatch(userSlice.setSeriesKeepList(seriesKeepList.filter((i: any) => i.seriese_id !== removeSeriesKeepResult.series_id)));
+      dispatch(userSlice.setSeriesKeepList(seriesKeepList.filter((i: any) => i.series_id !== removeSeriesKeepResult.data.data.series_id)));
       dispatch(globalSlice.seriesList());
 
       dispatch(userSlice.clearUserState('removeSeriesKeepResult'));
@@ -89,7 +91,7 @@ const MainPage = () => {
     }
 
     if(seriesListResult && seriesListResult.data.code === 200) {
-
+      console.log('seriesListResult : ', seriesListResult);
       setSeriesList(seriesListResult.data.data);
       dispatch(globalSlice.clearGlobalState('seriesListResult'));
     }
@@ -105,6 +107,26 @@ const MainPage = () => {
   // 시리즈 리스트 조회
   useEffect(() => {
     dispatch(globalSlice.seriesList());
+  }, [])
+
+  // 메인화면 네비바 조정
+  useEffect(() => {
+    const navBar = {
+      visible: true, 
+      title: 'Logo', 
+      leftBtn: {
+        icon: 'icon_hamburger.svg', 
+        event: () => { 
+          dispatch(globalSlice.setUiPopName(uiPopType.UI_LEFT_MENU.name));
+        }
+      }, 
+      
+      rightBtn: {
+        icon: 'icon_search.svg', 
+        event: () => 0
+      }
+    }
+    dispatch(globalSlice.setNavigationBar(navBar));
   }, [])
 
   return (
@@ -138,8 +160,11 @@ const MainPage = () => {
       { displayPopName === displayPopType.POPUP_MYPROFILE.name && (<UIPopMyProfile/>)}
       { displayPopName === displayPopType.POPUP_LOGIN.name && (<UIPopLogin/>)}
       { displayPopName === displayPopType.POPUP_PURCHASE_POINT.name && (<UIPopPurchasePoint/>)}
-      { displayPopName === displayPopType.POPUP_VIDEO_KEEP.name && (<UIPopSeriesKeeped/>)}
-      { displayPopName === displayPopType.POPUP_VIDEO_WATCH.name && (<UIPopSeriesWatched/>)}
+      { displayPopName === displayPopType.POPUP_VIDEO_KEEP.name && (<UIPopSeriesKeep seriesList={seriesList}/>)}
+      { displayPopName === displayPopType.POPUP_VIDEO_WATCH.name && (<UIPopSeriesWatch/>)}
+
+      { uiPopName ===  uiPopType.UI_LEFT_MENU.name && (<UILeftMenu/>)}
+      { uiPopName === uiPopType.UI_LOGIN.name && (<UILogin/>)}
     </>
   )
 }

@@ -2,9 +2,9 @@ import { useDispatch } from "react-redux";
 import * as globalSlice from "../../../redux/globalSlice";
 import { useRef, useState } from "react";
 import { displayPopType } from "common/define";
-import UISeriesKeepedList from "../UISeriesKeepedList";
+import UISeriesKeepList from "../UISeriesKeepList";
 
-const UIPopSeriesKeeped = () => {
+const UIPopSeriesKeep = ({seriesList} : any) => {
   const dispatch = useDispatch();
 
   const [isManageMode, setManageMode] = useState<boolean>(false);
@@ -18,7 +18,7 @@ const UIPopSeriesKeeped = () => {
   return (
     <>
       <div className="popup-wrap">
-        <div className='header'>
+        <div className='header-nonfixed'>
           {(isManageMode) ? (
             <>
               <div className="right-section">
@@ -47,10 +47,10 @@ const UIPopSeriesKeeped = () => {
             </div>
           </div>)}
 
-          <UISeriesKeepedList isManageMode={isManageMode} removeVideos={removeVideos}/>
+          <UISeriesKeepList isManageMode={isManageMode} seriesList={seriesList} removeVideos={removeVideos}/>
       </div>
     </>
   )
 }
 
-export default UIPopSeriesKeeped;
+export default UIPopSeriesKeep;

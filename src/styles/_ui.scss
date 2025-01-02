@@ -397,6 +397,50 @@
     }
   }
 
+  .header-nonfixed {
+    box-sizing: border-box;
+    top: 0px;
+    width: 100vw;
+    height: 48px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    z-index: 1;
+  
+    .left-section {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 14px;
+  
+      .title {
+        font-size: 14px;
+        line-height: 22px;
+        font-weight: 500;
+      }
+    }
+  
+    .right-section {
+      display: flex;
+      flex-direction: row;
+      margin-left: auto;
+      gap: 12px;
+  
+      button {
+        width: 52px;
+        height: 28px;
+      }
+    }
+  
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
   .footer {
     box-sizing: border-box;
     position: fixed;
@@ -475,13 +519,17 @@
   }
 
   .profile {
+    align-items: center;
     display: flex;
     height: 10%;
+    position: relative;
   
     img {
       width: 36px;
       height: 36px;
       float: left;
+      border-radius: 70%;
+      overflow: hidden;
     }
   
     .userinfo {
@@ -489,26 +537,34 @@
       white-space: pre;
       width: 50%;
     }
-  
-    .login {
-      margin-left: auto;
-    }
   }
 
   .wallet {
     border-radius: 10px;
-    background-color:gray;
-    height: 20%;
+    background-color:#1B1B1B;
+    height: 10%;
   
-    .head {
-      margin-top: auto;
-      height: 70%;
-    }
-  
-    .body {
+    .over-section {
       display: flex;
-      height: 30%;
-  
+      align-items: center;
+      height: 50%;
+
+      .point-body {
+        display: flex;
+        margin-left: auto;
+
+        .point {
+          float: left;
+          margin-left: auto;
+        }
+      }
+    }
+
+    .under-section {
+      display: flex;
+      align-items: center;
+      height: 50%;
+
       .purchase-point{
         margin-left: auto;
       }
@@ -518,6 +574,20 @@
   .viewrlist {
     width: 100vw;
     height: 30%;
+    position: relative;
+
+    .header{
+      position: relative;
+    }
+
+    .no-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+    }
   
     .small-content-slider-wrap {
       .header{
@@ -538,23 +608,34 @@
   
   .profile-etc {
     height: 30%;
+    position: absolute;
+    bottom: 10%;
 
-    button {
-      width: 100vw;
-      height: 23%;
-      background: none;
-      border: none;
-      padding: 0;
-      cursor: pointer;
+    .head {
+      color: #FFFFFF;
+      font-size: 25px;
+      font-weight: 700;
+      height: 20%;
+    }
+
+    .body {
+      button {
+        width: 100vw;
+        height: 23%;
+        background: none;
+        border: none;
+        padding: 12px;
+        cursor: pointer;
+    
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.1);
+        }
   
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
-      }
-
-      img {
-        width: 26px;
-        height: 26px;
-        float: left;
+        img {
+          width: 26px;
+          height: 26px;
+          //float: left;
+        }
       }
     }
   }
@@ -732,8 +813,6 @@
           background-color: #111111;
           color: #393939;
 
-          
-
           &::after {
             background-color: #292929;
             width: 16px;
@@ -874,6 +953,60 @@
       margin-top: 4px;
       font-weight: 300;
       font-size: 13px;
+    } 
+  }
+}
+
+.layer-wrap {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow-y: hidden;
+  z-index: 2;
+
+  .menu-wrap {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+  }
+
+  button {
+    gap: 12px;
+  }
+
+  .login-wrap {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50%;
+    background-color: #2a2a2a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .close {
+      width: 26px;
+      height: 26px;
+      margin-left: auto;
+    }
+
+    .head {
+      white-space: pre;
+    }
+
+    .body {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      padding: 18px;
+      gap: 8px;
     }
   }
 }

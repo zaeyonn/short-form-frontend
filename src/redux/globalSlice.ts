@@ -4,6 +4,7 @@ const initialState = {
   loading: false,
   // ui
   displayPopName: '',
+  uiPopName: '',
   navigationBar: {visible: true, title: 'Logo', leftBtn: {icon: 'icon_hamburger.svg', event: () => 0}, rightBtn: {icon: 'icon_search.svg', event: () => 0}},
 
   // login state
@@ -28,6 +29,9 @@ const globalSlice = createSlice({
       console.log(action.payload);
       state.displayPopName = action.payload;
     },
+    setUiPopName(state, action) {
+      state.uiPopName = action.payload;
+    },
     setNavigationBar(state, action) {
       state.navigationBar = action.payload;
     },
@@ -45,7 +49,7 @@ const globalSlice = createSlice({
       state.seriesListError = action.payload;
       state.loading = false;
     },
-    episodeList(state) {
+    episodeList(state: any) {
       state.loading = true;
     },
     episodeListSuccess(state: any, action) {
@@ -63,7 +67,7 @@ const globalSlice = createSlice({
 })
 
 export const { 
-  initGlobalState, clearGlobalState, setDisplayPopName, setNavigationBar, setLoginState,
+  initGlobalState, clearGlobalState, setDisplayPopName, setUiPopName, setNavigationBar, setLoginState,
   setSelectedSeries,
 
   seriesList, seriesListSuccess, seriesListFailure,

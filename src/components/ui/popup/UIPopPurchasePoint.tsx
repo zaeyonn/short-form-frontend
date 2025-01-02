@@ -1,6 +1,5 @@
 import { useDispatch } from "react-redux";
 import * as globalSlice from "../../../redux/globalSlice";
-import { useEffect } from "react";
 import { displayPopType } from "common/define";
 
 const UIPopPurchasePoint = () => {
@@ -9,7 +8,7 @@ const UIPopPurchasePoint = () => {
   return (
     <>
       <div className="popup-wrap">
-        <div className='header'>
+        <div className='header-nonfixed'>
           <div className="left-section">
             <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={() => {dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_MYPROFILE.name))}}/>
             <span className="title">포인트 구매</span>

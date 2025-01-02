@@ -1,15 +1,15 @@
 import { useDispatch } from "react-redux";
 import * as globalSlice from "../../../redux/globalSlice";
 import { displayPopType } from "common/define";
-import UISeriesWatchedList from "../UISeriesWatchedList";
+import UISeriesWatchList from "../UISeriesWatchList";
 
-const UIPopSeriesWatched = () => {
+const UIPopSeriesWatch = () => {
   const dispatch = useDispatch();
 
   return ( 
     <>
       <div className="popup-wrap">
-        <div className='header'>
+        <div className='header-nonfixed'>
           <div className="left-section">
             <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={() => {dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_VIDEO_KEEP.name))}}/>
             <span className="title">시청 기록</span>
@@ -20,10 +20,10 @@ const UIPopSeriesWatched = () => {
           </div>
         </div>
 
-        <UISeriesWatchedList/>
+        <UISeriesWatchList/>
       </div>
     </>
   )
 }
 
-export default UIPopSeriesWatched;
+export default UIPopSeriesWatch;
