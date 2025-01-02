@@ -5,15 +5,18 @@ import { useSpring, animated } from '@react-spring/web';
 import { useGesture } from '@use-gesture/react';
 
 interface Props {
+  locked: boolean;
+  setLocked: (locked: boolean) => any;
   currentEp: any;
   visibleBottomSheet: boolean;
   handleBottomSheetClose: () => any;
   handleEpisodeChange: (num: number) => any;
+  handleEpisodeLock: (index: number) => any;
 }
 
 const SECTION_RANGE = 30;
 
-const UIBottomSheetEpisodeGrid = ({currentEp, visibleBottomSheet, handleBottomSheetClose, handleEpisodeChange}: Props) => {
+const UIBottomSheetEpisodeGrid = ({locked, setLocked, currentEp, visibleBottomSheet, handleBottomSheetClose, handleEpisodeChange, handleEpisodeLock}: Props) => {
   const [springs, api] = useSpring(() => ({
     from: { y: 470 },
     config: {mass: 1.1, tension: 270, friction: 25},
@@ -35,6 +38,18 @@ const UIBottomSheetEpisodeGrid = ({currentEp, visibleBottomSheet, handleBottomSh
       }
     }
   )
+
+  const handleEpisodeClick = (index: number) => {
+    if(index <= selectedSeries.free_count) { 
+      handleEpisodeChange(index);
+      closeBottomSheet();
+    }
+
+    if(index === selectedSeries.free_count) {
+      setLocked(true);
+      closeBottomSheet();
+    }
+  }
 
   const handleSectionChange = (index: any) => {
     setSection(index + 1);
@@ -68,7 +83,7 @@ const UIBottomSheetEpisodeGrid = ({currentEp, visibleBottomSheet, handleBottomSh
 
     for (let i = (section - 1) * SECTION_RANGE; i < section * SECTION_RANGE; i++) {
      
-      gridList.push(<div key={i} className='container' onClick={() =>{ handleEpisodeChange(i); closeBottomSheet(); }}><div className={`box ${currentEp?.episode_num === i+1 ? 'selected' : ''} ${i + 1 <= selectedSeries.free_count ? '' : 'locked'}`}>{i+1}</div></div>)
+      gridList.push(<div key={i} className='container' onClick={() =>{ handleEpisodeClick(i) }}><div className={`box ${currentEp?.episode_num === i+1 ? 'selected' : ''} ${i + 1 <= selectedSeries.free_count ? '' : 'locked'}`}>{i+1}</div></div>)
     
       if(i + 1 === selectedSeries.ep_count) {
         break;

@@ -59,7 +59,7 @@ const MainPage = () => {
     if(removeSeriesKeepResult && removeSeriesKeepResult.data.code === 201) {
       console.log('removeSeriesKeepResult ', removeSeriesKeepResult);
       
-      dispatch(userSlice.setSeriesKeepList(seriesKeepList.filter((i: any) => i.seriese_id !== removeSeriesKeepResult.series_id)));
+      dispatch(userSlice.setSeriesKeepList(seriesKeepList.filter((i: any) => i.series_id !== removeSeriesKeepResult.data.data.series_id)));
       dispatch(globalSlice.seriesList());
 
       dispatch(userSlice.clearUserState('removeSeriesKeepResult'));
