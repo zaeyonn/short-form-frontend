@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { displayPopType, uiPopType } from 'common/define';
 
@@ -15,7 +16,7 @@ import UIPopPurchasePoint from 'components/ui/popup/UIPopPurchasePoint';
 import UIPopSeriesKeep from 'components/ui/popup/UIPopSeriesKeep';
 import UIPopSeriesWatch from 'components/ui/popup/UIPopSeriesWatch';
 import UILeftMenu from 'components/ui/UILeftMenu';
-import UILogin from 'components/ui/UILogin';
+import UIBottomSheetLogin from 'components/ui/UIBottomSheetLogin';
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -24,10 +25,19 @@ const MainPage = () => {
   const { user, addSeriesKeepResult, addSeriesKeepError, seriesKeepList ,userSeriesKeepListResult, userSeriesKeepListError, removeSeriesKeepResult, removeSeriesKeepError } = useSelector((state: any) => state.user);
 
   const [seriesList, setSeriesList] = useState([]);
+  const [visibleBottomSheet, setVisibleBottomSheet] = useState(false);
 
   const handleShortFormOpen = (series: any) => {
     dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_SHORT_FORM_PLAYER.name));
     dispatch(globalSlice.setSelectedSeries(series));
+  }
+
+  const handleLoginBottomSheetOpen = () => {
+    setVisibleBottomSheet(true);
+  }
+
+  const handleLoginBottomSheetClose = () => {
+    setVisibleBottomSheet(false);
   }
 
   // 북마크 등록 결과
@@ -104,6 +114,15 @@ const MainPage = () => {
     }
   }, [user])
 
+  // 바텀시트 열린 경우 스크롤 막기
+  useEffect(() => {
+    if(visibleBottomSheet) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'scroll';
+    }
+  }, [visibleBottomSheet])
+
   // 시리즈 리스트 조회
   useEffect(() => {
     dispatch(globalSlice.seriesList());
@@ -132,6 +151,15 @@ const MainPage = () => {
   return (
     <>
       <div className='page-wrap' style={{height: displayPopName ? 500 : 'auto'}}>
+        <div className='nav-bar' style={{visibility : displayPopName ? 'hidden' : 'visible'}}>
+          <div className="left-section">
+            <img src={`resources/icons/icon_hamburger.svg`}/>
+            <span className="title">Logo</span>
+          </div>
+          <div className='right-section'>
+            <button onClick={handleLoginBottomSheetOpen}>로그인</button>
+          </div>
+        </div>
         <UIMainContentSlider
           contentList={seriesList.slice(0, 3)}
           handleShortFormOpen={handleShortFormOpen}/>
@@ -155,7 +183,10 @@ const MainPage = () => {
           contentList={seriesList}
           handleShortFormOpen={handleShortFormOpen}/>
       </div>
-
+      <UIBottomSheetLogin
+      visible={visibleBottomSheet}
+      handleLoginBottomSheetClose={handleLoginBottomSheetClose}
+      />
       { displayPopName === displayPopType.POPUP_SHORT_FORM_PLAYER.name && (<UIPopShortFormPlayer/>)}
       { displayPopName === displayPopType.POPUP_MYPROFILE.name && (<UIPopMyProfile/>)}
       { displayPopName === displayPopType.POPUP_LOGIN.name && (<UIPopLogin/>)}
@@ -164,7 +195,7 @@ const MainPage = () => {
       { displayPopName === displayPopType.POPUP_VIDEO_WATCH.name && (<UIPopSeriesWatch/>)}
 
       { uiPopName ===  uiPopType.UI_LEFT_MENU.name && (<UILeftMenu/>)}
-      { uiPopName === uiPopType.UI_LOGIN.name && (<UILogin/>)}
+
     </>
   )
 }

@@ -52,6 +52,7 @@ const AuthManager = () => {
       dispatch(userSlice.userInfo({ userId: uuid }));
     } else {
       dispatch(userSlice.authGuest());
+
     } 
   }, [])
 

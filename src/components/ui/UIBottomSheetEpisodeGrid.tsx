@@ -3,6 +3,7 @@ import { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSpring, animated } from '@react-spring/web';
 import { useGesture } from '@use-gesture/react';
+
 import * as globalSlice from 'src/redux/globalSlice';
 
 import { UserRootState } from 'src/types';

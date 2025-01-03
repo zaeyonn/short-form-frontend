@@ -5,7 +5,7 @@ import * as api from '../../api/api';
 export function* handleAuthGuest() {
   try {
     const response = yield call(api.authGuest);
-    console.log(`response: ${JSON.stringify(response)}`);
+    console.log(`guest response: ${JSON.stringify(response)}`);
 
     yield put(slice.authGuestSuccess(response));
   } catch (error) {

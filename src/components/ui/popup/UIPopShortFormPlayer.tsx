@@ -9,7 +9,7 @@ import UIShortFormSwiper from "components/ui/UIShortFormSwiper";
 import UIBottomSheetEpisodeGrid from "../UIBottomSheetEpisodeGrid";
 import UILayerLockedEpisode from "components/ui/layer/UILayerLockedEpisode";
 
-const UIPopShortFormPlayer = ({}: Props) => {
+const UIPopShortFormPlayer = ({}) => {
 
   const {
      user, seriesKeepList, addSeriesProgressResult, addSeriesProgressError,
