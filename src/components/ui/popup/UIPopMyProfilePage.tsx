@@ -7,7 +7,7 @@ import UISmallContentSlider from '../UISmallContentSlider';
 
 const UIPopMyProfile = () => {
   const { isLogin } = useSelector((state: any) => state.global);
-  const user = useSelector((state: any) => state.user);
+  const { user, seriesWatchList } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
 
   const handleButtonClick = (displayPopName: string) => {
@@ -21,6 +21,10 @@ const UIPopMyProfile = () => {
     dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_LOGIN.name));
   }
 
+  useEffect(() => {
+    console.log(`user : ${JSON.stringify(user)}`);
+  }, [user])
+
   return (
     <>
       <div className='popup-wrap'>
@@ -33,14 +37,14 @@ const UIPopMyProfile = () => {
 
         <div className='profile'>   
           <img src='resources/icons/icon_profile.svg'/>
-          <div className='userinfo'>{`게스트\nUID ${user.uuid}`}</div> 
+          <div className='userinfo'>{`${user.nickname}\nUID ${user.id}`}</div> 
         </div>
 
         <div className='wallet'>
           <div className='over-section'>
             <div>보유한 포인트</div>
               <div className='point-body'>
-                <div className='point'>{`${user.point}`}</div>
+                <div className='point'>{`${user.paid_point + user.free_point}`}</div>
                 <img src='resources/icons/icon_point.svg'/>
               </div>
           </div>
@@ -52,7 +56,7 @@ const UIPopMyProfile = () => {
         </div>
 
         <div className='viewrlist'>
-          {(user.seriesWatchList.length === 0) ? (
+          {(seriesWatchList.length === 0) ? (
             <>
               <div className='header'>
                 시청 기록
@@ -65,7 +69,7 @@ const UIPopMyProfile = () => {
             </>
           ) : (
             <UISmallContentSlider
-              contentList={user.seriesWatchList}
+              contentList={seriesWatchList}
               headerTitle='시청 기록'
               highlight=''
               handleShortFormOpen={()=>{}}/>

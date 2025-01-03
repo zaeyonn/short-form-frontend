@@ -19,7 +19,7 @@ const userSlice = createSlice({
       state[action.payload] = null
     },
     setUser(state, action: PayloadAction<any>) {
-      state.user = action.payload
+      state.user = action.payload;
     },
     setSeriesKeepList(state, action: PayloadAction<any>) {
       state.seriesKeepList = action.payload

@@ -31,9 +31,10 @@ const AuthManager = () => {
     const uuid = localStorage.getItem('user-id');
 
     if (uuid) {
-      dispatch(userSlice.setUser({id: uuid}))
+      dispatch(userSlice.setUser({id: uuid}));
     } else {
       dispatch(userSlice.authGuest());
+
     } 
   }, [])
 
