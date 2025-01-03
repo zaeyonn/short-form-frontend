@@ -33,6 +33,14 @@ export const updateSeriesProgress = ({userId, seriesId, ep}: any) => client.put(
   ep: ep,
 });
 
+
+// 사용자 시리즈 잠금 회차 업데이트
+export const updateSeriesUnlockEpisode = ({userId, seriesId, ep}: any) => client.put('users/unlock-episode', {
+  user_id: userId,
+  series_id: seriesId,
+  ep: ep,
+});
+
 // 시리즈 북마크 추가
 export const addSeriesKeep = ({userId, seriesId}: any) => client.post('users/keep', {
   user_id: userId,

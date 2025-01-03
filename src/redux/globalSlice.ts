@@ -1,11 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
   loading: false,
   // ui
   displayPopName: '',
+  toast: null,
   uiPopName: '',
   navigationBar: {visible: true, title: 'Logo', leftBtn: {icon: 'icon_hamburger.svg', event: () => 0}, rightBtn: {icon: 'icon_search.svg', event: () => 0}},
+
 
   // login state
   isLogin: false,
@@ -28,6 +30,12 @@ const globalSlice = createSlice({
     setDisplayPopName(state, action) {
       console.log(action.payload);
       state.displayPopName = action.payload;
+    },
+    addToast: (state, action: PayloadAction<any>) => {
+      state.toast = action.payload;
+    },
+    removeToast: (state) => {
+      state.toast = null;
     },
     setUiPopName(state, action) {
       state.uiPopName = action.payload;
@@ -68,7 +76,7 @@ const globalSlice = createSlice({
 
 export const { 
   initGlobalState, clearGlobalState, setDisplayPopName, setUiPopName, setNavigationBar, setLoginState,
-  setSelectedSeries,
+  setSelectedSeries, addToast, removeToast,
 
   seriesList, seriesListSuccess, seriesListFailure,
   episodeList, episodeListSuccess, episodeListFailure

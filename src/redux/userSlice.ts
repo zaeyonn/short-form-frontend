@@ -1,22 +1,32 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { UserRootState } from 'src/types';
+
+const initialState: UserRootState = {
+  user: null,
+  loading: false,
+
+  seriesWatchList: [],
+  seriesKeepList: [],
+
+  userInfoResult: null,
+  userInfoError: null
+}
 
 const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    user: {
-      id: null,
-      nickname: null,
-      paid_point: null,
-      free_point: null,
-    },
-    loading: false,
-
-    seriesWatchList: new Array<any>(),
-    seriesKeepList: new Array<any>(),
-  },
+  initialState,
   reducers: {
     clearUserState(state: any, action) {
       state[action.payload] = null
+    },
+    userInfo(state: any) {
+      state.loading = true;
+    },
+    userInfoSuccess(state: UserRootState, action: PayloadAction<any>) {
+      state.userInfoResult = action.payload
+    },
+    userInfoFailure(state: UserRootState, action: PayloadAction<any>) {
+      state.userInfoError = action.payload
     },
     setUser(state, action: PayloadAction<any>) {
       state.user = action.payload
@@ -107,7 +117,16 @@ const userSlice = createSlice({
     },
     updateSeriesProgressFailure(state: any, action) {
       state.updateSeriesProgressError = action.payload
-    }
+    },
+    updateSeriesUnlockEpisode(state) {
+      state.loading = true
+    },
+    updateSeriesUnlockEpisodeSuccess(state: any, action) {
+      state.updateSeriesUnlockEpisodeResult = action.payload
+    },
+    updateSeriesUnlockEpisodeFailure(state: any, action) {
+      state.updateSeriesUnlockEpisodeError = action.payload
+    },
   }
 });
 
@@ -117,6 +136,7 @@ export const {
   addSeriesWatched, removeSeriesWatched, removeSeriesKeep, removeSeriesKeepSuccess, removeSeriesKeepFailure, 
   changeBookmarkState, userSeriesKeepList, userSeriesKeepListSuccess, userSeriesKeepListFailure,
   userSeriesProgress, userSeriesProgressSuccess, userSeriesProgressFailure, addSeriesProgress, addSeriesProgressSuccess, addSeriesProgressFailure,
-  updateSeriesProgress, updateSeriesProgressSuccess, updateSeriesProgressFailure
+  updateSeriesProgress, updateSeriesProgressSuccess, updateSeriesProgressFailure,
+  userInfo, userInfoSuccess, userInfoFailure, updateSeriesUnlockEpisode, updateSeriesUnlockEpisodeSuccess, updateSeriesUnlockEpisodeFailure,
 } = userSlice.actions;
 export default userSlice.reducer;

@@ -9,15 +9,12 @@ import UIShortFormSwiper from "components/ui/UIShortFormSwiper";
 import UIBottomSheetEpisodeGrid from "../UIBottomSheetEpisodeGrid";
 import UILayerLockedEpisode from "components/ui/layer/UILayerLockedEpisode";
 
-interface Props {
-
-}
-
 const UIPopShortFormPlayer = ({}: Props) => {
 
   const {
      user, seriesKeepList, addSeriesProgressResult, addSeriesProgressError,
-     userSeriesProgressResult, userSeriesProgressError, updateSeriesProgressResult, updateSeriesProgressError
+     userSeriesProgressResult, userSeriesProgressError, updateSeriesProgressResult, updateSeriesProgressError,
+     updateSeriesUnlockEpisodeResult, updateSeriesUnlockEpisodeError
   } = useSelector((state: any) => state.user);
   const { episodeListResult, episodeListError, selectedSeries } = useSelector((state: any) => state.global);
 
@@ -30,12 +27,12 @@ const UIPopShortFormPlayer = ({}: Props) => {
   const [keep, setKeep] = useState<boolean>();
   const [keepCount, setKeepCount] = useState(selectedSeries.keeps);
   const [locked, setLocked] = useState(false);
+  const [unlockEpisode, setUnlockEpisode] = useState<number>();
 
   const swiperRef = useRef<any>(null);
   const videoRef = useRef<any>(null);
   const hideToolsTimeout = useRef<any>();
   const lastEpisodeRef = useRef<number>();
-  const unlockEpisodeRef = useRef<number>();
 
   const dispatch = useDispatch();
 
@@ -55,7 +52,6 @@ const UIPopShortFormPlayer = ({}: Props) => {
     dispatch(globalSlice.setNavigationBar(navBar));
   }
 
-
   // 도구 토글
   const toggleTools = () => {
     setVisibleTools(!visibleTools);
@@ -69,7 +65,7 @@ const UIPopShortFormPlayer = ({}: Props) => {
   const togglePlay = (e: any) => {
     e.stopPropagation();
 
-    if(currentEp?.episode_num > unlockEpisodeRef.current) {
+    if(currentEp?.episode_num > unlockEpisode) {
       setLocked(true);
       return;
     }
@@ -121,10 +117,16 @@ const UIPopShortFormPlayer = ({}: Props) => {
     }
   }
 
+  const handleSlideChangeStart = (swiper: any) => {
+    console.log('handleSlideChangeStart ', swiper);
+    if(swiper.activeIndex === unlockEpisode) {
+      console.log('swiper.activeIndex === unlockEpisode ');
+      swiperRef.current.slideTo(swiper.activeIndex, 0);
+    }
+  }
 
   // Short Form Slide 변경
   const handleSlideChange = (swiper: any) => {
-    console.log('handleSlideChange ');
     const slidedVideo = document.getElementById(`slide-idx-${swiper.activeIndex}`);
 
     if(videoRef.current) {
@@ -138,10 +140,9 @@ const UIPopShortFormPlayer = ({}: Props) => {
 
     setCurrentEp(episodeList[swiper.activeIndex]);
 
-    if(swiper.activeIndex + 1 <= selectedSeries.free_count) {
+    if(swiper.activeIndex + 1 <= unlockEpisode) {
       dispatch(userSlice.updateSeriesProgress({ userId: user.id, seriesId: selectedSeries.id, ep: swiper.activeIndex + 1 }));
     }
-
   }
 
   const handleEpisodeChange = useCallback((index: number) => {
@@ -152,12 +153,13 @@ const UIPopShortFormPlayer = ({}: Props) => {
   
     setVisibleBottomSheet(false);
 
-    if(index === selectedSeries.free_count) {
+    if(index === unlockEpisode) {
       setLocked(true);
     }
   }, [episodeList, selectedSeries]);
 
   const handleBottomSheetOpen = useCallback(() => {
+
     setVisibleBottomSheet(true);
   }, [])
 
@@ -178,7 +180,7 @@ const UIPopShortFormPlayer = ({}: Props) => {
   }
 
   const handleEpisodeLock = useCallback(() => {
-    console.log("handleEpisodeLock")
+    console.log("handleEpisodeLock");
     setLocked(true);
     setVisibleBottomSheet(false);
 
@@ -187,6 +189,13 @@ const UIPopShortFormPlayer = ({}: Props) => {
 
   const handleLockedClose = () => {
     setLocked(false);
+  }
+
+  const handlePaymentComplete = () => {
+    setLocked(false);
+
+    // 사용자 잠금 회차 업데이트
+    dispatch(userSlice.updateSeriesUnlockEpisode({ userId: user.id, seriesId: selectedSeries.id, ep: unlockEpisode}))
   }
 
   useEffect(() => {
@@ -199,6 +208,26 @@ const UIPopShortFormPlayer = ({}: Props) => {
     } 
 
   }, [visibleTools, playing])
+
+  // 잠금 회차 업데이트 결과
+  useEffect(() => {
+    if(updateSeriesUnlockEpisodeError) {
+      console.log('updateSeriesUnlockEpisodeError ', updateSeriesUnlockEpisodeError);
+
+      dispatch(userSlice.clearUserState('updateSeriesUnlockEpisodeError'));
+    }
+
+    if(updateSeriesUnlockEpisodeResult && updateSeriesUnlockEpisodeResult.data.code === 201) {
+      console.log('updateSeriesUnlockEpisodeResult ', updateSeriesUnlockEpisodeResult);
+
+      setUnlockEpisode(updateSeriesUnlockEpisodeResult.data.data.unlock_episode);
+      
+      videoRef.current.play();
+      setPlaying(true); 
+
+      dispatch(userSlice.clearUserState('updateSeriesUnlockEpisodeResult'));
+    }
+  }, [updateSeriesUnlockEpisodeResult, updateSeriesUnlockEpisodeError])
 
   // 진행 상태 추가 결과
   useEffect(() => {
@@ -217,6 +246,23 @@ const UIPopShortFormPlayer = ({}: Props) => {
     }
   }, [addSeriesProgressResult, addSeriesProgressError])
 
+  // 진행 상태 업데이트 결과
+  useEffect(() => {
+    if(updateSeriesProgressError) {
+      console.log('updateSeriesProgressError ', updateSeriesProgressError);
+
+      dispatch(userSlice.clearUserState('updateSeriesProgressError'));
+    }
+
+    if(updateSeriesProgressResult && updateSeriesProgressResult.data.code === 201) {
+      console.log('updateSeriesProgressResult ', updateSeriesProgressResult);
+
+      lastEpisodeRef.current = updateSeriesProgressResult.data.data.last_episode;
+
+      dispatch(userSlice.clearUserState('addSeriesProgressResult'));
+    }
+  }, [addSeriesProgressResult, addSeriesProgressError])
+
   // 진행 상태 조회 결과
   useEffect(() => {
     if(userSeriesProgressError) {
@@ -230,7 +276,7 @@ const UIPopShortFormPlayer = ({}: Props) => {
 
       if(userSeriesProgressResult.data.data.last_episode) {
         lastEpisodeRef.current = userSeriesProgressResult.data.data.last_episode;
-        unlockEpisodeRef.current = userSeriesProgressResult.data.data.unlock_episode;
+        setUnlockEpisode(userSeriesProgressResult.data.data.unlock_episode);
         handleEpisodeChange(userSeriesProgressResult.data.data.last_episode - 1);
       }
 
@@ -260,29 +306,21 @@ const UIPopShortFormPlayer = ({}: Props) => {
 
   }, [episodeListResult, episodeListError])
 
+  // 현재 에피소드 
   useEffect(() => {
     if(episodeList[0] && lastEpisodeRef.current) {
       setCurrentEp(episodeList[lastEpisodeRef.current - 1]);
-
-      if(lastEpisodeRef.current === selectedSeries.free_count + 1) {
-        videoRef.current.pause();
-        setPlaying(false);
-      } else {
-        videoRef.current.play();
-      }
     }
   }, [episodeList, lastEpisodeRef.current])
 
   // 에피소드 변경될때 잠긴 에피소드인지 확인
   useEffect(() => {
-    console.log('에피소드 변경', currentEp?.episode_num, unlockEpisodeRef.current);
-    if(currentEp?.episode_num > unlockEpisodeRef.current) {
-      console.log('잠긴 에피소드')
+    if(currentEp?.episode_num > unlockEpisode) {
       setLocked(true);
       setPlaying(false);
       videoRef.current.pause();
     }
-  }, [currentEp, unlockEpisodeRef.current])
+  }, [currentEp, unlockEpisode])
 
   useEffect(() => {
     if(videoRef.current) {
@@ -305,6 +343,8 @@ const UIPopShortFormPlayer = ({}: Props) => {
       }
     })
 
+    
+
     // 시리즈의 전체 에피소드 리스트 조회
     dispatch(globalSlice.episodeList({ seriesId: selectedSeries.id }));
 
@@ -318,10 +358,12 @@ const UIPopShortFormPlayer = ({}: Props) => {
         <UIShortFormSwiper
         swiperRef={swiperRef}
         handleSlideChange={handleSlideChange}
+        handleSlideChangeStart={handleSlideChangeStart}
         episodeList={episodeList}
         videoRef={videoRef}
         handleTimeUpdate={handleTimeUpdate}
         toggleTools={toggleTools}
+        unlockEpisode={unlockEpisode}
         lastEpisodeRef={lastEpisodeRef}/>
       </div>
       {visibleTools && (
@@ -329,10 +371,7 @@ const UIPopShortFormPlayer = ({}: Props) => {
           <div className='header'>
             <div className="left-section">
               <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={handleClose}/>
-              <span className="title">{`${selectedSeries.title} [${currentEp?.episode_num ? currentEp.episode_num : ''}]`}</span>
-            </div>
-            <div className='right-section'>
-              <img src={`resources/icons/icon_kebab.svg`} onClick={() => 0}/>
+              <span className="title">{`${selectedSeries.title} ${currentEp?.episode_num ? `[${currentEp.episode_num}]` : ''}`}</span>
             </div>
           </div>
           { !locked && <>
@@ -340,10 +379,10 @@ const UIPopShortFormPlayer = ({}: Props) => {
           { !playing && (<img className='main-play-btn' src="resources/icons/icon_play_main.svg" onClick={togglePlay}/>) }
           </> }
           <div className='right-menu'>
-            <div className='btn-wrap' onClick={handleSeriesKeep}>
+            {/* <div className='btn-wrap' onClick={handleSeriesKeep}>
               <img id='bookmark-btn' src={`resources/icons/icon_bookmark${keep ? '_fill' : ''}.svg`}/>
               {keepCount}
-            </div>
+            </div> */}
             <div className='btn-wrap' onClick={handleBottomSheetOpen}>
               <img id='list-btn' src='resources/icons/icon_list.svg'/>
               List
@@ -360,6 +399,7 @@ const UIPopShortFormPlayer = ({}: Props) => {
           locked={locked}
           setLocked={setLocked}
           currentEp={currentEp}
+          unlockEpisode={unlockEpisode}
           visibleBottomSheet={visibleBottomSheet}
           handleBottomSheetClose={handleBottomSheetClose}
           handleEpisodeChange={handleEpisodeChange}
@@ -367,7 +407,8 @@ const UIPopShortFormPlayer = ({}: Props) => {
         />
         {locked && (
           <UILayerLockedEpisode
-          handleLockedClose={handleLockedClose}/>
+          handleLockedClose={handleLockedClose}
+          handlePaymentComplete={handlePaymentComplete}/>
         )}
     </div>
   )

@@ -1,12 +1,19 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useSpring, animated } from '@react-spring/web';
 import { useGesture } from 'react-use-gesture';
 
+import { UserRootState } from 'src/types';
+
 interface Props {
   handleLockedClose: () => any;
+  handlePaymentComplete: () => any;
 }
 
-const UILayerLockedEpisode = ({handleLockedClose}: Props) => {
+const UILayerLockedEpisode = ({handleLockedClose, handlePaymentComplete}: Props) => {
+  const { user } = useSelector((state: UserRootState) => state.user);
+  const { selectedSeries } = useSelector((state: any) => state.global);
+
   const [springs, api] = useSpring(() => ({
       from: { y: 600 },
       config: {mass: 1.1, tension: 270, friction: 25},
@@ -32,16 +39,22 @@ const UILayerLockedEpisode = ({handleLockedClose}: Props) => {
     api.start({ from: { y: 600 }, to: { y: 0 } });
   }
 
+  const handlePaymentClose = () => {
+    setVisibleBtnList(true);
+    api.start({ from: { y: 0 }, to: { y : 600 }});
+  }
+
   const handlePaymentStart = () => {
-    
+    handlePaymentComplete();
+    api.start({ from: { y: 0 }, to: { y : 600 }});
   }
 
   return (
     <>
-    <div className='scrim'/>
+    <div className='scrim' onClick={() => handlePaymentClose()}/>
     {visibleBtnList && (
     <div className='locked-episode'>
-      <button className='payment-btn' onClick={handlePaymentOpen}>
+      <button className='payment-btn' onClick={() => handlePaymentOpen()}>
         충전하고 바로보기
       </button>
       <button className='view-ad-btn'>
@@ -64,20 +77,20 @@ const UILayerLockedEpisode = ({handleLockedClose}: Props) => {
     </div>
     <div className='body'>
       <div className='point-wrap' style={{marginTop: 16}}>
-        <div className='item'><div className='label'>보유한 포인트</div><span className='point'>10<img src='resources/icons/icon_point_s.svg'/></span></div>
-        <div className='item'><div className='label'>다음 화 필요 포인트</div><span className='point'>20<img src='resources/icons/icon_point_s.svg'/></span></div>
+        <div className='item'><div className='label'>보유한 포인트</div><span className='point'>{user.paid_point + user.free_point}<img src='resources/icons/icon_point_s.svg'/></span></div>
+        <div className='item'><div className='label'>다음 화 필요 포인트</div><span className='point'>{selectedSeries.req_point}<img src='resources/icons/icon_point_s.svg'/></span></div>
       </div>
       <div className='point-wrap highlight'>
-        <div className='item'><div className='label light'><span className='discount-sign'>첫 충전 할인</span><div>2,000 포인트<span className='bonus'> + 2,000</span></div></div><button>20,000<span>원</span></button></div>
+        <div className='item'><div className='label light'><span className='discount-sign'>첫 충전 할인</span><div>2,000 포인트<span className='bonus'> + 2,000</span></div></div><button onClick={handlePaymentStart}>20,000<span>원</span></button></div>
       </div>
       <div className='point-wrap' style={{gap: 27}}>
         <div className='item'><div className='label light'><div>500 포인트</div></div><button onClick={handlePaymentStart}>5,800<span>원</span></button></div>
         <div className='divider'/>
-        <div className='item'><div className='label light'><div>1,000 포인트<span className='bonus'> + 2,000</span></div></div><button>13,000<span>원</span></button></div>
+        <div className='item'><div className='label light'><div>1,000 포인트<span className='bonus'> + 2,000</span></div></div><button onClick={handlePaymentStart}>13,000<span>원</span></button></div>
         <div className='divider'/>
-        <div className='item'><div className='label light'><div>3,000 포인트<span className='bonus'> + 3,000</span></div></div><button>33,000<span>원</span></button></div>
+        <div className='item'><div className='label light'><div>3,000 포인트<span className='bonus'> + 3,000</span></div></div><button onClick={handlePaymentStart}>33,000<span>원</span></button></div>
         <div className='divider'/>
-        <div className='item'><div className='label light'><div>5,000 포인트<span className='bonus'> + 4,000</span></div></div><button>60,000<span>원</span></button></div>
+        <div className='item'><div className='label light'><div>5,000 포인트<span className='bonus'> + 4,000</span></div></div><button onClick={handlePaymentStart}>60,000<span>원</span></button></div>
       </div>
     </div>
     </animated.div>

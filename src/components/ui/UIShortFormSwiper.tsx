@@ -7,22 +7,26 @@ interface Props {
   handleTimeUpdate: () => any;
   toggleTools: () => any;
   handleSlideChange: (swiper: any) => any;
+  handleSlideChangeStart: (swiper: any) => any;
   swiperRef: any;
   lastEpisodeRef: any;
+  unlockEpisode: number;
 }
 
-const UIShortFormSwiper = ({episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisodeRef}: Props) => {
+const UIShortFormSwiper = ({episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChangeStart, handleSlideChange, swiperRef, lastEpisodeRef, unlockEpisode}: Props) => {
 
   return (
     <Swiper onSwiper={swiper => swiperRef.current = swiper}  className='short-form-swiper' direction="vertical" onSlideChange={handleSlideChange} onClick={toggleTools}>
-      { episodeList.map((i: any, idx: number) => {
-        return (
-          <SwiperSlide className='short-form' key={idx}>
-            <video id={`slide-idx-${idx}`} ref={lastEpisodeRef.current - 1 === idx ? videoRef : null} autoPlay={lastEpisodeRef.current - 1 === idx ? true : false} onTimeUpdate={handleTimeUpdate}>
-              <source src={`${import.meta.env.VITE_SERVER_URL}/videos/${i.series_id}/${i.video}`}></source>
-            </video>
-          </SwiperSlide>
-        )
+      { episodeList.map((i: any, index: number) => {
+        if(index <= unlockEpisode) {
+          return (
+            <SwiperSlide className='short-form' key={index}>
+              <video id={`slide-idx-${index}`} ref={lastEpisodeRef.current - 1 === index ? videoRef : null} autoPlay={lastEpisodeRef.current - 1 === index ? true : false} onTimeUpdate={handleTimeUpdate}>
+                <source src={`${import.meta.env.VITE_SERVER_URL}/videos/${i.series_id}/${i.video}`}></source>
+              </video>
+            </SwiperSlide>
+          )
+        }
       }) }
     </Swiper>
   )

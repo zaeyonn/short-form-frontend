@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useSpring, animated } from '@react-spring/web';
 import { useGesture } from '@use-gesture/react';
+import * as globalSlice from 'src/redux/globalSlice';
+
+import { UserRootState } from 'src/types';
+
 
 interface Props {
   locked: boolean;
@@ -12,17 +16,20 @@ interface Props {
   handleBottomSheetClose: () => any;
   handleEpisodeChange: (num: number) => any;
   handleEpisodeLock: (index: number) => any;
+  unlockEpisode: number,
 }
 
 const SECTION_RANGE = 30;
 
-const UIBottomSheetEpisodeGrid = ({locked, setLocked, currentEp, visibleBottomSheet, handleBottomSheetClose, handleEpisodeChange, handleEpisodeLock}: Props) => {
+const UIBottomSheetEpisodeGrid = ({locked, setLocked, currentEp, visibleBottomSheet, handleBottomSheetClose, handleEpisodeChange, handleEpisodeLock, unlockEpisode}: Props) => {
+  const dispatch = useDispatch();
   const [springs, api] = useSpring(() => ({
     from: { y: 470 },
     config: {mass: 1.1, tension: 270, friction: 25},
-  }))
+  }));
 
   const { selectedSeries } = useSelector((state: any) => state.global);
+  const { user } = useSelector((state: UserRootState) => state.user);
   const [section, setSection] = useState(Math.ceil(currentEp?.episode_num / SECTION_RANGE));
 
   const bind = useGesture(
@@ -40,14 +47,18 @@ const UIBottomSheetEpisodeGrid = ({locked, setLocked, currentEp, visibleBottomSh
   )
 
   const handleEpisodeClick = (index: number) => {
-    if(index <= selectedSeries.free_count) { 
+    if(index <= unlockEpisode) { 
       handleEpisodeChange(index);
       closeBottomSheet();
     }
 
-    if(index === selectedSeries.free_count) {
+    if(index === unlockEpisode) {
       setLocked(true);
       closeBottomSheet();
+    }
+
+    if(index > unlockEpisode) {
+      dispatch(globalSlice.addToast({ id: Date.now(), message: '앞에 놓친 에피소드가 있어요.', duration: 1500  }));
     }
   }
 
@@ -60,8 +71,7 @@ const UIBottomSheetEpisodeGrid = ({locked, setLocked, currentEp, visibleBottomSh
   }
 
 
-  const renderEpisodeSection = () => {
-    console.log('renderEpisodeSection ', section);
+  const renderEpisodeSection = useCallback(() => {
     const sectionList = [];
 
     for (let i = 0; i < Math.ceil(selectedSeries.ep_count / SECTION_RANGE); i++) {
@@ -76,14 +86,14 @@ const UIBottomSheetEpisodeGrid = ({locked, setLocked, currentEp, visibleBottomSh
     }
 
     return sectionList;
-  }
+  }, [section, selectedSeries])
 
   const renderEpisodeGrid = () => {
     const gridList = [];
 
     for (let i = (section - 1) * SECTION_RANGE; i < section * SECTION_RANGE; i++) {
      
-      gridList.push(<div key={i} className='container' onClick={() =>{ handleEpisodeClick(i) }}><div className={`box ${currentEp?.episode_num === i+1 ? 'selected' : ''} ${i + 1 <= selectedSeries.free_count ? '' : 'locked'}`}>{i+1}</div></div>)
+      gridList.push(<div key={i} className='container' onClick={() =>{ handleEpisodeClick(i) }}><div className={`box ${i + 1 <= unlockEpisode ? '' : 'locked'} ${currentEp?.episode_num === i+1 ? 'selected' : ''} `}>{i+1}</div></div>)
     
       if(i + 1 === selectedSeries.ep_count) {
         break;

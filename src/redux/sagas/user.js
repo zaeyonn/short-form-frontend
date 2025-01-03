@@ -13,9 +13,9 @@ export function* handleAuthGuest() {
   }
 }
 
-export function* handleUserInfo() {
+export function* handleUserInfo(action) {
   try {
-    const response = yield call(api.userInfo);
+    const response = yield call(api.userInfo, action.payload);
 
     yield put(slice.userInfoSuccess(response));
   } catch (error) {
@@ -88,5 +88,15 @@ export function* handleUpdateSeriesProgress(action) {
     yield put(slice.updateSeriesProgressSuccess(response));
   } catch (error) {
     yield put(slice.updateSeriesProgressFailure(error));
+  }
+}
+
+export function* handleUpdateSeriesUnlockEpisode(action) {
+  try {
+    const response = yield call(api.updateSeriesUnlockEpisode, action.payload);
+
+    yield put(slice.updateSeriesUnlockEpisodeSuccess(response));
+  } catch (error) {
+    yield put(slice.updateSeriesUnlockEpisodeFailure(error));
   }
 }

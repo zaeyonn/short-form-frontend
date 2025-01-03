@@ -13,6 +13,37 @@
   opacity: 0.3;
 }
 
+.toast-container {
+  position: fixed;
+  top: 38%;
+  right: 50%;
+  transform: translate(50%, 50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.toast {
+  border-radius: 12px;
+  background-color: #00000090;
+  color: #fff;
+  padding: 10px 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fade-in-out 0.3s ease-in-out;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+@keyframes fade-in-out {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .tag-list {
   display: flex;
   flex-direction: row; 
@@ -364,7 +395,7 @@
     align-items: center;
     padding-left: 20px;
     padding-right: 20px;
-    z-index: 2;
+    z-index: 4;
   
     .left-section {
       display: flex;
@@ -805,10 +836,6 @@
         font-size: 16px;
         cursor: pointer;
 
-        &.selected {
-          background-color: #FF3064;
-        }
-
         &.locked {
           background-color: #111111;
           color: #393939;
@@ -818,8 +845,8 @@
             width: 16px;
             height: 16px;
             position: absolute;
-            top: 0;
-            right: 0;
+            top: -1px;
+            right: -1px;
             content: url('resources/icons/icon_lock.svg');
             display: flex;
             align-items: center;
@@ -827,6 +854,10 @@
             border-top-right-radius: 5px;
             border-bottom-left-radius: 5px;
           }
+        }
+
+        &.selected {
+          background-color: #FF3064;
         }
       }
     }
@@ -858,6 +889,7 @@
       justify-content: space-between;
 
       button {
+        width: 74px;
         padding: 8px 12px;
         border-radius: 6px;
         background-color: #FF3064;
