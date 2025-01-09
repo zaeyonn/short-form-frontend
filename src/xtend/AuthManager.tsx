@@ -5,7 +5,10 @@ import * as userSlice from 'src/redux/userSlice';
 const AuthManager = () => {
   const dispatch = useDispatch();
 
-  const { authGuestResult, authGuestError, userInfoResult, userInfoError } = useSelector((state: any) => state.user);
+  const { authGuestResult, authGuestError, 
+          userInfoResult, userInfoError,
+          authLoginGoogleResult, authLoginGoogleError,
+        } = useSelector((state: any) => state.user);
 
   // 사용자 정보 조회 결과
   useEffect(() => {

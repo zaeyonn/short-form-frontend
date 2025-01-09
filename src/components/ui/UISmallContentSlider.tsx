@@ -7,7 +7,7 @@ import { displayPopType } from 'common/define';
 
 interface Props {
   contentList: any[];
-  headerTitle: string;
+  headerTitle?: string;
   highlight: string;
   handleShortFormOpen: (series: any) => any;
 }
@@ -43,10 +43,12 @@ const UISmallContentSlider = ({contentList, headerTitle, highlight, handleShortF
 
   return (
     <div className='small-content-slider-wrap'>
-      <div className='header'>
-        { headerTitle }
-        <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right'/>
-      </div>
+      { headerTitle && (
+        <div className='header'>
+          { headerTitle }
+          <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right'/>
+        </div>
+      )}
       <div className='small-content-list'>
         { contentList.map((i: any, index: number) => <UISmallContentItem item={i} key={index} highlight={highlight} handleShortFormOpen={handleShortFormOpen}/>) }
 

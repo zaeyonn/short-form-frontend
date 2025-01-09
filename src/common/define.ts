@@ -5,6 +5,7 @@ export const displayPopType = {
   POPUP_PURCHASE_POINT: { name: "POPUP_PURCHASE_POINT" },
   POPUP_VIDEO_KEEP: { name: "POPUP_VIDEO_KEEP" },
   POPUP_VIDEO_WATCH: { name: "POPUP_VIDEO_WATCH" },
+  POPUP_SIGN_UP: { name: "POPUP_SIGN_UP" },
 }
 
 export const uiPopType = {

@@ -13,6 +13,16 @@ export function* handleAuthGuest() {
   }
 }
 
+export function* handleauthLoginGoogle(action) {
+  try {
+    const response = yield call(api.authLoginGoogle, action.payload);
+    
+    yield put(slice.authLoginGoogleSuccess(response));
+  } catch (error) {
+    yield put(slice.authLoginGoogleFailure(error));
+  }
+}
+
 export function* handleUserInfo(action) {
   try {
     const response = yield call(api.userInfo, action.payload);

@@ -274,13 +274,17 @@ const UIPopShortFormPlayer = ({}) => {
     if(userSeriesProgressResult && userSeriesProgressResult.data.code === 200) {
       console.log('userSeriesProgressResult ', userSeriesProgressResult);
 
+      // 사용자의 해당 시리즈 진행 상태가 존재하는 경우
       if(userSeriesProgressResult.data.data.last_episode) {
         lastEpisodeRef.current = userSeriesProgressResult.data.data.last_episode;
         setUnlockEpisode(userSeriesProgressResult.data.data.unlock_episode);
         handleEpisodeChange(userSeriesProgressResult.data.data.last_episode - 1);
       }
 
+      // 사용자의 해당 시리즈 진행 상태가 존재하지 않는 경우
       if(userSeriesProgressResult.data.data === 'no_progress') {
+        lastEpisodeRef.current = 1;
+        setUnlockEpisode(selectedSeries.free_count);
         dispatch(userSlice.addSeriesProgress({ userId: user.id, seriesId: selectedSeries.id, ep: 1, free_ep: selectedSeries.free_count }));
         setCurrentEp(episodeList[0]);
       }
@@ -335,21 +339,19 @@ const UIPopShortFormPlayer = ({}) => {
   }, [videoRef.current, swiperRef.current])
 
   useEffect(() => {
-    // 시리즈 북마크 확인
+    // 1. 시리즈의 전체 에피소드 리스트 조회
+    dispatch(globalSlice.episodeList({ seriesId: selectedSeries.id }));
+
+    // 2. 사용자의 시리즈 진행 상태 조회
+    dispatch(userSlice.userSeriesProgress({ userId: user.id, seriesId: selectedSeries.id }));
+    
+    // 3. 시리즈 북마크 확인
     seriesKeepList.forEach((keep: any) => {
       if (keep.series_id === selectedSeries.id) {
         setKeep(true);
         return;
       }
     })
-
-    
-
-    // 시리즈의 전체 에피소드 리스트 조회
-    dispatch(globalSlice.episodeList({ seriesId: selectedSeries.id }));
-
-    // 사용자의 시리즈 진행 상태 조회
-    dispatch(userSlice.userSeriesProgress({ userId: user.id, seriesId: selectedSeries.id }));
   }, [])
 
   return (

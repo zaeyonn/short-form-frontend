@@ -16,7 +16,7 @@ import UIPopPurchasePoint from 'components/ui/popup/UIPopPurchasePoint';
 import UIPopSeriesKeep from 'components/ui/popup/UIPopSeriesKeep';
 import UIPopSeriesWatch from 'components/ui/popup/UIPopSeriesWatch';
 import UILeftMenu from 'components/ui/UILeftMenu';
-import UIBottomSheetLogin from 'components/ui/UIBottomSheetLogin';
+import UIPopSignUp from 'components/ui/popup/UIPopSignUp';
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -38,6 +38,10 @@ const MainPage = () => {
 
   const handleLoginBottomSheetClose = () => {
     setVisibleBottomSheet(false);
+  }
+
+  const handleProfileClick = () => {
+    dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_MYPROFILE.name));
   }
 
   // 북마크 등록 결과
@@ -114,15 +118,7 @@ const MainPage = () => {
     }
   }, [user])
 
-  // 바텀시트 열린 경우 스크롤 막기
-  useEffect(() => {
-    if(visibleBottomSheet) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'scroll';
-    }
-  }, [visibleBottomSheet])
-
+  
   // 시리즈 리스트 조회
   useEffect(() => {
     dispatch(globalSlice.seriesList());
@@ -157,7 +153,7 @@ const MainPage = () => {
             <span className="title">Logo</span>
           </div>
           <div className='right-section'>
-            <button onClick={handleLoginBottomSheetOpen}>로그인</button>
+            <button onClick={handleProfileClick}>로그인</button>
           </div>
         </div>
         <UIMainContentSlider
@@ -183,16 +179,13 @@ const MainPage = () => {
           contentList={seriesList}
           handleShortFormOpen={handleShortFormOpen}/>
       </div>
-      <UIBottomSheetLogin
-      visible={visibleBottomSheet}
-      handleLoginBottomSheetClose={handleLoginBottomSheetClose}
-      />
       { displayPopName === displayPopType.POPUP_SHORT_FORM_PLAYER.name && (<UIPopShortFormPlayer/>)}
       { displayPopName === displayPopType.POPUP_MYPROFILE.name && (<UIPopMyProfile/>)}
       { displayPopName === displayPopType.POPUP_LOGIN.name && (<UIPopLogin/>)}
       { displayPopName === displayPopType.POPUP_PURCHASE_POINT.name && (<UIPopPurchasePoint/>)}
       { displayPopName === displayPopType.POPUP_VIDEO_KEEP.name && (<UIPopSeriesKeep seriesList={seriesList}/>)}
       { displayPopName === displayPopType.POPUP_VIDEO_WATCH.name && (<UIPopSeriesWatch/>)}
+      { displayPopName === displayPopType.POPUP_SIGN_UP.name && (<UIPopSignUp/>)}
 
       { uiPopName ===  uiPopType.UI_LEFT_MENU.name && (<UILeftMenu/>)}
 

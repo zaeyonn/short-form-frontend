@@ -5,7 +5,12 @@ import client from 'api/client';
 // 게스트 사용자 등록
 export const authGuest = () => client.post('auth/guest');
 
-
+// SNS 사용자 로그인
+export const authLoginGoogle = ({code, userId, authType}: any) => client.put('auth/login/google', {
+  user_id: userId,
+  code: code,
+  auth_type: authType,
+});
 
 /* User API */
 

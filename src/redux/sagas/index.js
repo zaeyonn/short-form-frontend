@@ -12,6 +12,7 @@ export function* watcherSaga() {
   
     // user
     takeLatest(userSlice.authGuest.type, userHandler.handleAuthGuest),
+    takeLatest(userSlice.authLoginGoogle.type, userHandler.handleauthLoginGoogle),
     takeLatest(userSlice.addSeriesKeep.type, userHandler.handleAddSeriesKeep),
     takeLatest(userSlice.removeSeriesKeep.type, userHandler.handleRemoveSeriesKeep),
     takeLatest(userSlice.userSeriesKeepList.type, userHandler.handleUserSeriesKeepList),

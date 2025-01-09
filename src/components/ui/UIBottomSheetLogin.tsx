@@ -1,16 +1,23 @@
-import { useEffect } from "react";
+import { useEffect, forwardRef, useImperativeHandle } from "react";
 import { useDispatch } from "react-redux";
 import { useSpring, animated } from '@react-spring/web';
 import { useGesture } from "@use-gesture/react";
+import SignInWithGoogle from "components/sns/SignInWithGoogle";
 
 import * as globalSlice from "src/redux/globalSlice";
+import { displayPopType } from "common/define";
 
 interface Props {
   visible: boolean;
   handleLoginBottomSheetClose: () => any;
+  signInProcess: (code: string, authType: string) => any;
 }
 
-const UIBottomSheetLogin = ({ visible, handleLoginBottomSheetClose }: Props) => {
+type bottomSheetHandle = {
+  handleClose: () => void;
+}
+
+const UIBottomSheetLogin = forwardRef<bottomSheetHandle>(({signInProcess, visible, handleLoginBottomSheetClose}: any, ref) => {
   const dispatch = useDispatch();
 
   const [springs, api] = useSpring(() => ({
@@ -32,35 +39,21 @@ const UIBottomSheetLogin = ({ visible, handleLoginBottomSheetClose }: Props) => 
     }
   )  
 
-  const handleClickGoogleLogin = () => {
-    const loginUrl = `https://accounts.google.com/o/oauth2/auth?client_id=535162853227-526d2impnl311da6b2q95c2f2st10l7u.apps.googleusercontent.com&redirect_uri=http://localhost:5173&response_type=code&scope=email profile`;
-
-    window.open(loginUrl, "sso", "height=700,width=480");
-  }
-
-  const handleGoogleLoginResult = (e: any) => {
-    console.log(`result : ${e}`);
-  }
-
   const handleClose = () => {
     api.start({ from: { y: 20 }, to: { y : 280 }});
 
     handleLoginBottomSheetClose();
   }
 
+  useImperativeHandle(ref, () => ({
+    handleClose
+  }))
+
   useEffect(() => {
       if(visible) {
         api.start({ from: { y: 280 }, to: { y: 20 } });
-      }
+      } 
     }, [visible])
-
-  useEffect(() => {
-    window.addEventListener("message", handleGoogleLoginResult);
-
-    return () => {
-      window.removeEventListener("message", handleGoogleLoginResult);
-    }
-  }, [])
 
   return (
     <>
@@ -83,18 +76,16 @@ const UIBottomSheetLogin = ({ visible, handleLoginBottomSheetClose }: Props) => 
         </div>
       </div>
       <div className="auth-btn-list">
-        <button>
-          <img src="resources/icons/icon_google.svg"/>         
-          Google로 계속하기 
-        </button>
-        <button className="email-auth">
+        <SignInWithGoogle
+          signInProcess={signInProcess}/>
+        {/* <button className="email-auth" onClick={handleEmailSignUp}>
           <img src="resources/icons/icon_email.svg"/>
           이메일로 계속하기          
-        </button>
+        </button> */}
       </div>
     </animated.div>
     </>
   )
-}
+})
 
 export default UIBottomSheetLogin;

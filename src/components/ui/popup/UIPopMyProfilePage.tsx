@@ -1,109 +1,150 @@
+import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { displayPopType } from 'src/common/define';
 import * as globalSlice from 'src/redux/globalSlice';
 import * as userSlice from 'src/redux/userSlice';
-import { useEffect, useRef } from 'react';
+
+import UIBottomSheetLogin from '../UIBottomSheetLogin';
 import UISmallContentSlider from '../UISmallContentSlider';
 
 const UIPopMyProfile = () => {
-  const { isLogin } = useSelector((state: any) => state.global);
-  const { user, seriesWatchList } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
+  const { user, seriesWatchList, authLoginGoogleResult, authLoginGoogleError } = useSelector((state: any) => state.user);
+  
+  const loginSheetRef = useRef<any>(null);
 
+  const [visibleLoginBottomSheet, setVisibleLoginBottomSheet] = useState(false);
+  
   const handleButtonClick = (displayPopName: string) => {
     dispatch(globalSlice.setDisplayPopName(displayPopName));
   }
 
-  const handleLogInOut = () => {
-    if(isLogin) {
-      return;
-    }
-    dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_LOGIN.name));
+  const handleLoginBottomSheetOpen = () => {
+    setVisibleLoginBottomSheet(true);
   }
 
+  const handleLoginBottomSheetClose = () => {
+    setVisibleLoginBottomSheet(false);
+  }
+
+  const signInProcess = (code: string, authType: string) => {
+    console.log('signInProcess code, authType', code, authType);
+    dispatch(userSlice.authLoginGoogle({code, userId: user.id, authType}))
+  }
+
+  // SNS 로그인 결과
   useEffect(() => {
-    console.log(`user : ${JSON.stringify(user)}`);
-  }, [user])
+    if(authLoginGoogleError) {
+      console.log('authLoginGoogleError ', authLoginGoogleError);
+      setVisibleLoginBottomSheet(false);
+        
+      dispatch(userSlice.clearUserState('authLoginGoogleError'));
+    }
+  
+    if(authLoginGoogleResult && authLoginGoogleResult.data.code === 201) {
+      console.log('authLoginGoogleResult ', authLoginGoogleResult);
+      const { user } = authLoginGoogleResult.data.data;
+      
+      if(loginSheetRef.current) loginSheetRef.current.handleClose();
+      dispatch(userSlice.setUser(user))
+
+      localStorage.setItem('user-id', user.id);
+
+      dispatch(userSlice.clearUserState('authLoginGoogleResult'));
+      return;
+    }
+  }, [authLoginGoogleResult, authLoginGoogleError])
 
   return (
     <>
       <div className='popup-wrap'>
-        <div className='header-nonfixed'>
+        <div className='header'>
           <div className="left-section">
             <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={() => handleButtonClick('')}/>
-            <span className="title">프로필</span>
           </div>
         </div>
-
-        <div className='profile'>   
-          <img src='resources/icons/icon_profile.svg'/>
-          <div className='userinfo'>{`${user.nickname}\nUID ${user.id}`}</div> 
-        </div>
-
-        <div className='wallet'>
-          <div className='over-section'>
-            <div>보유한 포인트</div>
-              <div className='point-body'>
-                <div className='point'>{`${user.paid_point + user.free_point}`}</div>
-                <img src='resources/icons/icon_point.svg'/>
-              </div>
-          </div>
-
-          <div className='under-section'>
-            <div>포인트 구매하기</div>
-            <img src="resources/icons/icon_purchase.svg" className='purchase-point' onClick={() => handleButtonClick(displayPopType.POPUP_PURCHASE_POINT.name)}/>
+        <div className='profile-wrap'>
+          <div className='profile'>
+            <div className='profile-img'>
+            {/* <img src='resources/icons/icon_profile.svg'/> */}
             </div>
-        </div>
-
-        <div className='viewrlist'>
+            {(user.auth === 'guest') ? (
+              <div className='nickname' onClick={handleLoginBottomSheetOpen}>
+                로그인을 해주세요
+                <img src='resources/icons/icon_arrow_right_s.svg'/>
+              </div>
+            ) : (      
+              <div>     
+              <div className='nickname'>
+                {`${user.nickname}님`}
+                <img src='resources/icons/icon_arrow_right_s.svg'/>
+              </div>
+              <div className='email'>{user.email}</div>
+              </div> 
+            )}       
+          </div>
+          { user.auth !== 'guest' && (
+          <div className='wallet'>
+            <div className='head'>
+              내 지갑
+              <img src='resources/icons/icon_arrow_right_s.svg'/>
+            </div>
+            <div className='divider'></div>
+            <div className='point'>
+              <div className='my-point'>
+                <img src='resources/icons/icon_point.svg'/>
+                <span>{`${user.paid_point + user.free_point}`}</span>
+              </div>
+              <button>
+                충전하기
+              </button>
+            </div>
+          </div>
+          )}
+        <div className='view-list'>   
+          <div className='head'>
+            내 시청 기록
+          </div>
           {(seriesWatchList.length === 0) ? (
-            <>
-              <div className='header'>
-                시청 기록
-                <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right'/>
-              </div>
-
               <div className='no-content'>
-                <div>저장된 기록이 없습니다.</div>
+                저장된 기록이 없습니다.
               </div>
-            </>
           ) : (
             <UISmallContentSlider
               contentList={seriesWatchList}
-              headerTitle='시청 기록'
               highlight=''
               handleShortFormOpen={()=>{}}/>
           )}
-
         </div>
-
-        <div className='profile-etc'>
+        <div className='setting'>
           <div className='head'>설정</div>
-
-          <div className='body'>
-            <button>
-              <div>미션 또는 이벤트</div>
+          <div className='menu-list'>
+            <div>
+              미션 또는 이벤트
               <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-            </button>
-
-            <button>
-              <div>고객 센터</div>
+            </div>
+            <div>
+              고객 센터
               <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-            </button>
-
-            <button>
-              <div>설정</div>
+            </div>
+            <div>
+              설정
               <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-            </button>
-
-            <button>
-              <div>회사 소개</div>
+            </div>
+            <div>
+              회사 소개
               <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-            </button>
+            </div>
           </div>
-          
+        </div>
         </div>
       </div>
+
+      <UIBottomSheetLogin
+      ref={loginSheetRef}
+      visible={visibleLoginBottomSheet}
+      signInProcess={signInProcess}
+      handleLoginBottomSheetClose={handleLoginBottomSheetClose}/>
     </>
   );
 };
