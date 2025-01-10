@@ -5,7 +5,7 @@ import * as globalSlice from "src/redux/globalSlice";
 
 const LayoutNavigationBar = () => {
   const dispatch = useDispatch();
-  const { displayPopName, uiPopName, navigationBar, isLogin } = useSelector((state: any) => state.global);
+  const { displayPopName, navigationBar, isLogin } = useSelector((state: any) => state.global);
 
   useEffect(() => {
     const navBar = {

@@ -1,8 +1,10 @@
+import { PayloadAction } from "@reduxjs/toolkit";
+
 import { call, put } from 'redux-saga/effects';
 import * as slice from '../userSlice';
 import * as api from '../../api/api';
 
-export function* handleAuthGuest() {
+export function* handleAuthGuest(): Generator<any> {
   try {
     const response = yield call(api.authGuest);
     console.log(`guest response: ${JSON.stringify(response)}`);
@@ -13,7 +15,7 @@ export function* handleAuthGuest() {
   }
 }
 
-export function* handleauthLoginGoogle(action) {
+export function* handleauthLoginGoogle(action: PayloadAction<any>): Generator<any> {
   try {
     const response = yield call(api.authLoginGoogle, action.payload);
     
@@ -23,7 +25,7 @@ export function* handleauthLoginGoogle(action) {
   }
 }
 
-export function* handleUserInfo(action) {
+export function* handleUserInfo(action: PayloadAction<any>): Generator<any> {
   try {
     const response = yield call(api.userInfo, action.payload);
 
@@ -33,7 +35,7 @@ export function* handleUserInfo(action) {
   }
 }
 
-export function* handleAddSeriesKeep(action) {
+export function* handleAddSeriesKeep(action: PayloadAction<any>): Generator<any> {
   try {
     const response = yield call(api.addSeriesKeep, action.payload);
     console.log(`response: ${JSON.stringify(response)}`);
@@ -44,7 +46,7 @@ export function* handleAddSeriesKeep(action) {
   }
 }
 
-export function* handleRemoveSeriesKeep(action) {
+export function* handleRemoveSeriesKeep(action: PayloadAction<any>): Generator<any> {
   try {
     const response = yield call(api.removeSeriesKeep, action.payload);
     console.log(`response: ${JSON.stringify(response)}`);
@@ -57,7 +59,7 @@ export function* handleRemoveSeriesKeep(action) {
 
 
 
-export function* handleUserSeriesKeepList(action) {
+export function* handleUserSeriesKeepList(action: PayloadAction<any>): Generator<any> {
   try {
     const response = yield call(api.userSeriesKeepList, action.payload);
     console.log(`response: ${JSON.stringify(response)}`);
@@ -68,7 +70,17 @@ export function* handleUserSeriesKeepList(action) {
   }
 }
 
-export function* handleUserSeriesProgress(action) {
+export function* handleUserSeriesWatchList(action: PayloadAction<any>): Generator<any> {
+  try {
+    const response = yield call(api.userSeriesWatchList, action.payload);
+
+    yield put(slice.userSeriesWatchListSuccess(response));
+  } catch (error) {
+    yield put(slice.userSeriesWatchListFailure(error));
+  }
+}
+
+export function* handleUserSeriesProgress(action: PayloadAction<any>): Generator<any> {
   try {
     const response = yield call(api.userSeriesProgress, action.payload);
     console.log(`response: ${JSON.stringify(response)}`);
@@ -79,7 +91,7 @@ export function* handleUserSeriesProgress(action) {
   }
 }
 
-export function* handleAddSeriesProgress(action) {
+export function* handleAddSeriesProgress(action: PayloadAction<any>): Generator<any> {
   try {
     const response = yield call(api.addSeriesProgress, action.payload);
     console.log(`resposne: ${JSON.stringify(response)}`);
@@ -90,7 +102,7 @@ export function* handleAddSeriesProgress(action) {
   }
 }
 
-export function* handleUpdateSeriesProgress(action) {
+export function* handleUpdateSeriesProgress(action: PayloadAction<any>): Generator<any> {
   try {
     const response = yield call(api.updateSeriesProgress, action.payload);
     console.log(`response: ${JSON.stringify(response)}`);
@@ -101,7 +113,7 @@ export function* handleUpdateSeriesProgress(action) {
   }
 }
 
-export function* handleUpdateSeriesUnlockEpisode(action) {
+export function* handleUpdateSeriesUnlockEpisode(action: PayloadAction<any>): Generator<any> {
   try {
     const response = yield call(api.updateSeriesUnlockEpisode, action.payload);
 

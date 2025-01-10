@@ -1,11 +1,11 @@
 interface Props {
   item: any;
-  handleShortFormOpen: (series: any) => any;
+  handleSeriesPlayerOpen: (series: any) => any;
 }
 
-const UIVerticalContentItem = ({item, handleShortFormOpen}: Props) => {
+const UIVerticalContentItem = ({item, handleSeriesPlayerOpen}: Props) => {
   return (
-    <div className='vertical-content-item' onClick={() => handleShortFormOpen(item)}>
+    <div className='vertical-content-item' onClick={() => handleSeriesPlayerOpen(item)}>
       <img src={`${import.meta.env.VITE_SERVER_URL}/images/poster/${item.poster_img}`}/>
       <div className='info-wrap'>
         <div className='tag-list'>

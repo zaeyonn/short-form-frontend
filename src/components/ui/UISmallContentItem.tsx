@@ -1,15 +1,22 @@
-import { displayPopType } from "common/define";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import * as globalSlice from 'src/redux/globalSlice';
 
 interface SallContentItemProps {
   item: any;
   highlight?: string;
-  handleShortFormOpen: (series: any) => any;
 }
 
-const UISmallContentItem = ({item, highlight, handleShortFormOpen}: SallContentItemProps) => {
+const UISmallContentItem = ({item, highlight}: SallContentItemProps) => {
+  const dispatch = useDispatch();
+
+  const handleSeriesPlayerOpen = () => {
+      window.scrollTo(0, 0);
+      dispatch(globalSlice.setSeriesPlayer(true));
+      dispatch(globalSlice.setSelectedSeries(item));
+  }
+  
   return (
-    <div className='small-content-item' onClick={() => handleShortFormOpen(item)}>  
+    <div className='small-content-item' onClick={() => handleSeriesPlayerOpen()}>  
       <div className='poster-wrap'>
         {highlight && (
           <span className='highlight'>{highlight}</span>

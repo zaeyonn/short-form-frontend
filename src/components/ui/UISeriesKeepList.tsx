@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as globalSlice from "src/redux/globalSlice";
 import UISeriesKeepItem from "./UISeriesKeepItem";
-import { useEffect, useRef } from "react";
 
 interface Props {
   isManageMode: boolean,

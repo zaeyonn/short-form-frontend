@@ -1,5 +1,5 @@
-import { RefObject, useEffect, useState, useRef } from "react";
-import { Swiper, SwiperSlide, useSwiper } from "swiper/react"
+import { RefObject } from "react";
+import { Swiper, SwiperSlide } from "swiper/react"
 
 interface Props {
   episodeList: any [];
@@ -10,15 +10,15 @@ interface Props {
   handleSlideChangeStart: (swiper: any) => any;
   swiperRef: any;
   lastEpisodeRef: any;
-  unlockEpisode: number;
+  unlockEpisode: number | undefined;
 }
 
-const UIShortFormSwiper = ({episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChangeStart, handleSlideChange, swiperRef, lastEpisodeRef, unlockEpisode}: Props) => {
+const UIShortFormSwiper = ({episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisodeRef, unlockEpisode}: Props) => {
 
   return (
     <Swiper onSwiper={swiper => swiperRef.current = swiper}  className='short-form-swiper' direction="vertical" onSlideChange={handleSlideChange} onClick={toggleTools}>
       { episodeList.map((i: any, index: number) => {
-        if(index <= unlockEpisode) {
+        if(unlockEpisode && index <= unlockEpisode) {
           return (
             <SwiperSlide className='short-form' key={index}>
               <video id={`slide-idx-${index}`} ref={lastEpisodeRef.current - 1 === index ? videoRef : null} autoPlay={lastEpisodeRef.current - 1 === index ? true : false} onTimeUpdate={handleTimeUpdate}>

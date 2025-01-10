@@ -3,9 +3,10 @@ export const displayPopType = {
   POPUP_MYPROFILE: { name: "POPUP_MYPROFILE" },
   POPUP_LOGIN: { name: "POPUP_LOGIN" },
   POPUP_PURCHASE_POINT: { name: "POPUP_PURCHASE_POINT" },
-  POPUP_VIDEO_KEEP: { name: "POPUP_VIDEO_KEEP" },
-  POPUP_VIDEO_WATCH: { name: "POPUP_VIDEO_WATCH" },
+  POPUP_SERIES_KEEP: { name: "POPUP_SERIES_KEEP" },
+  POPUP_SERIES_WATCH: { name: "POPUP_SERIES_WATCH" },
   POPUP_SIGN_UP: { name: "POPUP_SIGN_UP" },
+  POPUP_SERIES_LIST: { name: "POPUP_SERIES_LIST" }
 }
 
 export const uiPopType = {

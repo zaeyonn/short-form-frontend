@@ -5,10 +5,10 @@ import UIMainContentItem from './UIMainContentItem';
 
 interface Props {
   contentList: any[];
-  handleShortFormOpen: (series: any) => any;
+  handleSeriesPlayerOpen: (series: any) => any;
 }
 
-const UIMainContentSlider = ({contentList, handleShortFormOpen}: Props) => {
+const UIMainContentSlider = ({contentList, handleSeriesPlayerOpen}: Props) => {
 
   const responsive = {
     superLargeDesktop: {
@@ -47,7 +47,7 @@ const UIMainContentSlider = ({contentList, handleShortFormOpen}: Props) => {
       keyBoardControl={true}
       autoPlay={false}
       >
-      {contentList.map((i: any, index: number) => <UIMainContentItem item={i} key={index} handleShortFormOpen={handleShortFormOpen}/>)}
+      {contentList.map((i: any, index: number) => <UIMainContentItem item={i} key={index} handleSeriesPlayerOpen={handleSeriesPlayerOpen}/>)}
     </Carousel>
   )
 }

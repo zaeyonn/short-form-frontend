@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useSwiper } from "swiper/react"
 
 import * as globalSlice from 'src/redux/globalSlice';
 import * as userSlice from 'src/redux/userSlice';
@@ -9,7 +8,7 @@ import UIShortFormSwiper from "components/ui/UIShortFormSwiper";
 import UIBottomSheetEpisodeGrid from "../UIBottomSheetEpisodeGrid";
 import UILayerLockedEpisode from "components/ui/layer/UILayerLockedEpisode";
 
-const UIPopShortFormPlayer = ({}) => {
+const UIPopSeriesPlayer = ({}) => {
 
   const {
      user, seriesKeepList, addSeriesProgressResult, addSeriesProgressError,
@@ -37,19 +36,7 @@ const UIPopShortFormPlayer = ({}) => {
   const dispatch = useDispatch();
 
   const handleClose = () => {
-    const navBar = {
-      visible: true,
-      title: 'Logo',
-      leftBtn: {
-        icon: 'icon_hamburger.svg',
-      },
-      rightBtn: {
-        icon: 'icon_search.svg',
-        event: () => 0,
-      },
-    }
-    dispatch(globalSlice.setDisplayPopName(''));
-    dispatch(globalSlice.setNavigationBar(navBar));
+    dispatch(globalSlice.setSeriesPlayer(false));
   }
 
   // 도구 토글
@@ -65,7 +52,7 @@ const UIPopShortFormPlayer = ({}) => {
   const togglePlay = (e: any) => {
     e.stopPropagation();
 
-    if(currentEp?.episode_num > unlockEpisode) {
+    if(unlockEpisode && currentEp?.episode_num > unlockEpisode) {
       setLocked(true);
       return;
     }
@@ -140,7 +127,7 @@ const UIPopShortFormPlayer = ({}) => {
 
     setCurrentEp(episodeList[swiper.activeIndex]);
 
-    if(swiper.activeIndex + 1 <= unlockEpisode) {
+    if(unlockEpisode && swiper.activeIndex + 1 <= unlockEpisode) {
       dispatch(userSlice.updateSeriesProgress({ userId: user.id, seriesId: selectedSeries.id, ep: swiper.activeIndex + 1 }));
     }
   }
@@ -319,7 +306,7 @@ const UIPopShortFormPlayer = ({}) => {
 
   // 에피소드 변경될때 잠긴 에피소드인지 확인
   useEffect(() => {
-    if(currentEp?.episode_num > unlockEpisode) {
+    if(unlockEpisode && currentEp?.episode_num > unlockEpisode) {
       setLocked(true);
       setPlaying(false);
       videoRef.current.pause();
@@ -329,7 +316,7 @@ const UIPopShortFormPlayer = ({}) => {
   useEffect(() => {
     if(videoRef.current) {
       // 숏폼 영상 다보면 다음 에피소드 자동 재생
-      videoRef.current.addEventListener('ended', (e: any) => {
+      videoRef.current.addEventListener('ended', () => {
         console.log('video ended');
         if(currentEp.episode_num < episodeList.length) {
           swiperRef.current.slideTo(currentEp.episode_num, 0);
@@ -347,7 +334,7 @@ const UIPopShortFormPlayer = ({}) => {
     
     // 3. 시리즈 북마크 확인
     seriesKeepList.forEach((keep: any) => {
-      if (keep.series_id === selectedSeries.id) {
+      if (keep.id === selectedSeries.id) {
         setKeep(true);
         return;
       }
@@ -355,7 +342,7 @@ const UIPopShortFormPlayer = ({}) => {
   }, [])
 
   return (
-    <div className='popup-wrap'>
+    <div className='popup-wrap' style={{paddingTop: 0, overflowY: 'hidden'}}>
       <div className='short-form-swiper'>
         <UIShortFormSwiper
         swiperRef={swiperRef}
@@ -370,7 +357,7 @@ const UIPopShortFormPlayer = ({}) => {
       </div>
       {visibleTools && (
         <>
-          <div className='header'>
+          <div className='header' style={{background: 'none'}}>
             <div className="left-section">
               <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={handleClose}/>
               <span className="title">{`${selectedSeries.title} ${currentEp?.episode_num ? `[${currentEp.episode_num}]` : ''}`}</span>
@@ -381,10 +368,10 @@ const UIPopShortFormPlayer = ({}) => {
           { !playing && (<img className='main-play-btn' src="resources/icons/icon_play_main.svg" onClick={togglePlay}/>) }
           </> }
           <div className='right-menu'>
-            {/* <div className='btn-wrap' onClick={handleSeriesKeep}>
+            <div className='btn-wrap' onClick={handleSeriesKeep}>
               <img id='bookmark-btn' src={`resources/icons/icon_bookmark${keep ? '_fill' : ''}.svg`}/>
               {keepCount}
-            </div> */}
+            </div>
             <div className='btn-wrap' onClick={handleBottomSheetOpen}>
               <img id='list-btn' src='resources/icons/icon_list.svg'/>
               List
@@ -416,4 +403,4 @@ const UIPopShortFormPlayer = ({}) => {
   )
 }
 
-export default UIPopShortFormPlayer;
+export default UIPopSeriesPlayer;

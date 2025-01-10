@@ -7,7 +7,6 @@ const AuthManager = () => {
 
   const { authGuestResult, authGuestError, 
           userInfoResult, userInfoError,
-          authLoginGoogleResult, authLoginGoogleError,
         } = useSelector((state: any) => state.user);
 
   // 사용자 정보 조회 결과

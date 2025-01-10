@@ -1,11 +1,7 @@
 import { useEffect, forwardRef, useImperativeHandle } from "react";
-import { useDispatch } from "react-redux";
 import { useSpring, animated } from '@react-spring/web';
 import { useGesture } from "@use-gesture/react";
 import SignInWithGoogle from "components/sns/SignInWithGoogle";
-
-import * as globalSlice from "src/redux/globalSlice";
-import { displayPopType } from "common/define";
 
 interface Props {
   visible: boolean;
@@ -15,15 +11,14 @@ interface Props {
 
 type bottomSheetHandle = {
   handleClose: () => void;
+  
 }
 
-const UIBottomSheetLogin = forwardRef<bottomSheetHandle>(({signInProcess, visible, handleLoginBottomSheetClose}: any, ref) => {
-  const dispatch = useDispatch();
-
+const UIBottomSheetLogin = forwardRef<bottomSheetHandle, Props>(({signInProcess, visible, handleLoginBottomSheetClose}: any, ref) => {
   const [springs, api] = useSpring(() => ({
       from: { y: 280 },
       config: {mass: 1.1, tension: 270, friction: 25},
-    }));
+  }));
 
   const bind = useGesture(
     {

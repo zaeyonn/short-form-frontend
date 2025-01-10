@@ -1,8 +1,6 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useSpring, animated } from '@react-spring/web';
-
-import { createPortal } from "react-dom";
 
 import * as globalSlice from "src/redux/globalSlice"; 
 

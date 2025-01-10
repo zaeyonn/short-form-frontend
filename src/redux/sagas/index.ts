@@ -1,7 +1,7 @@
 import { takeLatest, all } from 'redux-saga/effects';
-import * as globalHandler from './global';
+import * as globalHandler from './global.ts';
 import * as globalSlice from '../globalSlice';
-import * as userHandler from './user';
+import * as userHandler from './user.ts';
 import * as userSlice from '../userSlice';
 
 export function* watcherSaga() {
@@ -16,6 +16,7 @@ export function* watcherSaga() {
     takeLatest(userSlice.addSeriesKeep.type, userHandler.handleAddSeriesKeep),
     takeLatest(userSlice.removeSeriesKeep.type, userHandler.handleRemoveSeriesKeep),
     takeLatest(userSlice.userSeriesKeepList.type, userHandler.handleUserSeriesKeepList),
+    takeLatest(userSlice.userSeriesWatchList.type, userHandler.handleUserSeriesWatchList),
     takeLatest(userSlice.userSeriesProgress.type, userHandler.handleUserSeriesProgress),
     takeLatest(userSlice.addSeriesProgress.type, userHandler.handleAddSeriesProgress),
     takeLatest(userSlice.updateSeriesProgress.type, userHandler.handleUpdateSeriesProgress),

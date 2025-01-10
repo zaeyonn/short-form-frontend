@@ -18,7 +18,10 @@ export const authLoginGoogle = ({code, userId, authType}: any) => client.put('au
 export const userInfo = ({userId}: any) => client.get(`users/info?userId=${userId}`);
 
 // 사용자 시리즈 북마크 리스트
-export const userSeriesKeepList = ({userId}: any) => client.get(`users/keep-list?userId=${userId}`);
+export const userSeriesKeepList = ({userId}: any) => client.get(`users/keep?userId=${userId}`);
+
+// 사용자 시리즈 시청 리스트
+export const userSeriesWatchList = ({userId}: any) => client.get(`users/watch?userId=${userId}`);
 
 // 사용자 시리즈 진행 상태 조회
 export const userSeriesProgress = ({userId, seriesId}: any) => client.get(`users/series-progress?userId=${userId}&seriesId=${seriesId}`);

@@ -4,7 +4,7 @@
 }
 
 .scrim {
-  z-index: 1;
+  z-index: 3;
   position: fixed;
   top: 0;
   width: 100vw;
@@ -140,9 +140,12 @@
 }
 
 .small-content-slider-wrap {
-  margin-top: 30px;
   display: flex;
   flex-direction: column;
+
+  .header {
+    margin-top: 30px;
+  }
 
   .small-content-list {
     overflow-x: scroll;
@@ -228,7 +231,6 @@
       }
     }
   }
-
   .more {
     width: 40px;
     display: flex;
@@ -327,12 +329,14 @@
 .popup-wrap {
   box-sizing: border-box;
   position: absolute;
+  padding-top: 52px;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   background-color: #000000;
-  overflow-y: hidden;
+  overflow-y: scroll;
+  z-index: 3;
 
   .short-form-swiper {
     width: 100%;
@@ -384,6 +388,7 @@
   }
 
   .header {
+    background: #000000;
     position: fixed;
     box-sizing: border-box;
     top: 0px;
@@ -404,17 +409,23 @@
       gap: 14px;
   
       .title {
-        font-size: 14px;
-        line-height: 22px;
+        font-size: 16px;
         font-weight: 500;
+        color: #ffffff;
       }
+    }
+
+    .title {
+      font-weight: 500;
+      font-size: 16px;
     }
   
     .right-section {
       display: flex;
       flex-direction: row;
-      margin-left: auto;
       gap: 12px;
+      font-weight: 300;
+      font-size: 15px;
   
       button {
         width: 52px;
@@ -432,50 +443,11 @@
     img {
       width: 24px;
       height: 24px;
-    }
-  }
 
-  .header-nonfixed {
-    box-sizing: border-box;
-    top: 0px;
-    width: 100vw;
-    height: 48px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 20px;
-    padding-right: 20px;
-    z-index: 1;
-  
-    .left-section {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 14px;
-  
-      .title {
-        font-size: 14px;
-        line-height: 22px;
-        font-weight: 500;
-      }
-    }
-  
-    .right-section {
-      display: flex;
-      flex-direction: row;
-      margin-left: auto;
-      gap: 12px;
-  
-      button {
-        width: 52px;
+      &.profile-icon {
+        width: 28px;
         height: 28px;
       }
-    }
-  
-    img {
-      width: 24px;
-      height: 24px;
     }
   }
 
@@ -508,9 +480,8 @@
   }
 
   .profile-wrap {
-    padding-top: 52px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-bottom: 40px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
   }
@@ -565,6 +536,7 @@
   }
 
   .profile {
+    margin: 0 20px;
     box-sizing: border-box;
     margin-top: 10px;
     align-items: center;
@@ -601,6 +573,7 @@
   }
 
   .wallet {
+    margin: 0 20px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -668,6 +641,7 @@
     margin-top: 34px;
 
     .head{
+      margin: 0 20px;
       font-weight: 600;
       font-size: 18px;
       line-height: 24px;
@@ -676,6 +650,7 @@
     }
 
     .no-content {
+      padding-left: 20px;
       margin-top: 14px;
       color: #353535;
     }
@@ -691,11 +666,44 @@
         height: 80%;
       }
     }
+  
+  .series-container {
+    width: 90%;
+    display: grid;
+    margin: 0 auto;
+    column-gap: 10px;
+    row-gap: 15px;
+    justify-content: flex-start;
+    grid-template-columns: repeat(2, calc(50% - 5px));
+    padding-bottom: 30px;
+
+    
+  .medium-content-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .title {
+      width: 100%;
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 19px;
+      color: #A2A2A2;
+      height: 38px;
+      overflow: hidden;
+    }
   }
+  }
+
+}
   
   .setting {
-    margin-top: 34px;
-    
+    margin: 34px 20px 0px 20px;
 
     .head {
       color: #FFFFFF;
@@ -861,7 +869,7 @@
 
 .bottom-sheet-wrap {
   position: fixed;
-  z-index: 2;
+  z-index: 3;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -1150,7 +1158,7 @@
 
   .menu-wrap {
     position: absolute;
-    width: 50%;
+    width: 230px;
     height: 100%;
     background-color: white;
     display: flex;

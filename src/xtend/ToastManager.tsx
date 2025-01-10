@@ -1,9 +1,7 @@
-import { useSelector, useDispatch } from 'react-redux';
-import * as globalSlice from 'src/redux/globalSlice';
+import { useSelector } from 'react-redux';
 import Toast from 'src/components/ui/Toast';
 
 const ToastManager = () => {
-  const dispatch = useDispatch();
   const { toast } = useSelector((state: any) => state.global);
   
   return (

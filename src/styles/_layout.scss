@@ -72,5 +72,40 @@ body {
     width: 24px;
     height: 24px;
   }
+}
 
+
+.menu {
+  position: fixed;
+  width: 230px;
+  height: 100vh;
+  top: 0px;
+  left: -230px;
+  background-color: #202020;
+  z-index: 3;
+
+  .item {
+    box-sizing: border-box;
+    padding: 12px 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 18px;
+    color: #ffffff;
+
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .divider {
+    margin: 15px 20px;
+    height: 1px;
+    box-sizing: border-box;
+    background-color: #353535;
+  }
 }

@@ -6,9 +6,6 @@ import { useGesture } from '@use-gesture/react';
 
 import * as globalSlice from 'src/redux/globalSlice';
 
-import { UserRootState } from 'src/types';
-
-
 interface Props {
   locked: boolean;
   setLocked: (locked: boolean) => any;
@@ -17,12 +14,12 @@ interface Props {
   handleBottomSheetClose: () => any;
   handleEpisodeChange: (num: number) => any;
   handleEpisodeLock: (index: number) => any;
-  unlockEpisode: number,
+  unlockEpisode: number | undefined,
 }
 
 const SECTION_RANGE = 30;
 
-const UIBottomSheetEpisodeGrid = ({locked, setLocked, currentEp, visibleBottomSheet, handleBottomSheetClose, handleEpisodeChange, handleEpisodeLock, unlockEpisode}: Props) => {
+const UIBottomSheetEpisodeGrid = ({setLocked, currentEp, visibleBottomSheet, handleBottomSheetClose, handleEpisodeChange, unlockEpisode}: Props) => {
   const dispatch = useDispatch();
   const [springs, api] = useSpring(() => ({
     from: { y: 470 },
@@ -30,7 +27,6 @@ const UIBottomSheetEpisodeGrid = ({locked, setLocked, currentEp, visibleBottomSh
   }));
 
   const { selectedSeries } = useSelector((state: any) => state.global);
-  const { user } = useSelector((state: UserRootState) => state.user);
   const [section, setSection] = useState(Math.ceil(currentEp?.episode_num / SECTION_RANGE));
 
   const bind = useGesture(
@@ -48,7 +44,7 @@ const UIBottomSheetEpisodeGrid = ({locked, setLocked, currentEp, visibleBottomSh
   )
 
   const handleEpisodeClick = (index: number) => {
-    if(index <= unlockEpisode) { 
+    if(unlockEpisode && index <= unlockEpisode) { 
       handleEpisodeChange(index);
       closeBottomSheet();
     }
@@ -58,7 +54,7 @@ const UIBottomSheetEpisodeGrid = ({locked, setLocked, currentEp, visibleBottomSh
       closeBottomSheet();
     }
 
-    if(index > unlockEpisode) {
+    if(unlockEpisode && index > unlockEpisode) {
       dispatch(globalSlice.addToast({ id: Date.now(), message: '앞에 놓친 에피소드가 있어요.', duration: 1500  }));
     }
   }
@@ -94,7 +90,7 @@ const UIBottomSheetEpisodeGrid = ({locked, setLocked, currentEp, visibleBottomSh
 
     for (let i = (section - 1) * SECTION_RANGE; i < section * SECTION_RANGE; i++) {
      
-      gridList.push(<div key={i} className='container' onClick={() =>{ handleEpisodeClick(i) }}><div className={`box ${i + 1 <= unlockEpisode ? '' : 'locked'} ${currentEp?.episode_num === i+1 ? 'selected' : ''} `}>{i+1}</div></div>)
+      gridList.push(<div key={i} className='container' onClick={() =>{ handleEpisodeClick(i) }}><div className={`box ${unlockEpisode ? (i + 1 <= unlockEpisode ? '' : 'locked') : ''} ${currentEp?.episode_num === i+1 ? 'selected' : ''} `}>{i+1}</div></div>)
     
       if(i + 1 === selectedSeries.ep_count) {
         break;

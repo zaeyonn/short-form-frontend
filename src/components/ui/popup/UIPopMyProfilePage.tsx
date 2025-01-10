@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { displayPopType } from 'src/common/define';
 import * as globalSlice from 'src/redux/globalSlice';
 import * as userSlice from 'src/redux/userSlice';
 
@@ -9,7 +8,11 @@ import UISmallContentSlider from '../UISmallContentSlider';
 
 const UIPopMyProfile = () => {
   const dispatch = useDispatch();
-  const { user, seriesWatchList, authLoginGoogleResult, authLoginGoogleError } = useSelector((state: any) => state.user);
+
+  const { 
+    user, seriesWatchList, authLoginGoogleResult, authLoginGoogleError,
+    userSeriesWatchListResult, userSeriesWatchListError,
+   } = useSelector((state: any) => state.user);
   
   const loginSheetRef = useRef<any>(null);
 
@@ -27,9 +30,13 @@ const UIPopMyProfile = () => {
     setVisibleLoginBottomSheet(false);
   }
 
+  const handleLogout = () => {
+    dispatch(userSlice.authGuest());
+  }
+
   const signInProcess = (code: string, authType: string) => {
     console.log('signInProcess code, authType', code, authType);
-    dispatch(userSlice.authLoginGoogle({code, userId: user.id, authType}))
+    dispatch(userSlice.authLoginGoogle({code, userId: user.id, authType}));
   }
 
   // SNS 로그인 결과
@@ -53,7 +60,36 @@ const UIPopMyProfile = () => {
       dispatch(userSlice.clearUserState('authLoginGoogleResult'));
       return;
     }
-  }, [authLoginGoogleResult, authLoginGoogleError])
+  }, [authLoginGoogleResult, authLoginGoogleError]);
+
+
+  // 사용자 시청 기록 조회 결과
+  useEffect(() => {
+    if(userSeriesWatchListError) {
+      console.log('userSeriesWatchListError ', userSeriesWatchListError);
+
+      dispatch(userSlice.clearUserState('userSeriesWatchListError'));
+      return;
+    }
+
+    if(userSeriesWatchListResult && userSeriesWatchListResult.data.code === 200) {
+      console.log('userSeriesWatchListResult ', userSeriesWatchListResult);
+      const { watch_list } = userSeriesWatchListResult.data.data;
+      
+      dispatch(userSlice.setSeriesWatchList(watch_list));
+
+      dispatch(userSlice.clearUserState('userSeriesWatchListResult'));
+      return;
+    }
+
+  }, [userSeriesWatchListResult, userSeriesWatchListError])
+
+  useEffect(() => {
+    
+    // 사용자 시청 기록 조회
+    dispatch(userSlice.userSeriesWatchList({ userId: user.id }));
+
+  }, []);
 
   return (
     <>
@@ -110,10 +146,11 @@ const UIPopMyProfile = () => {
                 저장된 기록이 없습니다.
               </div>
           ) : (
-            <UISmallContentSlider
-              contentList={seriesWatchList}
-              highlight=''
-              handleShortFormOpen={()=>{}}/>
+            <div style={{marginTop: 14}}>
+              <UISmallContentSlider
+                contentList={seriesWatchList}
+                highlight=''/>
+            </div>
           )}
         </div>
         <div className='setting'>
@@ -133,6 +170,10 @@ const UIPopMyProfile = () => {
             </div>
             <div>
               회사 소개
+              <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
+            </div>
+            <div onClick={handleLogout}>
+              로그아웃
               <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
             </div>
           </div>

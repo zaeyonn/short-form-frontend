@@ -7,7 +7,7 @@ const initialState = {
   toast: null,
   uiPopName: '',
   navigationBar: {visible: true, title: 'Logo', leftBtn: {icon: 'icon_hamburger.svg', event: () => 0}, rightBtn: {icon: 'icon_search.svg', event: () => 0}},
-
+  seriesPlayer: false,
 
   // login state
   isLogin: false,
@@ -57,9 +57,7 @@ const globalSlice = createSlice({
       state.seriesListError = action.payload;
       state.loading = false;
     },
-    episodeList(state: any) {
-      state.loading = true;
-    },
+    episodeList(_state: any, _action: PayloadAction<any>) {},
     episodeListSuccess(state: any, action) {
       state.episodeListResult = action.payload;
       state.loading = false;
@@ -70,13 +68,16 @@ const globalSlice = createSlice({
     },
     setSelectedSeries(state: any, action) {
       state.selectedSeries = action.payload;
+    },
+    setSeriesPlayer(state: any, action) {
+      state.seriesPlayer = action.payload;
     }
   }
 })
 
 export const { 
   initGlobalState, clearGlobalState, setDisplayPopName, setUiPopName, setNavigationBar, setLoginState,
-  setSelectedSeries, addToast, removeToast,
+  setSelectedSeries, addToast, removeToast, setSeriesPlayer,
 
   seriesList, seriesListSuccess, seriesListFailure,
   episodeList, episodeListSuccess, episodeListFailure

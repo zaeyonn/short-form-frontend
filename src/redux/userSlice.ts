@@ -19,9 +19,7 @@ const userSlice = createSlice({
     clearUserState(state: any, action) {
       state[action.payload] = null
     },
-    userInfo(state: any) {
-      state.loading = true;
-    },
+    userInfo(_state: any, _action: PayloadAction<any>) {},
     userInfoSuccess(state: UserRootState, action: PayloadAction<any>) {
       state.userInfoResult = action.payload
     },
@@ -34,6 +32,9 @@ const userSlice = createSlice({
     setSeriesKeepList(state, action: PayloadAction<any>) {
       state.seriesKeepList = action.payload
     },
+    setSeriesWatchList(state, action: PayloadAction<any>) {
+      state.seriesWatchList = action.payload
+    },
     authGuest(state: any) {
       state.loading = true;
     },
@@ -45,7 +46,7 @@ const userSlice = createSlice({
       state.authGuestError = action.payload;
       state.loading = false;
     },
-    authLoginGoogle(state: any) {
+    authLoginGoogle(state: any, _action: PayloadAction<any>) {
       state.loading = true;
     },
     authLoginGoogleSuccess(state: any, action) {
@@ -59,8 +60,7 @@ const userSlice = createSlice({
     addVideoWatched(state, action: PayloadAction<any>) {
       state.seriesWatchList = [...state.seriesWatchList, {...action.payload}];
     },
-    addSeriesKeep() {
-    },
+    addSeriesKeep(_state: any, _action: PayloadAction<any>) {},
     addSeriesKeepSuccess(state: any, action) {
       state.addSeriesKeepResult = action.payload;
     },
@@ -77,8 +77,8 @@ const userSlice = createSlice({
       state.seriesWatchList = arr;
       console.log(state.seriesWatchList.length);
     },
-    removeSeriesKeep() {
-      
+    removeSeriesKeep(state: any, _action: PayloadAction<any>) {
+      state.loading = true;
     },
     removeSeriesKeepSuccess(state: any, action: PayloadAction<any>) {
       state.removeSeriesKeepResult = action.payload;
@@ -95,32 +95,37 @@ const userSlice = createSlice({
         state.seriesWatchList[index].bookmark = true;
       }
     },
-    userSeriesKeepList() {},
+    userSeriesKeepList(_state: any, _action: PayloadAction<any>) {},
     userSeriesKeepListSuccess(state: any, action: PayloadAction<any>) {
       state.userSeriesKeepListResult = action.payload
     },
     userSeriesKeepListFailure(state: any, action: PayloadAction<any>) {
       state.userSeriesKeepListFailure = action.payload
     },
-    userSeriesProgress(state) {
-      state.loading = true
+    userSeriesWatchList(state: any, _action: PayloadAction<any>) {
+      state.loading = true;
     },
+    userSeriesWatchListSuccess(state: any, action: PayloadAction<any>) {
+      state.userSeriesWatchListResult = action.payload
+    },
+    userSeriesWatchListFailure(state: any, action: PayloadAction<any>) {
+      state.userSeriesWatchListFailure = action.payload
+    },
+    userSeriesProgress(_state: any, _action: PayloadAction<any>) {},
     userSeriesProgressSuccess(state: any, action) {
       state.userSeriesProgressResult = action.payload
     },
     userSeriesProgressFailure(state: any, action) {
       state.userSeriesProgressError = action.payload
     },
-    addSeriesProgress(state) {
-      state.loading = true
-    },
+    addSeriesProgress(_state: any, _action: PayloadAction<any>) {},
     addSeriesProgressSuccess(state: any, action) {
       state.addSeriesProgressResult = action.payload
     },
     addSeriesProgressFailure(state: any, action) {
       state.addSeriesProgressError = action.payload
     },
-    updateSeriesProgress(state) {
+    updateSeriesProgress(state, _action: PayloadAction<any>) {
       state.loading = true
     },
     updateSeriesProgressSuccess(state: any, action) {
@@ -129,9 +134,7 @@ const userSlice = createSlice({
     updateSeriesProgressFailure(state: any, action) {
       state.updateSeriesProgressError = action.payload
     },
-    updateSeriesUnlockEpisode(state) {
-      state.loading = true
-    },
+    updateSeriesUnlockEpisode(_state: any, _action: PayloadAction<any>) {},
     updateSeriesUnlockEpisodeSuccess(state: any, action) {
       state.updateSeriesUnlockEpisodeResult = action.payload
     },
@@ -142,11 +145,12 @@ const userSlice = createSlice({
 });
 
 export const {
-  clearUserState, setUser, setSeriesKeepList, authGuest, authGuestSuccess, authGuestFailure,
+  clearUserState, setUser, setSeriesKeepList, setSeriesWatchList, authGuest, authGuestSuccess, authGuestFailure,
   authLoginGoogle, authLoginGoogleSuccess, authLoginGoogleFailure,
   addVideoWatched, addSeriesKeep, addSeriesKeepSuccess, addSeriesKeepFailure,
   addSeriesWatched, removeSeriesWatched, removeSeriesKeep, removeSeriesKeepSuccess, removeSeriesKeepFailure, 
   changeBookmarkState, userSeriesKeepList, userSeriesKeepListSuccess, userSeriesKeepListFailure,
+  userSeriesWatchList, userSeriesWatchListSuccess, userSeriesWatchListFailure,
   userSeriesProgress, userSeriesProgressSuccess, userSeriesProgressFailure, addSeriesProgress, addSeriesProgressSuccess, addSeriesProgressFailure,
   updateSeriesProgress, updateSeriesProgressSuccess, updateSeriesProgressFailure,
   userInfo, userInfoSuccess, userInfoFailure, updateSeriesUnlockEpisode, updateSeriesUnlockEpisodeSuccess, updateSeriesUnlockEpisodeFailure,

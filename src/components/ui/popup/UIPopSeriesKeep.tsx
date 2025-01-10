@@ -1,56 +1,36 @@
-import { useDispatch } from "react-redux";
-import * as globalSlice from "../../../redux/globalSlice";
-import { useRef, useState } from "react";
-import { displayPopType } from "common/define";
-import UISeriesKeepList from "../UISeriesKeepList";
+import { useDispatch, useSelector } from 'react-redux';
+import * as globalSlice from 'src/redux/globalSlice';
 
-const UIPopSeriesKeep = ({seriesList} : any) => {
+import { UserRootState } from 'src/types';
+import UIMediumContentItem from '../UIMediumContentItem';
+
+const UIPopSeriesKeep = () => {
   const dispatch = useDispatch();
 
-  const [isManageMode, setManageMode] = useState<boolean>(false);
+  const { seriesKeepList } = useSelector((state: UserRootState) => state.user)
 
-  const removeVideos = useRef<Array<any>>([]);
-
-  const handleClick = () => {
-    
+  const handleClose = () => {
+    dispatch(globalSlice.setDisplayPopName(''));
   }
 
   return (
-    <>
-      <div className="popup-wrap">
-        <div className='header-nonfixed'>
-          {(isManageMode) ? (
-            <>
-              <div className="right-section">
-                <button onClick={() => {setManageMode(false)}}>취소</button>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="left-section">
-                <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={() => {dispatch(globalSlice.setDisplayPopName(''))}}/>
-                <span className="title">소장</span>
-              </div>
-
-              <div className="right-section">
-                <button onClick={() => {setManageMode(true)}}>리스트 관리</button>
-                <button onClick={() => {dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_VIDEO_WATCH.name))}}>시청 기록</button>
-              </div>
-            </>
-          )}
+    <div className='popup-wrap'>
+      <div className='header'>
+        <div className="left-section">
+          <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={handleClose}/>
         </div>
-
-        {isManageMode && (
-          <div className="footer">
-            <div className="right-section">
-              <button >저장</button>
-            </div>
-          </div>)}
-
-          <UISeriesKeepList isManageMode={isManageMode} seriesList={seriesList} removeVideos={removeVideos}/>
+        <div className='title'>
+          북마크
+        </div>
+        <div className='right-section'>
+          선택
+        </div>
       </div>
-    </>
+      <div className='series-container'>
+      { seriesKeepList.map((item: any, index: number) => <UIMediumContentItem key={index} item={item}/>)}
+      </div>
+    </div>
   )
 }
 
-export default UIPopSeriesKeep;
+export default UIPopSeriesKeep
