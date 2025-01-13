@@ -1,14 +1,14 @@
 import { useDispatch } from 'react-redux';
 import * as globalSlice from 'src/redux/globalSlice';
 
-import UIMediumContentItem from '../UIMediumContentItem';
+import UIMediumContentItem from '../components/ui/UIMediumContentItem';
 
 interface Props {
-  title: string;
-  seriesList: any[];
+  title?: string;
+  seriesList?: any[];
 }
 
-const UIPopSeriesList = (props: Props) => {
+const SeriesListPage = (props: Props) => {
   const dispatch = useDispatch();
 
   const handleClose = () => {
@@ -26,10 +26,10 @@ const UIPopSeriesList = (props: Props) => {
         </div>
       </div>
       <div className='series-container'>
-      { props.seriesList.map((item: any, index: number) => <UIMediumContentItem key={index} item={item}/>)}
+      { props.seriesList?.map((item: any, index: number) => <UIMediumContentItem key={index} item={item}/>)}
       </div>
     </div>
   )
 }
 
-export default UIPopSeriesList
+export default SeriesListPage

@@ -17,7 +17,7 @@ type bottomSheetHandle = {
 const UIBottomSheetLogin = forwardRef<bottomSheetHandle, Props>(({signInProcess, visible, handleLoginBottomSheetClose}: any, ref) => {
   const [springs, api] = useSpring(() => ({
       from: { y: 280 },
-      config: {mass: 1.1, tension: 270, friction: 25},
+      config: {mass: 0.6, tension: 270, friction: 25},
   }));
 
   const bind = useGesture(

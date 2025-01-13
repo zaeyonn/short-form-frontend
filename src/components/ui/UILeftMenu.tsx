@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import { displayPopType } from "common/define";
-import { useDispatch } from "react-redux";
+import { Link } from 'react-router-dom';
+
 import { useSpring, animated } from '@react-spring/web';
-import * as globalSlice from "src/redux/globalSlice";
 
 interface Props {
   visible: boolean;
@@ -10,7 +9,7 @@ interface Props {
 }
 
 const UILeftMenu = (props: Props) => {
-  const dispatch = useDispatch();
+
   const [springs, api] = useSpring(() => ({
     from: { x: 0, y: 0 },
     config: {mass: 0.6, tension: 270, friction: 25},
@@ -20,12 +19,6 @@ const UILeftMenu = (props: Props) => {
     props.handleMenuClose();
 
     closeMenu();
-  }
-
-  const handleMenuClick = (popName: string) => {
-    dispatch(globalSlice.setDisplayPopName(popName));
-
-    handleClose();
   }
 
   const openMenu = () => {
@@ -65,10 +58,10 @@ const UILeftMenu = (props: Props) => {
         <img src='resources/icons/icon_home_m.svg'/>
         홈
       </div>
-      <div className='item' onClick={() => handleMenuClick(displayPopType.POPUP_SERIES_KEEP.name)}>
+      <Link to='/bookmark' className='item' onClick={handleClose}>
         <img src='resources/icons/icon_bookmark_m.svg'/>
         북마크
-      </div>
+      </Link>
       <div className="divider"/>
       <div className='item'>
         <img src='resources/icons/icon_event_m.svg'/>

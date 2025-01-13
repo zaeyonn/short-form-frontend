@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import * as globalSlice from 'src/redux/globalSlice';
 
 interface SallContentItemProps {
@@ -10,13 +11,11 @@ const UISmallContentItem = ({item, highlight}: SallContentItemProps) => {
   const dispatch = useDispatch();
 
   const handleSeriesPlayerOpen = () => {
-      window.scrollTo(0, 0);
-      dispatch(globalSlice.setSeriesPlayer(true));
       dispatch(globalSlice.setSelectedSeries(item));
   }
   
   return (
-    <div className='small-content-item' onClick={() => handleSeriesPlayerOpen()}>  
+    <Link to='/series' className='small-content-item' onClick={() => handleSeriesPlayerOpen()}>  
       <div className='poster-wrap'>
         {highlight && (
           <span className='highlight'>{highlight}</span>
@@ -27,7 +26,7 @@ const UISmallContentItem = ({item, highlight}: SallContentItemProps) => {
         <img className='poster-img' src={`${import.meta.env.VITE_SERVER_URL}/images/poster/${item.poster_img}`}/>
       </div>
       <div className='title'>{item.title}</div>
-    </div>
+    </Link>
   )
 }
 

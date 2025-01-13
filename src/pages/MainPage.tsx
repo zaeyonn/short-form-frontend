@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { displayPopType, uiPopType } from 'common/define';
+import { Link } from 'react-router-dom';
+import { displayPopType } from 'common/define';
 import { Series } from 'src/types/index';
 
 import * as globalSlice from 'src/redux/globalSlice';
@@ -9,12 +10,11 @@ import * as userSlice from 'src/redux/userSlice';
 import UIMainContentSlider from "components/ui/UIMainContentSlider"
 import UISmallContentSlider from "components/ui/UISmallContentSlider"
 import UIVerticalContentList from "components/ui/UIVerticalContentList"
-import UIPopSeriesPlayer from "components/ui/popup/UIPopSeriesPlayer"
-import UIPopMyProfile from 'components/ui/popup/UIPopMyProfilePage';
-import UIPopSeriesKeep from 'components/ui/popup/UIPopSeriesKeep';
+import UIPopSeriesPlayer from "pages/SeriesPlayerPage"
+import UIPopSeriesKeep from 'pages/SeriesKeepPage';
 import UILeftMenu from 'components/ui/UILeftMenu';
 import UIPopSignUp from 'components/ui/popup/UIPopSignUp';
-import UIPopSeriesList from 'components/ui/popup/UIPopSeriesList';
+import UIPopSeriesList from 'pages/SeriesListPage';
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ const MainPage = () => {
   }
 
   const handleProfileClick = () => {
-    dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_MYPROFILE.name));
+    
   }
 
   const handleSeriesListOpen = (title: string, seriesList: Series []) => {
@@ -144,26 +144,6 @@ const MainPage = () => {
     dispatch(globalSlice.seriesList());
   }, [])
 
-  // 메인화면 네비바 조정
-  useEffect(() => {
-    const navBar = {
-      visible: true, 
-      title: 'Logo', 
-      leftBtn: {
-        icon: 'icon_hamburger.svg', 
-        event: () => { 
-          dispatch(globalSlice.setUiPopName(uiPopType.UI_LEFT_MENU.name));
-        }
-      }, 
-      
-      rightBtn: {
-        icon: 'icon_search.svg', 
-        event: () => 0
-      }
-    }
-    dispatch(globalSlice.setNavigationBar(navBar));
-  }, [])
-
   return (
     <>
       <div className='page-wrap' style={{height: displayPopName ? 500 : 'auto'}}>
@@ -173,7 +153,9 @@ const MainPage = () => {
             <span className="title">Logo</span>
           </div>
           <div className='right-section'>
-            <img className='profile-icon' src={`resources/icons/icon_profile.svg`} onClick={handleProfileClick}/>
+            <Link to='/profile'>
+              <img className='profile-icon' src={`resources/icons/icon_profile.svg`} onClick={handleProfileClick}/>
+            </Link>
           </div>
         </div>
         <UIMainContentSlider
@@ -206,7 +188,6 @@ const MainPage = () => {
       />
       { displayPopName === displayPopType.POPUP_SHORT_FORM_PLAYER.name && (<UIPopSeriesPlayer/>)}
       { displayPopName === displayPopType.POPUP_SERIES_LIST.name && (<UIPopSeriesList title={selectedTitle} seriesList={selectedSeriesList}/>)}
-      { displayPopName === displayPopType.POPUP_MYPROFILE.name && (<UIPopMyProfile/>)}
       { displayPopName === displayPopType.POPUP_SERIES_KEEP.name && (<UIPopSeriesKeep/>)}
       { displayPopName === displayPopType.POPUP_SIGN_UP.name && (<UIPopSignUp/>)}
 

@@ -1,16 +1,16 @@
-import { useDispatch, useSelector } from 'react-redux';
-import * as globalSlice from 'src/redux/globalSlice';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { UserRootState } from 'src/types';
-import UIMediumContentItem from '../UIMediumContentItem';
+import UIMediumContentItem from '../components/ui/UIMediumContentItem';
 
-const UIPopSeriesKeep = () => {
-  const dispatch = useDispatch();
+const SeriesKeepPage = () => {
+  const navigate = useNavigate();
 
   const { seriesKeepList } = useSelector((state: UserRootState) => state.user)
 
   const handleClose = () => {
-    dispatch(globalSlice.setDisplayPopName(''));
+    navigate(-1);
   }
 
   return (
@@ -33,4 +33,4 @@ const UIPopSeriesKeep = () => {
   )
 }
 
-export default UIPopSeriesKeep
+export default SeriesKeepPage

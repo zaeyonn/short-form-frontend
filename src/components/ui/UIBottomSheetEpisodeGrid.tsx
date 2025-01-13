@@ -23,7 +23,7 @@ const UIBottomSheetEpisodeGrid = ({setLocked, currentEp, visibleBottomSheet, han
   const dispatch = useDispatch();
   const [springs, api] = useSpring(() => ({
     from: { y: 470 },
-    config: {mass: 1.1, tension: 270, friction: 25},
+    config: {mass: 0.6, tension: 270, friction: 25},
   }));
 
   const { selectedSeries } = useSelector((state: any) => state.global);

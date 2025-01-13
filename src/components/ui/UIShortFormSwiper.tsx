@@ -21,7 +21,7 @@ const UIShortFormSwiper = ({episodeList, videoRef, handleTimeUpdate, toggleTools
         if(unlockEpisode && index <= unlockEpisode) {
           return (
             <SwiperSlide className='short-form' key={index}>
-              <video id={`slide-idx-${index}`} ref={lastEpisodeRef.current - 1 === index ? videoRef : null} autoPlay={lastEpisodeRef.current - 1 === index ? true : false} onTimeUpdate={handleTimeUpdate}>
+              <video id={`slide-idx-${index}`} ref={lastEpisodeRef.current - 1 === index ? videoRef : null} autoPlay={lastEpisodeRef.current - 1 === index ? true : false} onTimeUpdate={handleTimeUpdate} playsInline>
                 <source src={`${import.meta.env.VITE_SERVER_URL}/videos/${i.series_id}/${i.video}`}></source>
               </video>
             </SwiperSlide>

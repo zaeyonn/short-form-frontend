@@ -1,13 +1,14 @@
 import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as globalSlice from 'src/redux/globalSlice';
+import { useNavigate } from 'react-router-dom';
 import * as userSlice from 'src/redux/userSlice';
 
-import UIBottomSheetLogin from '../UIBottomSheetLogin';
-import UISmallContentSlider from '../UISmallContentSlider';
+import UIBottomSheetLogin from 'components/ui/UIBottomSheetLogin';
+import UISmallContentSlider from 'components/ui/UISmallContentSlider';
 
-const UIPopMyProfile = () => {
+const MyProfilePage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { 
     user, seriesWatchList, authLoginGoogleResult, authLoginGoogleError,
@@ -18,8 +19,8 @@ const UIPopMyProfile = () => {
 
   const [visibleLoginBottomSheet, setVisibleLoginBottomSheet] = useState(false);
   
-  const handleButtonClick = (displayPopName: string) => {
-    dispatch(globalSlice.setDisplayPopName(displayPopName));
+  const handleClose = () => {
+    navigate(-1);
   }
 
   const handleLoginBottomSheetOpen = () => {
@@ -96,7 +97,7 @@ const UIPopMyProfile = () => {
       <div className='popup-wrap'>
         <div className='header'>
           <div className="left-section">
-            <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={() => handleButtonClick('')}/>
+            <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={() => handleClose()}/>
           </div>
         </div>
         <div className='profile-wrap'>
@@ -190,4 +191,4 @@ const UIPopMyProfile = () => {
   );
 };
 
-export default UIPopMyProfile;
+export default MyProfilePage;

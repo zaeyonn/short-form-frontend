@@ -1,14 +1,17 @@
 import { useEffect, useState, useRef, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from 'react-router-dom';
 
 import * as globalSlice from 'src/redux/globalSlice';
 import * as userSlice from 'src/redux/userSlice';
 
 import UIShortFormSwiper from "components/ui/UIShortFormSwiper";
-import UIBottomSheetEpisodeGrid from "../UIBottomSheetEpisodeGrid";
+import UIBottomSheetEpisodeGrid from "../components/ui/UIBottomSheetEpisodeGrid";
 import UILayerLockedEpisode from "components/ui/layer/UILayerLockedEpisode";
 
 const UIPopSeriesPlayer = ({}) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {
      user, seriesKeepList, addSeriesProgressResult, addSeriesProgressError,
@@ -33,10 +36,8 @@ const UIPopSeriesPlayer = ({}) => {
   const hideToolsTimeout = useRef<any>();
   const lastEpisodeRef = useRef<number>();
 
-  const dispatch = useDispatch();
-
   const handleClose = () => {
-    dispatch(globalSlice.setSeriesPlayer(false));
+    navigate(-1);
   }
 
   // 도구 토글
