@@ -37,7 +37,7 @@ const MyProfilePage = () => {
 
   const signInProcess = (code: string, authType: string) => {
     console.log('signInProcess code, authType', code, authType);
-    dispatch(userSlice.authLoginGoogle({code, userId: user.id, authType}));
+    dispatch(userSlice.authLoginGoogle({code, userId: user?.id, authType}));
   }
 
   // SNS 로그인 결과
@@ -88,7 +88,7 @@ const MyProfilePage = () => {
   useEffect(() => {
     
     // 사용자 시청 기록 조회
-    dispatch(userSlice.userSeriesWatchList({ userId: user.id }));
+    dispatch(userSlice.userSeriesWatchList({ userId: user?.id }));
 
   }, []);
 
@@ -103,9 +103,13 @@ const MyProfilePage = () => {
         <div className='profile-wrap'>
           <div className='profile'>
             <div className='profile-img'>
-            {/* <img src='resources/icons/icon_profile.svg'/> */}
+              {(user?.auth === 'guest') ? (
+                <img className='guest-img' src='resources/icons/icon_guest.svg'/>
+              ) : (
+                <img className='user-img' src={user?.profile_img}/>
+              )}
             </div>
-            {(user.auth === 'guest') ? (
+            {(user?.auth === 'guest') ? (
               <div className='nickname' onClick={handleLoginBottomSheetOpen}>
                 로그인을 해주세요
                 <img src='resources/icons/icon_arrow_right_s.svg'/>
@@ -113,14 +117,14 @@ const MyProfilePage = () => {
             ) : (      
               <div>     
               <div className='nickname'>
-                {`${user.nickname}님`}
+                {`${user?.nickname}님`}
                 <img src='resources/icons/icon_arrow_right_s.svg'/>
               </div>
-              <div className='email'>{user.email}</div>
+              <div className='email'>{user?.email}</div>
               </div> 
             )}       
           </div>
-          { user.auth !== 'guest' && (
+          { user?.auth !== 'guest' && (
           <div className='wallet'>
             <div className='head'>
               내 지갑
@@ -130,7 +134,7 @@ const MyProfilePage = () => {
             <div className='point'>
               <div className='my-point'>
                 <img src='resources/icons/icon_point.svg'/>
-                <span>{`${user.paid_point + user.free_point}`}</span>
+                <span>{`${user?.paid_point + user?.free_point}`}</span>
               </div>
               <button>
                 충전하기
@@ -149,15 +153,15 @@ const MyProfilePage = () => {
           ) : (
             <div style={{marginTop: 14}}>
               <UISmallContentSlider
-                contentList={seriesWatchList}
+                seriesList={seriesWatchList}
                 highlight=''/>
             </div>
           )}
         </div>
         <div className='setting'>
-          <div className='head'>설정</div>
+          {/* <div className='head'>설정</div> */}
           <div className='menu-list'>
-            <div>
+            {/* <div>
               미션 또는 이벤트
               <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
             </div>
@@ -172,11 +176,13 @@ const MyProfilePage = () => {
             <div>
               회사 소개
               <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-            </div>
+            </div> */}
+            { user?.auth !== 'guest' && (
             <div onClick={handleLogout}>
               로그아웃
               <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
             </div>
+            )}
           </div>
         </div>
         </div>

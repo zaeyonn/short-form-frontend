@@ -2,7 +2,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserRootState } from 'src/types';
 
 const initialState: UserRootState = {
-  user: null,
+  user: {
+    id: localStorage.getItem('user-id') ? localStorage.getItem('user-id') : null
+  },
   loading: false,
 
   seriesWatchList: [],

@@ -1,6 +1,4 @@
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import * as globalSlice from 'src/redux/globalSlice';
+import { useNavigate } from "react-router-dom";
 
 interface SallContentItemProps {
   item: any;
@@ -8,14 +6,14 @@ interface SallContentItemProps {
 }
 
 const UISmallContentItem = ({item, highlight}: SallContentItemProps) => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSeriesPlayerOpen = () => {
-      dispatch(globalSlice.setSelectedSeries(item));
+    navigate(`/series/${item.id}`);
   }
   
   return (
-    <Link to='/series' className='small-content-item' onClick={() => handleSeriesPlayerOpen()}>  
+    <div draggable={false} className='small-content-item' onClick={(e) => handleSeriesPlayerOpen()}>  
       <div className='poster-wrap'>
         {highlight && (
           <span className='highlight'>{highlight}</span>
@@ -23,10 +21,10 @@ const UISmallContentItem = ({item, highlight}: SallContentItemProps) => {
         <div className='tag-list'>
           { item.keyword?.map((i: string, idx: number) => <span className='tag' key={idx}>{i}</span>) }
         </div>
-        <img className='poster-img' src={`${import.meta.env.VITE_SERVER_URL}/images/poster/${item.poster_img}`}/>
+        <img draggable={false} className='poster-img' src={`${import.meta.env.VITE_SERVER_URL}/images/poster/${item.poster_img}`}/>
       </div>
       <div className='title'>{item.title}</div>
-    </Link>
+    </div>
   )
 }
 

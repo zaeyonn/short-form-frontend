@@ -3,16 +3,16 @@ import { useSelector } from 'react-redux';
 import { useSpring, animated } from '@react-spring/web';
 import { useGesture } from 'react-use-gesture';
 
-import { UserRootState } from 'src/types';
+import { UserRootState, Series } from 'src/types';
 
 interface Props {
+  series: Series | undefined;
   handleLockedClose: () => any;
   handlePaymentComplete: () => any;
 }
 
-const UILayerLockedEpisode = ({handleLockedClose, handlePaymentComplete}: Props) => {
+const UILayerLockedEpisode = ({series, handleLockedClose, handlePaymentComplete}: Props) => {
   const { user } = useSelector((state: UserRootState) => state.user);
-  const { selectedSeries } = useSelector((state: any) => state.global);
 
   const [springs, api] = useSpring(() => ({
       from: { y: 600 },
@@ -61,7 +61,7 @@ const UILayerLockedEpisode = ({handleLockedClose, handlePaymentComplete}: Props)
         광고 보고 다음 화 보기
         <span>오늘 시청 (1/10)</span>
       </button>
-      <img onClick={handleLockedClose} src='resources/icons/icon_close_l.svg'/>
+      <img onClick={handleLockedClose} src='/resources/icons/icon_close_l.svg'/>
     </div>
     )}
     <animated.div
@@ -77,8 +77,8 @@ const UILayerLockedEpisode = ({handleLockedClose, handlePaymentComplete}: Props)
     </div>
     <div className='body'>
       <div className='point-wrap' style={{marginTop: 16}}>
-        <div className='item'><div className='label'>보유한 포인트</div><span className='point'>{user.paid_point + user.free_point}<img src='resources/icons/icon_point_s.svg'/></span></div>
-        <div className='item'><div className='label'>다음 화 필요 포인트</div><span className='point'>{selectedSeries.req_point}<img src='resources/icons/icon_point_s.svg'/></span></div>
+        <div className='item'><div className='label'>보유한 포인트</div><span className='point'>{user?.paid_point + user?.free_point}<img src='resources/icons/icon_point_s.svg'/></span></div>
+        <div className='item'><div className='label'>다음 화 필요 포인트</div><span className='point'>{series?.req_point}<img src='resources/icons/icon_point_s.svg'/></span></div>
       </div>
       <div className='point-wrap highlight'>
         <div className='item'><div className='label light'><span className='discount-sign'>첫 충전 할인</span><div>2,000 포인트<span className='bonus'> + 2,000</span></div></div><button onClick={handlePaymentStart}>20,000<span>원</span></button></div>

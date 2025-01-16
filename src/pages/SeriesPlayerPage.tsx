@@ -1,16 +1,18 @@
 import { useEffect, useState, useRef, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import * as globalSlice from 'src/redux/globalSlice';
 import * as userSlice from 'src/redux/userSlice';
 
+import { Series } from 'src/types';
 import UIShortFormSwiper from "components/ui/UIShortFormSwiper";
 import UIBottomSheetEpisodeGrid from "../components/ui/UIBottomSheetEpisodeGrid";
 import UILayerLockedEpisode from "components/ui/layer/UILayerLockedEpisode";
 
 const UIPopSeriesPlayer = ({}) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const {
@@ -18,7 +20,7 @@ const UIPopSeriesPlayer = ({}) => {
      userSeriesProgressResult, userSeriesProgressError, updateSeriesProgressResult, updateSeriesProgressError,
      updateSeriesUnlockEpisodeResult, updateSeriesUnlockEpisodeError
   } = useSelector((state: any) => state.user);
-  const { episodeListResult, episodeListError, selectedSeries } = useSelector((state: any) => state.global);
+  const { episodeListResult, episodeListError, seriesInfoResult, seriesInfoError } = useSelector((state: any) => state.global);
 
   const [playing, setPlaying] = useState<boolean>(true);
   const [visibleTools, setVisibleTools] = useState(true);
@@ -27,14 +29,17 @@ const UIPopSeriesPlayer = ({}) => {
   const [episodeList, setEpisodeList] = useState([]);
   const [visibleBottomSheet, setVisibleBottomSheet] = useState(false);
   const [keep, setKeep] = useState<boolean>();
-  const [keepCount, setKeepCount] = useState(selectedSeries.keeps);
+  const [keepCount, setKeepCount] = useState<any>();
   const [locked, setLocked] = useState(false);
   const [unlockEpisode, setUnlockEpisode] = useState<number>();
+  const [muted, setMuted] = useState<boolean>(true);
+  const [series, setSeries] = useState<Series>();
 
   const swiperRef = useRef<any>(null);
   const videoRef = useRef<any>(null);
   const hideToolsTimeout = useRef<any>();
   const lastEpisodeRef = useRef<number>();
+  const seriesIdRef = useRef<string>(location.pathname.split('/')[2]);
 
   const handleClose = () => {
     navigate(-1);
@@ -129,7 +134,7 @@ const UIPopSeriesPlayer = ({}) => {
     setCurrentEp(episodeList[swiper.activeIndex]);
 
     if(unlockEpisode && swiper.activeIndex + 1 <= unlockEpisode) {
-      dispatch(userSlice.updateSeriesProgress({ userId: user.id, seriesId: selectedSeries.id, ep: swiper.activeIndex + 1 }));
+      dispatch(userSlice.updateSeriesProgress({ userId: user.id, seriesId: seriesIdRef.current, ep: swiper.activeIndex + 1 }));
     }
   }
 
@@ -144,7 +149,7 @@ const UIPopSeriesPlayer = ({}) => {
     if(index === unlockEpisode) {
       setLocked(true);
     }
-  }, [episodeList, selectedSeries]);
+  }, [episodeList, seriesIdRef.current]);
 
   const handleBottomSheetOpen = useCallback(() => {
 
@@ -160,10 +165,10 @@ const UIPopSeriesPlayer = ({}) => {
 
     if(keep) {
       setKeepCount(keepCount-1);
-      dispatch(userSlice.removeSeriesKeep({ userId: user.id, seriesId: selectedSeries.id }));
+      dispatch(userSlice.removeSeriesKeep({ userId: user.id, seriesIdList: [seriesIdRef.current] }));
     } else {
       setKeepCount(keepCount+1);
-      dispatch(userSlice.addSeriesKeep({ userId: user.id, seriesId: selectedSeries.id }));
+      dispatch(userSlice.addSeriesKeep({ userId: user.id, seriesId: seriesIdRef.current }));
     }
   }
 
@@ -183,7 +188,12 @@ const UIPopSeriesPlayer = ({}) => {
     setLocked(false);
 
     // 사용자 잠금 회차 업데이트
-    dispatch(userSlice.updateSeriesUnlockEpisode({ userId: user.id, seriesId: selectedSeries.id, ep: unlockEpisode}))
+    dispatch(userSlice.updateSeriesUnlockEpisode({ userId: user.id, seriesId: seriesIdRef.current, ep: unlockEpisode}))
+  }
+
+  const handleMuted = () => {
+    setMuted(!muted);
+    videoRef.current.muted = !videoRef.current.muted;
   }
 
   useEffect(() => {
@@ -272,8 +282,8 @@ const UIPopSeriesPlayer = ({}) => {
       // 사용자의 해당 시리즈 진행 상태가 존재하지 않는 경우
       if(userSeriesProgressResult.data.data === 'no_progress') {
         lastEpisodeRef.current = 1;
-        setUnlockEpisode(selectedSeries.free_count);
-        dispatch(userSlice.addSeriesProgress({ userId: user.id, seriesId: selectedSeries.id, ep: 1, free_ep: selectedSeries.free_count }));
+        setUnlockEpisode(series?.free_count);
+        dispatch(userSlice.addSeriesProgress({ userId: user?.id, seriesId: seriesIdRef.current, ep: 1, free_ep: series?.free_count }));
         setCurrentEp(episodeList[0]);
       }
 
@@ -298,6 +308,23 @@ const UIPopSeriesPlayer = ({}) => {
 
   }, [episodeListResult, episodeListError])
 
+  // 시리즈 정보 조회 결과
+  useEffect(() => {
+    if(seriesInfoError) {
+      console.log('seriesInfoError ', seriesInfoError);
+
+      dispatch(globalSlice.clearGlobalState('seriesInfoError'));
+    }
+
+    if(seriesInfoResult && seriesInfoResult.data.code === 200) {
+      console.log('seriesInfoResult ', seriesInfoResult);
+      const { series } = seriesInfoResult.data.data;
+      
+      setKeepCount(series.keeps);
+      setSeries(series);
+    }
+  }, [seriesInfoResult, seriesInfoError])
+
   // 현재 에피소드 
   useEffect(() => {
     if(episodeList[0] && lastEpisodeRef.current) {
@@ -316,7 +343,7 @@ const UIPopSeriesPlayer = ({}) => {
 
   useEffect(() => {
     if(videoRef.current) {
-      // 숏폼 영상 다보면 다음 에피소드 자동 재생
+      // 현재 에피소드 다보면 다음 에피소드 자동 재생
       videoRef.current.addEventListener('ended', () => {
         console.log('video ended');
         if(currentEp.episode_num < episodeList.length) {
@@ -327,15 +354,18 @@ const UIPopSeriesPlayer = ({}) => {
   }, [videoRef.current, swiperRef.current])
 
   useEffect(() => {
-    // 1. 시리즈의 전체 에피소드 리스트 조회
-    dispatch(globalSlice.episodeList({ seriesId: selectedSeries.id }));
+    // 1. 시리즈 정보 조회
+    dispatch(globalSlice.seriesInfo({ seriesId: seriesIdRef.current }));
 
-    // 2. 사용자의 시리즈 진행 상태 조회
-    dispatch(userSlice.userSeriesProgress({ userId: user.id, seriesId: selectedSeries.id }));
+    // 2. 시리즈의 전체 에피소드 리스트 조회
+    dispatch(globalSlice.episodeList({ seriesId: seriesIdRef.current }));
+
+    // 3. 사용자의 시리즈 진행 상태 조회
+    dispatch(userSlice.userSeriesProgress({ userId: user?.id, seriesId: seriesIdRef.current }));
     
-    // 3. 시리즈 북마크 확인
+    // 4. 시리즈 북마크 확인
     seriesKeepList.forEach((keep: any) => {
-      if (keep.id === selectedSeries.id) {
+      if (keep.id === seriesIdRef.current) {
         setKeep(true);
         return;
       }
@@ -346,6 +376,8 @@ const UIPopSeriesPlayer = ({}) => {
     <div className='popup-wrap' style={{paddingTop: 0, overflowY: 'hidden'}}>
       <div className='short-form-swiper'>
         <UIShortFormSwiper
+        playing={playing}
+        muted={muted}
         swiperRef={swiperRef}
         handleSlideChange={handleSlideChange}
         handleSlideChangeStart={handleSlideChangeStart}
@@ -360,21 +392,24 @@ const UIPopSeriesPlayer = ({}) => {
         <>
           <div className='header' style={{background: 'none'}}>
             <div className="left-section">
-              <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={handleClose}/>
-              <span className="title">{`${selectedSeries.title} ${currentEp?.episode_num ? `[${currentEp.episode_num}]` : ''}`}</span>
+              <img src={`/resources/icons/icon_arrow_left_m.svg`} onClick={handleClose}/>
+              <span className="title">{`${series?.title} ${currentEp?.episode_num ? `[${currentEp.episode_num}]` : ''}`}</span>
+            </div>
+            <div className='right-section'>
+              <img className='speaker-icon' src={`/resources/icons/${muted ? 'icon_speaker_muted_l.svg' : 'icon_speaker_l.svg'}`} onClick={handleMuted}/>
             </div>
           </div>
           { !locked && <>
-          { playing && (<img className='main-play-btn' src="resources/icons/icon_pause_main.svg" onClick={togglePlay}/>) }
-          { !playing && (<img className='main-play-btn' src="resources/icons/icon_play_main.svg" onClick={togglePlay}/>) }
+          { playing && (<img className='main-play-btn' src="/resources/icons/icon_pause_main.svg" onClick={togglePlay}/>) }
+          { !playing && (<img className='main-play-btn' src="/resources/icons/icon_play_main.svg" onClick={togglePlay}/>) }
           </> }
           <div className='right-menu'>
             <div className='btn-wrap' onClick={handleSeriesKeep}>
-              <img id='bookmark-btn' src={`resources/icons/icon_bookmark${keep ? '_fill' : ''}.svg`}/>
+              <img id='bookmark-btn' src={`/resources/icons/icon_bookmark${keep ? '_fill' : ''}.svg`}/>
               {keepCount}
             </div>
             <div className='btn-wrap' onClick={handleBottomSheetOpen}>
-              <img id='list-btn' src='resources/icons/icon_list.svg'/>
+              <img id='list-btn' src='/resources/icons/icon_list.svg'/>
               List
             </div>
           </div>
@@ -386,6 +421,7 @@ const UIPopSeriesPlayer = ({}) => {
         </>
       )}
         <UIBottomSheetEpisodeGrid
+          series={series}
           locked={locked}
           setLocked={setLocked}
           currentEp={currentEp}
@@ -397,6 +433,7 @@ const UIPopSeriesPlayer = ({}) => {
         />
         {locked && (
           <UILayerLockedEpisode
+          series={series}
           handleLockedClose={handleLockedClose}
           handlePaymentComplete={handlePaymentComplete}/>
         )}

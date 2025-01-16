@@ -13,7 +13,7 @@ const RouteManager = () => {
     <Routes>
       <Route path='/' element={<MainPage/>} />
       <Route path='/bookmark' element={<SeriesKeepPage/>} />
-      <Route path='/series' element={<SeriesPlayerPage/>} />
+      <Route path='/series/:seriesId' element={<SeriesPlayerPage/>} />
       <Route path='/profile' element={<MyProfilePage/>} />
       <Route path='/series-list' element={<SeriesListPage/>} />
       <Route path='/callback/google' element={<CallbackGoogle/>} />

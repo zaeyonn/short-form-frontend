@@ -9,6 +9,7 @@ export function* watcherSaga() {
     // global
     takeLatest(globalSlice.episodeList.type, globalHandler.handleEpisodeList),
     takeLatest(globalSlice.seriesList.type, globalHandler.handleSeriesList),
+    takeLatest(globalSlice.seriesInfo.type, globalHandler.handleSeriesInfo),
   
     // user
     takeLatest(userSlice.authGuest.type, userHandler.handleAuthGuest),

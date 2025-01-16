@@ -15,6 +15,16 @@ export function* handleSeriesList(): Generator<any> {
   }
 }
 
+export function* handleSeriesInfo(action: PayloadAction<any>): Generator<any>  {
+  try {
+    const response = yield call(api.seriesInfo, action.payload);
+
+    yield put(slice.seriesInfoSuccess(response));
+  } catch (error) {
+    yield put(slice.seriesInfoFailure(error));
+  }
+}
+
 export function* handleEpisodeList(action: PayloadAction<any>): Generator<any> {
   try {
     const response = yield call(api.episodeList, action.payload);

@@ -7,7 +7,7 @@ interface Props {
 const SignInWithGoogle = ({signInProcess}: Props) => {
 
   const handleCredentialResponse = (e: any) => {
-    if(e.origin.lastIndexOf('localhost') >= 0 && e.data.auth_type === 'google' && e.data.hasOwnProperty('code')) {
+    if(e.origin.lastIndexOf(import.meta.env.VITE_WEB_ROOT) >= 0 && e.data.auth_type === 'google' && e.data.hasOwnProperty('code')) {
       
       signInProcess(e.data.code, 'google');
     }

@@ -1,34 +1,25 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { displayPopType } from 'common/define';
-import { Series } from 'src/types/index';
+import { Link, useNavigate } from 'react-router-dom';
 
 import * as globalSlice from 'src/redux/globalSlice';
 import * as userSlice from 'src/redux/userSlice';
 
 import UIMainContentSlider from "components/ui/UIMainContentSlider"
+import UIDesktopMainContentSlider from 'components/ui/UIDesktopMainContentSlider';
 import UISmallContentSlider from "components/ui/UISmallContentSlider"
 import UIVerticalContentList from "components/ui/UIVerticalContentList"
-import UIPopSeriesPlayer from "pages/SeriesPlayerPage"
-import UIPopSeriesKeep from 'pages/SeriesKeepPage';
 import UILeftMenu from 'components/ui/UILeftMenu';
-import UIPopSignUp from 'components/ui/popup/UIPopSignUp';
-import UIPopSeriesList from 'pages/SeriesListPage';
 
 const MainPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const { displayPopName, seriesListResult, seriesListError, seriesPlayer } = useSelector((state: any) => state.global)
+  const { seriesList, displayPopName, seriesListResult, seriesListError, seriesPlayer, isMobile } = useSelector((state: any) => state.global)
   const { user, addSeriesKeepResult, addSeriesKeepError ,userSeriesKeepListResult, userSeriesKeepListError, removeSeriesKeepResult, removeSeriesKeepError } = useSelector((state: any) => state.user);
 
-  const [seriesList, setSeriesList] = useState([]);
-
-  const [selectedTitle, setSelectedTitle] = useState('');
-  const [selectedSeriesList, setSelectedSeriesList] = useState<Series[]>([]);
-
   const [visibleMenu, setVisibleMenu] = useState(false);
-
+  
   const handleMenuOpen = () => {
     setVisibleMenu(true);
   }
@@ -37,20 +28,9 @@ const MainPage = () => {
     setVisibleMenu(false);
   }
 
-  const handleSeriesPlayerOpen = (series: Series) => {
-    window.scrollTo(0, 0);
-    dispatch(globalSlice.setSeriesPlayer(true));
-    dispatch(globalSlice.setSelectedSeries(series));
-  }
-
-  const handleProfileClick = () => {
-    
-  }
-
-  const handleSeriesListOpen = (title: string, seriesList: Series []) => {
-    dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_SERIES_LIST.name));
-    setSelectedTitle(title);
-    setSelectedSeriesList(seriesList);
+  const handleSeriesListOpen = (title: string) => {
+    navigate('/series-list');
+    dispatch(globalSlice.setSeriesListTitle(title));
   }
 
   // 북마크 등록 결과
@@ -64,7 +44,6 @@ const MainPage = () => {
     if(addSeriesKeepResult && addSeriesKeepResult.data.code === 201) {
       console.log('addSeriesKeepResult ', addSeriesKeepResult);
       
-      // dispatch(userSlice.setSeriesKeepList([...seriesKeepList, {series_id: selectedSeries.id, user_id: user.id}]));
       dispatch(globalSlice.seriesList());
       dispatch(userSlice.userSeriesKeepList({ userId: user.id }));
 
@@ -83,7 +62,6 @@ const MainPage = () => {
     if(removeSeriesKeepResult && removeSeriesKeepResult.data.code === 201) {
       console.log('removeSeriesKeepResult ', removeSeriesKeepResult);
       
-      //dispatch(userSlice.setSeriesKeepList(seriesKeepList.filter((i: any) => i.id !== removeSeriesKeepResult.data.data.series_id)));
       dispatch(userSlice.userSeriesKeepList({ userId: user.id }));
       dispatch(globalSlice.seriesList());
 
@@ -104,20 +82,19 @@ const MainPage = () => {
     
       dispatch(userSlice.setSeriesKeepList(userSeriesKeepListResult.data.data));
 
-      dispatch(globalSlice.clearGlobalState('seriesListResult'));
+      dispatch(userSlice.clearUserState('userSeriesKeepListResult'));
     }
   }, [userSeriesKeepListResult, userSeriesKeepListError]);
 
   // 시리즈 리스트 조회 결과
   useEffect(() => {
     if(seriesListError) {
-
       dispatch(globalSlice.clearGlobalState('seriesListError'));
     }
 
     if(seriesListResult && seriesListResult.data.code === 200) {
       console.log('seriesListResult : ', seriesListResult);
-      setSeriesList(seriesListResult.data.data);
+      dispatch(globalSlice.setSeriesList(seriesListResult.data.data));
       dispatch(globalSlice.clearGlobalState('seriesListResult'));
     }
   }, [seriesListResult, seriesListError]);
@@ -127,7 +104,7 @@ const MainPage = () => {
     if(visibleMenu || displayPopName !== '' || seriesPlayer) {
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'scroll';
+      document.body.style.overflow = 'auto';
     }
   }, [visibleMenu, displayPopName, seriesPlayer])
 
@@ -138,60 +115,60 @@ const MainPage = () => {
     }
   }, [user])
 
-  
   // 시리즈 리스트 조회
   useEffect(() => {
     dispatch(globalSlice.seriesList());
   }, [])
 
+  useEffect(() => {
+    console.log('isMobile', isMobile);
+  }, [isMobile])
+
   return (
     <>
-      <div className='page-wrap' style={{height: displayPopName ? 500 : 'auto'}}>
-        <div className='nav-bar' style={{visibility : displayPopName ? 'hidden' : 'visible'}}>
+      <div className='page-wrap'>
+        <div className='nav-bar'>
           <div className="left-section">
-            <img src={`resources/icons/icon_hamburger.svg`} onClick={handleMenuOpen}/>
+            <img src={`/resources/icons/icon_hamburger.svg`} onClick={handleMenuOpen}/>
             <span className="title">Logo</span>
           </div>
           <div className='right-section'>
             <Link to='/profile'>
-              <img className='profile-icon' src={`resources/icons/icon_profile.svg`} onClick={handleProfileClick}/>
+              <img className='profile-icon' src={`/resources/icons/icon_profile.svg`}/>
             </Link>
           </div>
         </div>
-        <UIMainContentSlider
-          contentList={seriesList.slice(0, 3)}
-          handleSeriesPlayerOpen={handleSeriesPlayerOpen}/>
+        { isMobile ? (
+          <UIMainContentSlider
+            seriesList={seriesList.slice(0, 3)}/>
+        ) : (
+          <UIDesktopMainContentSlider
+            seriesList={seriesList.slice(0, 3)}/>
+        )}
         <UISmallContentSlider
           headerTitle='지금 뜨고있는 TOP 10'
-          contentList={seriesList}
+          seriesList={seriesList}
           highlight='HOT'
           handleSeriesListOpen={handleSeriesListOpen}/>
         <UISmallContentSlider
           headerTitle='새로 올라온 콘텐츠'
-          contentList={seriesList}
+          seriesList={seriesList}
           highlight='NEW'
           handleSeriesListOpen={handleSeriesListOpen}/>
         <UISmallContentSlider
           headerTitle='비밀을 가진 사람들'
-          contentList={seriesList}
+          seriesList={seriesList}
           highlight=''
           handleSeriesListOpen={handleSeriesListOpen}/>
         <UIVerticalContentList
           headerTitle='요즘 뜨는 환생 드라마'
-          contentList={seriesList}
-          handleSeriesPlayerOpen={handleSeriesPlayerOpen}
+          seriesList={seriesList}
           handleSeriesListOpen={handleSeriesListOpen}/>
       </div>
       <UILeftMenu
       visible={visibleMenu}
       handleMenuClose={handleMenuClose}
       />
-      { displayPopName === displayPopType.POPUP_SHORT_FORM_PLAYER.name && (<UIPopSeriesPlayer/>)}
-      { displayPopName === displayPopType.POPUP_SERIES_LIST.name && (<UIPopSeriesList title={selectedTitle} seriesList={selectedSeriesList}/>)}
-      { displayPopName === displayPopType.POPUP_SERIES_KEEP.name && (<UIPopSeriesKeep/>)}
-      { displayPopName === displayPopType.POPUP_SIGN_UP.name && (<UIPopSignUp/>)}
-
-      { seriesPlayer && (<UIPopSeriesPlayer/>)}
     </>
   )
 }

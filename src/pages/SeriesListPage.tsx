@@ -1,18 +1,15 @@
-import { useDispatch } from 'react-redux';
-import * as globalSlice from 'src/redux/globalSlice';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import UIMediumContentItem from '../components/ui/UIMediumContentItem';
 
-interface Props {
-  title?: string;
-  seriesList?: any[];
-}
+const SeriesListPage = () => {
+  const navigate = useNavigate();
 
-const SeriesListPage = (props: Props) => {
-  const dispatch = useDispatch();
+  const { seriesList, seriesListTitle } = useSelector((state: any) => state.global);
 
   const handleClose = () => {
-    dispatch(globalSlice.setDisplayPopName(''));
+    navigate(-1);
   }
 
   return (
@@ -21,12 +18,14 @@ const SeriesListPage = (props: Props) => {
         <div className="left-section">
           <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={handleClose}/>
           <div className='title'>
-            {props.title}
+            { seriesListTitle }
           </div>
         </div>
       </div>
-      <div className='series-container'>
-      { props.seriesList?.map((item: any, index: number) => <UIMediumContentItem key={index} item={item}/>)}
+      <div className='body'>
+        <div className='series-container'>
+        { seriesList?.map((item: any, index: number) => <UIMediumContentItem key={index} item={item}/>)}
+        </div>
       </div>
     </div>
   )

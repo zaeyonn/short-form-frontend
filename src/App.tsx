@@ -1,17 +1,30 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
+import * as globalSlice from 'src/redux/globalSlice';
 import RouteManager from "xtend/RouteManager";
 import AuthManager from "xtend/AuthManager";
-import ToastManager from "xtend/ToastManager";
-import LayoutNavigationBar from "components/layouts/LayoutNavigationBar";
+import AlertManager from "xtend/AlertManager";
 import "styles/index.scss";
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const handleResize = () => {
+      dispatch(globalSlice.setIsMobile(window.innerWidth <= 480));
+    }
+
+    // 데스크탑, 모바일 환경 처리
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [])
 
   return (
     <>
-      <LayoutNavigationBar/>
       <RouteManager/>
       <AuthManager/>
-      <ToastManager/>
+      <AlertManager/>
     </>
   )
 }

@@ -4,11 +4,10 @@ import 'react-multi-carousel/lib/styles.css';
 import UIMainContentItem from './UIMainContentItem';
 
 interface Props {
-  contentList: any[];
-  handleSeriesPlayerOpen: (series: any) => any;
+  seriesList: any[];
 }
 
-const UIMainContentSlider = ({contentList, handleSeriesPlayerOpen}: Props) => {
+const UIMainContentSlider = ({seriesList}: Props) => {
 
   const responsive = {
     superLargeDesktop: {
@@ -47,7 +46,7 @@ const UIMainContentSlider = ({contentList, handleSeriesPlayerOpen}: Props) => {
       keyBoardControl={true}
       autoPlay={false}
       >
-      {contentList.map((i: any, index: number) => <UIMainContentItem item={i} key={index} handleSeriesPlayerOpen={handleSeriesPlayerOpen}/>)}
+      { seriesList.map((i: any, index: number) => <UIMainContentItem item={i} key={index}/>) }
     </Carousel>
   )
 }

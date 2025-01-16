@@ -56,10 +56,10 @@ export const addSeriesKeep = ({userId, seriesId}: any) => client.post('users/kee
 });
 
 // 시리즈 북마크 삭제
-export const removeSeriesKeep = ({userId, seriesId}: any) => client.delete('users/keep', {
+export const removeSeriesKeep = ({userId, seriesIdList}: any) => client.delete('users/keep', {
   data: {
     user_id: userId,
-    series_id: seriesId
+    series_id_list: seriesIdList
   }
 });
 
@@ -70,7 +70,8 @@ export const removeSeriesKeep = ({userId, seriesId}: any) => client.delete('user
 // 전체 시리즈 리스트
 export const seriesList = () => client.get('series/list');
 
-
+// 시리즈 정보 조회
+export const seriesInfo = ({seriesId}: {seriesId: number}) => client.get(`series/${seriesId}`);
 
 /* Episodes API */
 

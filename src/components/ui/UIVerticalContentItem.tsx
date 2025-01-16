@@ -1,11 +1,18 @@
+import { useNavigate } from 'react-router-dom';
+
 interface Props {
   item: any;
-  handleSeriesPlayerOpen: (series: any) => any;
 }
 
-const UIVerticalContentItem = ({item, handleSeriesPlayerOpen}: Props) => {
+const UIVerticalContentItem = ({item}: Props) => {
+  const navigate = useNavigate();
+
+  const handleSeriesPlayerOpen = () => {
+    navigate(`/series/${item.id}`);
+  }
+
   return (
-    <div className='vertical-content-item' onClick={() => handleSeriesPlayerOpen(item)}>
+    <div className='vertical-content-item' onClick={() => handleSeriesPlayerOpen()}>
       <img src={`${import.meta.env.VITE_SERVER_URL}/images/poster/${item.poster_img}`}/>
       <div className='info-wrap'>
         <div className='tag-list'>
