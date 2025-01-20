@@ -8,6 +8,7 @@ import * as api from '../../api/api';
 export function* handleSeriesList(): Generator<any> {
   try {
     const response = yield call(api.seriesList);
+    console.log('handleSeriesList: ', response);
 
     yield put(slice.seriesListSuccess(response));
   } catch (error) {

@@ -3,7 +3,7 @@ import client from 'api/client';
 /* Auth API */
 
 // 게스트 사용자 등록
-export const authGuest = () => client.post('auth/guest');
+export const authGuest = () => client.post('users/guest');
 
 // SNS 사용자 로그인
 export const authLoginGoogle = ({code, userId, authType}: any) => client.put('auth/login/google', {
@@ -68,7 +68,7 @@ export const removeSeriesKeep = ({userId, seriesIdList}: any) => client.delete('
 /* Series API */
 
 // 전체 시리즈 리스트
-export const seriesList = () => client.get('series/list');
+export const seriesList = () => client.get('series');
 
 // 시리즈 정보 조회
 export const seriesInfo = ({seriesId}: {seriesId: number}) => client.get(`series/${seriesId}`);

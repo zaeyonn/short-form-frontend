@@ -105,7 +105,7 @@ const SeriesKeepPage = () => {
   }, [user])
   
   return (
-    <div className='popup-wrap'>
+    <div className='page-wrap'>
       <div className='header'>
         <div className="left-section">
           <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={handleClose}/>

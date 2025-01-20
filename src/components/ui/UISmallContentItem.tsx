@@ -3,17 +3,20 @@ import { useNavigate } from "react-router-dom";
 interface SallContentItemProps {
   item: any;
   highlight?: string;
+  dragging: boolean;
 }
 
-const UISmallContentItem = ({item, highlight}: SallContentItemProps) => {
+const UISmallContentItem = ({item, highlight, dragging}: SallContentItemProps) => {
   const navigate = useNavigate();
 
   const handleSeriesPlayerOpen = () => {
-    navigate(`/series/${item.id}`);
+    if(!dragging) {
+      navigate(`/series/${item.id}`);
+    }
   }
   
   return (
-    <div draggable={false} className='small-content-item' onClick={(e) => handleSeriesPlayerOpen()}>  
+    <div draggable={false} className='small-content-item' onMouseUp={() => handleSeriesPlayerOpen()}>  
       <div className='poster-wrap'>
         {highlight && (
           <span className='highlight'>{highlight}</span>

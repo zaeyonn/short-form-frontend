@@ -8,7 +8,7 @@ import { Series } from 'src/types';
 import * as globalSlice from 'src/redux/globalSlice';
 
 interface Props {
-  series: Series | undefined;
+  series: Series;
   locked: boolean;
   setLocked: (locked: boolean) => any;
   currentEp: any;
@@ -129,7 +129,7 @@ const UIBottomSheetEpisodeGrid = ({series, setLocked, currentEp, visibleBottomSh
       <div className='head'>
         <div className='title'>{currentEp?.title + ` [${currentEp?.episode_num}회]`}</div>
         <div className='tag-list'>
-          { series?.keyword.map((i: any, idx: number) => <span className='tag type_c' key={idx}>{i}</span>)}
+          { series?.keyword?.map((i: any, idx: number) => <span className='tag type_c' key={idx}>{i}</span>)}
           <span className='tag type_b'>{`총 ${series?.ep_count}회`}</span>
         </div>
       </div>

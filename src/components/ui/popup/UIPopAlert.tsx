@@ -9,7 +9,7 @@ const UIPopAlert = () => {
     <div className='popup-alert'>
       <div className='title'>{alert.title}</div>
       <div className='message'>{alert.message}</div>
-      <div className='footer'>
+      <div className='alert-footer'>
         <button className='cancel' onClick={alert.cancelBtn.event}>
           {alert.cancelBtn.text}
         </button>

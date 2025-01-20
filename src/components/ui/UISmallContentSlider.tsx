@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import UISmallContentItem from './UISmallContentItem';
+import { Series } from 'src/types';
+
 
 interface Props {
   seriesList: any[];
@@ -12,7 +13,6 @@ interface Props {
 
 const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesListOpen}: Props) => {
   const navigate = useNavigate();
-
   //const [dragging, setDragging] = useState(false);
   // const [startX, setStartX] = useState(0);
   // const [scrollLeft, setScrollLeft] = useState(0);
@@ -40,6 +40,7 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
    if(!mouseDownRef.current) return;
+
    draggingRef.current = true;
     
    if(listRef.current) {
@@ -54,11 +55,7 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
    }
   }
 
-  const handleMouseUp = () => {
-    if(!draggingRef.current) {
-      navigate('/series');
-    }
-
+  const handleListMouseUp = () => {
     draggingRef.current = false;
     mouseDownRef.current = false;
   }
@@ -68,11 +65,17 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
     mouseDownRef.current = false;
   }
 
+  const handleItemMouseUp = (item: Series) => {
+      if(!draggingRef.current) {
+        navigate(`/series/${item.id}`);
+      }
+  }
+
 
   return (
     <div className='small-content-slider-wrap'>
       { headerTitle && (
-        <div className='header' onClick={() => handleSeriesListOpen ? handleSeriesListOpen(headerTitle, seriesList) : ''}>
+        <div className='list-header' onClick={() => handleSeriesListOpen ? handleSeriesListOpen(headerTitle, seriesList) : ''}>
           { headerTitle }
           <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right'/>
         </div>
@@ -81,10 +84,25 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
         ref={listRef} 
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
+        onMouseUp={handleListMouseUp}
         className='small-content-list'>
-        { seriesList.map((i: any, index: number) => <UISmallContentItem item={i} key={index} highlight={highlight}/>) }
+        { seriesList.map((item: Series, index: number) => {
+          return (
+            <div key={index} draggable={false} className='small-content-item' onMouseUp={() => handleItemMouseUp(item)}>  
+              <div className='poster-wrap'>
+              { highlight && (
+                <span className='highlight'>{highlight}</span>
+              )}
+              <div className='tag-list'>
+              { item.keyword?.map((i: string, idx: number) => <span className='tag' key={idx}>{i}</span>) }
+              </div>
+                <img draggable={false} className='poster-img' src={`${import.meta.env.VITE_SERVER_URL}/images/poster/${item.poster_img}`}/>
+              </div>
+              <div className='title'>{item.title}</div>
+            </div>
+          )
+        })}
       </div>
     </div>
   )

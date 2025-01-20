@@ -20,7 +20,7 @@ const UIPopSeriesPlayer = ({}) => {
      userSeriesProgressResult, userSeriesProgressError, updateSeriesProgressResult, updateSeriesProgressError,
      updateSeriesUnlockEpisodeResult, updateSeriesUnlockEpisodeError
   } = useSelector((state: any) => state.user);
-  const { episodeListResult, episodeListError, seriesInfoResult, seriesInfoError } = useSelector((state: any) => state.global);
+  const { episodeListResult, episodeListError, seriesInfoResult, seriesInfoError, isMobile } = useSelector((state: any) => state.global);
 
   const [playing, setPlaying] = useState<boolean>(true);
   const [visibleTools, setVisibleTools] = useState(true);
@@ -33,7 +33,7 @@ const UIPopSeriesPlayer = ({}) => {
   const [locked, setLocked] = useState(false);
   const [unlockEpisode, setUnlockEpisode] = useState<number>();
   const [muted, setMuted] = useState<boolean>(true);
-  const [series, setSeries] = useState<Series>();
+  const [series, setSeries] = useState<Series>({id: 0, title: '', description: '', poster_img: '', ep_count: 0, free_count: 0, keyword: [], req_point: 0, views: 0, keeps: 0, created_at: ''});
 
   const swiperRef = useRef<any>(null);
   const videoRef = useRef<any>(null);
@@ -373,7 +373,7 @@ const UIPopSeriesPlayer = ({}) => {
   }, [])
 
   return (
-    <div className='popup-wrap' style={{paddingTop: 0, overflowY: 'hidden'}}>
+    <div className={`${isMobile ? 'player-wrap' : 'page-wrap'}`}>
       <div className='short-form-swiper'>
         <UIShortFormSwiper
         playing={playing}

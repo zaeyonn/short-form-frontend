@@ -1,9 +1,7 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
 import { Series } from 'src/types';
-import * as globalSlice from 'src/redux/globalSlice';
 
 interface Props {
   seriesList: Series [];
@@ -11,7 +9,6 @@ interface Props {
 
 const UIDesktopMainContentSlider = (props: Props) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const listRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef<boolean>(false);

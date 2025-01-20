@@ -6,7 +6,7 @@ import * as globalSlice from 'src/redux/globalSlice';
 import * as userSlice from 'src/redux/userSlice';
 
 import UIMainContentSlider from "components/ui/UIMainContentSlider"
-import UIDesktopMainContentSlider from 'components/ui/UIDesktopMainContentSlider';
+import UIDesktopMainContentSlider from 'components/ui/desktop/UIDesktopMainContentSlider';
 import UISmallContentSlider from "components/ui/UISmallContentSlider"
 import UIVerticalContentList from "components/ui/UIVerticalContentList"
 import UILeftMenu from 'components/ui/UILeftMenu';
@@ -92,9 +92,8 @@ const MainPage = () => {
       dispatch(globalSlice.clearGlobalState('seriesListError'));
     }
 
-    if(seriesListResult && seriesListResult.data.code === 200) {
-      console.log('seriesListResult : ', seriesListResult);
-      dispatch(globalSlice.setSeriesList(seriesListResult.data.data));
+    if(seriesListResult && seriesListResult.status === 200) {
+      dispatch(globalSlice.setSeriesList(seriesListResult.data));
       dispatch(globalSlice.clearGlobalState('seriesListResult'));
     }
   }, [seriesListResult, seriesListError]);
@@ -120,17 +119,13 @@ const MainPage = () => {
     dispatch(globalSlice.seriesList());
   }, [])
 
-  useEffect(() => {
-    console.log('isMobile', isMobile);
-  }, [isMobile])
-
   return (
     <>
       <div className='page-wrap'>
-        <div className='nav-bar'>
+        <div className='header'>
           <div className="left-section">
             <img src={`/resources/icons/icon_hamburger.svg`} onClick={handleMenuOpen}/>
-            <span className="title">Logo</span>
+            <span className="title">Short Form</span>
           </div>
           <div className='right-section'>
             <Link to='/profile'>

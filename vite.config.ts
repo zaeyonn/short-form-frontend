@@ -7,14 +7,7 @@ export default () => {
 
   return defineConfig({
     plugins: [react(), tsconfigPaths()],
-    css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData:`
-          `
-        }
-      }
-    }
+    base: '/short-form-frontend/'
   })
 } 
 

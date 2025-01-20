@@ -4,18 +4,6 @@ button {
   font-family: 'Pretendard';
 }
 
-.page-wrap {
-  box-sizing: border-box;
-  padding-bottom: 82px;
-  scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
-  display: flex;
-  flex-direction: column;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
 a {
   color: #FFF;
   text-decoration: none;
@@ -91,53 +79,6 @@ a {
   }
 }
 
-.main-content-item {
-  margin-left: 7.5%;
-
-  .img-wrap {
-    cursor: pointer;
-    position: relative;
-  }
-
-  img {
-    border-radius: 16px;
-    width: 86vw;
-    max-width: 400px;
-    height: 420px;
-    object-fit: cover;
-  }
-
-  .text-wrap {
-    max-width: 350px;
-    overflow-x: hidden;
-    position: absolute;
-    bottom: 40px;
-    left: 20px;
-    right: 20px;
-  }
-
-  .main-text {
-    font-weight: 700;
-    font-size: 28px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .sub-text {
-    margin-top: 8px;
-    font-weight: 500;
-    font-size: 16px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    word-break: break-word;
-
-    display: -webkit-box;
-   -webkit-line-clamp: 2; // 원하는 라인수
-   -webkit-box-orient: vertical
-  }
-}
-
 .header {
   display: flex;
   flex-direction: row;
@@ -162,7 +103,20 @@ a {
   display: flex;
   flex-direction: column;
   margin-top: 30px;
-  .header {
+
+  .list-header {
+    padding-left: 20px;
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    
+    img {
+      margin-left: 4px;
+      width: 16px;
+      height: 16px;
+    }
   }
 
   .small-content-list {
@@ -217,6 +171,8 @@ a {
         background-color: #FF3064;
         font-size: 11px;
         font-weight: 600;
+
+        font-weight: 500;
       }
 
       .tag-list {
@@ -226,7 +182,7 @@ a {
         bottom: 0px;
         overflow-x: scroll;
         white-space: nowrap;
-        width: 120px;
+        width: 100%;
         padding: 0 4px 8px 4px;
         gap: 4px;
         display: flex;
@@ -257,6 +213,15 @@ a {
 
 .vertical-content-list-wrap {
   margin-top: 30px;
+
+  .list-header {
+    padding-left: 20px;
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+  }
 
   .vertical-content-list {
     display: flex;
@@ -352,20 +317,71 @@ a {
   }
 }
 
-.popup-wrap {
+.page-wrap {
   box-sizing: border-box;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
   background-color: #000000;
   overflow-y: scroll;
   z-index: 3;
 
+  padding-bottom: 82px;
+  scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
+  display: flex;
+  flex-direction: column;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   @supports (-webkit-touch-callout: none) {
     height: -webkit-fill-available;
   }
+
+.main-content-item {
+  margin-left: 7.5%;
+
+  .img-wrap {
+    cursor: pointer;
+    position: relative;
+  }
+
+  img {
+    border-radius: 16px;
+    width: 86vw;
+    max-width: 400px;
+    height: 420px;
+    object-fit: cover;
+  }
+
+  .text-wrap {
+    max-width: 350px;
+    overflow-x: hidden;
+    position: absolute;
+    bottom: 40px;
+    left: 20px;
+    right: 20px;
+  }
+
+  .main-text {
+    font-weight: 700;
+    font-size: 28px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sub-text {
+    margin-top: 8px;
+    font-weight: 500;
+    font-size: 16px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-word;
+
+    display: -webkit-box;
+   -webkit-line-clamp: 2; // 원하는 라인수
+   -webkit-box-orient: vertical
+  }
+}
 
   .short-form-swiper {
     width: 100%;
@@ -416,6 +432,10 @@ a {
   .list-btn {
     width: 36px;
     height: 36px;
+  }
+
+  .breadcrumb {
+    display: none;
   }
 
   .header {
@@ -493,36 +513,7 @@ a {
     }
   }
 
-  .footer {
-    box-sizing: border-box;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100vw;
-    height: 48px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 20px;
-    padding-right: 20px;
-    z-index: 1;
-
-    .right-section {
-      display: flex;
-      margin-left: auto;
-      flex-direction: row;
-      gap: 12px;
-  
-      button {
-        width: 52px;
-        height: 28px;
-      }
-    }
-  }
-
   .profile-wrap {
-    margin: 60px auto 20px auto;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -715,7 +706,7 @@ a {
     }
 
     .body {
-      margin: 60px auto 20px auto;
+      margin: 50px auto 20px auto;
       width: 90%;
 
       
@@ -821,7 +812,6 @@ a {
     }
   }
   }
-
 }
   
   .setting {
@@ -1371,7 +1361,7 @@ a {
     line-height: 24px;
   }
 
-  .footer {
+  .alert-footer {
     margin-top: 17px;
     width: 100%;
     display: flex;
@@ -1407,113 +1397,229 @@ a {
   }
 }
 
-@include desktop  {
-  .page-wrap {
+
+.player-wrap {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000;
+  overflow-y: scroll;
+  z-index: 3;
+  scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
+  display: flex;
+  flex-direction: column;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @supports (-webkit-touch-callout: none) {
+    height: -webkit-fill-available;
+  }
+
+  .short-form-swiper {
+    width: 100%;
+    height: 100%;
+
+    .short-form {
+      width: 100%;
+      height: 100%;
+
+      video {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .main-play-btn {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90px;
+    height: 90px;
+    z-index: 1;
+  }
+
+  .right-menu {
+    position: absolute;
+    right: 11px;
+    bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 2;
+  }
+
+  .btn-wrap {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    gap: 1px;
+    font-weight: 500;
+    font-size: 11px;
+  }
+
+  .list-btn {
+    width: 36px;
+    height: 36px;
   }
 
   .header {
-    padding: 0px;
-  }
-
-  .main-content-slider-wrap {
-    position: relative;
-
-  }
-
-  .main-content-slider-list {
-    position: relative;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    max-width: 770px;
+    background: #000000;
+    position: fixed;
+    box-sizing: border-box;
+    top: 0px;
+    width: 100vw;
+    height: 48px;
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    gap: 20px;
-    max-height: 400px;
-
-    scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-
-  .floating-btn-wrap {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    
-    button {
-      cursor: pointer;
-      position: absolute;
+    padding-left: 20px;
+    padding-right: 20px;
+    z-index: 4;
+  
+    .left-section {
       display: flex;
+      flex-direction: row;
       align-items: center;
-      justify-content: center;
-      background-color: #00000070;
-      border-radius: 100px;
-      min-width: 50px;
-      height: 50px;
-      z-index: 3;
-      top: 50%;
+      gap: 14px;
+  
+      .title {
+        font-size: 16px;
+        font-weight: 500;
+        color: #ffffff;
+      }
 
       img {
+        cursor: pointer;
+      }
+    }
+
+    .title {
+      font-weight: 500;
+      font-size: 16px;
+    }
+  
+    .right-section {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      font-weight: 500;
+      font-size: 15px;
+  
+      button {
+        width: 52px;
+        height: 28px;
+      }
+
+      .next-btn {
+        background: none;
+        color: #FF3064; 
+        font-weight: 500;
+        font-size: 16px;
+      }
+
+      .speaker-icon {
+        cursor: pointer;
+        margin-top: 3px;
         width: 28px;
         height: 28px;
-      }  
-
-      &.prev-btn {
-        left: 10px;
-        transform: translate(15px, -50%);
-      }
-
-      &.next-btn {
-        right: 10px;
-        transform: translate(-15px, -50%);
       }
     }
-  }
-
-
-  .main-content-item {
-    cursor: pointer;
-    margin-left: 0;
-    border-radius: 16px;
-    min-width: 600px;
-    height: 400px;
-
+  
     img {
-      max-width: 780px;
+      width: 24px;
+      height: 24px;
+
+      &.profile-icon {
+        width: 28px;
+        height: 28px;
+      }
+    }
+  }
+
+  .footer {
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 48px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    z-index: 1;
+
+    .right-section {
+      display: flex;
+      margin-left: auto;
+      flex-direction: row;
+      gap: 12px;
+  
+      button {
+        width: 52px;
+        height: 28px;
+      }
+    }
+  }
+
+  .progress-bar {
+    z-index: 1;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 30px;
+    width: 100vw;
+    height: 28px;
+    padding: 5px 10px;
+
+    input {
+      appearance: none;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-  }
-
-  .small-content-slider-wrap {
-    width: 770px;
-
-    .small-content-item {
+      height: 2px;
+      background: #535353;
+      border-radius: 2px;
+      outline: none;
       cursor: pointer;
-
-      &:first-child {
-        margin-left: 0px;
+      transition: transform 0.2s ease;
+            
+      &::-webkit-slider-thumb {
+        appearance: none;
+        width: 10px;
+        height: 10px;
+        background: #FF3064;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s ease;
       }
-  
-      &:last-child {
-        margin-right: 0px;
+
+      &::-moz-range-thumb {
+        width: 10px;
+        height: 10px;
+        background: #FF3064;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s ease;
       }
-  
-    }
-  }
 
-  .vertical-content-list-wrap {
-    max-width: 770px;
-
-    .vertical-content-list {
-      padding: 0px;
+      &::-ms-thumb {
+        width: 10px;
+        height: 10px;
+        background: #FF3064;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
     }
   }
 }

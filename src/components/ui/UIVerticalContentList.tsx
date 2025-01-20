@@ -10,7 +10,7 @@ interface Props {
 const UIVerticalContentList = ({seriesList, headerTitle, handleSeriesListOpen}: Props) => {
   return (
     <div className='vertical-content-list-wrap'>
-      <div className='header' onClick={() => handleSeriesListOpen(headerTitle, seriesList)}>
+      <div className='list-header' onClick={() => handleSeriesListOpen(headerTitle, seriesList)}>
         { headerTitle }
         <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right'/>
       </div>
