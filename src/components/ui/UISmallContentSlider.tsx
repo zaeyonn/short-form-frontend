@@ -75,10 +75,10 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
   return (
     <div className='small-content-slider-wrap'>
       { headerTitle && (
-        <div className='list-header' onClick={() => handleSeriesListOpen ? handleSeriesListOpen(headerTitle, seriesList) : ''}>
+        <span className='list-header' onClick={() => handleSeriesListOpen ? handleSeriesListOpen(headerTitle, seriesList) : ''}>
           { headerTitle }
           <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right'/>
-        </div>
+        </span>
       )}
       <div
         ref={listRef} 

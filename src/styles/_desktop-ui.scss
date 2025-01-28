@@ -11,49 +11,184 @@
     padding-bottom: 0px;
   }
 
+  
+  .toast-container {
+    position: fixed;
+    top: 5%;
+    right: 50%;
+    transform: translate(50%, 50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+  }
+
+  .toast {
+    border-radius: 12px;
+    background-color: #00000090;
+    color: #fff;
+    padding: 10px 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: fade-in-out 0.3s ease-in-out;
+    font-weight: 300;
+    font-size: 14px;
+  }
+
+  @keyframes fade-in-out {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
   .page-wrap {
-    max-width: 1200px;
-    padding-top: 40px;
+    width: 100%;
+    padding-top: 35px;
     padding-bottom: 0px;
-    align-items: center;
+    display: flex;
     justify-content: center;
+    align-items: center;
 
     .header {
       display: none;
     }
 
-    .breadcrumb {
-      width: 100%;
-      max-width: 1200px;
+    .page-body {
+      max-width: 1400px;
+      width: 90%;
+      min-height: 85vh;
+      box-sizing: border-box;
       display: flex;
-      flex-direction: row;
-      align-items: center;
-      font-weight: 500;
-      font-size: 20px;
-      color: #4A4A4A;
-      line-height: 15px;
-      gap: 10px;
+      flex-direction: column;
 
-      .active {
-        font-weight: 500;
-        font-size: 20px;
-        color: #ffffff;
+      .short-form-player-wrap {
+        margin-top: 20px;
+        min-width: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: 30px; 
+
+        .short-form-player {
+          position: relative;
+          width: 63%;
+          background-color: #161616;
+          display: flex;
+          justify-content: center;
+          video {
+            width: 45%;
+            min-width: 430px; 
+          }
+
+          .bottom-container {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            padding: 15px 20px; 
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 0px;
+
+            .time {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: space-between;
+              width: 80px;
+              font-weight: 300;
+              font-size: 14px;
+            }
+
+            .play-btn {
+              cursor: pointer;
+              width: 32px;
+              height: 32px 
+            }
+
+            .speaker-btn {
+              cursor: pointer;
+              width: 20px;
+              height: 20px;
+            }
+
+            .fullscreen-btn {
+              cursor: pointer;
+              width: 20px;
+              height: 20px;
+            }
+
+            .progress-bar {
+              position: relative;
+              bottom: 0px;
+              padding: 0px;
+            }
+          }
+
+          &.fullscreen {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .info-container {
+          width: 31%;
+          min-height: 85vh;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+
+          .detail-info {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .title {
+            font-weight: 600;
+            font-size: 24px;
+          }
+
+          .description {
+            margin-top: 16px;
+            font-weight: 400; 
+            font-size: 14px;
+            color: #A2A2A2;
+            line-height: 20px;
+          }
+
+          .bookmark {
+            width: 100px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 3px;
+            margin-top: 30px;
+            font-weight: 400;
+            font-size: 14px;
+
+            img {
+              width: 36px;
+              height: 36px;
+            }
+          }
+
+          .episode {
+            padding: 18px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #161616;
+            font-weight: 300;
+            font-size: 17px;
+          }
+        }
       }
-
-      img {
-        width: 16px;
-        height: 16px;
-        filter: invert(70%) sepia(2%) saturate(11%) hue-rotate(342deg) brightness(86%) contrast(83%);
-      }
-    }
-
-    .body {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
 
       .series-container {
-        max-width: 1200px;
         display: grid;
         column-gap: 10px;
         row-gap: 30px;
@@ -109,6 +244,40 @@
       }
     }
 
+    .title {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      font-weight: 600;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .breadcrumb {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 15px;
+      gap: 10px;
+      margin-bottom: 20px;
+
+      .active {
+        font-weight: 500;
+        font-size: 20px;
+        color: #ffffff;
+      }
+
+      img {
+        width: 16px;
+        height: 16px;
+        filter: invert(70%) sepia(2%) saturate(11%) hue-rotate(342deg) brightness(86%) contrast(83%);
+      }
+    }
+
     .main-content-item {
       cursor: pointer;
       margin-left: 0;
@@ -134,7 +303,6 @@
     position: relative;
     overflow-x: scroll;
     overflow-y: hidden;
-    width: 1200px;
     display: flex;
     align-items: center;
     gap: 20px;
@@ -185,10 +353,11 @@
   }
 
   .small-content-slider-wrap {
-    width: 1200px;
+    width: 100%;
 
     .list-header {
       cursor: pointer;
+      width: fit-content;
       padding-left: 0px;
       font-weight: 600;
       font-size: 24px;
@@ -247,10 +416,10 @@
   }
 
   .vertical-content-list-wrap {
-    width: 1200px;
 
     .list-header {
       cursor: pointer;
+      width: fit-content;
       padding-left: 0px;
       font-weight: 600;
       font-size: 24px;

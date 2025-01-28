@@ -21,6 +21,10 @@ const SeriesKeepPage = () => {
   }
 
   const toggleSelectMode = () => {
+    if(selectMode) {
+      setCheckList([]);
+    }
+
     setSelectMode(!selectMode);
   }
 
@@ -70,12 +74,13 @@ const SeriesKeepPage = () => {
         dispatch(userSlice.clearUserState('removeSeriesKeepError'));
       }
   
-      if(removeSeriesKeepResult && removeSeriesKeepResult.data.code === 201) {
+      if(removeSeriesKeepResult && removeSeriesKeepResult.status === 200) {
         console.log('removeSeriesKeepResult ', removeSeriesKeepResult);
         
         dispatch(userSlice.userSeriesKeepList({ userId: user.id }));
         dispatch(userSlice.clearUserState('removeSeriesKeepResult'));
         dispatch(globalSlice.setAlert(null));
+        setSelectMode(false);
         setCheckList([]);
       }
     }, [removeSeriesKeepResult, removeSeriesKeepError]);
@@ -88,10 +93,10 @@ const SeriesKeepPage = () => {
       dispatch(userSlice.clearUserState('userSeriesKeepListError'));
     }
   
-    if(userSeriesKeepListResult && userSeriesKeepListResult.data.code === 200) {
+    if(userSeriesKeepListResult && userSeriesKeepListResult.status === 200) {
       console.log('userSeriesKeepListResult ', userSeriesKeepListResult);
       
-      dispatch(userSlice.setSeriesKeepList(userSeriesKeepListResult.data.data));
+      dispatch(userSlice.setSeriesKeepList(userSeriesKeepListResult.data));
   
       dispatch(userSlice.clearUserState('userSeriesKeepListResult'));
     }
@@ -114,14 +119,21 @@ const SeriesKeepPage = () => {
           북마크
         </div>
         <div className='right-section' onClick={toggleSelectMode}>
-          {selectMode ? '완료' : '선택'}
+          { seriesKeepList.length > 0 ? (
+          <div onClick={toggleSelectMode}>
+            {(selectMode) ? '완료' : '선택'}
+          </div>
+          ) : (
+            <div className='empty'>
+            </div>
+          )}
         </div>
       </div>
       <div className='body'>
       { selectMode && (
         <div className='select-mode'>
           <div className='all-check' onClick={handleAllCheck}>
-          <span className={`checkbox ${checkList.length === seriesKeepList.length ? 'checked' : ''}`}>
+          <span className={`checkbox ${(checkList.length > 0 && checkList.length === seriesKeepList.length )? 'checked' : ''}`}>
             <img src='resources/icons/icon_check.svg'/>
           </span>
             전체선택
@@ -132,7 +144,14 @@ const SeriesKeepPage = () => {
         </div>
       )}
       <div className='series-container'>
-      { seriesKeepList.map((item: any, index: number) => <UIMediumContentItem checkList={checkList} selectMode={selectMode} key={index} item={item} handleCheck={handleCheck}/>)}
+      { seriesKeepList.length > 0 ? (
+        seriesKeepList.map((item: any, index: number) => <UIMediumContentItem checkList={checkList} selectMode={selectMode} key={index} item={item} handleCheck={handleCheck}/>))
+      : (
+        <div className='no-data'>
+          <img src='resources/icons/icon_bookmark.svg'/>
+          {'숏츠를 시청하고\n북마크를 추가해보세요.'}
+        </div>
+      )}
       </div>
       </div>
     </div>

@@ -9,9 +9,9 @@
 }
 
  body {
+  width: 100vw;
   margin: 0;
   padding-top: 50px;
-  padding-bottom: 82px;
   background-color: #000000;
   color: #ffffff;
 }
@@ -32,7 +32,8 @@
   z-index: 4;
 
   .wrap {
-    width: 1200px;
+    max-width: 1400px;
+    width: 90%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -113,7 +114,7 @@
   top: 0px;
   left: -230px;
   background-color: #202020;
-  z-index: 3;
+  z-index: 4;
 
   .item {
     box-sizing: border-box;
@@ -144,9 +145,9 @@
 
   .footer {
     margin-top: 200px;
-    position: relative;
-    width: 100%;
+    position: absolute;
     height: 150px;
+    width: 100%;
     background-color: #111111;
     font-size: 14px;
     font-weight: 400;

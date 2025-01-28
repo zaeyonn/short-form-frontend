@@ -1,16 +1,20 @@
 import { useEffect, useState, useRef, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useLocation } from 'react-router-dom';
+import { TailSpin } from "react-loader-spinner";
+import { formattedSecond } from "common/utility";
 
 import * as globalSlice from 'src/redux/globalSlice';
 import * as userSlice from 'src/redux/userSlice';
 
 import { Series } from 'src/types';
 import UIShortFormSwiper from "components/ui/UIShortFormSwiper";
-import UIBottomSheetEpisodeGrid from "../components/ui/UIBottomSheetEpisodeGrid";
+import UIBottomSheetEpisodeGrid from "../components/ui/bottomsheet/UIBottomSheetEpisodeGrid";
 import UILayerLockedEpisode from "components/ui/layer/UILayerLockedEpisode";
+import UIEpisodeNumGrid from "components/ui/UIEpisodeNumGrid";
+import LayoutFooter from "components/layouts/LayoutFooter";
 
-const UIPopSeriesPlayer = ({}) => {
+const SeriesPlayerPage = ({}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -18,10 +22,12 @@ const UIPopSeriesPlayer = ({}) => {
   const {
      user, seriesKeepList, addSeriesProgressResult, addSeriesProgressError,
      userSeriesProgressResult, userSeriesProgressError, updateSeriesProgressResult, updateSeriesProgressError,
-     updateSeriesUnlockEpisodeResult, updateSeriesUnlockEpisodeError
+     updateSeriesUnlockEpisodeResult, updateSeriesUnlockEpisodeError, addSeriesKeepError, addSeriesKeepResult,
+     removeSeriesKeepError, removeSeriesKeepResult,
   } = useSelector((state: any) => state.user);
   const { episodeListResult, episodeListError, seriesInfoResult, seriesInfoError, isMobile } = useSelector((state: any) => state.global);
 
+  const [loading, setLoading] = useState<boolean>(true);
   const [playing, setPlaying] = useState<boolean>(true);
   const [visibleTools, setVisibleTools] = useState(true);
   const [progress, setProgress] = useState<number>(0);
@@ -32,14 +38,20 @@ const UIPopSeriesPlayer = ({}) => {
   const [keepCount, setKeepCount] = useState<any>();
   const [locked, setLocked] = useState(false);
   const [unlockEpisode, setUnlockEpisode] = useState<number>();
-  const [muted, setMuted] = useState<boolean>(true);
+  const [lastEpisode, setLastEpisode] = useState<number>(0);
+  const [muted, setMuted] = useState<boolean>(isMobile ? true : false);
   const [series, setSeries] = useState<Series>({id: 0, title: '', description: '', poster_img: '', ep_count: 0, free_count: 0, keyword: [], req_point: 0, views: 0, keeps: 0, created_at: ''});
+  const [fullscreen ,setFullscreen] = useState<boolean>(false);
+  const [currentTime, setCurrentTime] = useState<number>(0);
 
   const swiperRef = useRef<any>(null);
   const videoRef = useRef<any>(null);
   const hideToolsTimeout = useRef<any>();
-  const lastEpisodeRef = useRef<number>();
+  // const lastEpisodeRef = useRef<number>();
   const seriesIdRef = useRef<string>(location.pathname.split('/')[2]);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+
+  // const currentTimeRef = useRef<number>(0);
 
   const handleClose = () => {
     navigate(-1);
@@ -74,8 +86,10 @@ const UIPopSeriesPlayer = ({}) => {
 
   // 재생 시간 업데이트
   const handleTimeUpdate = () => {
-    if(videoRef.current) {
-      const currentTime = videoRef.current.currentTime;
+    if(videoRef.current && videoRef.current.currentTime && videoRef.current.duration) {
+      // currentTimeRef.current = videoRef.current.currentTime;
+
+      setCurrentTime(videoRef.current.currentTime)
       const duration = videoRef.current.duration;
 
       setProgress((currentTime / duration) * 100);
@@ -111,9 +125,7 @@ const UIPopSeriesPlayer = ({}) => {
   }
 
   const handleSlideChangeStart = (swiper: any) => {
-    console.log('handleSlideChangeStart ', swiper);
     if(swiper.activeIndex === unlockEpisode) {
-      console.log('swiper.activeIndex === unlockEpisode ');
       swiperRef.current.slideTo(swiper.activeIndex, 0);
     }
   }
@@ -127,7 +139,6 @@ const UIPopSeriesPlayer = ({}) => {
       videoRef.current.pause();
 
       videoRef.current = slidedVideo;
-      videoRef.current.play();
       setPlaying(true);
     }
 
@@ -139,15 +150,19 @@ const UIPopSeriesPlayer = ({}) => {
   }
 
   const handleEpisodeChange = useCallback((index: number) => {
-    console.log('handleEpisodeChange ')
-    if(swiperRef.current) swiperRef.current.slideTo(index, 0);
-  
     setCurrentEp(episodeList[index]);
-  
-    setVisibleBottomSheet(false);
-
+    
     if(index === unlockEpisode) {
       setLocked(true);
+    } 
+
+    if(isMobile) {
+      if(swiperRef.current) swiperRef.current.slideTo(index, 0);
+      setVisibleBottomSheet(false);
+    } else if(!isMobile && videoRef.current) {
+      videoRef.current?.load();
+      videoRef.current.currentTime = 0;
+      setPlaying(true);
     }
   }, [episodeList, seriesIdRef.current]);
 
@@ -173,7 +188,6 @@ const UIPopSeriesPlayer = ({}) => {
   }
 
   const handleEpisodeLock = useCallback(() => {
-    console.log("handleEpisodeLock");
     setLocked(true);
     setVisibleBottomSheet(false);
 
@@ -188,12 +202,36 @@ const UIPopSeriesPlayer = ({}) => {
     setLocked(false);
 
     // 사용자 잠금 회차 업데이트
-    dispatch(userSlice.updateSeriesUnlockEpisode({ userId: user.id, seriesId: seriesIdRef.current, ep: unlockEpisode}))
+    dispatch(userSlice.updateSeriesUnlockEpisode({ userId: user.id, seriesId: seriesIdRef.current, ep: unlockEpisode ? unlockEpisode + 1 : '' }))
   }
 
   const handleMuted = () => {
     setMuted(!muted);
     videoRef.current.muted = !videoRef.current.muted;
+  }
+
+  const handleFullscreen = () => {
+    if(fullscreen) {
+      setFullscreen(false);
+      document.exitFullscreen();
+    } else {
+      setFullscreen(true);
+      videoContainerRef.current?.requestFullscreen();
+    }
+  }
+
+  const handleEpisodeClick = (index: number) => {
+    if(unlockEpisode && index <= unlockEpisode) { 
+      handleEpisodeChange(index);
+    }
+  
+    if(index === unlockEpisode) {
+      setLocked(true);
+    }
+  
+    if(unlockEpisode && index > unlockEpisode) {
+      dispatch(globalSlice.addToast({ id: Date.now(), message: '앞에 놓친 에피소드가 있어요.', duration: 1500  }));
+    }
   }
 
   useEffect(() => {
@@ -207,6 +245,42 @@ const UIPopSeriesPlayer = ({}) => {
 
   }, [visibleTools, playing])
 
+  
+    // 북마크 등록 결과
+    useEffect(() => {
+      if(addSeriesKeepError) {
+        console.log('addSeriesKeepError ', addSeriesKeepError);
+  
+        dispatch(userSlice.clearUserState('addSeriesKeepError'));
+      }
+  
+      if(addSeriesKeepResult && addSeriesKeepResult.status === 201) {
+        console.log('addSeriesKeepResult ', addSeriesKeepResult);
+        
+        // dispatch(globalSlice.seriesList());
+        dispatch(userSlice.userSeriesKeepList({ userId: user.id }));
+  
+        dispatch(userSlice.clearUserState('addSeriesKeepResult'));
+      }
+    }, [addSeriesKeepResult, addSeriesKeepError]);
+  
+    // 북마크 삭제 결과
+    useEffect(() => {
+      if(removeSeriesKeepError) {
+        console.log('removeSeriesKeepError ', removeSeriesKeepError);
+  
+        dispatch(userSlice.clearUserState('removeSeriesKeepError'));
+      }
+  
+      if(removeSeriesKeepResult && removeSeriesKeepResult.status === 200) {
+        console.log('removeSeriesKeepResult ', removeSeriesKeepResult);
+        
+        dispatch(userSlice.userSeriesKeepList({ userId: user.id }));
+  
+        dispatch(userSlice.clearUserState('removeSeriesKeepResult'));
+      }
+    }, [removeSeriesKeepResult, removeSeriesKeepError]);
+
   // 잠금 회차 업데이트 결과
   useEffect(() => {
     if(updateSeriesUnlockEpisodeError) {
@@ -215,10 +289,10 @@ const UIPopSeriesPlayer = ({}) => {
       dispatch(userSlice.clearUserState('updateSeriesUnlockEpisodeError'));
     }
 
-    if(updateSeriesUnlockEpisodeResult && updateSeriesUnlockEpisodeResult.data.code === 201) {
+    if(updateSeriesUnlockEpisodeResult && updateSeriesUnlockEpisodeResult.status === 200) {
       console.log('updateSeriesUnlockEpisodeResult ', updateSeriesUnlockEpisodeResult);
 
-      setUnlockEpisode(updateSeriesUnlockEpisodeResult.data.data.unlock_episode);
+      setUnlockEpisode(updateSeriesUnlockEpisodeResult.data.unlock_episode);
       
       videoRef.current.play();
       setPlaying(true); 
@@ -235,10 +309,11 @@ const UIPopSeriesPlayer = ({}) => {
       dispatch(userSlice.clearUserState('addSeriesProgressError'));
     }
 
-    if(addSeriesProgressResult && addSeriesProgressResult.data.code === 201) {
+    if(addSeriesProgressResult && addSeriesProgressResult.status === 201) {
       console.log('addSeriesProgressResult ', addSeriesProgressResult);
 
-      lastEpisodeRef.current = addSeriesProgressResult.data.data.last_episode;
+      //lastEpisodeRef.current = addSeriesProgressResult.data.data.last_episode;
+      setLastEpisode(addSeriesProgressResult.data.last_episode);
 
       dispatch(userSlice.clearUserState('addSeriesProgressResult'));
     }
@@ -252,14 +327,15 @@ const UIPopSeriesPlayer = ({}) => {
       dispatch(userSlice.clearUserState('updateSeriesProgressError'));
     }
 
-    if(updateSeriesProgressResult && updateSeriesProgressResult.data.code === 201) {
+    if(updateSeriesProgressResult && updateSeriesProgressResult.status === 200) {
       console.log('updateSeriesProgressResult ', updateSeriesProgressResult);
 
-      lastEpisodeRef.current = updateSeriesProgressResult.data.data.last_episode;
+      //lastEpisodeRef.current = updateSeriesProgressResult.data.data.last_episode;
+      setLastEpisode(updateSeriesProgressResult.data.last_episode);
 
-      dispatch(userSlice.clearUserState('addSeriesProgressResult'));
+      dispatch(userSlice.clearUserState('updateSeriesProgressResult'));
     }
-  }, [addSeriesProgressResult, addSeriesProgressError])
+  }, [updateSeriesProgressResult, updateSeriesProgressError])
 
   // 진행 상태 조회 결과
   useEffect(() => {
@@ -269,19 +345,19 @@ const UIPopSeriesPlayer = ({}) => {
       dispatch(userSlice.clearUserState('userSeriesProgressError'));
     }
 
-    if(userSeriesProgressResult && userSeriesProgressResult.data.code === 200) {
+    if(userSeriesProgressResult && userSeriesProgressResult.status === 200) {
       console.log('userSeriesProgressResult ', userSeriesProgressResult);
 
       // 사용자의 해당 시리즈 진행 상태가 존재하는 경우
-      if(userSeriesProgressResult.data.data.last_episode) {
-        lastEpisodeRef.current = userSeriesProgressResult.data.data.last_episode;
-        setUnlockEpisode(userSeriesProgressResult.data.data.unlock_episode);
-        handleEpisodeChange(userSeriesProgressResult.data.data.last_episode - 1);
+      if(userSeriesProgressResult.data?.last_episode) {
+        setLastEpisode(userSeriesProgressResult.data.last_episode);
+        setUnlockEpisode(userSeriesProgressResult.data.unlock_episode);
+        handleEpisodeChange(userSeriesProgressResult.data.last_episode - 1);
       }
 
       // 사용자의 해당 시리즈 진행 상태가 존재하지 않는 경우
-      if(userSeriesProgressResult.data.data === 'no_progress') {
-        lastEpisodeRef.current = 1;
+      if(userSeriesProgressResult.data?.message === 'NO_DATA_FOUND') {
+        setLastEpisode(1);
         setUnlockEpisode(series?.free_count);
         dispatch(userSlice.addSeriesProgress({ userId: user?.id, seriesId: seriesIdRef.current, ep: 1, free_ep: series?.free_count }));
         setCurrentEp(episodeList[0]);
@@ -299,9 +375,9 @@ const UIPopSeriesPlayer = ({}) => {
       dispatch(globalSlice.clearGlobalState('episodeListError'));
     }
 
-    if(episodeListResult && episodeListResult.data.code === 200) {
+    if(episodeListResult && episodeListResult.status === 200) {
       console.log('episodeListResult ', episodeListResult);
-      setEpisodeList(episodeListResult.data.data);
+      setEpisodeList(episodeListResult.data);
 
       dispatch(globalSlice.clearGlobalState('episodeListResult'));
     }
@@ -316,42 +392,64 @@ const UIPopSeriesPlayer = ({}) => {
       dispatch(globalSlice.clearGlobalState('seriesInfoError'));
     }
 
-    if(seriesInfoResult && seriesInfoResult.data.code === 200) {
+    if(seriesInfoResult && seriesInfoResult.status === 200) {
       console.log('seriesInfoResult ', seriesInfoResult);
-      const { series } = seriesInfoResult.data.data;
+      const series = seriesInfoResult.data;
       
+      // 사용자의 시리즈 진행 상태 조회
+      dispatch(userSlice.userSeriesProgress({ userId: user?.id, seriesId: seriesIdRef.current }));
+
       setKeepCount(series.keeps);
       setSeries(series);
+
+      dispatch(globalSlice.clearGlobalState('seriesInfoResult'));
     }
   }, [seriesInfoResult, seriesInfoError])
 
   // 현재 에피소드 
   useEffect(() => {
-    if(episodeList[0] && lastEpisodeRef.current) {
-      setCurrentEp(episodeList[lastEpisodeRef.current - 1]);
+    if(episodeList[0] && lastEpisode) {
+      setCurrentEp(episodeList[lastEpisode - 1]);
     }
-  }, [episodeList, lastEpisodeRef.current])
+  }, [episodeList, lastEpisode])
 
   // 에피소드 변경될때 잠긴 에피소드인지 확인
   useEffect(() => {
     if(unlockEpisode && currentEp?.episode_num > unlockEpisode) {
+      
+      videoRef.current.play();
       setLocked(true);
       setPlaying(false);
-      videoRef.current.pause();
+      if(playing) videoRef.current.pause();
+
+    } else {
+      setLocked(false);
     }
-  }, [currentEp, unlockEpisode])
+  }, [currentEp, unlockEpisode ,isMobile])
 
   useEffect(() => {
+    console.log('videoRef.current22', videoRef.current);
     if(videoRef.current) {
+      console.log('videoRef.current');
       // 현재 에피소드 다보면 다음 에피소드 자동 재생
       videoRef.current.addEventListener('ended', () => {
         console.log('video ended');
-        if(currentEp.episode_num < episodeList.length) {
-          swiperRef.current.slideTo(currentEp.episode_num, 0);
+        if(isMobile && currentEp?.episode_num < episodeList.length) {
+          swiperRef.current.slideTo(currentEp?.episode_num, 0);
+        } else if (!isMobile) {
+          console.log('pc video ended');
+          handleEpisodeChange(currentEp?.episode_num);
         }
       })
     }
-  }, [videoRef.current, swiperRef.current])
+  }, [videoRef.current, swiperRef.current, isMobile])
+
+  useEffect(() => {
+    if(videoRef.current && lastEpisode && unlockEpisode &&  currentEp?.episode_num <= unlockEpisode && series && isMobile) {
+      videoRef.current.play();
+      setLoading(false);
+    }
+  }, [videoRef.current, lastEpisode, unlockEpisode, series, isMobile])
 
   useEffect(() => {
     // 1. 시리즈 정보 조회
@@ -360,22 +458,34 @@ const UIPopSeriesPlayer = ({}) => {
     // 2. 시리즈의 전체 에피소드 리스트 조회
     dispatch(globalSlice.episodeList({ seriesId: seriesIdRef.current }));
 
-    // 3. 사용자의 시리즈 진행 상태 조회
-    dispatch(userSlice.userSeriesProgress({ userId: user?.id, seriesId: seriesIdRef.current }));
-    
+    // 3. 시리즈 조회수 증가
+    dispatch(globalSlice.increaseSeriesView({ seriesId: seriesIdRef.current }));
+
     // 4. 시리즈 북마크 확인
     seriesKeepList.forEach((keep: any) => {
-      if (keep.id === seriesIdRef.current) {
+      if (keep.id === Number(seriesIdRef.current)) {
         setKeep(true);
         return;
       }
     })
   }, [])
 
+  // useEffect(() => {
+  //   console.log('에피소드 변경 ', currentEp);
+  //   if(currentEp) {
+  //     videoRef.current.currentTime = 0;
+  //     videoRef.current.play();
+  //   }
+  // }, [currentEp]);
+
   return (
+    <>
+    { isMobile ? (
+    /* Mobile UI */
     <div className={`${isMobile ? 'player-wrap' : 'page-wrap'}`}>
       <div className='short-form-swiper'>
         <UIShortFormSwiper
+        locked={locked}
         playing={playing}
         muted={muted}
         swiperRef={swiperRef}
@@ -386,9 +496,17 @@ const UIPopSeriesPlayer = ({}) => {
         handleTimeUpdate={handleTimeUpdate}
         toggleTools={toggleTools}
         unlockEpisode={unlockEpisode}
-        lastEpisodeRef={lastEpisodeRef}/>
+        lastEpisode={lastEpisode}/>
       </div>
-      {visibleTools && (
+      {loading && (
+        <div className="loading">
+          <TailSpin
+          width={60}
+          height={60}
+          color={'#ffffff'}/>
+        </div>
+      )}
+      {(visibleTools) && (
         <>
           <div className='header' style={{background: 'none'}}>
             <div className="left-section">
@@ -399,7 +517,7 @@ const UIPopSeriesPlayer = ({}) => {
               <img className='speaker-icon' src={`/resources/icons/${muted ? 'icon_speaker_muted_l.svg' : 'icon_speaker_l.svg'}`} onClick={handleMuted}/>
             </div>
           </div>
-          { !locked && <>
+          { (!locked && !loading) && <>
           { playing && (<img className='main-play-btn' src="/resources/icons/icon_pause_main.svg" onClick={togglePlay}/>) }
           { !playing && (<img className='main-play-btn' src="/resources/icons/icon_play_main.svg" onClick={togglePlay}/>) }
           </> }
@@ -413,13 +531,13 @@ const UIPopSeriesPlayer = ({}) => {
               List
             </div>
           </div>
-          {(
+          {!locked && (
           <div className='progress-bar'>
             <input style={{background: `linear-gradient(to right, #FF3064 ${progress}%, #535353 ${progress}%)`}} type='range' min='0' max='100' step='0.1' value={progress} onChange={handleProgressChange} onTouchEnd={handleProgressTouchEnd} onTouchStart={handleProgressTouchStart}/>
           </div>
           )}
         </>
-      )}
+        )}
         <UIBottomSheetEpisodeGrid
           series={series}
           locked={locked}
@@ -429,16 +547,90 @@ const UIPopSeriesPlayer = ({}) => {
           visibleBottomSheet={visibleBottomSheet}
           handleBottomSheetClose={handleBottomSheetClose}
           handleEpisodeChange={handleEpisodeChange}
-          handleEpisodeLock={handleEpisodeLock}
-        />
+          handleEpisodeLock={handleEpisodeLock}/>
         {locked && (
-          <UILayerLockedEpisode
+        <UILayerLockedEpisode
           series={series}
           handleLockedClose={handleLockedClose}
           handlePaymentComplete={handlePaymentComplete}/>
         )}
     </div>
+    ) : (
+    /* Desktop UI */
+    <>
+    <div className='page-wrap'>
+      <div className='page-body'>
+        {/* <div className='breadcrumb'>
+          <span>Home</span>
+          <img src='/resources/icons/icon_arrow_right_s.svg'/>
+          <span className='active'>{series?.title}</span>
+        </div> */}
+        <div className='short-form-player-wrap' ref={videoContainerRef}>
+          <div className={`short-form-player ${fullscreen ? 'fullscreen' : ''}`}>
+            { currentEp && (
+            <video preload="auto" autoPlay={true} ref={videoRef} onTimeUpdate={handleTimeUpdate} onEnded={() => handleEpisodeChange(currentEp?.episode_num)}>
+              <source src={`${import.meta.env.VITE_SERVER_URL}/videos/${currentEp?.series_id}/${currentEp?.video}`}></source>
+            </video>
+            )}
+            <div className='bottom-container'>
+              <div className='flex-row' style={{justifyContent: 'space-between'}}>
+                <div className='flex-row' style={{gap: 9}}>
+                { !playing && <img src={'/resources/icons/icon_play_pc.svg'} className="play-btn" onClick={togglePlay}/> }
+                { playing && <img src={'/resources/icons/icon_pause_pc.svg'} className='play-btn' onClick={togglePlay}/> }
+                  { currentTime && (
+                  <span className='time'>
+                    <span>
+                    {formattedSecond(currentTime)} 
+                    </span>
+                    {' / '} 
+                    <span>
+                    {isNaN(videoRef.current?.duration) ? '00:00' : formattedSecond(videoRef.current?.duration)}
+                    </span>
+                  </span>
+                  )}
+                </div>
+                <div className='flex-row' style={{gap: 20}}>
+                  <img className='speaker-btn' src={`/resources/icons/${muted ? 'icon_speaker_muted_l.svg' : 'icon_speaker_l.svg'}`} onClick={handleMuted}/>
+                  <img className='fullscreen-btn' src={'/resources/icons/icon_fullscreen.svg'} onClick={handleFullscreen}/>
+                </div>
+              </div>
+              <div className='progress-bar'>
+                <input style={{background: `linear-gradient(to right, #FF3064 ${progress}%, #535353 ${progress}%)`}} type='range' min='0' max='100' step='0.1' value={progress} onChange={handleProgressChange} onTouchEnd={handleProgressTouchEnd} onTouchStart={handleProgressTouchStart}/>
+              </div>
+            </div>
+          </div>
+          <div className='info-container' style={fullscreen ? {paddingTop: 30, paddingRight: 25} : {}}>
+            <div className='detail-info'>
+            <div className='title'>
+              {series.title}
+            </div>
+            <div className='description'>
+              {series.description}
+            </div>
+            <span className='bookmark' onClick={handleSeriesKeep}>
+              <img id='bookmark-btn' src={`/resources/icons/icon_bookmark${keep ? '_fill' : ''}.svg`}/>
+              {keepCount}
+            </span>
+            <div className='episode'>
+              {`episode ${currentEp?.episode_num}/${series.ep_count}`}
+            </div>
+            </div>
+            <UIEpisodeNumGrid
+              series={series}
+              currentEp={currentEp}
+              unlockEpisode={unlockEpisode}
+              handleEpisodeClick={handleEpisodeClick}/>
+          </div>
+        </div>
+      </div>
+    </div>
+    { !isMobile && (
+      <LayoutFooter/>
+    )}
+    </>
+    )}
+    </>
   )
 }
 
-export default UIPopSeriesPlayer;
+export default SeriesPlayerPage;

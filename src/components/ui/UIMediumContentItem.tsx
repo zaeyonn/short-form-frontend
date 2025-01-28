@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import * as globalSlice from 'src/redux/globalSlice';
 
 interface Props {
   item: any;
@@ -11,7 +9,6 @@ interface Props {
 }
 
 const UIMediumContentItem = (props: Props) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [checked, setChecked] = useState(false);
@@ -21,8 +18,7 @@ const UIMediumContentItem = (props: Props) => {
       setChecked(!checked);
       if (props.handleCheck) props.handleCheck(props.item.id);
     } else {
-      navigate('/series');
-      dispatch(globalSlice.setSelectedSeries(props.item));
+      navigate(`/series/${props.item.id}`);
     }
   }
 

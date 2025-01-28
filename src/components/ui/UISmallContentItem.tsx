@@ -12,6 +12,9 @@ const UISmallContentItem = ({item, highlight, dragging}: SallContentItemProps) =
   const handleSeriesPlayerOpen = () => {
     if(!dragging) {
       navigate(`/series/${item.id}`);
+      
+      console.log('window.scrollY', window.scrollY); 
+      sessionStorage.setItem('scrollY', String(window));
     }
   }
   

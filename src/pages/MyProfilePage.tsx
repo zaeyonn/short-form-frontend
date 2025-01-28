@@ -3,32 +3,50 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as userSlice from 'src/redux/userSlice';
 
-import UIBottomSheetLogin from 'components/ui/UIBottomSheetLogin';
+import UIBottomSheetLogin from 'components/ui/bottomsheet/UIBottomSheetLogin';
+import UIBottomSheetPayment from 'components/ui/bottomsheet/UIBottomSheetPayments';
 import UISmallContentSlider from 'components/ui/UISmallContentSlider';
+import UIPopPayments from 'components/ui/payments/UIPopPayments'; 
+
 
 const MyProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { payments } = useSelector((state: any) => state.global);
+
   const { 
-    user, seriesWatchList, authLoginGoogleResult, authLoginGoogleError,
+    user, seriesWatchList, authGoogleResult, authGoogleError,
     userSeriesWatchListResult, userSeriesWatchListError,
    } = useSelector((state: any) => state.user);
   
   const loginSheetRef = useRef<any>(null);
 
-  const [visibleLoginBottomSheet, setVisibleLoginBottomSheet] = useState(false);
+  const [visibleLogin, setVisibleLogin] = useState(false);
+  const [visiblePayment, setVisiblePayment] = useState(false);
   
   const handleClose = () => {
     navigate(-1);
   }
 
-  const handleLoginBottomSheetOpen = () => {
-    setVisibleLoginBottomSheet(true);
+  const handleLoginOpen = () => {
+    setVisibleLogin(true);
   }
 
-  const handleLoginBottomSheetClose = () => {
-    setVisibleLoginBottomSheet(false);
+  const handleLoginClose = () => {
+    setVisibleLogin(false);
+  }
+
+  const handlePaymentOpen = () => {
+    setVisiblePayment(true);
+  }
+
+  const handlePaymentComplete = () => {
+
+  }
+
+  const handlePaymentClose = () => {
+    setVisiblePayment(false);
   }
 
   const handleLogout = () => {
@@ -37,31 +55,31 @@ const MyProfilePage = () => {
 
   const signInProcess = (code: string, authType: string) => {
     console.log('signInProcess code, authType', code, authType);
-    dispatch(userSlice.authLoginGoogle({code, userId: user?.id, authType}));
+    dispatch(userSlice.authGoogle({code, userId: user?.id, authType}));
   }
 
   // SNS 로그인 결과
   useEffect(() => {
-    if(authLoginGoogleError) {
-      console.log('authLoginGoogleError ', authLoginGoogleError);
-      setVisibleLoginBottomSheet(false);
+    if(authGoogleError) {
+      console.log('authGoogleError ', authGoogleError);
+      setVisibleLogin(false);
         
-      dispatch(userSlice.clearUserState('authLoginGoogleError'));
+      dispatch(userSlice.clearUserState('authGoogleError'));
     }
   
-    if(authLoginGoogleResult && authLoginGoogleResult.data.code === 201) {
-      console.log('authLoginGoogleResult ', authLoginGoogleResult);
-      const { user } = authLoginGoogleResult.data.data;
+    if(authGoogleResult && authGoogleResult.status === 200) {
+      console.log('authGoogleResult ', authGoogleResult);
+      const user = authGoogleResult.data;
       
       if(loginSheetRef.current) loginSheetRef.current.handleClose();
       dispatch(userSlice.setUser(user))
 
       localStorage.setItem('user-id', user.id);
 
-      dispatch(userSlice.clearUserState('authLoginGoogleResult'));
+      dispatch(userSlice.clearUserState('authGoogleResult'));
       return;
     }
-  }, [authLoginGoogleResult, authLoginGoogleError]);
+  }, [authGoogleResult, authGoogleError]);
 
 
   // 사용자 시청 기록 조회 결과
@@ -73,11 +91,11 @@ const MyProfilePage = () => {
       return;
     }
 
-    if(userSeriesWatchListResult && userSeriesWatchListResult.data.code === 200) {
+    if(userSeriesWatchListResult && userSeriesWatchListResult.status === 200) {
       console.log('userSeriesWatchListResult ', userSeriesWatchListResult);
-      const { watch_list } = userSeriesWatchListResult.data.data;
+      const watchList = userSeriesWatchListResult.data;
       
-      dispatch(userSlice.setSeriesWatchList(watch_list));
+      dispatch(userSlice.setSeriesWatchList(watchList));
 
       dispatch(userSlice.clearUserState('userSeriesWatchListResult'));
       return;
@@ -110,7 +128,7 @@ const MyProfilePage = () => {
               )}
             </div>
             {(user?.auth === 'guest') ? (
-              <div className='nickname' onClick={handleLoginBottomSheetOpen}>
+              <div className='nickname' onClick={handleLoginOpen}>
                 로그인을 해주세요
                 <img src='resources/icons/icon_arrow_right_s.svg'/>
               </div>
@@ -118,7 +136,7 @@ const MyProfilePage = () => {
               <div>     
               <div className='nickname'>
                 {`${user?.nickname}님`}
-                <img src='resources/icons/icon_arrow_right_s.svg'/>
+                {/* <img src='resources/icons/icon_arrow_right_s.svg'/> */}
               </div>
               <div className='email'>{user?.email}</div>
               </div> 
@@ -136,7 +154,7 @@ const MyProfilePage = () => {
                 <img src='resources/icons/icon_point.svg'/>
                 <span>{`${user?.paid_point + user?.free_point}`}</span>
               </div>
-              <button>
+              <button onClick={handlePaymentOpen}>
                 충전하기
               </button>
             </div>
@@ -187,12 +205,16 @@ const MyProfilePage = () => {
         </div>
         </div>
       </div>
-
       <UIBottomSheetLogin
-      ref={loginSheetRef}
-      visible={visibleLoginBottomSheet}
-      signInProcess={signInProcess}
-      handleLoginBottomSheetClose={handleLoginBottomSheetClose}/>
+        ref={loginSheetRef}
+        visible={visibleLogin}
+        signInProcess={signInProcess}
+        handleLoginBottomSheetClose={handleLoginClose}/>
+      <UIBottomSheetPayment
+        visible={visiblePayment}
+        handlePaymentComplete={handlePaymentComplete}
+        handleBottomSheetClose={handlePaymentClose}/>
+      { payments && (<UIPopPayments/>)}
     </>
   );
 };

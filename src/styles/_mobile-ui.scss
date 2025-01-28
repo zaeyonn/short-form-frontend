@@ -323,7 +323,6 @@ a {
   overflow-y: scroll;
   z-index: 3;
 
-  padding-bottom: 82px;
   scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
   display: flex;
   flex-direction: column;
@@ -500,6 +499,11 @@ a {
         width: 28px;
         height: 28px;
       }
+
+      .empty {
+        width: 24px;
+        height: 24px;
+      }
     }
   
     img {
@@ -524,7 +528,7 @@ a {
     box-sizing: border-box;
     position: absolute;
     bottom: 30px;
-    width: 100vw;
+    width: 100%;
     height: 28px;
     padding: 5px 10px;
 
@@ -706,7 +710,7 @@ a {
     }
 
     .body {
-      margin: 50px auto 20px auto;
+      margin: 10px auto 20px auto;
       width: 90%;
 
       
@@ -809,6 +813,28 @@ a {
         background-color: #FF3064;
         border: 2px solid #FF3064;
       }
+    }
+  }
+  
+  .no-data {
+    font-weight: 400;
+    font-size: 16px;
+    color: #4A4A4A;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: pre;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    img {
+      opacity: 0.4;
+      width: 40px;
+      height: 40px;
+      background: none;
     }
   }
   }
@@ -981,7 +1007,7 @@ a {
 
 .bottom-sheet-wrap {
   position: fixed;
-  z-index: 3;
+  z-index: 4;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -1048,87 +1074,6 @@ a {
     }
 
 
-  }
-
-  .episode-grid {
-    margin-top: 20px;
-    height: 100%;
-
-    .section {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      font-weight: 300;
-      font-size: 15px;
-
-      .selected {
-        color: #FF3064;
-      }
-    
-      .separator {
-        margin: 0 14px;
-        font-size: 12px;
-      }
-    }
-
-    .grid-wrap {
-      margin-top: 10px;
-      display: grid;
-      column-gap: 10px;
-      row-gap: 10px;
-      grid-template-columns: repeat(6, 1fr);
-
-      .container {
-        width: 100%;
-        position: relative;
-
-        &::after {
-          display: block;
-          content: "";
-          padding-bottom: 100%;
-        }
-      }
-
-      .box {
-        position: absolute;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        background-color: #333333;
-        color: #ffffff;
-        border-radius: 5px;
-        font-weight: 400;
-        font-size: 16px;
-        cursor: pointer;
-
-        &.locked {
-          background-color: #111111;
-          color: #393939;
-
-          &::after {
-            background-color: #292929;
-            width: 16px;
-            height: 16px;
-            position: absolute;
-            top: -1px;
-            right: -1px;
-            content: url('https://inquisitive-paletas-8f9987.netlify.app/' + 'resources/icons/icon_lock.svg');
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-top-right-radius: 5px;
-            border-bottom-left-radius: 5px;
-          }
-        }
-
-        &.selected {
-          background-color: #FF3064;
-        }
-      }
-    }
   }
 
   .body {
@@ -1216,12 +1161,92 @@ a {
   }
 }
 
+.episode-grid {
+  margin-top: 20px;
+  height: 100%;
+
+  .section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    font-weight: 300;
+    font-size: 15px;
+
+    .selected {
+      color: #FF3064;
+    }
+  
+    .separator {
+      margin: 0 14px;
+      font-size: 12px;
+    }
+  }
+
+  .grid-wrap {
+    margin-top: 10px;
+    display: grid;
+    column-gap: 10px;
+    row-gap: 10px;
+    grid-template-columns: repeat(6, 1fr);
+  
+    .container {
+      width: 100%;
+      position: relative;
+  
+      &::after {
+        display: block;
+        content: "";
+        padding-bottom: 100%;
+      }
+    }
+  
+    .box {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      background-color: #333333;
+      color: #ffffff;
+      border-radius: 5px;
+      font-weight: 400;
+      font-size: 16px;
+      cursor: pointer;
+  
+      &.locked {
+        background-color: #111111;
+        color: #393939;
+  
+        &::after {
+          background-color: #292929;
+          width: 16px;
+          height: 16px;
+          position: absolute;
+          top: -1px;
+          right: -1px;
+          content: url('https://inquisitive-paletas-8f9987.netlify.app/' + 'resources/icons/icon_lock.svg');
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-top-right-radius: 5px;
+          border-bottom-left-radius: 5px;
+        }
+      }
+  
+      &.selected {
+        background-color: #FF3064;
+      }
+    }
+  }
+}
+
 .locked-episode {
-  width: 100vw;
-  height: 100vh;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 3;
   display: flex;
   align-items: center;
@@ -1433,6 +1458,23 @@ a {
         height: 100%;
       }
     }
+
+    .locked-layer {
+      top: 0;
+      left: 0;
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      background-color: #00000080;
+    }
+  }
+
+  .loading {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    z-index: 10;
   }
 
   .main-play-btn {
@@ -1453,7 +1495,7 @@ a {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    z-index: 2;
+    z-index: 3;
   }
 
   .btn-wrap {
@@ -1620,6 +1662,38 @@ a {
         cursor: pointer;
         transition: transform 0.2s ease;
       }
+    }
+  }
+}
+
+@include mobile {
+  .popup-wrap {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: #FFFFFF;
+    top: 0; 
+    left: 0;
+    z-index: 5;
+
+    .header {
+      color: #000000;
+      justify-content: space-between;
+    }
+
+    .close-btn {
+      width: 24px;
+      height: 24px;
+    }
+
+    .payment-btn {
+      background-color: #FF3064;
+      border-radius: 0px;
+      width: 100%;
+      height: 60px;
+      position: absolute;
+      bottom: 0;
+      font-size: 20px;
     }
   }
 }

@@ -7,7 +7,6 @@ export default () => {
 
   return defineConfig({
     plugins: [react(), tsconfigPaths()],
-    base: '/short-form-frontend/'
   })
 } 
 

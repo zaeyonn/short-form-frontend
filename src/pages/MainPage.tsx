@@ -10,15 +10,18 @@ import UIDesktopMainContentSlider from 'components/ui/desktop/UIDesktopMainConte
 import UISmallContentSlider from "components/ui/UISmallContentSlider"
 import UIVerticalContentList from "components/ui/UIVerticalContentList"
 import UILeftMenu from 'components/ui/UILeftMenu';
+import LayoutFooter from 'components/layouts/LayoutFooter';
+import { Series } from 'src/types';
 
 const MainPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { seriesList, displayPopName, seriesListResult, seriesListError, seriesPlayer, isMobile } = useSelector((state: any) => state.global)
-  const { user, addSeriesKeepResult, addSeriesKeepError ,userSeriesKeepListResult, userSeriesKeepListError, removeSeriesKeepResult, removeSeriesKeepError } = useSelector((state: any) => state.user);
+  const { isMobile, seriesList, seriesListResult, seriesListError } = useSelector((state: any) => state.global)
+  const { user, userSeriesKeepListResult, userSeriesKeepListError } = useSelector((state: any) => state.user);
 
   const [visibleMenu, setVisibleMenu] = useState(false);
+  const [newestSeriesList, setNewestSeriesList] = useState<Series []>([]);
   
   const handleMenuOpen = () => {
     setVisibleMenu(true);
@@ -33,42 +36,6 @@ const MainPage = () => {
     dispatch(globalSlice.setSeriesListTitle(title));
   }
 
-  // 북마크 등록 결과
-  useEffect(() => {
-    if(addSeriesKeepError) {
-      console.log('addSeriesKeepError ', addSeriesKeepError);
-
-      dispatch(userSlice.clearUserState('addSeriesKeepError'));
-    }
-
-    if(addSeriesKeepResult && addSeriesKeepResult.data.code === 201) {
-      console.log('addSeriesKeepResult ', addSeriesKeepResult);
-      
-      dispatch(globalSlice.seriesList());
-      dispatch(userSlice.userSeriesKeepList({ userId: user.id }));
-
-      dispatch(userSlice.clearUserState('addSeriesKeepResult'));
-    }
-  }, [addSeriesKeepResult, addSeriesKeepError]);
-
-  // 북마크 삭제 결과
-  useEffect(() => {
-    if(removeSeriesKeepError) {
-      console.log('removeSeriesKeepError ', removeSeriesKeepError);
-
-      dispatch(userSlice.clearUserState('removeSeriesKeepError'));
-    }
-
-    if(removeSeriesKeepResult && removeSeriesKeepResult.data.code === 201) {
-      console.log('removeSeriesKeepResult ', removeSeriesKeepResult);
-      
-      dispatch(userSlice.userSeriesKeepList({ userId: user.id }));
-      dispatch(globalSlice.seriesList());
-
-      dispatch(userSlice.clearUserState('removeSeriesKeepResult'));
-    }
-  }, [removeSeriesKeepResult, removeSeriesKeepError]);
-
   // 북마크 시리즈 리스트 조회 결과
   useEffect(() => {
     if(userSeriesKeepListError) {
@@ -77,10 +44,10 @@ const MainPage = () => {
       dispatch(userSlice.clearUserState('userSeriesKeepListError'));
     }
 
-    if(userSeriesKeepListResult && userSeriesKeepListResult.data.code === 200) {
+    if(userSeriesKeepListResult && userSeriesKeepListResult.status === 200) {
       console.log('userSeriesKeepListResult ', userSeriesKeepListResult);
     
-      dispatch(userSlice.setSeriesKeepList(userSeriesKeepListResult.data.data));
+      dispatch(userSlice.setSeriesKeepList(userSeriesKeepListResult.data));
 
       dispatch(userSlice.clearUserState('userSeriesKeepListResult'));
     }
@@ -95,27 +62,36 @@ const MainPage = () => {
     if(seriesListResult && seriesListResult.status === 200) {
       dispatch(globalSlice.setSeriesList(seriesListResult.data));
       dispatch(globalSlice.clearGlobalState('seriesListResult'));
+
+      const sorted = [...seriesListResult.data].sort((a: Series, b: Series) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      console.log('sorted', sorted)
+      setNewestSeriesList(sorted);
     }
+
   }, [seriesListResult, seriesListError]);
 
   // 메뉴 활성화시 스크롤 막음
-  useEffect(() => {
-    if(visibleMenu || displayPopName !== '' || seriesPlayer) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-  }, [visibleMenu, displayPopName, seriesPlayer])
+  // useEffect(() => {
+  //   if(visibleMenu) {
+  //     document.body.style.overflow = 'hidden';
+  //   } else {
+  //     document.body.style.overflow = 'auto';
+  //   }
+  // }, [visibleMenu])
 
   // 사용자 정보가 있을 경우 북마크 리스트 조회
   useEffect(() => {
     if(user) {
-      dispatch(userSlice.userSeriesKeepList({userId: user.id}));
+      // dispatch(userSlice.userSeriesKeepList({userId: user.id}));
     }
   }, [user])
 
   // 시리즈 리스트 조회
   useEffect(() => {
+
+    console.log('sessionStorage', sessionStorage.getItem('scrollY'))
+    window.scroll(0, Number(sessionStorage.getItem('scrollY')));
+
     dispatch(globalSlice.seriesList());
   }, [])
 
@@ -125,7 +101,7 @@ const MainPage = () => {
         <div className='header'>
           <div className="left-section">
             <img src={`/resources/icons/icon_hamburger.svg`} onClick={handleMenuOpen}/>
-            <span className="title">Short Form</span>
+            <span className="title">Framez</span>
           </div>
           <div className='right-section'>
             <Link to='/profile'>
@@ -133,6 +109,7 @@ const MainPage = () => {
             </Link>
           </div>
         </div>
+        <div className='page-body'>
         { isMobile ? (
           <UIMainContentSlider
             seriesList={seriesList.slice(0, 3)}/>
@@ -147,7 +124,7 @@ const MainPage = () => {
           handleSeriesListOpen={handleSeriesListOpen}/>
         <UISmallContentSlider
           headerTitle='새로 올라온 콘텐츠'
-          seriesList={seriesList}
+          seriesList={newestSeriesList}
           highlight='NEW'
           handleSeriesListOpen={handleSeriesListOpen}/>
         <UISmallContentSlider
@@ -160,10 +137,14 @@ const MainPage = () => {
           seriesList={seriesList}
           handleSeriesListOpen={handleSeriesListOpen}/>
       </div>
+      </div>
       <UILeftMenu
       visible={visibleMenu}
       handleMenuClose={handleMenuClose}
       />
+      { !isMobile && (
+        <LayoutFooter/>
+      )}
     </>
   )
 }

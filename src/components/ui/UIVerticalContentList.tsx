@@ -1,3 +1,4 @@
+
 import UIVerticalContentItem from "./UIVerticalContentItem";
 
 interface Props {

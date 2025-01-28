@@ -36,3 +36,13 @@ export function* handleEpisodeList(action: PayloadAction<any>): Generator<any> {
     yield put(slice.episodeListFailure(error));
   }
 }
+
+export function* handleIncreaseSeriesViews(action: PayloadAction<any>): Generator<any> {
+  try {
+    const response = yield call(api.increaseSeriesViews, action.payload);
+
+    yield put(slice.increaseSeriesViewSuccess(response));
+  } catch (error) {
+    yield put(slice.increaseSeriesViewsFailure(error));
+  }
+}

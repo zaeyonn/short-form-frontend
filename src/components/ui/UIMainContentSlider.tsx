@@ -35,6 +35,7 @@ const UIMainContentSlider = ({seriesList}: Props) => {
   };
 
   return (
+    <div style={{minHeight: 430}}>
     <Carousel
       arrows={false}
       partialVisible={true}
@@ -48,6 +49,7 @@ const UIMainContentSlider = ({seriesList}: Props) => {
       >
       { seriesList.map((i: any, index: number) => <UIMainContentItem item={i} key={index}/>) }
     </Carousel>
+    </div>
   )
 }
 

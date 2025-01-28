@@ -22,12 +22,10 @@ const SeriesListPage = () => {
           </div>
         </div>
       </div>
-      <div className='breadcrumb'>
-        <span>Home</span>
-        <img src='/resources/icons/icon_arrow_right_s.svg'/>
-        <span className='active'>{ seriesListTitle }</span>
+      <div className='page-body'>
+      <div className='title'>
+        { seriesListTitle }
       </div>
-      <div className='body'>
         <div className='series-container'>
         { seriesList?.map((item: any, index: number) => <UIMediumContentItem key={index} item={item}/>)}
         </div>

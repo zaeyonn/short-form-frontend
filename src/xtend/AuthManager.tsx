@@ -17,11 +17,12 @@ const AuthManager = () => {
       return;
     }
 
-    if(userInfoResult && userInfoResult.data.code === 200) {
-      console.log('userInfoResult ', userInfoResult.data.data);
-      const { user } = userInfoResult.data.data;
+    if(userInfoResult && userInfoResult.status === 200) {
+      console.log('userInfoResult ', userInfoResult.data);
+      const user = userInfoResult.data;
       localStorage.setItem('user-id', user.id);
       dispatch(userSlice.setUser(user));
+      dispatch(userSlice.userSeriesKeepList({userId: user.id}));
     }
 
   }, [userInfoResult, userInfoError])
@@ -34,12 +35,12 @@ const AuthManager = () => {
       return;
     }
 
-    if(authGuestResult && authGuestResult.data.code === 201) {
+    if(authGuestResult && authGuestResult?.status === 201) {
       console.log('authGuestResult ', authGuestResult);
-      const { user } = authGuestResult.data.data;
+      const user = authGuestResult.data;
       localStorage.setItem('user-id', user.id);
-      dispatch(userSlice.setUser(user))
-      
+      dispatch(userSlice.setUser(user));
+  
       dispatch(userSlice.clearUserState('authGuestResult'));
       return;
     }

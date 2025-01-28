@@ -9,6 +9,7 @@ const initialState = {
   toast: null,
   navigationBar: {visible: true, title: 'Logo', leftBtn: {icon: 'icon_hamburger.svg', event: () => 0}, rightBtn: {icon: 'icon_search.svg', event: () => 0}},
   seriesPlayer: false,
+  payments: null,
 
   selectedSeries: null,
   seriesListTitle: '',
@@ -82,6 +83,16 @@ const globalSlice = createSlice({
     },
     setSeriesListTitle(state: any, action: PayloadAction<any>) {
       state.seriesListTitle = action.payload;
+    },
+    setPayments(state: any, action: PayloadAction<any>) {
+      state.payments = action.payload;
+    },
+    increaseSeriesView(_state: any, _action: PayloadAction<any>) {},
+    increaseSeriesViewSuccess(state: any, action: PayloadAction<any>) {
+      state.increaseSeriesViewResult = action.payload;
+    },
+    increaseSeriesViewsFailure(state: any, action: PayloadAction<any>) {
+      state.increaseSeriesViewError = action.payload;
     }
   }
 })
@@ -92,7 +103,8 @@ export const {
 
   seriesList, seriesListSuccess, seriesListFailure,
   episodeList, episodeListSuccess, episodeListFailure,
-  setAlert, seriesInfo, seriesInfoSuccess, seriesInfoFailure,
+  setAlert, seriesInfo, seriesInfoSuccess, seriesInfoFailure, setPayments,
+  increaseSeriesView, increaseSeriesViewSuccess, increaseSeriesViewsFailure
 } = globalSlice.actions;
 
 export default globalSlice.reducer;

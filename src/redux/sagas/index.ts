@@ -10,10 +10,11 @@ export function* watcherSaga() {
     takeLatest(globalSlice.episodeList.type, globalHandler.handleEpisodeList),
     takeLatest(globalSlice.seriesList.type, globalHandler.handleSeriesList),
     takeLatest(globalSlice.seriesInfo.type, globalHandler.handleSeriesInfo),
+    takeLatest(globalSlice.increaseSeriesView.type, globalHandler.handleIncreaseSeriesViews),
   
     // user
     takeLatest(userSlice.authGuest.type, userHandler.handleAuthGuest),
-    takeLatest(userSlice.authLoginGoogle.type, userHandler.handleauthLoginGoogle),
+    takeLatest(userSlice.authGoogle.type, userHandler.handleAuthGoogle),
     takeLatest(userSlice.addSeriesKeep.type, userHandler.handleAddSeriesKeep),
     takeLatest(userSlice.removeSeriesKeep.type, userHandler.handleRemoveSeriesKeep),
     takeLatest(userSlice.userSeriesKeepList.type, userHandler.handleUserSeriesKeepList),
