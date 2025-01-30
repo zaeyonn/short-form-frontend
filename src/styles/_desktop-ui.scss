@@ -2,15 +2,23 @@
 
 @include desktop  {
 
-  :root {
-   display: flex;
-   justify-content: center; 
-  }
-
   body {
     padding-bottom: 0px;
   }
 
+  /* 스크롤바 스타일링 */
+  ::-webkit-scrollbar {
+    width: 7px;  /* 스크롤바 너비 */
+    padding-right: 5px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #000000;  /* 스크롤바 트랙 배경색 */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #cdcdce;  /* 스크롤바 색상 */
+  }
   
   .toast-container {
     position: fixed;
@@ -56,18 +64,24 @@
     }
 
     .page-body {
-      max-width: 1400px;
+      max-width: 1210px;
       width: 90%;
       min-height: 85vh;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
 
+      @media (min-width: 1024px) and (max-width: 1400px) {
+        max-width: 1000px;
+      }
+
       .short-form-player-wrap {
-        margin-top: 20px;
+        margin-top: 0px;
+        max-height: 85vh;
         min-width: 100%;
         display: flex;
         flex-direction: row;
+        overflow-y: hidden;
         gap: 30px; 
 
         .short-form-player {
@@ -77,7 +91,7 @@
           display: flex;
           justify-content: center;
           video {
-            width: 45%;
+            width: 10vw;
             min-width: 430px; 
           }
 
@@ -134,7 +148,6 @@
 
         .info-container {
           width: 31%;
-          min-height: 85vh;
           box-sizing: border-box;
           display: flex;
           flex-direction: column;
@@ -148,10 +161,12 @@
           .title {
             font-weight: 600;
             font-size: 24px;
+            line-height: 24px;
+            margin-bottom: 0px;
           }
 
           .description {
-            margin-top: 16px;
+            margin-top: 20px;
             font-weight: 400; 
             font-size: 14px;
             color: #A2A2A2;
@@ -441,6 +456,7 @@
     }
 
     .vertical-content-item {
+      cursor: pointer;
 
       .info-wrap {
         .tag-list {
@@ -478,8 +494,219 @@
     }
   }
 
-  .short-form-swiper {
-    
+  .locked-episode {
+    width: 100%;
+    height: 100%;
+    background-color: #00000080;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+
+    .payment-btn {
+      cursor: pointer;
+      width: 300px;
+      height: 52px;
+      border-radius: 12px;
+      background-color: #FF3064;
+      font-weight: 600;
+      font-size: 17px;
+    }
+  
+    .view-ad-btn {
+      cursor: pointer;
+      width: 300px;
+      height: 72px;
+      border-radius: 12px;
+      background-color: #FFFFFF33;
+      font-weight: 600;
+      font-size: 17px;
+      border: 1px solid #ffffff;
+      display: flex;
+      flex-direction: column;
+  
+      span {
+        margin-top: 4px;
+        font-weight: 300;
+        font-size: 13px;
+      } 
+    }
+  }
+
+  .popup-layer {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: #00000080;
+    z-index: 5;
+    top: 0;
+    left: 0;
+
+    .popup-wrap {
+      position: absolute;
+      min-width: 455px;
+      min-height: 209px;
+      background-color: #000000;
+      border: 1px solid #595959;
+      border-radius: 16px;
+      padding: 60px 20px 40px 20px;
+      box-sizing: border-box;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      .close-btn {
+        cursor: pointer;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+
+      .popup-body {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .title {
+          margin: 0 auto;
+          font-weight: 600;
+          font-size: 24px;
+        }
+
+        
+        .point-wrap {
+          width: 100%;
+          box-sizing: border-box;
+          background-color: #1B1B1B;
+          padding: 16px 20px;
+          border-radius: 12px;
+          font-size: 14px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+
+          &.highlight {
+            border: 1px solid #FF3064;
+          }
+
+          .item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+            button {
+              width: 74px;
+              padding: 8px 12px;
+              border-radius: 6px;
+              background-color: #FF3064;
+              color: #ffffff;
+              font-weight: 500;
+              font-size: 12px;
+            }
+
+            .divider {
+              width: 100%;
+              height: 2px;
+              background-color: #353535;
+            }
+        
+            .label {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              gap: 4px;
+              color: #808080;
+              font-weight: 400;
+              font-size: 14px;
+        
+              .discount-sign {
+                padding: 3px 5px;
+                border-radius: 4px;
+                background-color: #72162D;
+                color: #FF96B0;
+                font-weight: 500;
+                font-size: 11px;
+              }
+        
+              &.light {
+                color: #A2A2A2;
+              }
+        
+              .bonus {
+                color: #FF3064;
+              }
+            }
+        
+            .point {
+              display: flex;
+              align-items: center;
+              gap: 5px;
+        
+              color: #FFFFFF;
+              font-size: 12px;
+            }
+        
+            img {
+              width: 18px;
+              height: 18px;
+            }
+          }
+        }
+
+        .product-grid-wrap {
+          display: grid;
+          grid-template-columns: repeat(2, calc(50% - 5px));
+          row-gap: 10px;
+          column-gap: 10px;
+
+          .product-item {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            border-radius: 12px;
+            background-color: #232323;
+            padding-top: 20px;
+            justify-content: center;
+            align-items: center;
+
+            .paid-point {
+              font-weight: 600;
+              font-size: 22px;
+            }
+
+            .bonus-point {
+              margin-top: 6px;
+              font-weight: 300;
+              font-size: 16px;
+              color: #FF3064;
+            }
+
+            .price {
+              margin-top: 14px;
+              display: flex;
+              justify-content: center;
+              padding: 8px 0px;
+              width: 100%;
+              background-color: #191919;
+              font-weight: 500;
+              font-size :16px;
+              color: #A2A2A2;
+              border-bottom-left-radius: 12px;
+              border-bottom-right-radius: 12px;
+            }
+          }
+        }
+      }
+    }
   }
 }
+
 

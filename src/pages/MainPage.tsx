@@ -70,15 +70,6 @@ const MainPage = () => {
 
   }, [seriesListResult, seriesListError]);
 
-  // 메뉴 활성화시 스크롤 막음
-  // useEffect(() => {
-  //   if(visibleMenu) {
-  //     document.body.style.overflow = 'hidden';
-  //   } else {
-  //     document.body.style.overflow = 'auto';
-  //   }
-  // }, [visibleMenu])
-
   // 사용자 정보가 있을 경우 북마크 리스트 조회
   useEffect(() => {
     if(user) {
@@ -88,10 +79,6 @@ const MainPage = () => {
 
   // 시리즈 리스트 조회
   useEffect(() => {
-
-    console.log('sessionStorage', sessionStorage.getItem('scrollY'))
-    window.scroll(0, Number(sessionStorage.getItem('scrollY')));
-
     dispatch(globalSlice.seriesList());
   }, [])
 

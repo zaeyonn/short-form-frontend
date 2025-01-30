@@ -11,7 +11,7 @@ const initialState = {
   seriesPlayer: false,
   payments: null,
 
-  selectedSeries: null,
+  series: {id: 0, title: '', description: '', poster_img: '', ep_count: 0, free_count: 0, keyword: [], req_point: 0, views: 0, keeps: 0, created_at: ''},
   seriesListTitle: '',
   seriesList: [],
   episodeList: [],
@@ -69,8 +69,8 @@ const globalSlice = createSlice({
       state.episodeListResult = action.payload;
       state.loading = false;
     },
-    setSelectedSeries(state: any, action) {
-      state.selectedSeries = action.payload;
+    setSeries(state: any, action) {
+      state.series = action.payload;
     },
     setSeriesPlayer(state: any, action) {
       state.seriesPlayer = action.payload;
@@ -99,7 +99,7 @@ const globalSlice = createSlice({
 
 export const { 
   initGlobalState, clearGlobalState, setDisplayPopName, setNavigationBar, setIsMobile,
-  setSelectedSeries, addToast, removeToast, setSeriesPlayer, setSeriesListTitle, setSeriesList,
+  setSeries, addToast, removeToast, setSeriesPlayer, setSeriesListTitle, setSeriesList,
 
   seriesList, seriesListSuccess, seriesListFailure,
   episodeList, episodeListSuccess, episodeListFailure,

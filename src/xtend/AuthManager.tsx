@@ -22,7 +22,6 @@ const AuthManager = () => {
       const user = userInfoResult.data;
       localStorage.setItem('user-id', user.id);
       dispatch(userSlice.setUser(user));
-      dispatch(userSlice.userSeriesKeepList({userId: user.id}));
     }
 
   }, [userInfoResult, userInfoError])
