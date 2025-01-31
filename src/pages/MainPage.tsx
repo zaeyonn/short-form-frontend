@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { TailSpin } from "react-loader-spinner";
 
 import * as globalSlice from 'src/redux/globalSlice';
 import * as userSlice from 'src/redux/userSlice';
@@ -20,7 +21,8 @@ const MainPage = () => {
   const { isMobile, seriesList, seriesListResult, seriesListError } = useSelector((state: any) => state.global)
   const { user, userSeriesKeepListResult, userSeriesKeepListError } = useSelector((state: any) => state.user);
 
-  const [visibleMenu, setVisibleMenu] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [visibleMenu, setVisibleMenu] = useState<boolean>(false);
   const [newestSeriesList, setNewestSeriesList] = useState<Series []>([]);
   
   const handleMenuOpen = () => {
@@ -64,18 +66,13 @@ const MainPage = () => {
       dispatch(globalSlice.clearGlobalState('seriesListResult'));
 
       const sorted = [...seriesListResult.data].sort((a: Series, b: Series) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-      console.log('sorted', sorted)
+      
       setNewestSeriesList(sorted);
+      setLoading(false);
     }
+
 
   }, [seriesListResult, seriesListError]);
-
-  // 사용자 정보가 있을 경우 북마크 리스트 조회
-  useEffect(() => {
-    if(user) {
-      // dispatch(userSlice.userSeriesKeepList({userId: user.id}));
-    }
-  }, [user])
 
   // 시리즈 리스트 조회
   useEffect(() => {
@@ -96,6 +93,15 @@ const MainPage = () => {
             </Link>
           </div>
         </div>
+        { loading && (
+        <div className="loading">
+          <TailSpin
+          width={60}
+          height={60}
+          color={'#ffffff'}/>
+        </div>
+        )}
+        { !loading && (
         <div className='page-body'>
         { isMobile ? (
           <UIMainContentSlider
@@ -104,26 +110,27 @@ const MainPage = () => {
           <UIDesktopMainContentSlider
             seriesList={seriesList.slice(0, 3)}/>
         )}
-        <UISmallContentSlider
-          headerTitle='지금 뜨고있는 TOP 10'
-          seriesList={seriesList}
-          highlight='HOT'
-          handleSeriesListOpen={handleSeriesListOpen}/>
-        <UISmallContentSlider
-          headerTitle='새로 올라온 콘텐츠'
-          seriesList={newestSeriesList}
-          highlight='NEW'
-          handleSeriesListOpen={handleSeriesListOpen}/>
-        <UISmallContentSlider
-          headerTitle='비밀을 가진 사람들'
-          seriesList={seriesList}
-          highlight=''
-          handleSeriesListOpen={handleSeriesListOpen}/>
-        <UIVerticalContentList
-          headerTitle='요즘 뜨는 환생 드라마'
-          seriesList={seriesList}
-          handleSeriesListOpen={handleSeriesListOpen}/>
-      </div>
+          <UISmallContentSlider
+            headerTitle='지금 뜨고있는 TOP 10'
+            seriesList={seriesList}
+            highlight='HOT'
+            handleSeriesListOpen={handleSeriesListOpen}/>
+          <UISmallContentSlider
+            headerTitle='새로 올라온 콘텐츠'
+            seriesList={newestSeriesList}
+            highlight='NEW'
+            handleSeriesListOpen={handleSeriesListOpen}/>
+          <UISmallContentSlider
+            headerTitle='비밀을 가진 사람들'
+            seriesList={seriesList}
+            highlight=''
+            handleSeriesListOpen={handleSeriesListOpen}/>
+          <UIVerticalContentList
+            headerTitle='요즘 뜨는 환생 드라마'
+            seriesList={seriesList}
+            handleSeriesListOpen={handleSeriesListOpen}/>
+        </div>
+        )}
       </div>
       <UILeftMenu
       visible={visibleMenu}

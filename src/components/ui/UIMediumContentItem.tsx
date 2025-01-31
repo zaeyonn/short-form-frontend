@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 interface Props {
   item: any;
@@ -11,16 +12,27 @@ interface Props {
 const UIMediumContentItem = (props: Props) => {
   const navigate = useNavigate();
 
+  const { isMobile } = useSelector((state: any) => state.global);
+
   const [checked, setChecked] = useState(false);
 
   const handleSeriesClick = () => {
-    if(props.selectMode) {
+    if(props.selectMode && isMobile) {
       setChecked(!checked);
       if (props.handleCheck) props.handleCheck(props.item.id);
     } else {
       navigate(`/series/${props.item.id}`);
     }
   }
+
+  const handleCheck = (event: any) => {
+    event.stopPropagation();
+    setChecked(!checked);
+    if (props.handleCheck) props.handleCheck(props.item.id);
+  }
+
+
+
 
   useEffect(() => {
     if(props.checkList && props.checkList.includes(props?.item.id)) {
@@ -33,12 +45,12 @@ const UIMediumContentItem = (props: Props) => {
   return (
     <div className='medium-content-item' onClick={handleSeriesClick}>
       {props.selectMode && (
-        <span className={`checkbox ${checked ? 'checked' : ''}`}>
+        <span className={`checkbox ${checked ? 'checked' : ''}`} onClick={handleCheck}>
           <img src='resources/icons/icon_check.svg'/>
         </span>
       )}
       <img src={`${import.meta.env.VITE_SERVER_URL}/images/poster/${props.item.poster_img}`}/>
-      <div className='title'>{props.item.title}</div>
+      <div className='series-title'>{props.item.title}</div>
     </div>
   )
 }

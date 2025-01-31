@@ -11,9 +11,10 @@ const SeriesKeepPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { isMobile } = useSelector((state: any) => state.global);
   const { seriesKeepList, user, userSeriesKeepListError, userSeriesKeepListResult, removeSeriesKeepResult, removeSeriesKeepError } = useSelector((state: UserRootState) => state.user);
 
-  const [selectMode, setSelectMode] = useState(false);
+  const [selectMode, setSelectMode] = useState(isMobile ? false : true);
   const [checkList, setCheckList] = useState<number []>([]);
 
   const handleClose = () => {
@@ -80,8 +81,11 @@ const SeriesKeepPage = () => {
         dispatch(userSlice.userSeriesKeepList({ userId: user.id }));
         dispatch(userSlice.clearUserState('removeSeriesKeepResult'));
         dispatch(globalSlice.setAlert(null));
-        setSelectMode(false);
+        
         setCheckList([]);
+        if(isMobile) {
+          setSelectMode(false);
+        }
       }
     }, [removeSeriesKeepResult, removeSeriesKeepError]);
 
@@ -129,7 +133,7 @@ const SeriesKeepPage = () => {
           )}
         </div>
       </div>
-      <div className='body'>
+      <div className='page-body'>
       { selectMode && (
         <div className='select-mode'>
           <div className='all-check' onClick={handleAllCheck}>
@@ -138,7 +142,7 @@ const SeriesKeepPage = () => {
           </span>
             전체선택
           </div>
-          <span onClick={handleKeepRemove}>
+          <span className='delete-btn' onClick={handleKeepRemove}>
             삭제
           </span>
         </div>

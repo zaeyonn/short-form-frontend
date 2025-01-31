@@ -1,20 +1,21 @@
+import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
+
 const LayoutNavigationBar = () => {
-  console.log('window', window.location.origin);
+  const location = useLocation();
 
   return (
     <div className='navigation-bar'>
       <div className='wrap'>
         <div className="left-section">
           <Link to={window.location.origin} className="title">Framez</Link>
-          <span>카테고리</span>
-          <span>북마크</span>
+          <Link className={`tab ${location.pathname === '/bookmark' ? 'active' : ''}`} to={'/bookmark'}>북마크</Link>
         </div>
         <div className='right-section'>
-          <div className='profile-btn'>
+          <Link to={'/profile'} className='profile-btn'>
             <img src={`/resources/icons/icon_profile_gray_m.svg`}/>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

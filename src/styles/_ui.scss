@@ -146,7 +146,6 @@ a {
   }
 
   .small-content-item {
-    width: 120px;
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -159,7 +158,7 @@ a {
       margin-right: 20px;
     }
 
-    .title {
+    .series-title {
       font-size: 13px;
       font-weight: 500;
       color: #A2A2A2;
@@ -167,14 +166,23 @@ a {
 
     .poster-wrap {
       position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+
       img {
         border-radius: 6px;
-        width: 120px;
+        width: 100%;
         height: 150px;
         object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      &:hover img {
+        transform: scale(1.05);
       }
 
       .highlight {
+        z-index: 1;
         border-top-left-radius: 6px;
         border-bottom-right-radius: 6px;
         padding: 4px 7px;
@@ -189,6 +197,7 @@ a {
       }
 
       .tag-list {
+        z-index: 1;
         position: absolute;
         box-sizing: border-box;
         left: 0px;
@@ -286,7 +295,7 @@ a {
         }
       }
 
-      .title {
+      .series-title {
         font-weight: 700;
         font-size: 16px;
       }
@@ -331,6 +340,7 @@ a {
 }
 
 .page-wrap {
+  min-height: 95vh;
   box-sizing: border-box;
   background-color: #000000;
   overflow-y: scroll;
@@ -609,6 +619,7 @@ a {
     }
   
     .nickname {
+      cursor: pointer;
       display: flex;
       align-items: center;
       gap: 4px;
@@ -721,58 +732,6 @@ a {
         height: 80%;
       }
     }
-
-    .body {
-      margin: 10px auto 20px auto;
-      width: 90%;
-
-      
-    .select-mode {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-
-      font-weight: 400;
-      font-size: 15px;
-
-      .all-check {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 9px;
-      }
-
-      .checkbox {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #ffffff10;
-        border: 2px solid #A2A2A2;
-        border-radius: 6px;
-        box-shadow: 0px 0px 4px 2px #00000010;
-        width: 26px;
-        height: 26px;
-        box-sizing: border-box;
-  
-        img {
-          filter: invert(20%) sepia(2%) saturate(11%) hue-rotate(342deg) brightness(86%) contrast(83%);
-          
-        }
-  
-        &.checked {
-          background-color: #FF3064;
-          border: 2px solid #FF3064;
-
-          img {
-            filter: none;
-          }
-        }
-      }
-    }
-    }
   
   .series-container {
     display: grid;
@@ -793,7 +752,7 @@ a {
         border-radius: 8px;
       }
 
-    .title {
+    .series-title {
       width: 100%;
       font-weight: 400;
       font-size: 13px;
@@ -854,7 +813,7 @@ a {
 }
   
   .setting {
-    margin: 34px 20px 0px 20px;
+    margin: 34px 20px 30px 20px;
 
     .head {
       color: #FFFFFF;
@@ -870,6 +829,7 @@ a {
       gap: 20px;
 
       div {
+        cursor: pointer;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -1057,38 +1017,6 @@ a {
     }
   }
 
-  .auth-btn-list {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    button {
-      position: relative;
-      width: 100%;
-      height: 48px;
-      background-color: #FFFFFF;
-      color: #000000;
-      font-weight: 700;
-      font-size: 16px;
-
-      &.email-auth {
-        background-color: #505050;
-        color: #ffffff;
-      }
-
-
-      img {
-        position: absolute;
-        left: 10px;
-        width: 20px;
-        height: 20px;
-      }
-    }
-
-
-  }
-
   .body {
     display: flex;
     flex-direction: column;
@@ -1104,7 +1032,7 @@ a {
     flex-direction: column;
     gap: 16px;
 
-    &.highlight {
+    &.selected {
       border: 1px solid #FF3064;
     }
 
@@ -1179,6 +1107,8 @@ a {
   height: 100%;
 
   .section {
+    cursor: pointer;
+    width: fit-content;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -1408,6 +1338,7 @@ a {
     justify-content: space-between;
 
     .cancel {
+      cursor: pointer;
       box-sizing: border-box;
       padding: 5px 20px 5px 10px;
       background: none;
@@ -1418,12 +1349,14 @@ a {
     }
 
     .confirm {
+      cursor: pointer;
       box-sizing: border-box;
       padding: 5px 10px 5px 20px;
       background: none;
       color: #FFFFFF;
       font-weight: 400;
       font-size: 15px;
+
       line-height: 24px;
     }
 
@@ -1675,6 +1608,37 @@ a {
         cursor: pointer;
         transition: transform 0.2s ease;
       }
+    }
+  }
+}
+
+.auth-btn-list {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  button {
+    cursor: pointer;
+    position: relative;
+    width: 100%;
+    height: 48px;
+    background-color: #FFFFFF;
+    color: #000000;
+    font-weight: 700;
+    font-size: 16px;
+
+    &.email-auth {
+      background-color: #505050;
+      color: #ffffff;
+    }
+
+
+    img {
+      position: absolute;
+      left: 10px;
+      width: 20px;
+      height: 20px;
     }
   }
 }

@@ -70,8 +70,8 @@ const SeriesPlayerPage = ({}) => {
   }
 
   // 재생 / 일시정지 토글
-  const togglePlay = (e: any) => {
-    e.stopPropagation();
+  const togglePlay = (event: any) => {
+    event.stopPropagation();
 
     if(unlockEpisode && currentEp?.episode_num > unlockEpisode) {
       setLocked(true);
@@ -100,9 +100,10 @@ const SeriesPlayerPage = ({}) => {
   }
 
   // 재생바 드래그로 위치 변경
-  const handleProgressChange = (e: any) => {
-    e.stopPropagation();
-    const newProgress = e.target.value;
+  const handleProgressChange = (event: any) => {
+    event.stopPropagation();
+    const newProgress = event.target.value;
+
 
     if(videoRef.current) {
       const duration = videoRef.current.duration;
@@ -112,20 +113,24 @@ const SeriesPlayerPage = ({}) => {
   }
 
   // 재생바 터치 시작 이벤트
-  const handleProgressTouchStart = () => {
+  const handleProgressTouchStart = (event: any) => {
+    event.stopPropagation();
     setPlaying(false);
     if(videoRef.current) {
       videoRef.current.pause();
     }
   }
 
+
   // 재생바 터지 종료 이벤트
-  const handleProgressTouchEnd = () => {
+  const handleProgressTouchEnd = (event: any) => {
+    event.stopPropagation();
     setPlaying(true);
     if(videoRef.current) {
       videoRef.current.play();
     }
   }
+
 
   const handleSlideChangeStart = (swiper: any) => {
     if(swiper.activeIndex === unlockEpisode) {
@@ -167,6 +172,7 @@ const SeriesPlayerPage = ({}) => {
       videoRef.current?.load();
       videoRef.current.currentTime = 0;
       setPlaying(true);
+      dispatch(userSlice.updateSeriesProgress({ userId: user.id, seriesId: seriesIdRef.current, ep: index + 1 }));
     }
   }, [episodeList, seriesIdRef.current]);
 
@@ -209,15 +215,20 @@ const SeriesPlayerPage = ({}) => {
     dispatch(userSlice.updateSeriesUnlockEpisode({ userId: user.id, seriesId: seriesIdRef.current, ep: unlockEpisode ? unlockEpisode + 1 : '' }))
   }
 
-  const handleMuted = () => {
+  const handleMuted = (event: any) => {
+    event.stopPropagation();
+
     setMuted(!muted);
     videoRef.current.muted = !videoRef.current.muted;
   }
 
-  const handleFullscreen = () => {
+  const handleFullscreen = (event: any) => {
+    event.stopPropagation();
+
     if(fullscreen) {
       setFullscreen(false);
       document.exitFullscreen();
+
     } else {
       setFullscreen(true);
       videoContainerRef.current?.requestFullscreen();
@@ -240,6 +251,24 @@ const SeriesPlayerPage = ({}) => {
       dispatch(globalSlice.addToast({ id: Date.now(), message: '앞에 놓친 에피소드가 있어요.', duration: 1500  }));
     }
   }
+
+  const handleFullscreenChange = () => {
+    if (!document.fullscreenElement) {
+      setFullscreen(false);
+    }
+  }
+
+  const handlePlayerClick = () => {
+    if(playing) {
+      videoRef.current.pause();
+      setPlaying(false);
+    } else {
+      videoRef.current.play();
+      setPlaying(true);
+    }
+
+  }
+
 
   useEffect(() => {
     if(visibleTools && playing) {
@@ -480,11 +509,14 @@ const SeriesPlayerPage = ({}) => {
   }, [videoRef.current, swiperRef.current, isMobile, currentEp])
 
   useEffect(() => {
-    if(videoRef.current && lastEpisode && unlockEpisode &&  currentEp?.episode_num <= unlockEpisode && series && isMobile) {
-      videoRef.current.play();
+    if(videoRef.current && lastEpisode && unlockEpisode && series) {
       setLoading(false);
+      if(currentEp?.episode_num <= unlockEpisode) {
+        videoRef.current.play();
+      }
     }
-  }, [videoRef.current, lastEpisode, unlockEpisode, series, isMobile])
+
+  }, [videoRef.current, lastEpisode, unlockEpisode, series])
 
   useEffect(() => {
     // 최상단 스크롤 
@@ -501,6 +533,14 @@ const SeriesPlayerPage = ({}) => {
 
     // 사용자 북마크 리스트 조회
     dispatch(userSlice.userSeriesKeepList({userId: user.id}));
+
+    // 전체화면 이벤트 등록
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    }
+
   }, [])
 
   return (
@@ -583,7 +623,7 @@ const SeriesPlayerPage = ({}) => {
     ) : (
     /* Desktop UI */
     <>
-    <div className='page-wrap'>
+    <div className='page-wrap' style={{paddingTop: 0}}>
       <div className='page-body'>
         {/* <div className='breadcrumb'>
           <span>Home</span>
@@ -591,8 +631,8 @@ const SeriesPlayerPage = ({}) => {
           <span className='active'>{series?.title}</span>
         </div> */}
         <div className='short-form-player-wrap' ref={videoContainerRef}>
-          <div className={`short-form-player ${fullscreen ? 'fullscreen' : ''}`}>
-            <video id='short-form-video' muted={muted} autoPlay={unlockEpisode && unlockEpisode < currentEp?.episode_num ? false : true} preload="auto" ref={videoRef} onTimeUpdate={handleTimeUpdate} onEnded={() => handleEpisodeChange(currentEp?.episode_num)}>
+          <div className={`short-form-player ${fullscreen ? 'fullscreen' : ''}`} onClick={handlePlayerClick}>
+            <video id='short-form-video' muted={muted} preload="auto" ref={videoRef} onTimeUpdate={handleTimeUpdate} onEnded={() => handleEpisodeChange(currentEp?.episode_num)}>
               <source src={`${import.meta.env.VITE_SERVER_URL}/videos/${currentEp?.series_id}/${currentEp?.video}`}></source>
             </video>
             <div className='bottom-container'>
@@ -630,7 +670,8 @@ const SeriesPlayerPage = ({}) => {
               </>
             )}
           </div>
-          <div className='info-container' style={fullscreen ? {paddingTop: 30, paddingRight: 25} : {}}>
+          {!loading && (
+            <div className='info-container' style={fullscreen ? {paddingTop: 30, paddingRight: 25} : {}}>
             <div className='detail-info'>
             <div className='title'>
               {series?.title}
@@ -654,6 +695,7 @@ const SeriesPlayerPage = ({}) => {
               handleEpisodeClick={handleEpisodeClick}/>
           </div>
           </div>
+          )}
         </div>
       </div>
     </div>
@@ -664,7 +706,6 @@ const SeriesPlayerPage = ({}) => {
     )}
     { displayPopName === displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name && (
       <UIPopPaymentProductList
-        handleClose={handleClose}
         handlePaymentComplete={handlePaymentComplete}/>
     )}
     </>

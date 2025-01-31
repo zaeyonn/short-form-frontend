@@ -1,19 +1,23 @@
 import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { TailSpin } from "react-loader-spinner";
+
+import * as globalSlice from 'src/redux/globalSlice';
 import * as userSlice from 'src/redux/userSlice';
 
+import { displayPopType } from 'src/common/define';
 import UIBottomSheetLogin from 'components/ui/bottomsheet/UIBottomSheetLogin';
 import UIBottomSheetPayment from 'components/ui/bottomsheet/UIBottomSheetPayments';
 import UISmallContentSlider from 'components/ui/UISmallContentSlider';
 import UIPopPayments from 'components/ui/payments/UIPopPayments'; 
-
+import UIPopLogin from 'components/ui/popup/UIPopLogin';
 
 const MyProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { payments } = useSelector((state: any) => state.global);
+  const { payments, isMobile, displayPopName } = useSelector((state: any) => state.global);
 
   const { 
     user, seriesWatchList, authGoogleResult, authGoogleError,
@@ -22,23 +26,29 @@ const MyProfilePage = () => {
   
   const loginSheetRef = useRef<any>(null);
 
-  const [visibleLogin, setVisibleLogin] = useState(false);
-  const [visiblePayment, setVisiblePayment] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
+  const [visibleBottomSheetPayment, setVisibleBottomSheetPayment] = useState(false);
   
   const handleClose = () => {
     navigate(-1);
   }
 
   const handleLoginOpen = () => {
-    setVisibleLogin(true);
+    if(isMobile) {
+      setVisibleBottomSheetLogin(true);
+    } else {
+      dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_LOGIN.name));
+    }
   }
 
   const handleLoginClose = () => {
-    setVisibleLogin(false);
+    setVisibleBottomSheetLogin(false);
   }
 
+
   const handlePaymentOpen = () => {
-    setVisiblePayment(true);
+    setVisibleBottomSheetPayment(true);
   }
 
   const handlePaymentComplete = () => {
@@ -46,7 +56,7 @@ const MyProfilePage = () => {
   }
 
   const handlePaymentClose = () => {
-    setVisiblePayment(false);
+    setVisibleBottomSheetPayment(false);
   }
 
   const handleLogout = () => {
@@ -62,7 +72,7 @@ const MyProfilePage = () => {
   useEffect(() => {
     if(authGoogleError) {
       console.log('authGoogleError ', authGoogleError);
-      setVisibleLogin(false);
+      setVisibleBottomSheetLogin(false);
         
       dispatch(userSlice.clearUserState('authGoogleError'));
     }
@@ -71,21 +81,27 @@ const MyProfilePage = () => {
       console.log('authGoogleResult ', authGoogleResult);
       const user = authGoogleResult.data;
       
-      if(loginSheetRef.current) loginSheetRef.current.handleClose();
-      dispatch(userSlice.setUser(user))
+      if(loginSheetRef.current && isMobile) loginSheetRef.current.handleClose();
+
+      if(displayPopName) {
+        dispatch(globalSlice.setDisplayPopName(''));
+      } 
+
+      dispatch(userSlice.setUser(user));
 
       localStorage.setItem('user-id', user.id);
 
       dispatch(userSlice.clearUserState('authGoogleResult'));
       return;
     }
-  }, [authGoogleResult, authGoogleError]);
+  }, [authGoogleResult, authGoogleError, displayPopName, isMobile]);
 
 
   // 사용자 시청 기록 조회 결과
   useEffect(() => {
     if(userSeriesWatchListError) {
       console.log('userSeriesWatchListError ', userSeriesWatchListError);
+      setLoading(false);
 
       dispatch(userSlice.clearUserState('userSeriesWatchListError'));
       return;
@@ -93,6 +109,7 @@ const MyProfilePage = () => {
 
     if(userSeriesWatchListResult && userSeriesWatchListResult.status === 200) {
       console.log('userSeriesWatchListResult ', userSeriesWatchListResult);
+      setLoading(false);
       const watchList = userSeriesWatchListResult.data;
       
       dispatch(userSlice.setSeriesWatchList(watchList));
@@ -118,9 +135,19 @@ const MyProfilePage = () => {
             <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={() => handleClose()}/>
           </div>
         </div>
-        <div className='profile-wrap'>
+        { loading && (
+        <div className="loading">
+          <TailSpin
+          width={60}
+          height={60}
+          color={'#ffffff'}/>
+        </div>
+        )}
+        { !loading && (
+        <div className='page-body'>
           <div className='profile'>
             <div className='profile-img'>
+
               {(user?.auth === 'guest') ? (
                 <img className='guest-img' src='resources/icons/icon_guest.svg'/>
               ) : (
@@ -204,18 +231,24 @@ const MyProfilePage = () => {
           </div>
         </div>
         </div>
+        )}
       </div>
       <UIBottomSheetLogin
         ref={loginSheetRef}
-        visible={visibleLogin}
+        visible={visibleBottomSheetLogin}
         signInProcess={signInProcess}
         handleLoginBottomSheetClose={handleLoginClose}/>
+
       <UIBottomSheetPayment
-        visible={visiblePayment}
+        visible={visibleBottomSheetPayment}
         handlePaymentComplete={handlePaymentComplete}
         handleBottomSheetClose={handlePaymentClose}/>
       { payments && (<UIPopPayments/>)}
+      { displayPopName === displayPopType.POPUP_LOGIN.name && (
+        <UIPopLogin signInProcess={signInProcess}/>
+      )}
     </>
+
   );
 };
 

@@ -55,10 +55,21 @@
       color: #ffffff;
     }
 
-    span {
+    .tab {
       font-weight: 500;
       font-size: 18px;
       color: #A2A2A2;
+
+      &:hover {
+        color: #FFFFFF;
+      }
+
+      &.active {
+        font-weight: 600;
+        font-size: 18px;
+        color: #FFFFFF;
+      }
+
     }
 
   }

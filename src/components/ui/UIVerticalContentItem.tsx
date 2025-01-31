@@ -18,10 +18,11 @@ const UIVerticalContentItem = ({item}: Props) => {
         <div className='tag-list'>
           { item.keyword?.map((i: string, index: number) => <span className='tag' key={index}>{i}</span>) }
         </div>
-        <div className='title'>
+        <div className='series-title'>
           { item.title }
         </div>
         <div className='description'>
+
           { item.description }
         </div>
         <div className='ep-step'>

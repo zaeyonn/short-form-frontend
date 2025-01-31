@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,8 +13,13 @@ const SeriesListPage = () => {
     navigate(-1);
   }
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
+
   return (
     <div className='page-wrap'>
+
       <div className='header'>
         <div className="left-section">
           <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={handleClose}/>

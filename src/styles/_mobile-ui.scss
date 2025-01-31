@@ -40,6 +40,60 @@
       .series-container {
         padding: 10px 20px;
       }
+
+      .small-content-slider-wrap {
+        .small-content-item {
+          min-width: 120px;
+        }
+      }
+
+      
+    .select-mode {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+
+      font-weight: 400;
+      font-size: 15px;
+
+      .all-check {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 9px;
+
+      }
+
+      .checkbox {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff10;
+        border: 2px solid #A2A2A2;
+        border-radius: 6px;
+        box-shadow: 0px 0px 4px 2px #00000010;
+        width: 26px;
+        height: 26px;
+        box-sizing: border-box;
+  
+        img {
+          filter: invert(20%) sepia(2%) saturate(11%) hue-rotate(342deg) brightness(86%) contrast(83%);
+          
+        }
+  
+        &.checked {
+          background-color: #FF3064;
+          border: 2px solid #FF3064;
+
+          img {
+            filter: none;
+          }
+        }
+      }
+    }
     }
   }
 }

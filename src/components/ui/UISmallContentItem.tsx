@@ -29,7 +29,7 @@ const UISmallContentItem = ({item, highlight, dragging}: SallContentItemProps) =
         </div>
         <img draggable={false} className='poster-img' src={`${import.meta.env.VITE_SERVER_URL}/images/poster/${item.poster_img}`}/>
       </div>
-      <div className='title'>{item.title}</div>
+      <div className='series-title'>{item.title}</div>
     </div>
   )
 }
