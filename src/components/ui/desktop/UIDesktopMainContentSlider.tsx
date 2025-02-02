@@ -52,7 +52,7 @@ const UIDesktopMainContentSlider = (props: Props) => {
   //   }
   // };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement> | React.UIEvent<HTMLDivElement> | any) => {
     if(!mouseDownRef.current) return;
     draggingRef.current = true;
 

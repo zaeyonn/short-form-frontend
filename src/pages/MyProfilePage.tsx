@@ -124,6 +124,7 @@ const MyProfilePage = () => {
   }, [userSeriesWatchListResult, userSeriesWatchListError])
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     
     // 사용자 시청 기록 조회
     dispatch(userSlice.userSeriesWatchList({ userId: user?.id }));

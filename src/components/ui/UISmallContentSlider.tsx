@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Series } from 'src/types';
@@ -16,15 +17,21 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
   //const [dragging, setDragging] = useState(false);
   // const [startX, setStartX] = useState(0);
   // const [scrollLeft, setScrollLeft] = useState(0);
+  const { isMobile } = useSelector((state: any) => state.global);
+
+  const [isFirst, setIsFirst] = useState(true);
+  const [isLast, setIsLast] = useState(false);
 
   const listRef = useRef<HTMLDivElement>(null);
   
   const draggingRef = useRef<boolean>(false);
   const mouseDownRef = useRef<boolean>(false);
+  const dragDistanceRef = useRef<number>(0);
   
   const startXRef = useRef<number>(0);
   const startScrollRef = useRef<number>(0);
 
+  
   const handleMouseDown = (e: React.MouseEvent<HTMLElement>) => {
     mouseDownRef.current = true;
     draggingRef.current = false;
@@ -48,22 +55,109 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
     const x = e.pageX - listRef.current.offsetLeft;
 
     // 사용자가 드래그한 거리 계산
-    const dragDistance = (x - startXRef.current) * 1.2;
+    dragDistanceRef.current = (x - startXRef.current) * 1.2;
     
     // 리스트 요소의 스크롤 위치 업데이트
-    listRef.current.scrollLeft = startScrollRef.current - dragDistance
+    listRef.current.scrollLeft = startScrollRef.current - dragDistanceRef.current;
    }
   }
 
-  const handleListMouseUp = () => {
+  const handleMouseUp = () => {
+    if(draggingRef.current && listRef.current && !isMobile) {
+      const currentScroll = listRef.current.scrollLeft;
+      const currentPosition = dragDistanceRef.current < 0 ? Math.floor(currentScroll / listRef.current.clientWidth) + 1 : Math.floor(currentScroll / listRef.current.clientWidth);
+
+      listRef.current.style.scrollBehavior = 'smooth';
+      listRef.current.scrollLeft = currentPosition * listRef.current.clientWidth;
+      
+    
+      // 애니메이션 후 스크롤 동작 복구
+      setTimeout(() => {
+        if(listRef.current) {
+          listRef.current.style.scrollBehavior = 'auto';
+
+          if(listRef.current.scrollLeft === listRef.current.scrollWidth - listRef.current.clientWidth) {
+            setIsLast(true);
+          } else {
+            setIsLast(false);
+          }
+
+          if(listRef.current.scrollLeft === 0) {
+            setIsFirst(true);
+          } else {
+            setIsFirst(false);
+          }
+    
+        }
+      }, 300);
+    }
+
     draggingRef.current = false;
     mouseDownRef.current = false;
   }
+
+  const handleSlidePrev = () => {
+    if(!listRef.current) return;
+
+    const currentScroll = listRef.current.scrollLeft;
+    const currentPosition = Math.floor(currentScroll / listRef.current.clientWidth) - 1;
+
+    listRef.current.style.scrollBehavior = 'smooth';
+    listRef.current.scrollLeft = currentPosition * listRef.current.clientWidth;
+
+    setTimeout(() => {
+      if(listRef.current) {
+        listRef.current.style.scrollBehavior = 'auto';
+
+        if(listRef.current.scrollLeft === listRef.current.scrollWidth - listRef.current.clientWidth) {
+          setIsLast(true);
+        } else {
+          setIsLast(false);
+        }
+
+        if(listRef.current.scrollLeft === 0) {
+          setIsFirst(true);
+        } else {
+          setIsFirst(false);
+        }
+      }
+    }, 300);
+  }
+
+  const handleSlideNext = () => {
+    if(!listRef.current) return;
+
+    const currentScroll = listRef.current.scrollLeft;
+    const currentPosition = Math.floor(currentScroll / listRef.current.clientWidth) + 1;
+
+    listRef.current.style.scrollBehavior = 'smooth';
+    listRef.current.scrollLeft = currentPosition * listRef.current.clientWidth;
+
+    setTimeout(() => {
+      if(listRef.current) {
+        listRef.current.style.scrollBehavior = 'auto';
+
+        if(listRef.current.scrollLeft === listRef.current.scrollWidth - listRef.current.clientWidth) {
+          setIsLast(true);
+        } else {
+          setIsLast(false);
+        }
+
+        if(listRef.current.scrollLeft === 0) {
+          setIsFirst(true);
+        } else {
+          setIsFirst(false);
+        }
+      }
+    }, 300);
+  }
+
 
   const handleMouseLeave = () => {
     draggingRef.current = false;
     mouseDownRef.current = false;
   }
+
 
   const handleItemMouseUp = (item: Series) => {
       if(!draggingRef.current) {
@@ -72,20 +166,33 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
   }
 
 
+
   return (
     <div className='small-content-slider-wrap'>
       { headerTitle && (
-        <span className='list-header' onClick={() => handleSeriesListOpen ? handleSeriesListOpen(headerTitle, seriesList) : ''}>
-          { headerTitle }
-          <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right'/>
-        </span>
+        <div className='list-header'> 
+          <span className='list-title' onClick={() => handleSeriesListOpen ? handleSeriesListOpen(headerTitle, seriesList) : ''}>
+            { headerTitle }
+            <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right'/>
+          </span>
+          {!isMobile && (
+          <span className='list-btn-wrap'>
+            <button className={`list-prev-btn ${isFirst ? 'disabled' : ''}`} disabled={isFirst} onClick={handleSlidePrev}>
+              <img style={{marginRight: 1}} src='resources/icons/icon_arrow_left_s.svg' alt='icon-arrow-left'/>
+            </button>
+            <button className={`list-next-btn ${isLast ? 'disabled' : ''}`} disabled={isLast} onClick={handleSlideNext}>
+              <img style={{marginLeft: 1}} src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right'/>
+            </button>
+          </span>
+          )}
+        </div>
       )}
       <div
         ref={listRef} 
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        onMouseUp={handleListMouseUp}
+        onMouseUp={handleMouseUp}
         className='small-content-list'>
         { seriesList.map((item: Series, index: number) => {
           return (
@@ -101,7 +208,6 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
               </div>
               <div className='series-title'>{item.title}</div>
             </div>
-
           )
         })}
       </div>
