@@ -12,6 +12,8 @@ import UIBottomSheetPayment from 'components/ui/bottomsheet/UIBottomSheetPayment
 import UISmallContentSlider from 'components/ui/UISmallContentSlider';
 import UIPopPayments from 'components/ui/payments/UIPopPayments'; 
 import UIPopLogin from 'components/ui/popup/UIPopLogin';
+import LayoutFooter from 'components/layouts/LayoutFooter';
+import UIMediumContentItem from 'components/ui/UIMediumContentItem';
 
 const MyProfilePage = () => {
   const dispatch = useDispatch();
@@ -29,6 +31,7 @@ const MyProfilePage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
   const [visibleBottomSheetPayment, setVisibleBottomSheetPayment] = useState(false);
+  const [selectedMenu, setSelectedMenu] = useState<string>('WATCH_LIST');
   
   const handleClose = () => {
     navigate(-1);
@@ -144,9 +147,10 @@ const MyProfilePage = () => {
         </div>
         )}
         { !loading && (
-        <div className='page-body'>
-          <div className='profile'>
-            <div className='profile-img'>
+        <div className='page-body' style={{padding: 0, flexDirection: 'row'}}>
+          <div className='profile-container'>
+            <div className='profile'>
+              <div className='profile-img'>
 
               {(user?.auth === 'guest') ? (
                 <img className='guest-img' src='resources/icons/icon_guest.svg'/>
@@ -173,7 +177,7 @@ const MyProfilePage = () => {
           <div className='wallet'>
             <div className='head'>
               내 지갑
-              <img src='resources/icons/icon_arrow_right_s.svg'/>
+              {/* <img src='resources/icons/icon_arrow_right_s.svg'/> */}
             </div>
             <div className='divider'></div>
             <div className='point'>
@@ -187,22 +191,24 @@ const MyProfilePage = () => {
             </div>
           </div>
           )}
-        <div className='view-list'>   
-          <div className='head'>
-            내 시청 기록
-          </div>
-          {(seriesWatchList.length === 0) ? (
+        { isMobile && (
+          <div className='view-list'>   
+            <div className='head'>
+              내 시청 기록
+            </div>
+            {(seriesWatchList.length === 0) ? (
               <div className='no-content'>
                 저장된 기록이 없습니다.
               </div>
-          ) : (
+            ) : (
             <div style={{marginTop: 14}}>
               <UISmallContentSlider
                 seriesList={seriesWatchList}
                 highlight=''/>
             </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
         <div className='setting'>
           {/* <div className='head'>설정</div> */}
           <div className='menu-list'>
@@ -222,30 +228,52 @@ const MyProfilePage = () => {
               회사 소개
               <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
             </div> */}
+            { !isMobile && (
+            <div className='menu-item selected'>
+              시청 기록
+            </div>
+            )}
             { user?.auth !== 'guest' && (
             <div onClick={handleLogout}>
               로그아웃
-              <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
+              <img className='arrow-right' src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
             </div>
             )}
           </div>
         </div>
         </div>
+        <div className='content-container'>
+          { selectedMenu === 'WATCH_LIST' && (
+          <div className='menu-title'>
+            내 시청 기록
+          </div>
+          )}
+          <div className='series-container'>
+          { seriesWatchList?.map((item: any, index: number) => <UIMediumContentItem key={index} item={item}/>)}
+          </div>
+        </div>
+        </div>
         )}
       </div>
-      <UIBottomSheetLogin
-        ref={loginSheetRef}
-        visible={visibleBottomSheetLogin}
-        signInProcess={signInProcess}
-        handleLoginBottomSheetClose={handleLoginClose}/>
-
-      <UIBottomSheetPayment
-        visible={visibleBottomSheetPayment}
-        handlePaymentComplete={handlePaymentComplete}
-        handleBottomSheetClose={handlePaymentClose}/>
+      {isMobile && (
+        <>
+        <UIBottomSheetLogin
+          ref={loginSheetRef}
+          visible={visibleBottomSheetLogin}
+          signInProcess={signInProcess}
+          handleLoginBottomSheetClose={handleLoginClose}/>
+        <UIBottomSheetPayment
+          visible={visibleBottomSheetPayment}
+          handlePaymentComplete={handlePaymentComplete}
+          handleBottomSheetClose={handlePaymentClose}/>
+        </>
+      )}
       { payments && (<UIPopPayments/>)}
       { displayPopName === displayPopType.POPUP_LOGIN.name && (
         <UIPopLogin signInProcess={signInProcess}/>
+      )}
+      { !isMobile && (
+        <LayoutFooter/>
       )}
     </>
 

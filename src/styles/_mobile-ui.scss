@@ -33,12 +33,13 @@
 
   .page-wrap {
     .page-body {
+      padding: 10px 20px;
       .title {
         display: none;
       }
 
       .series-container {
-        padding: 10px 20px;
+        padding: 10px 0px;
       }
 
       .small-content-slider-wrap {
@@ -46,7 +47,6 @@
           min-width: 120px;
         }
       }
-
       
     .select-mode {
       width: 100%;
@@ -93,6 +93,9 @@
           }
         }
       }
+    }
+    .content-container {
+      display: none;
     }
     }
   }

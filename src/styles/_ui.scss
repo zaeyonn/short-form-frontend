@@ -358,12 +358,29 @@ a {
     height: -webkit-fill-available;
   }
 
+  .page-body {
+    .select-mode {
+      .delete-btn {
+        font-weight: 400;
+        font-size: 15px;
+        background: none;
+
+        &.disabled {
+          color: #353535;
+          cursor: default;
+        }
+      }
+    }
+  }
+
 .main-content-item {
   margin-left: 7.5%;
 
   .img-wrap {
     cursor: pointer;
     position: relative;
+    width: fit-content;
+    height: fit-content;  
   }
 
   img {
@@ -504,16 +521,23 @@ a {
       font-weight: 500;
       font-size: 15px;
   
-      button {
-        width: 52px;
-        height: 28px;
-      }
-
       .next-btn {
         background: none;
         color: #FF3064; 
         font-weight: 500;
         font-size: 16px;
+      }
+
+      .mobe-btn {
+        background: none;
+        color: #ffffff; 
+        font-weight: 500;
+        font-size: 16px;
+
+        &.disabled {
+          color: #353535;
+          cursor: default;
+        }
       }
 
       .speaker-icon {

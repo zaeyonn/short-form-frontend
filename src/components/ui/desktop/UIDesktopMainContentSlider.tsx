@@ -16,12 +16,13 @@ const UIDesktopMainContentSlider = (props: Props) => {
   const startXRef = useRef<number>(0);
   const startScrollRef = useRef<number>(0);
   const scrollDistanceRef = useRef<number>(0);
+  const itemPositionRef = useRef<number>(0);
 
   const ITEM_WIDTH = 780 + 20;
   
   // 현재 표시되는 아이템들의 배열을 3배로 확장
-  const [extendedList, setExtendedList] = useState<Series[]>([...props.seriesList, ...props.seriesList, ...props.seriesList]);
-  
+  const extendedList = [...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList, ...props.seriesList];
+
   const handleMouseDown = (e: React.MouseEvent<HTMLElement>) => {
     mouseDownRef.current = true;
     draggingRef.current = false;
@@ -32,24 +33,24 @@ const UIDesktopMainContentSlider = (props: Props) => {
     }
   }
 
-  const handleScroll = () => {
-    if (listRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = listRef.current;
-      const oneThirdWidth = scrollWidth / 3;
+  // const handleScroll = () => {
+  //   if (listRef.current) {
+  //     const { scrollLeft, scrollWidth, clientWidth } = listRef.current;
+  //     const oneThirdWidth = scrollWidth / 7;
 
       
-      // 중간 지점을 넘어갔을 때 처음으로 순간 이동
-      if (scrollLeft >= oneThirdWidth * 2) {
-        listRef.current.style.scrollBehavior = 'auto';
-        listRef.current.scrollLeft = scrollLeft - oneThirdWidth + 120;
-      }
-      // 왼쪽 끝으로 갔을 때 중간으로 순간 이동
-      else if (scrollLeft <= 0) {
-        listRef.current.style.scrollBehavior = 'auto';
-        listRef.current.scrollLeft = oneThirdWidth;
-      }
-    }
-  };
+  //     // 중간 지점을 넘어갔을 때 처음으로 순간 이동
+  //     // if (scrollLeft >= oneThirdWidth * 2) {
+  //     //   listRef.current.style.scrollBehavior = 'auto';
+  //     //   listRef.current.scrollLeft = scrollLeft - oneThirdWidth + 120;
+  //     // }
+  //     // // 왼쪽 끝으로 갔을 때 중간으로 순간 이동
+  //     // else if (scrollLeft <= 0) {
+  //     //   listRef.current.style.scrollBehavior = 'auto';
+  //     //   listRef.current.scrollLeft = oneThirdWidth;
+  //     // }
+  //   }
+  // };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     if(!mouseDownRef.current) return;
@@ -65,17 +66,17 @@ const UIDesktopMainContentSlider = (props: Props) => {
   const handleMouseUp = () => {
     if(draggingRef.current && listRef.current) {
       const currentScroll = listRef.current.scrollLeft;
-      const itemPosition = scrollDistanceRef.current < 0 ? Math.floor(currentScroll / ITEM_WIDTH) + 1 : Math.floor(currentScroll / ITEM_WIDTH);
+      itemPositionRef.current = scrollDistanceRef.current < 0 ? Math.floor(currentScroll / ITEM_WIDTH) + 1 : Math.floor(currentScroll / ITEM_WIDTH);
 
       listRef.current.style.scrollBehavior = 'smooth';
-      listRef.current.scrollLeft = itemPosition * ITEM_WIDTH;
+      listRef.current.scrollLeft = itemPositionRef.current * ITEM_WIDTH;
     }
 
     // 애니메이션 후 스크롤 동작 원래대로 복구
     setTimeout(() => {
       if (listRef.current) {
         listRef.current.style.scrollBehavior = 'auto';
-        handleScroll(); // 무한 스크롤 위치 체크
+        // handleScroll(); // 무한 스크롤 위치 체크
       }
     }, 300);
 
@@ -96,10 +97,46 @@ const UIDesktopMainContentSlider = (props: Props) => {
     mouseDownRef.current = false;
   }
 
+  const handleSlidePrev = () => {
+    if(!listRef.current) return;
+
+    const currentScroll = listRef.current.scrollLeft;
+    itemPositionRef.current = Math.floor(currentScroll / ITEM_WIDTH) - 1;
+
+    listRef.current.style.scrollBehavior = 'smooth';
+    listRef.current.scrollLeft = itemPositionRef.current * ITEM_WIDTH;
+
+    // 애니메이션 후 스크롤 동작 원래대로 복구
+    setTimeout(() => {
+      if (listRef.current) {
+        listRef.current.style.scrollBehavior = 'auto';
+        // handleScroll(); // 무한 스크롤 위치 체크
+      }
+    }, 300);
+  }
+
+  const handleSlideNext = () => {
+    if(!listRef.current) return;
+
+    const currentScroll = listRef.current.scrollLeft;
+    itemPositionRef.current = Math.floor(currentScroll / ITEM_WIDTH) + 1;
+
+    listRef.current.style.scrollBehavior = 'smooth';
+    listRef.current.scrollLeft = itemPositionRef.current * ITEM_WIDTH;
+
+    // 애니메이션 후 스크롤 동작 원래대로 복구
+    setTimeout(() => {
+      if (listRef.current) {
+        listRef.current.style.scrollBehavior = 'auto';
+        // handleScroll(); // 무한 스크롤 위치 체크
+      }
+    }, 300);
+  }
+
   // 컴포넌트 마운트 시 중간 섹션으로 스크롤
   React.useEffect(() => {
     if (listRef.current) {
-      const oneThirdWidth = listRef.current.scrollWidth / 3;
+      const oneThirdWidth = listRef.current.scrollWidth / 7;
       listRef.current.scrollLeft = oneThirdWidth;
     }
   }, [props.seriesList]);
@@ -107,10 +144,10 @@ const UIDesktopMainContentSlider = (props: Props) => {
   return (
     <div className='main-content-slider-wrap'>
     <div className='floating-btn-wrap'>
-      <button className='prev-btn'>
+      <button className='prev-btn' onClick={handleSlidePrev}>
         <img src='resources/icons/icon_arrow_left_s.svg'/>  
       </button> 
-      <button className='next-btn'>
+      <button className='next-btn' onClick={handleSlideNext}>
         <img src='resources/icons/icon_arrow_right_s.svg'/>  
       </button>
     </div>  
@@ -124,7 +161,13 @@ const UIDesktopMainContentSlider = (props: Props) => {
       { extendedList.map((item: Series, index: number) => {
         return (
           <div className='main-content-item' key={`${item.id}-${index}`} onMouseUp={() => handleSeriesMouseUp(item)}>
-            <img draggable={false} src={`${import.meta.env.VITE_SERVER_URL}/images/poster/${item.poster_img}`}/>
+            <div className='img-wrap'>
+              <img draggable={false} src={`${import.meta.env.VITE_SERVER_URL}/images/poster/${item.poster_img}`}/>
+              <div className='text-wrap'>
+                <div className='main-text'>{item.title}</div>
+                <div className='sub-text'>{item.description}</div>
+              </div>
+            </div>
           </div>
         )
       })}

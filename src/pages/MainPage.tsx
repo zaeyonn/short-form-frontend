@@ -102,7 +102,7 @@ const MainPage = () => {
         </div>
         )}
         { !loading && (
-        <div className='page-body'>
+        <div className='page-body' style={{padding: 0}}>
         { isMobile ? (
           <UIMainContentSlider
             seriesList={seriesList.slice(0, 3)}/>

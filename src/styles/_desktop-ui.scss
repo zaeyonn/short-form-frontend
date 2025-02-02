@@ -146,6 +146,21 @@
             width: 100%;
             height: 100%;
           }
+
+          &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(
+              to bottom,
+              rgba(0, 0, 0, 0) 0%,
+              rgba(0, 0, 0, 0.8) 100%
+            );
+            pointer-events: none;
+          }
         }
 
         .info-container {
@@ -244,6 +259,7 @@
         }
     
         .checkbox {
+          z-index: 1;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -322,6 +338,57 @@
         }
       }
     }
+    .profile {
+      margin-left: 0px;
+      margin-right: 0px;
+    }
+    .wallet {
+      margin-left: 0px;
+      margin-right: 0px;
+    }
+
+    .profile-container {
+      width: 25%;
+      min-width: 300px;
+
+      .setting {
+        margin: 16px 0px;
+        .menu-list {
+          gap: 0px;
+
+          div {
+            border-radius: 16px;
+            padding: 16px 20px;
+            font-weight: 400;
+            font-size: 17px;
+            .arrow-right {
+              display: none;
+            }
+
+            &.selected {
+              background-color: #1B1B1B;
+              color: #FF3064;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+    }
+
+    .content-container {
+      flex: 1;
+      padding-top: 28px;
+      margin-left: 30px;
+      .menu-title {
+        font-weight: 500;
+        font-size: 20px;
+      }
+
+      .series-container {
+        margin-top: 28px;
+        grid-template-columns: repeat(auto-fill, minmax(24%, auto));
+      }
+    }
     }
 
     .title {
@@ -366,16 +433,42 @@
       height: 400px;
       overflow: hidden;
 
+      .img-wrap {
+        height: fit-content;
+        .text-wrap {
+          padding: 0px 35px 35px 35px;
+          left: 0px;
+          bottom: 0px;
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 60px; // 그림자의 높이 조절
+          background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0.8) 100%
+          );
+          pointer-events: none; // 그림자가 클릭 이벤트를 방해하지 않도록
+        }
+      }
+
       img {
         min-width: 780px;
         width: 100%;
-        height: 100%;
+        height: 400px;
         object-fit: cover;
         transition: transform 0.3s ease;
       }
 
-      img:hover {
-        transform: scale(1.05);
+      &:hover {
+        img {
+          transform: scale(1.05);
+        }
       }
     }
   }
@@ -653,6 +746,7 @@
         flex-direction: column;
 
         .title {
+          text-align: center;
           margin: 0 auto;
           font-weight: 600;
           font-size: 24px;

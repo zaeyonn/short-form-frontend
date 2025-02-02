@@ -158,7 +158,6 @@ const SeriesPlayerPage = ({}) => {
   }
 
   const handleEpisodeChange = useCallback((index: number) => {
-    console.log('handleEpisodeChange', index);
     setCurrentEp(episodeList[index]);
     
     if(index === unlockEpisode) {
@@ -380,9 +379,12 @@ const SeriesPlayerPage = ({}) => {
       //lastEpisodeRef.current = addSeriesProgressResult.data.data.last_episode;
       setLastEpisode(addSeriesProgressResult.data.last_episode);
 
+      videoRef.current.play();
+
       dispatch(userSlice.clearUserState('addSeriesProgressResult'));
+
     }
-  }, [addSeriesProgressResult, addSeriesProgressError])
+  }, [addSeriesProgressResult, addSeriesProgressError, videoRef.current])
 
   // 진행 상태 업데이트 결과
   useEffect(() => {
@@ -425,12 +427,12 @@ const SeriesPlayerPage = ({}) => {
         setLastEpisode(1);
         setUnlockEpisode(series?.free_count);
         dispatch(userSlice.addSeriesProgress({ userId: user?.id, seriesId: seriesIdRef.current, ep: 1, free_ep: series?.free_count }));
-        setCurrentEp(episodeList[0]);
+        handleEpisodeChange(0);
       }
 
       dispatch(userSlice.clearUserState('userSeriesProgressResult'));
     }
-  }, [userSeriesProgressResult, userSeriesProgressError, episodeList])
+  }, [userSeriesProgressResult, userSeriesProgressError, episodeList, series])
 
   // 에피소드 리스트 조회 결과
   useEffect(() => {

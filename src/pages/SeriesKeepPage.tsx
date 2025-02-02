@@ -6,6 +6,7 @@ import * as userSlice from 'src/redux/userSlice';
 import * as globalSlice from 'src/redux/globalSlice';
 import { UserRootState } from 'src/types';
 import UIMediumContentItem from '../components/ui/UIMediumContentItem';
+import LayoutFooter from 'components/layouts/LayoutFooter';
 
 const SeriesKeepPage = () => {
   const dispatch = useDispatch();
@@ -114,6 +115,7 @@ const SeriesKeepPage = () => {
   }, [user])
   
   return (
+    <>
     <div className='page-wrap'>
       <div className='header'>
         <div className="left-section">
@@ -123,14 +125,9 @@ const SeriesKeepPage = () => {
           북마크
         </div>
         <div className='right-section' onClick={toggleSelectMode}>
-          { seriesKeepList.length > 0 ? (
-          <div onClick={toggleSelectMode}>
+          <button className={`mobe-btn ${seriesKeepList.length === 0 ? 'disabled' : ''}`} disabled={seriesKeepList.length === 0} onClick={toggleSelectMode}>
             {(selectMode) ? '완료' : '선택'}
-          </div>
-          ) : (
-            <div className='empty'>
-            </div>
-          )}
+          </button>
         </div>
       </div>
       <div className='page-body'>
@@ -142,9 +139,9 @@ const SeriesKeepPage = () => {
           </span>
             전체선택
           </div>
-          <span className='delete-btn' onClick={handleKeepRemove}>
+          <button className={`delete-btn ${checkList.length === 0 ? 'disabled' : ''}`} disabled={checkList.length === 0} onClick={handleKeepRemove}>
             삭제
-          </span>
+          </button>
         </div>
       )}
       <div className='series-container'>
@@ -159,6 +156,10 @@ const SeriesKeepPage = () => {
       </div>
       </div>
     </div>
+    { !isMobile && (
+      <LayoutFooter/>
+    )}
+    </>
   )
 }
 
