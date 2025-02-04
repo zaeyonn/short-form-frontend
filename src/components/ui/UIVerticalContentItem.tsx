@@ -25,9 +25,9 @@ const UIVerticalContentItem = ({item}: Props) => {
 
           { item.description }
         </div>
-        <div className='ep-step'>
+        {/* <div className='ep-step'>
           { `0/${item.ep_count}` }
-        </div>
+        </div> */}
       </div>
     </div>
   )

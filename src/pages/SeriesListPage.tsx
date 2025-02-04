@@ -18,8 +18,7 @@ const SeriesListPage = () => {
   }, [])
 
   return (
-    <div className='page-wrap'>
-
+    <div className='page-wrap' style={{paddingTop: 0}}>
       <div className='header'>
         <div className="left-section">
           <img src={`resources/icons/icon_arrow_left_m.svg`} onClick={handleClose}/>

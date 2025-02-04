@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
+import { useSpring, animated} from '@react-spring/web';
 
 import * as globalSlice from 'src/redux/globalSlice';
 
@@ -9,9 +10,30 @@ interface Props {
 
 const UIPopPaymentProductList = (props: Props) => {
   const dispatch = useDispatch();
+  const springs = useSpring({
+    from: { 
+      scale: 0.9,
+      y: 0
+    },
+    to: { 
+      scale: 1,
+      y: 0
+    },
+
+    config: {
+      mass: 1,
+      tension: 300,
+      friction: 18
+
+    }
+  });
+
+
+
 
   const { series } = useSelector((state: any) => state.global);
   const { user } = useSelector((state: any) => state.user);
+
 
   const [selectedProduct, setSelectedProduct] = useState<number>(0);
 
@@ -31,8 +53,21 @@ const UIPopPaymentProductList = (props: Props) => {
 
   return (
     <div className='popup-layer'>
-    <div className='popup-wrap payment' style={{width: 530}}>    
+    <animated.div
+    style={{
+      ...springs,
+      width: 530,
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
+      transform: springs.scale.to(s => 
+        `translate(-50%, -50%) scale(${s}) translateY(${springs.y.get()}px)`
+      ),
+    }}
+    className='popup-wrap payment'>    
+
       <img className='close-btn' src='/resources/icons/icon_close.svg' alt='닫기' onClick={handleClose}/>
+
       <div className='popup-body' style={{gap: 10}}>
         <div className='title'>
           다음화를 볼려면 포인트가 필요해요.
@@ -94,7 +129,7 @@ const UIPopPaymentProductList = (props: Props) => {
           충전하기
         </div>
       </div>
-    </div>
+    </animated.div>
     </div>
   )
 }

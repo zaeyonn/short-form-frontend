@@ -7,7 +7,6 @@ import { formattedSecond } from "common/utility";
 import * as globalSlice from 'src/redux/globalSlice';
 import * as userSlice from 'src/redux/userSlice';
 
-import { Series } from 'src/types';
 import { displayPopType } from 'common/define';
 import UIShortFormSwiper from "components/ui/UIShortFormSwiper";
 import UIBottomSheetEpisodeGrid from "../components/ui/bottomsheet/UIBottomSheetEpisodeGrid";
@@ -31,7 +30,9 @@ const SeriesPlayerPage = ({}) => {
      removeSeriesKeepError, removeSeriesKeepResult, userSeriesKeepListError, userSeriesKeepListResult
   } = useSelector((state: any) => state.user);
 
+
   const [loading, setLoading] = useState<boolean>(true);
+  const [videoLoading, setVideoLoading] = useState<boolean>(true);
   const [playing, setPlaying] = useState<boolean>(true);
   const [visibleTools, setVisibleTools] = useState(true);
   const [progress, setProgress] = useState<number>(0);
@@ -45,16 +46,19 @@ const SeriesPlayerPage = ({}) => {
   const [lastEpisode, setLastEpisode] = useState<number>(0);
   const [muted, setMuted] = useState<boolean>(true);
   const [fullscreen ,setFullscreen] = useState<boolean>(false);
-  // const [currentTime, setCurrentTime] = useState<number>(0);
+  const [blobUrl] = useState<string>('');
 
   const swiperRef = useRef<any>(null);
   const videoRef = useRef<any>(null);
   const hideToolsTimeout = useRef<any>();
-  // const lastEpisodeRef = useRef<number>();
   const seriesIdRef = useRef<string>(location.pathname.split('/')[2]);
   const videoContainerRef = useRef<HTMLDivElement>(null);
+  const sequenceCountRef = useRef<number>(0);
+  const progressChangingRef = useRef<boolean>(false);
 
   const currentTimeRef = useRef<number>(0);
+
+  const  blobUrlCache = new Map<string, string>();
 
   const handleClose = () => {
     navigate(-1);
@@ -87,6 +91,48 @@ const SeriesPlayerPage = ({}) => {
     }
   }
 
+  // 비디오 URL을 Blob URL로 변환 함수
+  const convertToBlobURL = async (videoUrl: string): Promise<string | undefined> => {
+    // 캐시된 Blob URL이 있는지 확인
+    if(blobUrlCache.has(videoUrl)) {
+      return blobUrlCache.get(videoUrl);
+    }
+
+    try {
+      // video url로 부터 데이터 fetch
+      const response = await fetch(videoUrl, {
+        cache: 'force-cache'
+      });
+
+      if (!response.ok) throw new Error('Network response was not ok');
+
+      // response를 blob로 변환
+      const blob = await response.blob();
+      
+      // blob URL 생성
+      const blobUrl = URL.createObjectURL(blob);
+
+      // 캐시에 저장
+      blobUrlCache.set(videoUrl, blobUrl);
+
+      return blobUrl;
+    } catch (error) {
+      console.error('Error converting video to blob URL:', error);
+      throw error;
+    }
+  }
+
+  // 캐시 정리 함수
+  const clearBlobUrlCache = () => {
+    blobUrlCache.forEach((blobUrl) => {
+      URL.revokeObjectURL(blobUrl);
+    })
+
+    blobUrlCache.clear();
+  }
+
+
+
   // 재생 시간 업데이트
   const handleTimeUpdate = () => {
     if(videoRef.current && videoRef.current.currentTime && videoRef.current.duration) {
@@ -116,6 +162,7 @@ const SeriesPlayerPage = ({}) => {
   const handleProgressTouchStart = (event: any) => {
     event.stopPropagation();
     setPlaying(false);
+    progressChangingRef.current = true;
     if(videoRef.current) {
       videoRef.current.pause();
     }
@@ -125,11 +172,13 @@ const SeriesPlayerPage = ({}) => {
   // 재생바 터지 종료 이벤트
   const handleProgressTouchEnd = (event: any) => {
     event.stopPropagation();
+    progressChangingRef.current = false;
     setPlaying(true);
     if(videoRef.current) {
       videoRef.current.play();
     }
   }
+
 
 
   const handleSlideChangeStart = (swiper: any) => {
@@ -148,6 +197,7 @@ const SeriesPlayerPage = ({}) => {
 
       videoRef.current = slidedVideo;
       setPlaying(true);
+      // videoRef.current.play();
     }
 
     setCurrentEp(episodeList[swiper.activeIndex]);
@@ -265,7 +315,6 @@ const SeriesPlayerPage = ({}) => {
       videoRef.current.play();
       setPlaying(true);
     }
-
   }
 
 
@@ -279,10 +328,6 @@ const SeriesPlayerPage = ({}) => {
     } 
 
   }, [visibleTools, playing])
-
-  useEffect(() => {
-    console.log('series change', series);
-  }, [series])
 
   // 북마크 시리즈 리스트 조회 결과
     useEffect(() => {
@@ -376,15 +421,16 @@ const SeriesPlayerPage = ({}) => {
     if(addSeriesProgressResult && addSeriesProgressResult.status === 201) {
       console.log('addSeriesProgressResult ', addSeriesProgressResult);
 
-      //lastEpisodeRef.current = addSeriesProgressResult.data.data.last_episode;
       setLastEpisode(addSeriesProgressResult.data.last_episode);
 
-      videoRef.current.play();
+      if(!keep) {
+        sequenceCountRef.current++;
+      }
 
       dispatch(userSlice.clearUserState('addSeriesProgressResult'));
 
     }
-  }, [addSeriesProgressResult, addSeriesProgressError, videoRef.current])
+  }, [addSeriesProgressResult, addSeriesProgressError, videoRef.current, sequenceCountRef.current])
 
   // 진행 상태 업데이트 결과
   useEffect(() => {
@@ -396,13 +442,23 @@ const SeriesPlayerPage = ({}) => {
 
     if(updateSeriesProgressResult && updateSeriesProgressResult.status === 200) {
       console.log('updateSeriesProgressResult ', updateSeriesProgressResult);
-
-      //lastEpisodeRef.current = updateSeriesProgressResult.data.data.last_episode;
       setLastEpisode(updateSeriesProgressResult.data.last_episode);
+
+      if(!keep) {
+        sequenceCountRef.current++;
+      }
+
+      console.log('sequenceCountRef.current ', sequenceCountRef.current);
+
+      // 3회 연속 시청 시 북마크 등록
+      if(sequenceCountRef.current === 3 && !keep) {
+        dispatch(userSlice.addSeriesKeep({ userId: user.id, seriesId: seriesIdRef.current }));
+        sequenceCountRef.current = 1;
+      } 
 
       dispatch(userSlice.clearUserState('updateSeriesProgressResult'));
     }
-  }, [updateSeriesProgressResult, updateSeriesProgressError])
+  }, [updateSeriesProgressResult, updateSeriesProgressError, sequenceCountRef.current])
 
   // 진행 상태 조회 결과
   useEffect(() => {
@@ -473,6 +529,45 @@ const SeriesPlayerPage = ({}) => {
     }
   }, [seriesInfoResult, seriesInfoError])
 
+  // 비디오 URL 변환
+  useEffect(() => {
+    const loadVideoBlobUrl = async () => {
+      try {
+        setVideoLoading(true);
+        const blobUrl: any = await convertToBlobURL(`${import.meta.env.VITE_SERVER_URL}/videos/${currentEp?.series_id}/${currentEp?.video}`);
+
+        setVideoLoading(false);
+        videoRef.current.src = blobUrl;
+
+        if(!locked) {
+          setPlaying(true);
+          videoRef.current.play();
+        } else {
+          setPlaying(false);
+          videoRef.current.pause();
+        }
+
+      } catch (error) {
+        setVideoLoading(false);
+
+        console.error('Error converting video to blob URL:', error);
+      } finally {
+        setVideoLoading(false);
+      }
+
+    }
+
+    if(currentEp) {
+      loadVideoBlobUrl();
+    }
+
+    return () => {
+      clearBlobUrlCache();
+    }
+
+  }, [currentEp, locked])
+
+
   // 현재 에피소드 
   useEffect(() => {
     if(episodeList[0] && lastEpisode) {
@@ -482,12 +577,16 @@ const SeriesPlayerPage = ({}) => {
 
   // 에피소드 변경될때 잠긴 에피소드인지 확인
   useEffect(() => {
+    console.log('currentEp', currentEp);
+    console.log('unlockEpisode', unlockEpisode);
+    
     if(unlockEpisode && currentEp?.episode_num > unlockEpisode) {
       
       videoRef.current.play();
       setLocked(true);
       setPlaying(false);
-      if(playing) videoRef.current.pause();
+      videoRef.current.pause();
+
 
     } else {
       setLocked(false);
@@ -495,15 +594,12 @@ const SeriesPlayerPage = ({}) => {
   }, [currentEp, unlockEpisode ,isMobile])
 
   useEffect(() => {
-    console.log('videoRef.current22', videoRef.current);
     if(videoRef.current) {
-      console.log('videoRef.current');
       // 현재 에피소드 다보면 다음 에피소드 자동 재생
       videoRef.current.addEventListener('ended', () => {
         if(isMobile && currentEp?.episode_num < episodeList.length) {
           swiperRef.current.slideTo(currentEp?.episode_num, 0);
         } else if (!isMobile) {
-          console.log('pc video ended');
           handleEpisodeChange(currentEp?.episode_num);
         }
       })
@@ -514,13 +610,14 @@ const SeriesPlayerPage = ({}) => {
     if(videoRef.current && lastEpisode && unlockEpisode && series) {
       setLoading(false);
       if(currentEp?.episode_num <= unlockEpisode) {
-        videoRef.current.play();
+        //videoRef.current.play();
       }
     }
 
   }, [videoRef.current, lastEpisode, unlockEpisode, series])
 
   useEffect(() => {
+    console.log('window', window.location);
     // 최상단 스크롤 
     window.scrollTo(0, 0);
     
@@ -627,18 +724,22 @@ const SeriesPlayerPage = ({}) => {
     <>
     <div className='page-wrap' style={{paddingTop: 0}}>
       <div className='page-body'>
-        {/* <div className='breadcrumb'>
-          <span>Home</span>
-          <img src='/resources/icons/icon_arrow_right_s.svg'/>
-          <span className='active'>{series?.title}</span>
-        </div> */}
         <div className='short-form-player-wrap' ref={videoContainerRef}>
           <div className={`short-form-player ${fullscreen ? 'fullscreen' : ''}`} onClick={handlePlayerClick}>
-            <video id='short-form-video' muted={muted} preload="auto" ref={videoRef} onTimeUpdate={handleTimeUpdate} onEnded={() => handleEpisodeChange(currentEp?.episode_num)}>
-              <source src={`${import.meta.env.VITE_SERVER_URL}/videos/${currentEp?.series_id}/${currentEp?.video}`}></source>
+            {videoLoading && (
+              <div className="loading">
+                <TailSpin
+                width={60}
+                height={60}
+                color={'#ffffff'}/>
+              </div>
+            )}
+            <video id='short-form-video'  src={blobUrl} muted={muted} preload="auto" ref={videoRef} onTimeUpdate={handleTimeUpdate} onEnded={() => handleEpisodeChange(currentEp?.episode_num)}>
+              {/* <source src={blobUrl}></source> */}
             </video>
-            <div className='bottom-container'>
+            <div className='bottom-container' onClick={(event) => event.stopPropagation()}>
               <div className='flex-row' style={{justifyContent: 'space-between'}}>
+
                 <div className='flex-row' style={{gap: 9}}>
                 { !playing && <img src={'/resources/icons/icon_play_pc.svg'} className="play-btn" onClick={togglePlay}/> }
                 { playing && <img src={'/resources/icons/icon_pause_pc.svg'} className='play-btn' onClick={togglePlay}/> }
@@ -660,7 +761,7 @@ const SeriesPlayerPage = ({}) => {
                 </div>
               </div>
               <div className='progress-bar'>
-                <input style={{background: `linear-gradient(to right, #FF3064 ${progress}%, #535353 ${progress}%)`}} type='range' min='0' max='100' step='0.1' value={progress} onChange={handleProgressChange} onTouchEnd={handleProgressTouchEnd} onTouchStart={handleProgressTouchStart}/>
+                <input style={{background: `linear-gradient(to right, #FF3064 ${progress}%, #535353 ${progress}%)`}} type='range' min='0' max='100' step='0.1' value={progress} onChange={handleProgressChange} onTouchEnd={handleProgressTouchEnd} onTouchStart={handleProgressTouchStart} onMouseDown={handleProgressTouchStart} onMouseUp={handleProgressTouchEnd}/>
               </div>
             </div>
             {locked && (
@@ -675,6 +776,11 @@ const SeriesPlayerPage = ({}) => {
           {!loading && (
             <div className='info-container' style={fullscreen ? {paddingTop: 30, paddingRight: 25} : {}}>
             <div className='detail-info'>
+              {/* <div className='breadcrumb'>
+                <span>Home</span>
+                <img src='/resources/icons/icon_arrow_right_s.svg'/>
+                <span className='active'>{series?.title}</span>
+              </div> */}
             <div className='title'>
               {series?.title}
             </div>

@@ -126,7 +126,7 @@ const SeriesKeepPage = () => {
         </div>
         <div className='right-section' onClick={toggleSelectMode}>
           <button className={`mobe-btn ${seriesKeepList.length === 0 ? 'disabled' : ''}`} disabled={seriesKeepList.length === 0} onClick={toggleSelectMode}>
-            {(selectMode) ? '완료' : '선택'}
+            {(selectMode) ? '완료' : '편집'}
           </button>
         </div>
       </div>

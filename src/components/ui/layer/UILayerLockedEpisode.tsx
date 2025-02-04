@@ -37,7 +37,7 @@ const UILayerLockedEpisode = ({series, handlePaymentComplete}: Props) => {
   return (
     <>
     { visibleBtnList && (
-    <div className='locked-episode'>
+    <div className='locked-episode' style={{cursor: 'default'}} onClick={(event) => event.stopPropagation()}>
       <button className='payment-btn' onClick={() => handlePaymentOpen()}>
         충전하고 바로보기
       </button>

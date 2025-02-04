@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Series } from 'src/types';
@@ -72,7 +72,7 @@ const UIDesktopMainContentSlider = (props: Props) => {
       listRef.current.scrollLeft = itemPositionRef.current * ITEM_WIDTH;
     }
 
-    // 애니메이션 후 스크롤 동작 원래대로 복구
+    // 애니메이션 후 스크롤 동작 복구
     setTimeout(() => {
       if (listRef.current) {
         listRef.current.style.scrollBehavior = 'auto';

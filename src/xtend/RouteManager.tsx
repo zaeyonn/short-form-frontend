@@ -6,6 +6,7 @@ import SeriesPlayerPage from "pages/SeriesPlayerPage";
 import MyProfilePage from "pages/MyProfilePage";
 import SeriesKeepPage from "pages/SeriesKeepPage";
 import SeriesListPage from "pages/SeriesListPage";
+import PaymentProductListPage from "pages/PaymentProductListPage";
 
 const RouteManager = () => {
   
@@ -17,6 +18,7 @@ const RouteManager = () => {
       <Route path='/series/:seriesId' element={<SeriesPlayerPage/>} />
       <Route path='/profile' element={<MyProfilePage/>} />
       <Route path='/series-list' element={<SeriesListPage/>} />
+      <Route path='/payments' element={<PaymentProductListPage/>} />
       <Route path='/callback/google' element={<CallbackGoogle/>} />
     </Routes>
   )

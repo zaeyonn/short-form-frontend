@@ -1,19 +1,14 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+
 import Toast from 'src/components/ui/Toast';
 import UIPopAlert from 'components/ui/popup/UIPopAlert';
-
-import * as globalSlice from 'src/redux/globalSlice';
+import UIScrollTopButton from 'components/ui/UIScrollTopButton';
 
 const AlertManager = () => {
-  const dispatch = useDispatch();
 
   const { alert, toast, displayPopName } = useSelector((state: any) => state.global);
   
-  const handleClose = () => {
-    dispatch(globalSlice.setDisplayPopName(''));
-  }
-
   // // 팝업업 활성화시 스크롤 막음
   useEffect(() => {
     if(displayPopName) {
@@ -22,6 +17,25 @@ const AlertManager = () => {
       document.documentElement.style.overflowY = 'auto';
     }
   }, [displayPopName])
+
+  useEffect(() => {
+    const scrollTopButton = document.getElementById('scroll-top-btn');
+    const handleScroll = () => {
+      if(!scrollTopButton) return;
+
+      if(window.scrollY > 300) {
+        scrollTopButton.style.display = 'flex';
+      } else {
+        scrollTopButton.style.display = 'none';
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    }
+  }, [])
 
 
   return (
@@ -37,6 +51,7 @@ const AlertManager = () => {
     { alert && (
       <UIPopAlert/>
     )}
+    <UIScrollTopButton/>
     </>
   )
 }

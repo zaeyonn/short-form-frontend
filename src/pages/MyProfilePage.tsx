@@ -8,12 +8,12 @@ import * as userSlice from 'src/redux/userSlice';
 
 import { displayPopType } from 'src/common/define';
 import UIBottomSheetLogin from 'components/ui/bottomsheet/UIBottomSheetLogin';
-import UIBottomSheetPayment from 'components/ui/bottomsheet/UIBottomSheetPayments';
 import UISmallContentSlider from 'components/ui/UISmallContentSlider';
 import UIPopPayments from 'components/ui/payments/UIPopPayments'; 
 import UIPopLogin from 'components/ui/popup/UIPopLogin';
 import LayoutFooter from 'components/layouts/LayoutFooter';
 import UIMediumContentItem from 'components/ui/UIMediumContentItem';
+import UIPopPaymentProductList from 'components/ui/popup/UIPopPaymentProductList';
 
 const MyProfilePage = () => {
   const dispatch = useDispatch();
@@ -30,8 +30,7 @@ const MyProfilePage = () => {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
-  const [visibleBottomSheetPayment, setVisibleBottomSheetPayment] = useState(false);
-  const [selectedMenu, setSelectedMenu] = useState<string>('WATCH_LIST');
+  const [selectedMenu] = useState<string>('WATCH_LIST');
   
   const handleClose = () => {
     navigate(-1);
@@ -50,26 +49,27 @@ const MyProfilePage = () => {
   }
 
 
-  const handlePaymentOpen = () => {
-    setVisibleBottomSheetPayment(true);
+  const handleLogout = () => {
+    dispatch(userSlice.authGuest());
+  }
+
+  const handlePayment = () => {
+    if(isMobile) {
+      navigate('/payments');
+    } else {
+      dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name));
+    }
   }
 
   const handlePaymentComplete = () => {
-
-  }
-
-  const handlePaymentClose = () => {
-    setVisibleBottomSheetPayment(false);
-  }
-
-  const handleLogout = () => {
-    dispatch(userSlice.authGuest());
+    dispatch(globalSlice.setDisplayPopName(''));
   }
 
   const signInProcess = (code: string, authType: string) => {
     console.log('signInProcess code, authType', code, authType);
     dispatch(userSlice.authGoogle({code, userId: user?.id, authType}));
   }
+
 
   // SNS 로그인 결과
   useEffect(() => {
@@ -151,14 +151,13 @@ const MyProfilePage = () => {
         <div className='page-body' style={{padding: 0, flexDirection: 'row'}}>
           <div className='profile-container'>
             <div className='profile'>
-              <div className='profile-img'>
-
+              {/* <div className='profile-img'>
               {(user?.auth === 'guest') ? (
                 <img className='guest-img' src='resources/icons/icon_guest.svg'/>
               ) : (
                 <img className='user-img' src={user?.profile_img}/>
               )}
-            </div>
+            </div> */}
             {(user?.auth === 'guest') ? (
               <div className='nickname' onClick={handleLoginOpen}>
                 로그인을 해주세요
@@ -186,7 +185,7 @@ const MyProfilePage = () => {
                 <img src='resources/icons/icon_point.svg'/>
                 <span>{`${user?.paid_point + user?.free_point}`}</span>
               </div>
-              <button onClick={handlePaymentOpen}>
+              <button onClick={handlePayment}>
                 충전하기
               </button>
             </div>
@@ -263,16 +262,16 @@ const MyProfilePage = () => {
           visible={visibleBottomSheetLogin}
           signInProcess={signInProcess}
           handleLoginBottomSheetClose={handleLoginClose}/>
-        <UIBottomSheetPayment
-          visible={visibleBottomSheetPayment}
-          handlePaymentComplete={handlePaymentComplete}
-          handleBottomSheetClose={handlePaymentClose}/>
         </>
       )}
       { payments && (<UIPopPayments/>)}
       { displayPopName === displayPopType.POPUP_LOGIN.name && (
         <UIPopLogin signInProcess={signInProcess}/>
       )}
+       { displayPopName === displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name && (
+      <UIPopPaymentProductList
+        handlePaymentComplete={handlePaymentComplete}/>
+    )}
       { !isMobile && (
         <LayoutFooter/>
       )}

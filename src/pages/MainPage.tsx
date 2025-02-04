@@ -19,7 +19,7 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   const { isMobile, seriesList, seriesListResult, seriesListError } = useSelector((state: any) => state.global)
-  const { user, userSeriesKeepListResult, userSeriesKeepListError } = useSelector((state: any) => state.user);
+  const { userSeriesKeepListResult, userSeriesKeepListError } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState<boolean>(true);
   const [visibleMenu, setVisibleMenu] = useState<boolean>(false);

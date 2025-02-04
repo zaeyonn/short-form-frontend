@@ -1,7 +1,7 @@
 const LayoutFooter = () => {
   return (
     <div className='footer'>  
-      Copyright© megazone Corp. All Rights Reserved.
+      Copyright © GALA Inc. All rights reserved.
     </div>
   )
 }

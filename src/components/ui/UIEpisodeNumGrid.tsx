@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react"
 import { JSX } from "react/jsx-runtime";
-import { Series } from "src/types"
+
+import { Series } from "src/types";
 
 interface Props {
   series: Series;
@@ -8,6 +9,7 @@ interface Props {
   unlockEpisode: number | undefined;
   handleEpisodeClick: (index: number) => any;
 }
+
 const SECTION_RANGE = 30;
 
 const UIEpisodeNumGrid = (props: Props) => {
@@ -39,11 +41,18 @@ const UIEpisodeNumGrid = (props: Props) => {
 
       for (let i = (section - 1) * SECTION_RANGE; i < section * SECTION_RANGE; i++) {
        
-        gridList.push(<div key={i} className='container' onClick={() =>{ props.handleEpisodeClick(i) }}><div className={`box ${props.unlockEpisode ? (i + 1 <= props.unlockEpisode ? '' : 'locked') : ''} ${props.currentEp?.episode_num === i+1 ? 'selected' : ''} `}>{i+1}</div></div>)
+        gridList.push(
+        <>
+        <div key={i} className='container' onClick={() =>{ props.handleEpisodeClick(i) }}>
+          <div className={`box ${props.unlockEpisode ? (i + 1 <= props.unlockEpisode ? '' : 'locked') : ''} ${props.currentEp?.episode_num === i+1 ? 'selected' : ''} `}>{i+1}</div>
+        </div>
+        </>
+        )
       
         if(i + 1 === props.series?.ep_count) {
           break;
         }
+
       }
 
   
