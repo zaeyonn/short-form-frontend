@@ -541,6 +541,8 @@ const SeriesPlayerPage = ({}) => {
 
         if(!locked) {
           setPlaying(true);
+          videoRef.current?.load();
+          videoRef.current.currentTime = 0;
           videoRef.current.play();
         } else {
           setPlaying(false);
