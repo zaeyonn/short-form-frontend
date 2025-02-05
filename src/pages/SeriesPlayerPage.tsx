@@ -220,9 +220,10 @@ const SeriesPlayerPage = ({}) => {
       if(swiperRef.current) swiperRef.current.slideTo(index, 0);
       setVisibleBottomSheet(false);
     } else if(!isMobile && videoRef.current) {
-      videoRef.current?.load();
+      setProgress(0);
       videoRef.current.currentTime = 0;
-      setPlaying(true);
+      URL.revokeObjectURL(videoRef.current.src);
+      videoRef.current.src = '';
       dispatch(userSlice.updateSeriesProgress({ userId: user.id, seriesId: seriesIdRef.current, ep: index + 1 }));
     }
   }, [episodeList, seriesIdRef.current]);
@@ -536,6 +537,7 @@ const SeriesPlayerPage = ({}) => {
     const loadVideoBlobUrl = async () => {
       try {
         setVideoLoading(true);
+      
         const blobUrl: any = await convertToBlobURL(`${import.meta.env.VITE_SERVER_URL}/videos/${currentEp?.series_id}/${currentEp?.video}`);
 
         setVideoLoading(false);
@@ -740,28 +742,30 @@ const SeriesPlayerPage = ({}) => {
               </div>
             )}
             <video id='short-form-video' muted={muted} preload="auto" ref={videoRef} onTimeUpdate={handleTimeUpdate} onEnded={() => handleEpisodeChange(currentEp?.episode_num)}>
-              {/* <source src={blobUrl}></source> */}
             </video>
             <div className='bottom-container' onClick={(event) => event.stopPropagation()}>
               <div className='flex-row' style={{justifyContent: 'space-between'}}>
-
-                <div className='flex-row' style={{gap: 9}}>
+                <div className='flex-row' style={{gap: 9, visibility: videoLoading ? 'hidden' : 'visible'}}>
+                <>
                 { !playing && <img src={'/resources/icons/icon_play_pc.svg'} className="play-btn" onClick={togglePlay}/> }
                 { playing && <img src={'/resources/icons/icon_pause_pc.svg'} className='play-btn' onClick={togglePlay}/> }
-                  { currentEp && (
-                  <span className='time'>
-                    <span>
-                    {currentTimeRef.current > 0 ?  formattedSecond(currentTimeRef.current) : ''} 
-                    </span>
-                    {(currentTimeRef.current > 0 && videoRef.current.duration > 0) ? ' / ' : ''} 
-                    <span>
-                    {(isNaN(videoRef.current?.duration) || videoRef.current.duration === 0) ? '' : formattedSecond(videoRef.current?.duration)}
-                    </span>
+                { currentEp && (
+                <span className='time'>
+                  <span>
+                  { currentTimeRef.current > 0 ?  formattedSecond(currentTimeRef.current) : ''} 
                   </span>
-                  )}
+                  {(currentTimeRef.current > 0 && videoRef.current.duration > 0) ? ' / ' : ''} 
+                  <span>
+                  {(isNaN(videoRef.current?.duration) || videoRef.current.duration === 0) ? '' : formattedSecond(videoRef.current?.duration)}
+                  </span>
+                </span>
+                )}
+                </>
                 </div>
                 <div className='flex-row' style={{gap: 20}}>
+
                   <img className='speaker-btn' src={`/resources/icons/${muted ? 'icon_speaker_muted_l.svg' : 'icon_speaker_l.svg'}`} onClick={handleMuted}/>
+
                   <img className='fullscreen-btn' src={'/resources/icons/icon_fullscreen.svg'} onClick={handleFullscreen}/>
                 </div>
               </div>
