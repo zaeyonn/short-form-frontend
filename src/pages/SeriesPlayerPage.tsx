@@ -46,7 +46,6 @@ const SeriesPlayerPage = ({}) => {
   const [lastEpisode, setLastEpisode] = useState<number>(0);
   const [muted, setMuted] = useState<boolean>(true);
   const [fullscreen ,setFullscreen] = useState<boolean>(false);
-  const [blobUrl] = useState<string>('');
 
   const swiperRef = useRef<any>(null);
   const videoRef = useRef<any>(null);
@@ -55,6 +54,7 @@ const SeriesPlayerPage = ({}) => {
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const sequenceCountRef = useRef<number>(0);
   const progressChangingRef = useRef<boolean>(false);
+  const blobUrlRef = useRef<string>('');
 
   const currentTimeRef = useRef<number>(0);
 
@@ -110,12 +110,14 @@ const SeriesPlayerPage = ({}) => {
       const blob = await response.blob();
       
       // blob URL 생성
-      const blobUrl = URL.createObjectURL(blob);
+      blobUrlRef.current = URL.createObjectURL(blob);
+
 
       // 캐시에 저장
-      blobUrlCache.set(videoUrl, blobUrl);
+      blobUrlCache.set(videoUrl, blobUrlRef.current);
 
-      return blobUrl;
+      return blobUrlRef.current;
+
     } catch (error) {
       console.error('Error converting video to blob URL:', error);
       throw error;
@@ -538,11 +540,12 @@ const SeriesPlayerPage = ({}) => {
 
         setVideoLoading(false);
         videoRef.current.src = blobUrl;
+        
+        // videoRef.current?.load();
+        videoRef.current.currentTime = 0;
 
         if(!locked) {
           setPlaying(true);
-          videoRef.current?.load();
-          videoRef.current.currentTime = 0;
           videoRef.current.play();
         } else {
           setPlaying(false);
@@ -736,7 +739,7 @@ const SeriesPlayerPage = ({}) => {
                 color={'#ffffff'}/>
               </div>
             )}
-            <video id='short-form-video'  src={blobUrl} muted={muted} preload="auto" ref={videoRef} onTimeUpdate={handleTimeUpdate} onEnded={() => handleEpisodeChange(currentEp?.episode_num)}>
+            <video id='short-form-video' muted={muted} preload="auto" ref={videoRef} onTimeUpdate={handleTimeUpdate} onEnded={() => handleEpisodeChange(currentEp?.episode_num)}>
               {/* <source src={blobUrl}></source> */}
             </video>
             <div className='bottom-container' onClick={(event) => event.stopPropagation()}>
