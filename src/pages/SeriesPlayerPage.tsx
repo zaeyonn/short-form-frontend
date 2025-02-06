@@ -209,19 +209,15 @@ const SeriesPlayerPage = ({}) => {
   }
 
   const handleEpisodeChange = useCallback((index: number) => {
-    console.log('handleEpisodeChange', index);
     setCurrentEp(episodeList[index]);
     setProgress(0);
-    // videoRef.current.pause();
-    // videoRef.current.currentTime = 0;
     
     if(index === unlockEpisode) {
       setLocked(true);
     } 
 
     if(index + 1 !== currentEp?.episode_num) {
-  
-
+      URL.revokeObjectURL(blobUrlRef.current);
     }
 
 

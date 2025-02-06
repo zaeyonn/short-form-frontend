@@ -50,11 +50,10 @@ const UIEpisodeNumGrid = (props: Props) => {
         if(i + 1 === props.series?.ep_count) {
           break;
         }
-
       }
-
   
-      return gridList
+      return gridList;
+
     }, [section, props.series, props.unlockEpisode, props.currentEp])
 
   useEffect(() => {
