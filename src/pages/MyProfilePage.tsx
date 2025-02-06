@@ -264,7 +264,6 @@ const MyProfilePage = () => {
           handleLoginBottomSheetClose={handleLoginClose}/>
         </>
       )}
-      { payments && (<UIPopPayments/>)}
       { displayPopName === displayPopType.POPUP_LOGIN.name && (
         <UIPopLogin signInProcess={signInProcess}/>
       )}

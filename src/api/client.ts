@@ -12,7 +12,7 @@ client.interceptors.response.use(
     if(error.response.status === 401) {
       try {
         // Access Token 토근 재발급
-        const result = await axios.post(`${import.meta.env.VITE_SERVER_URL}/auth/refresh-token`, {}, { withCredentials: true });
+        const result = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/auth/refresh-token`, {}, { withCredentials: true });
         console.log('refresh accessToken: ', result);
 
         // API 재 호출

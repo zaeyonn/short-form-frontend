@@ -23,3 +23,10 @@ export type Series = {
   keeps: number // 북마크 수
   created_at: string // 등록 날짜
 }
+
+export type PaymentProduct = {
+  id: number,
+  amount: number,
+  paid_point: number,
+  free_point: number
+}
