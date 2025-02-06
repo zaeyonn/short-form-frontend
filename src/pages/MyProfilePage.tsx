@@ -9,7 +9,6 @@ import * as userSlice from 'src/redux/userSlice';
 import { displayPopType } from 'src/common/define';
 import UIBottomSheetLogin from 'components/ui/bottomsheet/UIBottomSheetLogin';
 import UISmallContentSlider from 'components/ui/UISmallContentSlider';
-import UIPopPayments from 'components/ui/payments/UIPopPayments'; 
 import UIPopLogin from 'components/ui/popup/UIPopLogin';
 import LayoutFooter from 'components/layouts/LayoutFooter';
 import UIMediumContentItem from 'components/ui/UIMediumContentItem';
@@ -19,7 +18,7 @@ const MyProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { payments, isMobile, displayPopName } = useSelector((state: any) => state.global);
+  const { isMobile, displayPopName } = useSelector((state: any) => state.global);
 
   const { 
     user, seriesWatchList, authGoogleResult, authGoogleError,

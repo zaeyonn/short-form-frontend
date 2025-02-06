@@ -198,8 +198,7 @@ const SeriesPlayerPage = ({}) => {
       videoRef.current.pause();
 
       videoRef.current = slidedVideo;
-      setPlaying(true);
-      // videoRef.current.play();
+      // setPlaying(true);
     }
 
     setCurrentEp(episodeList[swiper.activeIndex]);
@@ -210,14 +209,21 @@ const SeriesPlayerPage = ({}) => {
   }
 
   const handleEpisodeChange = useCallback((index: number) => {
+    console.log('handleEpisodeChange', index);
     setCurrentEp(episodeList[index]);
+    setProgress(0);
+    // videoRef.current.pause();
+    // videoRef.current.currentTime = 0;
     
     if(index === unlockEpisode) {
       setLocked(true);
     } 
 
-    setProgress(0);
-    videoRef.current.currentTime = 0;
+    if(index + 1 !== currentEp?.episode_num) {
+  
+
+    }
+
 
     if(isMobile) {
       if(swiperRef.current) swiperRef.current.slideTo(index, 0);
@@ -317,6 +323,12 @@ const SeriesPlayerPage = ({}) => {
       videoRef.current.play();
       setPlaying(true);
     }
+  }
+
+  const handleVideoEnded = () => {
+    if(isMobile && currentEp?.episode_num < episodeList.length) {
+      swiperRef.current.slideTo(currentEp?.episode_num, 0);
+    } 
   }
 
 
@@ -531,28 +543,18 @@ const SeriesPlayerPage = ({}) => {
     }
   }, [seriesInfoResult, seriesInfoError])
 
-  // 비디오 URL 변환
+  // 비디오 URL -> blob URL 변환
   useEffect(() => {
     const loadVideoBlobUrl = async () => {
+
       try {
         setVideoLoading(true);
       
         const blobUrl: any = await convertToBlobURL(`${import.meta.env.VITE_SERVER_URL}/videos/${currentEp?.series_id}/${currentEp?.video}`);
 
         setVideoLoading(false);
-        videoRef.current.src = blobUrl;
+        blobUrlRef.current = blobUrl;
         
-        // videoRef.current?.load();
-        videoRef.current.currentTime = 0;
-
-        if(!locked) {
-          setPlaying(true);
-          videoRef.current.play();
-        } else {
-          setPlaying(false);
-          videoRef.current.pause();
-        }
-
       } catch (error) {
         setVideoLoading(false);
 
@@ -581,11 +583,8 @@ const SeriesPlayerPage = ({}) => {
     }
   }, [episodeList, lastEpisode])
 
-  // 에피소드 변경될때 잠긴 에피소드인지 확인
+  // 에피소드 변경될때 잠긴 에피소드인 경우 재생 중지
   useEffect(() => {
-    console.log('currentEp', currentEp);
-    console.log('unlockEpisode', unlockEpisode);
-    
     if(unlockEpisode && currentEp?.episode_num > unlockEpisode) {
       
       videoRef.current.play();
@@ -599,28 +598,25 @@ const SeriesPlayerPage = ({}) => {
     }
   }, [currentEp, unlockEpisode ,isMobile])
 
-  useEffect(() => {
-    if(videoRef.current) {
-      // 현재 에피소드 다보면 다음 에피소드 자동 재생
-      videoRef.current.addEventListener('ended', () => {
-        if(isMobile && currentEp?.episode_num < episodeList.length) {
-          swiperRef.current.slideTo(currentEp?.episode_num, 0);
-        } else if (!isMobile) {
-          handleEpisodeChange(currentEp?.episode_num);
-        }
-      })
-    }
-  }, [videoRef.current, swiperRef.current, isMobile, currentEp])
 
   useEffect(() => {
     if(videoRef.current && lastEpisode && unlockEpisode && series) {
       setLoading(false);
-      if(currentEp?.episode_num <= unlockEpisode) {
-        //videoRef.current.play();
-      }
     }
 
   }, [videoRef.current, lastEpisode, unlockEpisode, series])
+
+  useEffect(() => {
+    if(blobUrlRef.current) {
+      if(!locked) {
+        setPlaying(true);
+        videoRef.current.play();
+      } else {
+        setPlaying(false);
+        videoRef.current.pause();
+      }
+    }
+  }, [blobUrlRef.current, locked])
 
   useEffect(() => {
     console.log('window', window.location);
@@ -659,8 +655,10 @@ const SeriesPlayerPage = ({}) => {
         playing={playing}
         muted={muted}
         swiperRef={swiperRef}
+        blobUrlRef={blobUrlRef}
         handleSlideChange={handleSlideChange}
         handleSlideChangeStart={handleSlideChangeStart}
+        handleVideoEnded={handleVideoEnded}
         episodeList={episodeList}
         videoRef={videoRef}
         handleTimeUpdate={handleTimeUpdate}
@@ -740,10 +738,11 @@ const SeriesPlayerPage = ({}) => {
                 color={'#ffffff'}/>
               </div>
             )}
-            <video id='short-form-video' muted={muted} preload="auto" ref={videoRef} onTimeUpdate={handleTimeUpdate} onEnded={() => handleEpisodeChange(currentEp?.episode_num)}>
+            <video id='short-form-video' src={blobUrlRef.current} muted={muted} preload="auto" ref={videoRef} onTimeUpdate={handleTimeUpdate} onEnded={() => handleEpisodeChange(currentEp?.episode_num)}>
             </video>
             <div className='bottom-container' onClick={(event) => event.stopPropagation()}>
               <div className='flex-row' style={{justifyContent: 'space-between'}}>
+
                 <div className='flex-row' style={{gap: 9, visibility: videoLoading ? 'hidden' : 'visible'}}>
                 <>
                 { !playing && <img src={'/resources/icons/icon_play_pc.svg'} className="play-btn" onClick={togglePlay}/> }

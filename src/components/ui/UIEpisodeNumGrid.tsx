@@ -24,7 +24,7 @@ const UIEpisodeNumGrid = (props: Props) => {
   
       for (let i = 0; i < Math.ceil(props.series?.ep_count / SECTION_RANGE); i++) {
         sectionList.push(
-          <div key={i}>
+          <div key={'section-' + i}>
             <span className={`${section - 1 == i ? 'selected' : ''}`} onClick={() => handleSectionChange(i)}>
               {`${1 + (i * SECTION_RANGE)}-${props.series?.ep_count < ((i+1) * SECTION_RANGE) ? props.series?.ep_count : ((i+1) * SECTION_RANGE)}`}
             </span>
@@ -42,11 +42,9 @@ const UIEpisodeNumGrid = (props: Props) => {
       for (let i = (section - 1) * SECTION_RANGE; i < section * SECTION_RANGE; i++) {
        
         gridList.push(
-        <>
-        <div key={i} className='container' onClick={() =>{ props.handleEpisodeClick(i) }}>
+        <div key={'episode-' + i} className='container' onClick={() =>{ props.handleEpisodeClick(i) }}>
           <div className={`box ${props.unlockEpisode ? (i + 1 <= props.unlockEpisode ? '' : 'locked') : ''} ${props.currentEp?.episode_num === i+1 ? 'selected' : ''} `}>{i+1}</div>
         </div>
-        </>
         )
       
         if(i + 1 === props.series?.ep_count) {
