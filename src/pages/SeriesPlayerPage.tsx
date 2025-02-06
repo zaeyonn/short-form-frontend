@@ -112,7 +112,6 @@ const SeriesPlayerPage = ({}) => {
       // blob URL 생성
       blobUrlRef.current = URL.createObjectURL(blob);
 
-
       // 캐시에 저장
       blobUrlCache.set(videoUrl, blobUrlRef.current);
 
@@ -132,8 +131,6 @@ const SeriesPlayerPage = ({}) => {
 
     blobUrlCache.clear();
   }
-
-
 
   // 재생 시간 업데이트
   const handleTimeUpdate = () => {
@@ -701,7 +698,7 @@ const SeriesPlayerPage = ({}) => {
           </div>
           {!locked && (
           <div className='progress-bar'>
-            <input style={{background: `linear-gradient(to right, #FF3064 ${progress}%, #535353 ${progress}%)`}} type='range' min='0' max='100' step='0.1' value={progress} onChange={handleProgressChange} onTouchEnd={handleProgressTouchEnd} onTouchStart={handleProgressTouchStart}/>
+            <input style={{background: `linear-gradient(to right, #307FE2 ${progress}%, #535353 ${progress}%)`}} type='range' min='0' max='100' step='0.1' value={progress} onChange={handleProgressChange} onTouchEnd={handleProgressTouchEnd} onTouchStart={handleProgressTouchStart}/>
           </div>
           )}
         </>
@@ -768,7 +765,7 @@ const SeriesPlayerPage = ({}) => {
                 </div>
               </div>
               <div className='progress-bar'>
-                <input style={{background: `linear-gradient(to right, #FF3064 ${progress}%, #535353 ${progress}%)`}} type='range' min='0' max='100' step='0.1' value={progress} onChange={handleProgressChange} onTouchEnd={handleProgressTouchEnd} onTouchStart={handleProgressTouchStart} onMouseDown={handleProgressTouchStart} onMouseUp={handleProgressTouchEnd}/>
+                <input style={{background: `linear-gradient(to right, #307FE2 ${progress}%, #535353 ${progress}%)`}} type='range' min='0' max='100' step='0.1' value={progress} onChange={handleProgressChange} onTouchEnd={handleProgressTouchEnd} onTouchStart={handleProgressTouchStart} onMouseDown={handleProgressTouchStart} onMouseUp={handleProgressTouchEnd}/>
               </div>
             </div>
             {locked && (

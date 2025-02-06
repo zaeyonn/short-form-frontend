@@ -94,7 +94,7 @@ const UIPopPaymentProductList = (props: Props) => {
           `translate(-50%, -50%) scale(${s}) translateY(${springs.y.get()}px)`
         ),
       }}
-      className='popup-wrap payment'>    
+      className='popup-wrap payment-product-list'>    
         <img className='close-btn' src='/resources/icons/icon_close.svg' alt='닫기' onClick={handleClose}/>
         <div className='popup-body' style={{gap: 10}}>
           <div className='title'>

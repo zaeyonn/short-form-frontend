@@ -290,8 +290,8 @@
           }
     
           &.checked {
-            background-color: #FF3064;
-            border: 2px solid #FF3064;
+            background-color: #307FE2;
+            border: 2px solid #307FE2;
           }
         }
       }
@@ -343,8 +343,8 @@
         }
   
         &.checked {
-          background-color: #FF3064;
-          border: 2px solid #FF3064;
+          background-color: #307FE2;
+          border: 2px solid #307FE2;
 
           img {
             filter: none;
@@ -381,7 +381,7 @@
 
             &.selected {
               background-color: #1B1B1B;
-              color: #FF3064;
+              color: #307FE2;
               font-weight: 600;
             }
           }
@@ -753,7 +753,7 @@
       width: 300px;
       height: 52px;
       border-radius: 12px;
-      background-color: #FF3064;
+      background-color: #307FE2;
       font-weight: 600;
       font-size: 17px;
     }
@@ -793,7 +793,7 @@
 
     .popup-wrap {
       white-space: pre-line;
-      position: fixed;
+      position: absolute;
       width: 455px;
       min-height: 209px;
       border-radius: 16px;
@@ -804,9 +804,15 @@
       left: 50%;
       transform: translate(-50%, -50%);
 
-      &.payment {
+      &.paympayment-product-listent {
         background-color: #2A2A2A;
         border: 1px solid #595959;
+      }
+
+      &.toss-payment-widget {
+        padding-top: 10px;
+        background-color: #FFFFFF;
+        color: #000000;
       }
 
       .close-btn {
@@ -843,7 +849,7 @@
           border: 2px solid transparent;
 
           &.selected {
-            border-color:#FF3064; 
+            border-color:#307FE2; 
           }
 
 
@@ -857,7 +863,7 @@
               width: 74px;
               padding: 8px 12px;
               border-radius: 6px;
-              background-color: #FF3064;
+              background-color: #307FE2;
               color: #ffffff;
               font-weight: 500;
               font-size: 12px;
@@ -892,7 +898,7 @@
               }
         
               .bonus {
-                color: #FF3064;
+                color: #307FE2;
               }
             }
         
@@ -932,7 +938,7 @@
             border: 2px solid transparent;
 
             &.selected {
-              border-color:#FF3064; 
+              border-color:#307FE2; 
             }
 
             .paid-point {
@@ -944,7 +950,7 @@
               margin-top: 6px;
               font-weight: 300;
               font-size: 16px;
-              color: #FF3064;
+              color: #307FE2;
             }
 
             .price {

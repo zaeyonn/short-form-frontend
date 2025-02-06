@@ -6,7 +6,7 @@ button {
 
 .primary-btn {
   cursor: pointer;
-  background-color: #FF3064;
+  background-color: #307FE2;
   font-weight: 600;
   font-size: 17px;
   border-radius: 12px;
@@ -82,7 +82,7 @@ a {
   
 
   &.type_c {
-    background-color: #FF3064;
+    background-color: #307FE2;
     color: #ffffff;
   }
 
@@ -189,7 +189,7 @@ a {
         position: absolute;
         top: 0px;
         left: 0px;
-        background-color: #FF3064;
+        background-color: #307FE2;
         font-size: 11px;
         font-weight: 600;
 
@@ -523,7 +523,7 @@ a {
   
       .next-btn {
         background: none;
-        color: #FF3064; 
+        color: #307FE2; 
         font-weight: 500;
         font-size: 16px;
       }
@@ -593,7 +593,7 @@ a {
         appearance: none;
         width: 10px;
         height: 10px;
-        background: #FF3064;
+        background: #307FE2;
         border-radius: 50%;
         cursor: pointer;
         transition: transform 0.2s ease;
@@ -602,7 +602,7 @@ a {
       &::-moz-range-thumb {
         width: 10px;
         height: 10px;
-        background: #FF3064;
+        background: #307FE2;
         border-radius: 50%;
         cursor: pointer;
         transition: transform 0.2s ease;
@@ -611,7 +611,7 @@ a {
       &::-ms-thumb {
         width: 10px;
         height: 10px;
-        background: #FF3064;
+        background: #307FE2;
         border-radius: 50%;
         cursor: pointer;
         transition: transform 0.2s ease;
@@ -718,7 +718,7 @@ a {
         padding: 6px 10px;
         box-sizing: border-box;
         border-radius: 35px;
-        background-color: #FF3064;
+        background-color: #307FE2;
         color: #ffffff;
         font-size: 13px;
         font-weight: 500;
@@ -806,8 +806,8 @@ a {
       }
 
       &.checked {
-        background-color: #FF3064;
-        border: 2px solid #FF3064;
+        background-color: #307FE2;
+        border: 2px solid #307FE2;
       }
     }
   }
@@ -894,7 +894,7 @@ a {
         font-weight: 400;
         color: #ffffff;
         outline: none;
-        caret-color: #FF3064;
+        caret-color: #307FE2;
   
         &::placeholder {
           color: #353535;
@@ -1059,7 +1059,7 @@ a {
   gap: 16px;
 
   &.selected {
-    border: 1px solid #FF3064;
+    border: 1px solid #307FE2;
   }
 
   .item {
@@ -1072,7 +1072,7 @@ a {
       width: 74px;
       padding: 8px 12px;
       border-radius: 6px;
-      background-color: #FF3064;
+      background-color: #307FE2;
       color: #ffffff;
       font-weight: 500;
       font-size: 12px;
@@ -1108,7 +1108,7 @@ a {
     }
 
     .bonus {
-      color: #FF3064;
+      color: #307FE2;
     }
   }
 
@@ -1142,7 +1142,7 @@ a {
     font-size: 15px;
 
     .selected {
-      color: #FF3064;
+      color: #307FE2;
     }
   
     .separator {
@@ -1206,7 +1206,7 @@ a {
       }
   
       &.selected {
-        background-color: #FF3064;
+        background-color: #307FE2;
         color: #FFFFFF;
       }
     }
@@ -1229,7 +1229,7 @@ a {
     width: 335px;
     height: 52px;
     border-radius: 12px;
-    background-color: #FF3064;
+    background-color: #307FE2;
     font-weight: 600;
     font-size: 17px;
   }
@@ -1372,7 +1372,7 @@ a {
       box-sizing: border-box;
       padding: 5px 20px 5px 10px;
       background: none;
-      color: #FF3064;
+      color: #307FE2;
       font-weight: 400;
       font-size: 15px;
       line-height: 24px;
@@ -1540,7 +1540,7 @@ a {
 
       .next-btn {
         background: none;
-        color: #FF3064; 
+        color: #307FE2; 
         font-weight: 500;
         font-size: 16px;
       }
@@ -1615,7 +1615,7 @@ a {
         appearance: none;
         width: 10px;
         height: 10px;
-        background: #FF3064;
+        background: #307FE2;
         border-radius: 50%;
         cursor: pointer;
         transition: transform 0.2s ease;
@@ -1624,7 +1624,7 @@ a {
       &::-moz-range-thumb {
         width: 10px;
         height: 10px;
-        background: #FF3064;
+        background: #307FE2;
         border-radius: 50%;
         cursor: pointer;
         transition: transform 0.2s ease;
@@ -1633,7 +1633,7 @@ a {
       &::-ms-thumb {
         width: 10px;
         height: 10px;
-        background: #FF3064;
+        background: #307FE2;
         border-radius: 50%;
         cursor: pointer;
         transition: transform 0.2s ease;
@@ -1724,7 +1724,7 @@ a {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #FF3064;
+    background: #307FE2;
     
     @for $i from 1 through 8 {
       &:nth-child(#{$i}) {

@@ -7,16 +7,16 @@ import UIScrollTopButton from 'components/ui/UIScrollTopButton';
 
 const AlertManager = () => {
 
-  const { alert, toast, displayPopName } = useSelector((state: any) => state.global);
+  const { alert, toast, displayPopName, payments } = useSelector((state: any) => state.global);
   
-  // // 팝업업 활성화시 스크롤 막음
+  // 팝업 활성화시 스크롤 막음
   useEffect(() => {
-    if(displayPopName) {
+    if(displayPopName || payments) {
       document.documentElement.style.overflowY = 'hidden';
     } else {
       document.documentElement.style.overflowY = 'auto';
     }
-  }, [displayPopName])
+  }, [displayPopName, payments])
 
   useEffect(() => {
     const scrollTopButton = document.getElementById('scroll-top-btn');

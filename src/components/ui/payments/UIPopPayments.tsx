@@ -53,7 +53,8 @@ const UIPopPayments = () => {
   }, [])
 
   return (
-    <div className='popup-wrap'>
+    <div className='popup-layer'>
+    <div className='popup-wrap toss-payment-widget'>
       <div className='header'>
         <div className='title'>결제하기</div>
         <div className='right-section'>
@@ -65,6 +66,7 @@ const UIPopPayments = () => {
       <button className='payment-btn' onClick={handlePaymentRequest}>
         결제
       </button>
+    </div>
     </div>
   )
 }
