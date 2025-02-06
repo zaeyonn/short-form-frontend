@@ -216,17 +216,16 @@ const SeriesPlayerPage = ({}) => {
       setLocked(true);
     } 
 
+    setProgress(0);
+    videoRef.current.currentTime = 0;
+
     if(isMobile) {
       if(swiperRef.current) swiperRef.current.slideTo(index, 0);
       setVisibleBottomSheet(false);
     } else if(!isMobile && videoRef.current) {
-      setProgress(0);
-      videoRef.current.currentTime = 0;
-      URL.revokeObjectURL(videoRef.current.src);
-      videoRef.current.src = '';
       dispatch(userSlice.updateSeriesProgress({ userId: user.id, seriesId: seriesIdRef.current, ep: index + 1 }));
     }
-  }, [episodeList, seriesIdRef.current]);
+  }, [episodeList, seriesIdRef.current, currentEp]);
 
   const handleBottomSheetOpen = useCallback(() => {
 
