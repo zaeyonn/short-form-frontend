@@ -211,7 +211,10 @@ const SeriesPlayerPage = ({}) => {
   const handleEpisodeChange = useCallback((index: number) => {
     setCurrentEp(episodeList[index]);
     setProgress(0);
-    videoRef.current.pause();
+
+    if(videoRef.current) {
+      videoRef.current.pause();
+    }
     
     if(index === unlockEpisode) {
       setLocked(true);
