@@ -74,7 +74,6 @@ const UIPopPaymentProductList = (props: Props) => {
   const handlePaymentStart = () => {
     dispatch(globalSlice.setPayments(selectedProduct));
     handleClose();
-    props.handlePaymentComplete();
   }
 
   const handleProductSelect = (product: PaymentProduct) => {

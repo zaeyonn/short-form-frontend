@@ -797,7 +797,7 @@
       width: 455px;
       min-height: 209px;
       border-radius: 16px;
-      padding: 60px 20px 40px 20px;
+      padding: 60px 20px 20px 20px;
       background-color: #2A2A2A;
       box-sizing: border-box;
       top: 50%;
@@ -810,9 +810,33 @@
       }
 
       &.toss-payment-widget {
+        height: 570px;
+        max-height: 570px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         padding-top: 10px;
         background-color: #FFFFFF;
         color: #000000;
+
+        .widget-wrap {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          max-height: 450px;
+          overflow-y: hidden;
+        }
+
+
+
+        .close-btn {
+          width: 26px;
+          height: 26px;
+        }
+
+        .payment-btn {
+          width: 100%;
+        }
       }
 
       .close-btn {

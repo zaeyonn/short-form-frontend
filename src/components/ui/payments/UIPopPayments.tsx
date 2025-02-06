@@ -4,9 +4,15 @@ import { loadTossPayments } from '@tosspayments/tosspayments-sdk';
 
 import * as globalSlice from 'src/redux/globalSlice';
 
-const UIPopPayments = () => {
+interface Props {
+  handlePaymentComplete: () => void;
+}
+
+
+const UIPopPayments = (props: Props) => {
   const dispatch = useDispatch();
   
+  const { payments } = useSelector((state: any) => state.global);
   const { user } = useSelector((state: any) => state.user);
 
   const widgetsRef = useRef<any>(null);
@@ -37,7 +43,7 @@ const UIPopPayments = () => {
       // 결제 금액 설정
       widgetsRef.current.setAmount({
         currency: 'KRW',
-        value: 1000,
+        value: payments.amount,
       })
 
       await widgetsRef.current.renderPaymentMethods({
@@ -58,15 +64,20 @@ const UIPopPayments = () => {
       <div className='header'>
         <div className='title'>결제하기</div>
         <div className='right-section'>
-          <img className='close-btn' onClick={handleClose} src='resources/icons/icon_close.svg'/>
+          <img className='close-btn' onClick={handleClose} src='/resources/icons/icon_close_b.svg'/>
         </div>
       </div>
-      <div id='payment-method'/>
-      <div id='agreement'/>
-      <button className='payment-btn' onClick={handlePaymentRequest}>
-        결제
-      </button>
+      <div className='widget-wrap'>
+        <div id='payment-method'/>
+        <div id='agreement'/>
+      </div>
+        <button className='primary-btn payment-btn' onClick={handlePaymentRequest}>
+          결제
+        </button>
+      
+
     </div>
+
     </div>
   )
 }

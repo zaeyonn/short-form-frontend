@@ -14,6 +14,7 @@ import UILayerLockedEpisode from "components/ui/layer/UILayerLockedEpisode";
 import UIEpisodeNumGrid from "components/ui/UIEpisodeNumGrid";
 import LayoutFooter from "components/layouts/LayoutFooter";
 import UIPopPaymentProductList from 'components/ui/popup/UIPopPaymentProductList';
+import UIPopPayments from 'components/ui/payments/UIPopPayments';
 
 const SeriesPlayerPage = ({}) => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const SeriesPlayerPage = ({}) => {
   const dispatch = useDispatch();
 
   const { series, episodeListResult, episodeListError, seriesInfoResult, seriesInfoError, isMobile,
-    displayPopName
+    displayPopName, payments
    } = useSelector((state: any) => state.global);
   const {
      user, addSeriesProgressResult, addSeriesProgressError,
@@ -780,11 +781,6 @@ const SeriesPlayerPage = ({}) => {
           {!loading && (
             <div className='info-container' style={fullscreen ? {paddingTop: 30, paddingRight: 25} : {}}>
             <div className='detail-info'>
-              {/* <div className='breadcrumb'>
-                <span>Home</span>
-                <img src='/resources/icons/icon_arrow_right_s.svg'/>
-                <span className='active'>{series?.title}</span>
-              </div> */}
             <div className='title'>
               {series?.title}
             </div>
@@ -819,6 +815,11 @@ const SeriesPlayerPage = ({}) => {
     { displayPopName === displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name && (
       <UIPopPaymentProductList
         handlePaymentComplete={handlePaymentComplete}/>
+    )}
+    { payments && (
+      <UIPopPayments
+        handlePaymentComplete={handlePaymentComplete}
+      />
     )}
     </>
   )
