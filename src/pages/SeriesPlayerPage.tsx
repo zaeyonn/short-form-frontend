@@ -291,9 +291,14 @@ const SeriesPlayerPage = ({}) => {
   }
 
   const handleEpisodeClick = (index: number) => {
+    if(index + 1 === currentEp?.episode_num) {
+      return;
+    }
+
     if(unlockEpisode && index <= unlockEpisode) { 
       handleEpisodeChange(index);
     }
+
   
     if(index === unlockEpisode) {
       videoRef.current.currentTime = 0;
