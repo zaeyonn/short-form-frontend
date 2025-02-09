@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef, MutableRefObject } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import { useSpring, animated} from '@react-spring/web';
 
 import * as globalSlice from 'src/redux/globalSlice';
+import * as userSlice from 'src/redux/userSlice';
 
 import { PaymentProduct } from 'src/types';
 
@@ -62,23 +63,155 @@ const UIPopPaymentProductList = (props: Props) => {
     }
   });
 
-  const { series } = useSelector((state: any) => state.global);
-  const { user } = useSelector((state: any) => state.user);
+  const { series, payments } = useSelector((state: any) => state.global);
+  const { user, paymentsRegistResult, paymentsRegistError, paymentsConfirmResult, paymentsConfirmError } = useSelector((state: any) => state.user);
 
   const [selectedProduct, setSelectedProduct] = useState<PaymentProduct>(PAYMOUNT_PRODUCT_LIST[0]);
+
+  const orderIdRef = useRef<any>(null);
+  const paymentWindowRef = useRef<any>(null);
 
   const handleClose = () => {
     dispatch(globalSlice.setDisplayPopName(''));
   }
 
   const handlePaymentStart = () => {
-    dispatch(globalSlice.setPayments(selectedProduct));
-    handleClose();
+    dispatch(userSlice.paymentsRegist({         
+      userId: user.id,
+      productId: selectedProduct.id,
+      amount: selectedProduct.amount,
+      paidPoint: selectedProduct.paid_point,
+      freePoint: selectedProduct.free_point, 
+    }))
   }
+
+   // 결제창 로드
+   const handlePaymentLoad = (e: any) => {
+    if (e.data.message === "onload") {
+      e.source.postMessage({ product: selectedProduct, user_id: user.id, order_id: orderIdRef.current }, "*");
+    }
+  };
+
+  // 결제 완료
+  const handlePaymentResult = () => {
+    const paymentResult = localStorage.getItem("@tosspayments/payment-result");
+    const paymentKey = localStorage.getItem("@tosspayments/payment-key");
+    const requestOrderId = localStorage.getItem("@tosspayments/order-id");
+    const requestAmount = localStorage.getItem("@tosspayments/amount");
+    const code = localStorage.getItem("@tosspayments/code");
+    const message = localStorage.getItem("@tosspayments/message");
+
+    // localStorage 결제 정보 삭제
+    localStorage.removeItem("@tosspayments/payment-result");
+    localStorage.removeItem("@tosspayments/payment-key");
+    localStorage.removeItem("@tosspayments/order-id");
+    localStorage.removeItem("@tosspayments/amount");
+    localStorage.removeItem("@tosspayments/code");
+    localStorage.removeItem("@tosspayments/message");
+
+    // 결제 요청 성공
+    if (paymentResult === "completed" && paymentKey) {
+      // 결제 정보 유효한지 확인
+      if (Number(requestAmount) !== Number(selectedProduct.amount) || requestOrderId !== orderIdRef.current) {
+        console.log('결제 정보 불일치');
+        return;
+      }
+
+      dispatch(userSlice.paymentsConfirm({ userId: user.id, orderId: orderIdRef.current, amount: selectedProduct.amount, paymentKey }));
+    }
+
+    // 결제 요청 실패
+    if (paymentResult === "failed" && code && message) {
+      let modalMessage = "";
+
+      if (code === "PAY_PROCESS_CANCELED") {
+        // 사용자에 의해 결제가 취소
+        modalMessage = '결제가 취소되었습니다'
+      } else if (code === "INVALID_CARD_COMPANY") {
+        // 결제 승인 거절
+        modalMessage = '결제가 실패하였습니다.';
+      } else if (code === "PAY_PROCESS_ABORTED") {
+        // 결제 진행 중 승인 실패
+        modalMessage = '결제가 실패하였습니다.';
+      } else if (code === "NOT_SUPPORTED_EASYPAY_METHOD") {
+        // 지원하지 않는 간편 결제
+        modalMessage = '지원하지 않은 결제 방식입니다.';
+      } else if (code === "REJECT_CARD_COMPANY") {
+        // 카드 정보 유효하지 않음
+        modalMessage = '카드 정보가 유효하지 않습니다.';
+      } else {
+        modalMessage = '결제가 실패하였습니다.';
+      }
+    }
+  };
+
+  // 결제 취소
+  const handlePaymentCancel = () => {
+    if (paymentWindowRef.current) {
+      paymentWindowRef.current.close();
+    }
+  };
 
   const handleProductSelect = (product: PaymentProduct) => {
     setSelectedProduct(product);
   }
+
+  useEffect(() => {
+    if (paymentsConfirmError) {
+      console.log("paymentsConfirmError ", paymentsConfirmError);
+      dispatch(userSlice.clearUserState("paymentsConfirmError"));
+      return;
+    }
+
+    if (paymentsConfirmResult && paymentsConfirmResult.status === 201) {
+      console.log("paymentsConfirmResult ", paymentsConfirmResult);
+
+      // 사용자 포인트 업데이트
+      dispatch(userSlice.setUser({ ...user, paid_point: paymentsConfirmResult.paid_point, free_point: paymentsConfirmResult.free_point }));
+
+      // 에피소드 잠금 해제
+      props.handlePaymentComplete();
+
+      handleClose();
+
+      dispatch(userSlice.clearUserState("paymentsConfirmResult"));
+    }
+  }, [paymentsConfirmResult, paymentsConfirmError]);
+
+  useEffect(() => {
+    if (paymentsRegistError) {
+      console.log("paymentsRegistError ", paymentsRegistError);
+      dispatch(userSlice.clearUserState("paymentsRegistError"));
+      return;
+    }
+
+    if (paymentsRegistResult && paymentsRegistResult.status === 201) {
+      console.log("paymentsRegistResult ", paymentsRegistResult);
+
+      // Use MutableRefObject type to allow assignment
+      orderIdRef.current = paymentsRegistResult.data.order_id;
+
+      setTimeout(() => {
+        paymentWindowRef.current = window.open(window.location.origin + "/callback/tosspayment", "toss-payment-widget", "height=580,width=480");
+      });
+
+      dispatch(userSlice.clearUserState("paymentsRegistResult"));
+    }
+  }, [paymentsRegistResult, paymentsRegistError]);
+
+  // 결제창 이벤트 등록
+  useEffect(() => {
+    // 결제창으로 상품 정보 전달
+    window.addEventListener("message", handlePaymentLoad);
+
+    // 결제창에서 결제 완료 후 localStorage가 변경된 경우 이벤트 등록
+    window.addEventListener("storage", handlePaymentResult);
+
+    return () => {
+      window.removeEventListener("message", handlePaymentLoad);
+      window.removeEventListener("storage", handlePaymentResult);
+    };
+  }, [selectedProduct, orderIdRef.current]);
 
   return (
     <div className='popup-layer'>

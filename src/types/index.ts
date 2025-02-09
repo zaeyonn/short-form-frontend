@@ -15,6 +15,7 @@ export type Series = {
   title: string,
   description: string,
   poster_img: string,
+  horizontal_poster_img: string,
   ep_count: number, // 전체 에피소드 회차 수
   free_count: number, // 무료 에피소드 회차 수
   keyword: string [], // 키워드 목록

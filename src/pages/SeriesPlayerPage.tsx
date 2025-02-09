@@ -15,6 +15,7 @@ import UIEpisodeNumGrid from "components/ui/UIEpisodeNumGrid";
 import LayoutFooter from "components/layouts/LayoutFooter";
 import UIPopPaymentProductList from "components/ui/popup/UIPopPaymentProductList";
 import UIPopPayments from "components/ui/payments/UIPopPayments";
+import UIPopLogin from "components/ui/popup/UIPopLogin";
 
 const SeriesPlayerPage = ({}) => {
   const navigate = useNavigate();
@@ -47,6 +48,8 @@ const SeriesPlayerPage = ({}) => {
     removeSeriesKeepResult,
     userSeriesKeepListError,
     userSeriesKeepListResult,
+    authGoogleError,
+    authGoogleResult,
   } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -56,7 +59,9 @@ const SeriesPlayerPage = ({}) => {
   const [progress, setProgress] = useState<number>(0);
   const [currentEp, setCurrentEp] = useState<any>();
   const [episodeList, setEpisodeList] = useState([]);
-  const [visibleBottomSheet, setVisibleBottomSheet] = useState(false);
+  const [visibleBottomSheetEpisode, setVisibleBottomSheetEpisode] =
+    useState(false);
+  const [visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
   const [keep, setKeep] = useState<boolean>();
   const [keepCount, setKeepCount] = useState<any>();
   const [locked, setLocked] = useState(false);
@@ -65,6 +70,7 @@ const SeriesPlayerPage = ({}) => {
   const [muted, setMuted] = useState<boolean>(true);
   const [fullscreen, setFullscreen] = useState<boolean>(false);
 
+  const loginSheetRef = useRef<any>(null);
   const swiperRef = useRef<any>(null);
   const videoRef = useRef<any>(null);
   const hideToolsTimeout = useRef<any>();
@@ -151,6 +157,10 @@ const SeriesPlayerPage = ({}) => {
     blobUrlCache.clear();
   };
 
+  const signInProcess = (code: string, authType: string) => {
+    dispatch(userSlice.authGoogle({ code, userId: user?.id, authType }));
+  };
+
   // 재생 시간 업데이트
   const handleTimeUpdate = () => {
     if (
@@ -160,7 +170,6 @@ const SeriesPlayerPage = ({}) => {
     ) {
       currentTimeRef.current = videoRef.current.currentTime;
 
-      // setCurrentTime(videoRef.current.currentTime)
       const duration = videoRef.current.duration;
 
       setProgress((currentTimeRef.current / duration) * 100);
@@ -251,7 +260,7 @@ const SeriesPlayerPage = ({}) => {
 
       if (isMobile) {
         if (swiperRef.current) swiperRef.current.slideTo(index, 0);
-        setVisibleBottomSheet(false);
+        setVisibleBottomSheetEpisode(false);
       } else if (!isMobile && videoRef.current) {
         dispatch(
           userSlice.updateSeriesProgress({
@@ -266,11 +275,11 @@ const SeriesPlayerPage = ({}) => {
   );
 
   const handleBottomSheetOpen = useCallback(() => {
-    setVisibleBottomSheet(true);
+    setVisibleBottomSheetEpisode(true);
   }, []);
 
   const handleBottomSheetClose = useCallback(() => {
-    setVisibleBottomSheet(false);
+    setVisibleBottomSheetEpisode(false);
   }, []);
 
   const handleSeriesKeep = () => {
@@ -297,7 +306,7 @@ const SeriesPlayerPage = ({}) => {
 
   const handleEpisodeLock = useCallback(() => {
     setLocked(true);
-    setVisibleBottomSheet(false);
+    setVisibleBottomSheetEpisode(false);
 
     videoRef.current.pause();
   }, []);
@@ -387,6 +396,14 @@ const SeriesPlayerPage = ({}) => {
     }
   };
 
+  const handleLoginOpen = () => {
+    if (isMobile) {
+      setVisibleBottomSheetLogin(true);
+    } else {
+      dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_LOGIN.name));
+    }
+  };
+
   useEffect(() => {
     if (visibleTools && playing) {
       hideToolsTimeout.current = setTimeout(() => {
@@ -396,6 +413,39 @@ const SeriesPlayerPage = ({}) => {
       clearTimeout(hideToolsTimeout.current);
     }
   }, [visibleTools, playing]);
+
+  // 구글 로그인 결과
+  useEffect(() => {
+    if (authGoogleError) {
+      console.log("authGoogleError ", authGoogleError);
+      setVisibleBottomSheetLogin(false);
+
+      dispatch(userSlice.clearUserState("authGoogleError"));
+    }
+
+    if (authGoogleResult && authGoogleResult.status === 200) {
+      console.log("authGoogleResult ", authGoogleResult);
+      const user = authGoogleResult.data;
+
+      if (loginSheetRef.current && isMobile)
+        loginSheetRef.current.handleClose();
+
+      if (displayPopName) {
+        dispatch(
+          globalSlice.setDisplayPopName(
+            displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name
+          )
+        );
+      }
+
+      dispatch(userSlice.setUser(user));
+
+      localStorage.setItem("user-id", user.id);
+
+      dispatch(userSlice.clearUserState("authGoogleResult"));
+      return;
+    }
+  }, [authGoogleResult, authGoogleError, displayPopName, isMobile]);
 
   // 북마크 시리즈 리스트 조회 결과
   useEffect(() => {
@@ -834,7 +884,7 @@ const SeriesPlayerPage = ({}) => {
             setLocked={setLocked}
             currentEp={currentEp}
             unlockEpisode={unlockEpisode}
-            visibleBottomSheet={visibleBottomSheet}
+            visibleBottomSheet={visibleBottomSheetEpisode}
             handleBottomSheetClose={handleBottomSheetClose}
             handleEpisodeChange={handleEpisodeChange}
             handleEpisodeLock={handleEpisodeLock}
@@ -844,6 +894,7 @@ const SeriesPlayerPage = ({}) => {
               series={series}
               handleLockedClose={handleLockedClose}
               handlePaymentComplete={handlePaymentComplete}
+              handleLoginOpen={handleLoginOpen}
             />
           )}
         </div>
@@ -966,6 +1017,7 @@ const SeriesPlayerPage = ({}) => {
                         series={series}
                         handleLockedClose={handleLockedClose}
                         handlePaymentComplete={handlePaymentComplete}
+                        handleLoginOpen={handleLoginOpen}
                       />
                     </>
                   )}
@@ -1021,6 +1073,9 @@ const SeriesPlayerPage = ({}) => {
       )}
       {payments && (
         <UIPopPayments handlePaymentComplete={handlePaymentComplete} />
+      )}
+      {displayPopName === displayPopType.POPUP_LOGIN.name && (
+        <UIPopLogin signInProcess={signInProcess} />
       )}
     </>
   );

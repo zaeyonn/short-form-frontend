@@ -1,27 +1,32 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 interface Props {
-  item: any; 
+  item: any;
 }
 
-const UIMainContentItem = ({item}: Props) => {
+const UIMainContentItem = ({ item }: Props) => {
   const navigate = useNavigate();
 
   const handleSeriesPlayerOpen = () => {
     navigate(`/series/${item.id}`);
-  }
+  };
 
   return (
-    <div className='main-content-item'>
-      <div className='img-wrap' onClick={() => handleSeriesPlayerOpen()}>
-      <img draggable='false' src={`${import.meta.env.VITE_SERVER_URL}/images/poster/${item.poster_img}`}/>
-      <div className='text-wrap'>
-        <div className='main-text'>{item.title}</div>
-        <div className='sub-text'>{item.description}</div>
-      </div>
+    <div className="main-content-item">
+      <div className="img-wrap" onClick={() => handleSeriesPlayerOpen()}>
+        <img
+          draggable="false"
+          src={`${import.meta.env.VITE_SERVER_URL}/images/poster/${
+            item.poster_img
+          }`}
+        />
+        <div className="text-wrap">
+          <div className="main-text">{item.title}</div>
+          <div className="sub-text">{item.description}</div>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default UIMainContentItem;

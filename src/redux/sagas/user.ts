@@ -122,3 +122,23 @@ export function* handleUpdateSeriesUnlockEpisode(action: PayloadAction<any>): Ge
     yield put(slice.updateSeriesUnlockEpisodeFailure(error));
   }
 }
+
+export function* handlePaymentsRegist(action: PayloadAction<any>): Generator<any> {
+  try {
+    const response = yield call(api.paymentsRegist, action.payload);
+
+    yield put(slice.paymentsRegistSuccess(response));
+  } catch (error) {
+    yield put(slice.paymentsRegistFailure(error));
+  }
+}
+
+export function* handlePaymentsConfirm(action: PayloadAction<any>): Generator<any> {
+  try {
+    const response = yield call(api.paymentsConfirm, action.payload);
+
+    yield put(slice.paymentsConfirmSuccess(response));
+  } catch (error) {
+    yield put(slice.paymentsConfirmFailure(error));
+  }
+}

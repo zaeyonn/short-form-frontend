@@ -143,6 +143,20 @@ const userSlice = createSlice({
     updateSeriesUnlockEpisodeFailure(state: any, action) {
       state.updateSeriesUnlockEpisodeError = action.payload
     },
+    paymentsRegist(_state: any, _action: PayloadAction<any>) {},
+    paymentsRegistSuccess(state: any, action: PayloadAction<any>) {
+      state.paymentsRegistResult = action.payload
+    },
+    paymentsRegistFailure(state: any, action: PayloadAction<any>) {
+      state.paymentsRegistError = action.payload
+    },
+    paymentsConfirm(_state: any, _action: PayloadAction<any>) {},
+    paymentsConfirmSuccess(state: any, action: PayloadAction<any>) {
+      state.paymentsConfirmResult = action.payload
+    },
+    paymentsConfirmFailure(state: any, action: PayloadAction<any>) {
+      state.paymentsConfirmError = action.payload
+    }
   }
 });
 
@@ -156,5 +170,6 @@ export const {
   userSeriesProgress, userSeriesProgressSuccess, userSeriesProgressFailure, addSeriesProgress, addSeriesProgressSuccess, addSeriesProgressFailure,
   updateSeriesProgress, updateSeriesProgressSuccess, updateSeriesProgressFailure,
   userInfo, userInfoSuccess, userInfoFailure, updateSeriesUnlockEpisode, updateSeriesUnlockEpisodeSuccess, updateSeriesUnlockEpisodeFailure,
+  paymentsRegist, paymentsRegistSuccess, paymentsRegistFailure, paymentsConfirm, paymentsConfirmFailure, paymentsConfirmSuccess,
 } = userSlice.actions;
 export default userSlice.reducer;

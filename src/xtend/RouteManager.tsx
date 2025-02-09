@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
-import CallbackGoogle from "components/sns/callback/CallbackGoogle";
+import CallbackGoogle from "components/callback/CallbackGoogle";
+import CallbackTossPayment from "components/callback/CallbackTossPayment";
 import MainPage from "pages/MainPage";
 import SeriesPlayerPage from "pages/SeriesPlayerPage";
 import MyProfilePage from "pages/MyProfilePage";
@@ -20,6 +21,7 @@ const RouteManager = () => {
       <Route path='/series-list' element={<SeriesListPage/>} />
       <Route path='/payments' element={<PaymentProductListPage/>} />
       <Route path='/callback/google' element={<CallbackGoogle/>} />
+      <Route path='/callback/tosspayment' element={<CallbackTossPayment/>} />
     </Routes>
   )
 }

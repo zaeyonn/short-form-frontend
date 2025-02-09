@@ -1774,3 +1774,45 @@ a {
   }
 }
 
+.payment-popup-wrap {
+  width: 100%;
+  height: 100%;
+  background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+
+.header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 52px;
+  align-items: center;
+  font-weight: 700;
+  font-size: 20px;
+  padding: 0px 20px;
+  box-sizing: border-box;
+  gap: 4px;
+  justify-content: space-between;
+  color: #000000;
+
+  img {
+    cursor: pointer;
+    margin-top: 1px;
+    width: 30px;
+    height: 30px;
+  }
+}
+
+ .widget-wrap {
+  width: 100%;
+  min-height: 450px;
+ }
+
+ .primary-btn {
+  width: 90%;
+ }
+}
+

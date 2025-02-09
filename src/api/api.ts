@@ -90,3 +90,21 @@ export const increaseSeriesViews = ({seriesId}: {seriesId: number}) => client.pu
 export const episodeList = ({seriesId}: any) => client.get(`api/episodes/${seriesId}`);
 
 
+/* Payment API */
+
+// 결제 요청
+export const paymentsRegist = ({userId, productId, amount, paidPoint, freePoint}: any) => client.post('api/payments', {
+  user_id: userId,
+  product_id: productId,
+  amount: amount,
+  paid_point: paidPoint,
+  free_point: freePoint,
+});
+
+// 결제 승인
+export const paymentsConfirm = ({userId, orderId, amount, paymentKey}: any) => client.put('api/payments/confirm', {
+  user_id: userId,
+  order_id: orderId,
+  amount: amount,
+  payment_key: paymentKey
+})
