@@ -8,6 +8,7 @@ import * as userSlice from 'src/redux/userSlice';
 import { PaymentProduct } from 'src/types';
 
 interface Props {
+  setPaymentLoading: (loading: boolean) => any;
   handlePaymentComplete: () => void;
 }
 
@@ -63,7 +64,7 @@ const UIPopPaymentProductList = (props: Props) => {
     }
   });
 
-  const { series, payments } = useSelector((state: any) => state.global);
+  const { series } = useSelector((state: any) => state.global);
   const { user, paymentsRegistResult, paymentsRegistError, paymentsConfirmResult, paymentsConfirmError } = useSelector((state: any) => state.user);
 
   const [selectedProduct, setSelectedProduct] = useState<PaymentProduct>(PAYMOUNT_PRODUCT_LIST[0]);
@@ -73,6 +74,10 @@ const UIPopPaymentProductList = (props: Props) => {
 
   const handleClose = () => {
     dispatch(globalSlice.setDisplayPopName(''));
+
+    if (paymentWindowRef.current) {
+      paymentWindowRef.current.close();
+    }
   }
 
   const handlePaymentStart = () => {
@@ -113,6 +118,7 @@ const UIPopPaymentProductList = (props: Props) => {
     if (paymentResult === "completed" && paymentKey) {
       // 결제 정보 유효한지 확인
       if (Number(requestAmount) !== Number(selectedProduct.amount) || requestOrderId !== orderIdRef.current) {
+        props.setPaymentLoading(false);
         console.log('결제 정보 불일치');
         return;
       }
@@ -122,6 +128,7 @@ const UIPopPaymentProductList = (props: Props) => {
 
     // 결제 요청 실패
     if (paymentResult === "failed" && code && message) {
+      props.setPaymentLoading(false);
       let modalMessage = "";
 
       if (code === "PAY_PROCESS_CANCELED") {
@@ -145,12 +152,6 @@ const UIPopPaymentProductList = (props: Props) => {
     }
   };
 
-  // 결제 취소
-  const handlePaymentCancel = () => {
-    if (paymentWindowRef.current) {
-      paymentWindowRef.current.close();
-    }
-  };
 
   const handleProductSelect = (product: PaymentProduct) => {
     setSelectedProduct(product);
@@ -160,17 +161,38 @@ const UIPopPaymentProductList = (props: Props) => {
     if (paymentsConfirmError) {
       console.log("paymentsConfirmError ", paymentsConfirmError);
       dispatch(userSlice.clearUserState("paymentsConfirmError"));
+      props.setPaymentLoading(false);
+
+      // 결제 실패 토스트 발생
+      dispatch(
+        globalSlice.addToast({
+          id: Date.now(),
+          message: "결제에 실패했습니다.",
+          duration: 1500,
+        })
+      );
+
       return;
     }
 
     if (paymentsConfirmResult && paymentsConfirmResult.status === 201) {
       console.log("paymentsConfirmResult ", paymentsConfirmResult);
+      props.setPaymentLoading(false);
 
       // 사용자 포인트 업데이트
       dispatch(userSlice.setUser({ ...user, paid_point: paymentsConfirmResult.paid_point, free_point: paymentsConfirmResult.free_point }));
 
       // 에피소드 잠금 해제
       props.handlePaymentComplete();
+
+      // 결제 성공 토스트 발생
+      dispatch(
+        globalSlice.addToast({
+          id: Date.now(),
+          message: "결제가 완료되었습니다.",
+          duration: 1500,
+        })
+      );
 
       handleClose();
 
@@ -188,11 +210,26 @@ const UIPopPaymentProductList = (props: Props) => {
     if (paymentsRegistResult && paymentsRegistResult.status === 201) {
       console.log("paymentsRegistResult ", paymentsRegistResult);
 
+      props.setPaymentLoading(true);
+
       // Use MutableRefObject type to allow assignment
       orderIdRef.current = paymentsRegistResult.data.order_id;
 
       setTimeout(() => {
         paymentWindowRef.current = window.open(window.location.origin + "/callback/tosspayment", "toss-payment-widget", "height=580,width=480");
+        
+        // 결제 팝업창 닫힌 경우 이벤트 등록
+        if (paymentWindowRef.current) {
+          paymentWindowRef.current.addEventListener('unload', () => {
+            
+            // 팝업창이 닫혔는지 확인
+            setTimeout(() => {
+              if (paymentWindowRef.current?.closed) {
+                props.setPaymentLoading(false);
+              }
+            }, 100);
+          });
+        }
       });
 
       dispatch(userSlice.clearUserState("paymentsRegistResult"));

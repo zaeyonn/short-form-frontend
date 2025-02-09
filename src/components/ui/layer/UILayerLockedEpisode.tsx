@@ -63,7 +63,7 @@ const UILayerLockedEpisode = ({
           </button>
           <button className="view-ad-btn">
             광고 보고 다음 화 보기
-            <span>오늘 시청 (1/10)</span>
+            <span>(준비중)</span>
           </button>
           {/* <img onClick={handleLockedClose} src='/resources/icons/icon_close_l.svg'/> */}
         </div>

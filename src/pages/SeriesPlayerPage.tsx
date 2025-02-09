@@ -16,6 +16,7 @@ import LayoutFooter from "components/layouts/LayoutFooter";
 import UIPopPaymentProductList from "components/ui/popup/UIPopPaymentProductList";
 import UIPopPayments from "components/ui/payments/UIPopPayments";
 import UIPopLogin from "components/ui/popup/UIPopLogin";
+import UILayerSpinner from "components/ui/layer/UILayerSpinner";
 
 const SeriesPlayerPage = ({}) => {
   const navigate = useNavigate();
@@ -54,6 +55,8 @@ const SeriesPlayerPage = ({}) => {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [videoLoading, setVideoLoading] = useState<boolean>(true);
+  const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
+
   const [playing, setPlaying] = useState<boolean>(true);
   const [visibleTools, setVisibleTools] = useState(true);
   const [progress, setProgress] = useState<number>(0);
@@ -280,7 +283,7 @@ const SeriesPlayerPage = ({}) => {
 
   const handleBottomSheetClose = useCallback(() => {
     setVisibleBottomSheetEpisode(false);
-  }, []);
+  }, []);  
 
   const handleSeriesKeep = () => {
     setKeep(!keep);
@@ -1068,6 +1071,7 @@ const SeriesPlayerPage = ({}) => {
       )}
       {displayPopName === displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name && (
         <UIPopPaymentProductList
+          setPaymentLoading={setPaymentLoading}
           handlePaymentComplete={handlePaymentComplete}
         />
       )}
@@ -1076,6 +1080,9 @@ const SeriesPlayerPage = ({}) => {
       )}
       {displayPopName === displayPopType.POPUP_LOGIN.name && (
         <UIPopLogin signInProcess={signInProcess} />
+      )}
+      {paymentLoading && (
+        <UILayerSpinner/>
       )}
     </>
   );
