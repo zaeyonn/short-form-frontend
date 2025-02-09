@@ -48,7 +48,7 @@ const AuthManager = () => {
   useEffect(() => {
     const uuid = localStorage.getItem("user-id");
 
-    if (uuid) {
+    if (uuid && uuid !== 'undefined') {
       dispatch(userSlice.userInfo({ userId: uuid }));
     } else {
       dispatch(userSlice.authGuest());
