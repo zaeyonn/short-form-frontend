@@ -142,3 +142,13 @@ export function* handlePaymentsConfirm(action: PayloadAction<any>): Generator<an
     yield put(slice.paymentsConfirmFailure(error));
   }
 }
+
+export function* handleUsersPointDeduct(action: PayloadAction<any>): Generator<any> {
+  try {
+    const response = yield call(api.usersPointDeduct, action.payload);
+
+    yield put(slice.usersPointDeductSuccess(response));
+  } catch (error) {
+    yield put(slice.usersPointDeductFailure(error));
+  }
+}

@@ -24,7 +24,8 @@ export function* watcherSaga() {
     takeLatest(userSlice.updateSeriesProgress.type, userHandler.handleUpdateSeriesProgress),
     takeLatest(userSlice.userInfo.type, userHandler.handleUserInfo),
     takeLatest(userSlice.updateSeriesUnlockEpisode.type, userHandler.handleUpdateSeriesUnlockEpisode),
-    takeLatest(userSlice.paymentsRegist, userHandler.handlePaymentsRegist),
-    takeLatest(userSlice.paymentsConfirm, userHandler.handlePaymentsConfirm)
+    takeLatest(userSlice.paymentsRegist.type, userHandler.handlePaymentsRegist),
+    takeLatest(userSlice.paymentsConfirm.type, userHandler.handlePaymentsConfirm),
+    takeLatest(userSlice.usersPointDeduct.type, userHandler.handleUsersPointDeduct),
   ])
 }

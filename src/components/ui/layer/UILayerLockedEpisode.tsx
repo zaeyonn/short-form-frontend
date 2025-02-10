@@ -7,20 +7,20 @@ import { Series } from "src/types";
 import { displayPopType } from "common/define";
 
 interface Props {
-  series: Series | undefined;
   handleLockedClose: () => any;
   handlePaymentComplete: () => any;
+  handlePointUse: () => any;
   handleLoginOpen: () => any;
 }
 
 const UILayerLockedEpisode = ({
-  series,
   handlePaymentComplete,
   handleLoginOpen,
+  handlePointUse,
 }: Props) => {
   const dispatch = useDispatch();
 
-  const { isMobile } = useSelector((state: any) => state.global);
+  const { isMobile, series } = useSelector((state: any) => state.global);
   const { user } = useSelector((state: any) => state.user);
 
   const [visibleBtnList, setVisibleBtnList] = useState(true);
@@ -50,6 +50,22 @@ const UILayerLockedEpisode = ({
     setVisibleBottomSheetPayment(false);
   };
 
+  const renderPaymentButton = () => {
+    return (
+      <>
+        {user.paid_point + user.free_point > series.req_point ? (
+          <button className="payment-btn" onClick={() => handlePointUse()}>
+            {`${series.req_point}P 사용하여 잠금해제`}
+          </button>
+        ) : (
+          <button className="payment-btn" onClick={() => handlePaymentOpen()}>
+          {'충전하고 바로보기'}
+          </button>
+        )}
+      </>
+    )
+  }
+
   return (
     <>
       {visibleBtnList && (
@@ -58,9 +74,7 @@ const UILayerLockedEpisode = ({
           style={{ cursor: "default" }}
           onClick={(event) => event.stopPropagation()}
         >
-          <button className="payment-btn" onClick={() => handlePaymentOpen()}>
-            충전하고 바로보기
-          </button>
+          {renderPaymentButton()}
           <button className="view-ad-btn">
             광고 보고 다음 화 보기
             <span>(준비중)</span>

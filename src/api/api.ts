@@ -67,8 +67,11 @@ export const removeSeriesKeep = ({userId, seriesIdList}: any) => client.delete('
   }
 });
 
-
-
+// 사용자 포인트 감소
+export const usersPointDeduct = ({ userId, point }: any) => client.put('api/users/point/deduct', {
+  user_id: userId,
+  point,
+})
 
 /* Series API */
 

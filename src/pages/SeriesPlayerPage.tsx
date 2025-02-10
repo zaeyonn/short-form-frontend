@@ -51,6 +51,8 @@ const SeriesPlayerPage = ({}) => {
     userSeriesKeepListResult,
     authGoogleError,
     authGoogleResult,
+    usersPointDeductResult,
+    usersPointDeductError,
   } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -331,6 +333,12 @@ const SeriesPlayerPage = ({}) => {
     );
   };
 
+  const handlePointUse = () => {
+
+    // 사용자 포인트 차감
+    dispatch(userSlice.usersPointDeduct({ userId: user.id, point: series.req_point }));
+  }
+
   const handleMuted = (event: any) => {
     event.stopPropagation();
 
@@ -416,6 +424,33 @@ const SeriesPlayerPage = ({}) => {
       clearTimeout(hideToolsTimeout.current);
     }
   }, [visibleTools, playing]);
+
+  // 사용자 포인트 차감 결과
+  useEffect(() => {
+    if (usersPointDeductError) {
+      console.log('usersPointDeductError ', usersPointDeductError);
+      
+      dispatch(userSlice.clearUserState('usersPointDeductError'));
+    }
+
+    if (usersPointDeductResult && usersPointDeductResult.status === 201) {
+      console.log('usersPointDeductResult ', usersPointDeductResult);
+
+      // 사용자 포인트 정보 업데이트
+      dispatch(userSlice.setUser(usersPointDeductResult.data))
+
+      // 사용자 잠금 회차 업데이트
+      dispatch(
+        userSlice.updateSeriesUnlockEpisode({
+          userId: user.id,
+          seriesId: seriesIdRef.current,
+          ep: unlockEpisode ? unlockEpisode + 1 : "",
+        })
+      );
+
+      dispatch(userSlice.clearUserState('usersPointDeductResult'));
+    }
+  }, [usersPointDeductResult, usersPointDeductError, unlockEpisode])
 
   // 구글 로그인 결과
   useEffect(() => {
@@ -513,22 +548,22 @@ const SeriesPlayerPage = ({}) => {
   // 잠금 회차 업데이트 결과
   useEffect(() => {
     if (updateSeriesUnlockEpisodeError) {
-      console.log(
-        "updateSeriesUnlockEpisodeError ",
-        updateSeriesUnlockEpisodeError
-      );
+      console.log("updateSeriesUnlockEpisodeError ",updateSeriesUnlockEpisodeError);
 
       dispatch(userSlice.clearUserState("updateSeriesUnlockEpisodeError"));
     }
 
-    if (
-      updateSeriesUnlockEpisodeResult &&
-      updateSeriesUnlockEpisodeResult.status === 200
-    ) {
-      console.log(
-        "updateSeriesUnlockEpisodeResult ",
-        updateSeriesUnlockEpisodeResult
-      );
+    if (updateSeriesUnlockEpisodeResult && updateSeriesUnlockEpisodeResult.status === 200) {
+      console.log("updateSeriesUnlockEpisodeResult ",updateSeriesUnlockEpisodeResult);
+
+      if (locked) {
+        setLocked(false);
+        dispatch(globalSlice.addToast({
+          id: Date.now(),
+          message: "에피소드가 잠금해제 됐어요.",
+          duration: 1500,
+        }))
+      }
 
       setUnlockEpisode(updateSeriesUnlockEpisodeResult.data.unlock_episode);
 
@@ -537,7 +572,7 @@ const SeriesPlayerPage = ({}) => {
 
       dispatch(userSlice.clearUserState("updateSeriesUnlockEpisodeResult"));
     }
-  }, [updateSeriesUnlockEpisodeResult, updateSeriesUnlockEpisodeError]);
+  }, [updateSeriesUnlockEpisodeResult, updateSeriesUnlockEpisodeError, locked]);
 
   // 진행 상태 추가 결과
   useEffect(() => {
@@ -894,7 +929,6 @@ const SeriesPlayerPage = ({}) => {
           />
           {locked && (
             <UILayerLockedEpisode
-              series={series}
               handleLockedClose={handleLockedClose}
               handlePaymentComplete={handlePaymentComplete}
               handleLoginOpen={handleLoginOpen}
@@ -1017,9 +1051,9 @@ const SeriesPlayerPage = ({}) => {
                   {locked && (
                     <>
                       <UILayerLockedEpisode
-                        series={series}
                         handleLockedClose={handleLockedClose}
                         handlePaymentComplete={handlePaymentComplete}
+                        handlePointUse={handlePointUse}  
                         handleLoginOpen={handleLoginOpen}
                       />
                     </>

@@ -156,6 +156,13 @@ const userSlice = createSlice({
     },
     paymentsConfirmFailure(state: any, action: PayloadAction<any>) {
       state.paymentsConfirmError = action.payload
+    },
+    usersPointDeduct(_state: any, _action: PayloadAction<any>) { },
+    usersPointDeductSuccess(state: any, action: PayloadAction<any>) {
+      state.usersPointDeductResult = action.payload
+    },
+    usersPointDeductFailure(state: any, action: PayloadAction<any>) {
+      state.usersPointDeductError = action.payload
     }
   }
 });
@@ -171,5 +178,6 @@ export const {
   updateSeriesProgress, updateSeriesProgressSuccess, updateSeriesProgressFailure,
   userInfo, userInfoSuccess, userInfoFailure, updateSeriesUnlockEpisode, updateSeriesUnlockEpisodeSuccess, updateSeriesUnlockEpisodeFailure,
   paymentsRegist, paymentsRegistSuccess, paymentsRegistFailure, paymentsConfirm, paymentsConfirmFailure, paymentsConfirmSuccess,
+  usersPointDeduct, usersPointDeductSuccess, usersPointDeductFailure,
 } = userSlice.actions;
 export default userSlice.reducer;
