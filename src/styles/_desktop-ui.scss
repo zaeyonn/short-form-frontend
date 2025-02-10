@@ -175,6 +175,7 @@
         }
 
         .info-container {
+          position: relative;
           min-height: 85vh;
           padding-bottom: 20px;
           width: 31%;
@@ -218,7 +219,7 @@
               border-radius: 10px;
               opacity: 0;
               visibility: hidden;
-              width: 35%;
+              width: 100%;
               box-sizing: border-box;
               z-index: 1;
               white-space: pre-line;
