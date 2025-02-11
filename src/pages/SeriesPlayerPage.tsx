@@ -66,7 +66,7 @@ const SeriesPlayerPage = ({}) => {
   const [episodeList, setEpisodeList] = useState([]);
   const [visibleBottomSheetEpisode, setVisibleBottomSheetEpisode] =
     useState(false);
-  const [visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
+  const [_visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
   const [keep, setKeep] = useState<boolean>();
   const [keepCount, setKeepCount] = useState<any>();
   const [locked, setLocked] = useState(false);
@@ -931,6 +931,7 @@ const SeriesPlayerPage = ({}) => {
             <UILayerLockedEpisode
               handleLockedClose={handleLockedClose}
               handlePaymentComplete={handlePaymentComplete}
+              handlePointUse={handlePointUse}
               handleLoginOpen={handleLoginOpen}
             />
           )}

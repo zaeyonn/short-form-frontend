@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import UIBottomSheetPayment from "components/ui/bottomsheet/UIBottomSheetPayments";
 
 import * as globalSlice from "src/redux/globalSlice";
-import { Series } from "src/types";
 import { displayPopType } from "common/define";
 
 interface Props {

@@ -34,6 +34,7 @@ const MyProfilePage = () => {
   const loginSheetRef = useRef<any>(null);
 
   const [loading, setLoading] = useState<boolean>(true);
+  const [_paymentLoading, setPaymentLoading] = useState<boolean>(false);
   const [visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
   const [selectedMenu] = useState<string>("WATCH_LIST");
 
@@ -275,6 +276,7 @@ const MyProfilePage = () => {
       )}
       {displayPopName === displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name && (
         <UIPopPaymentProductList
+          setPaymentLoading={setPaymentLoading}
           handlePaymentComplete={handlePaymentComplete}
         />
       )}

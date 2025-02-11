@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, MutableRefObject } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import { useSpring, animated} from '@react-spring/web';
 
@@ -149,6 +149,8 @@ const UIPopPaymentProductList = (props: Props) => {
       } else {
         modalMessage = '결제가 실패하였습니다.';
       }
+
+      return modalMessage;
     }
   };
 

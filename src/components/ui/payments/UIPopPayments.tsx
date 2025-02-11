@@ -3,22 +3,20 @@ import { useSelector, useDispatch } from "react-redux";
 import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
 
 import * as globalSlice from "src/redux/globalSlice";
-import * as userSlice from "src/redux/userSlice";
 
 interface Props {
   handlePaymentComplete: () => void;
 }
 
-const UIPopPayments = (props: Props) => {
+const UIPopPayments = (_props: Props) => {
   const dispatch = useDispatch();
 
   const { payments } = useSelector((state: any) => state.global);
-  const { user, requestPaymentResult, requestPaymentError } = useSelector(
+  const { user } = useSelector(
     (state: any) => state.user
   );
 
   const widgetsRef = useRef<any>(null);
-  const paymentWindowRef = useRef<any>(null);
 
   const TOSS_CLIENT_KEY = import.meta.env.VITE_TOSS_CLIENT_KEY;
 
