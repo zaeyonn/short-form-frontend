@@ -10,6 +10,18 @@ export interface UserRootState {
   userInfoError: any,
 }
 
+
+export type User = {
+  id: string,
+  nickname: string,
+  auth: string,
+  email: string,
+  profile_img: string,
+  paid_point: number,
+  free_point: number,
+  created_at: Date;
+}
+
 export type Series = {
   id: number,
   title: string,

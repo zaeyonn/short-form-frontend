@@ -8,6 +8,7 @@ import * as globalSlice from "src/redux/globalSlice";
 import * as userSlice from "src/redux/userSlice";
 
 import { displayPopType } from "common/define";
+import { User } from "src/types";
 import UIShortFormSwiper from "components/ui/UIShortFormSwiper";
 import UIBottomSheetEpisodeGrid from "../components/ui/bottomsheet/UIBottomSheetEpisodeGrid";
 import UILayerLockedEpisode from "components/ui/layer/UILayerLockedEpisode";
@@ -463,17 +464,21 @@ const SeriesPlayerPage = ({}) => {
 
     if (authGoogleResult && authGoogleResult.status === 200) {
       console.log("authGoogleResult ", authGoogleResult);
-      const user = authGoogleResult.data;
+      const user:User = authGoogleResult.data;
 
       if (loginSheetRef.current && isMobile)
         loginSheetRef.current.handleClose();
 
-      if (displayPopName) {
-        dispatch(
-          globalSlice.setDisplayPopName(
-            displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name
-          )
-        );
+      if (user.free_point + user.paid_point < series.req_point) {
+        if (displayPopName) {
+          dispatch(
+            globalSlice.setDisplayPopName(
+              displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name
+            )
+          );
+        }
+      } else {
+        dispatch(globalSlice.setDisplayPopName(''));
       }
 
       dispatch(userSlice.setUser(user));
@@ -483,7 +488,7 @@ const SeriesPlayerPage = ({}) => {
       dispatch(userSlice.clearUserState("authGoogleResult"));
       return;
     }
-  }, [authGoogleResult, authGoogleError, displayPopName, isMobile]);
+  }, [authGoogleResult, authGoogleError, displayPopName, isMobile, series]);
 
   // 북마크 시리즈 리스트 조회 결과
   useEffect(() => {
@@ -929,6 +934,7 @@ const SeriesPlayerPage = ({}) => {
           />
           {locked && (
             <UILayerLockedEpisode
+              handlePointUse={handlePointUse}
               handleLockedClose={handleLockedClose}
               handlePaymentComplete={handlePaymentComplete}
               handlePointUse={handlePointUse}

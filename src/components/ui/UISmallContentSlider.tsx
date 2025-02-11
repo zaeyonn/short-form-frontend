@@ -76,20 +76,23 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
         if(listRef.current) {
           listRef.current.style.scrollBehavior = 'auto';
 
-          if(listRef.current.scrollLeft === listRef.current.scrollWidth - listRef.current.clientWidth) {
+          console.log('listRef.current.scrollLeft', listRef.current.scrollLeft);
+          console.log('listRef.current.scrollWidth', listRef.current.scrollWidth);
+          console.log('listRef.current.clientWidth', listRef.current.clientWidth);
+          if(listRef.current.scrollWidth - (listRef.current.clientWidth + listRef.current.scrollLeft) < 190) {
             setIsLast(true);
           } else {
             setIsLast(false);
           }
 
-          if(listRef.current.scrollLeft === 0) {
+          if(listRef.current.scrollLeft >= 0 && listRef.current.scrollLeft < 190) {
             setIsFirst(true);
           } else {
             setIsFirst(false);
           }
     
         }
-      }, 300);
+      }, 800);
     }
 
     draggingRef.current = false;
@@ -109,19 +112,22 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
       if(listRef.current) {
         listRef.current.style.scrollBehavior = 'auto';
 
-        if(listRef.current.scrollLeft === listRef.current.scrollWidth - listRef.current.clientWidth) {
+        console.log('listRef.current.scrollLeft', listRef.current.scrollLeft);
+        console.log('listRef.current.scrollWidth', listRef.current.scrollWidth);
+        console.log('listRef.current.clientWidth', listRef.current.clientWidth);
+        if(listRef.current.scrollWidth - (listRef.current.clientWidth + listRef.current.scrollLeft) < 190){
           setIsLast(true);
         } else {
           setIsLast(false);
         }
 
-        if(listRef.current.scrollLeft === 0) {
+        if(listRef.current.scrollLeft >= 0 && listRef.current.scrollLeft < 190) {
           setIsFirst(true);
         } else {
           setIsFirst(false);
         }
       }
-    }, 300);
+    }, 800);
   }
 
   const handleSlideNext = () => {
@@ -137,19 +143,22 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
       if(listRef.current) {
         listRef.current.style.scrollBehavior = 'auto';
 
-        if(listRef.current.scrollLeft === listRef.current.scrollWidth - listRef.current.clientWidth) {
+        console.log('listRef.current.scrollLeft', listRef.current.scrollLeft);
+        console.log('listRef.current.scrollWidth', listRef.current.scrollWidth);
+        console.log('listRef.current.clientWidth', listRef.current.clientWidth);
+        if(listRef.current.scrollWidth - (listRef.current.clientWidth + listRef.current.scrollLeft) < 190) {
           setIsLast(true);
         } else {
           setIsLast(false);
         }
 
-        if(listRef.current.scrollLeft === 0) {
+        if(listRef.current.scrollLeft >= 0 && listRef.current.scrollLeft < 190) {
           setIsFirst(true);
         } else {
           setIsFirst(false);
         }
       }
-    }, 300);
+    }, 800);
   }
 
 

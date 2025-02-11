@@ -38,6 +38,7 @@ const MyProfilePage = () => {
   const [visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
   const [selectedMenu] = useState<string>("WATCH_LIST");
 
+
   const handleClose = () => {
     navigate(-1);
   };

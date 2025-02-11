@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
 
 const CallbackTossPayment = ({}) => {
-  const [searchParams, _setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [widgets, setWidgets] = useState<any>(null);
   const [paymentResult, setPaymentResult] = useState<string>();
 
