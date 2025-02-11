@@ -85,6 +85,7 @@ const SeriesPlayerPage = ({}) => {
   const sequenceCountRef = useRef<number>(0);
   const progressChangingRef = useRef<boolean>(false);
   const blobUrlRef = useRef<string>("");
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const currentTimeRef = useRef<number>(0);
 
@@ -131,9 +132,18 @@ const SeriesPlayerPage = ({}) => {
     }
 
     try {
+      // 이전 요청이 있다면 취소
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      // abortController 생성
+      abortControllerRef.current = new AbortController();
+      
       // video url로 부터 데이터 fetch
       const response = await fetch(videoUrl, {
         cache: "force-cache",
+        signal: abortControllerRef.current.signal
       });
 
       if (!response.ok) throw new Error("Network response was not ok");
@@ -148,9 +158,16 @@ const SeriesPlayerPage = ({}) => {
       blobUrlCache.set(videoUrl, blobUrlRef.current);
 
       return blobUrlRef.current;
-    } catch (error) {
+    } catch (error: any) {
+      if (error.name === 'AbortError') {
+        console.log('Fetch aborted');
+        return;
+      }
       console.error("Error converting video to blob URL:", error);
       throw error;
+    } finally {
+      // 완료된 controller 정리 
+      abortControllerRef.current = null;
     }
   };
 
@@ -737,11 +754,12 @@ const SeriesPlayerPage = ({}) => {
           }`
         );
 
-        setVideoLoading(false);
-        blobUrlRef.current = blobUrl;
+        if (blobUrl) {
+          setVideoLoading(false);
+          blobUrlRef.current = blobUrl;
+        }
       } catch (error) {
         setVideoLoading(false);
-
         console.error("Error converting video to blob URL:", error);
       } finally {
         setVideoLoading(false);
@@ -753,6 +771,9 @@ const SeriesPlayerPage = ({}) => {
     }
 
     return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
       clearBlobUrlCache();
     };
   }, [currentEp, locked]);
@@ -937,7 +958,6 @@ const SeriesPlayerPage = ({}) => {
               handlePointUse={handlePointUse}
               handleLockedClose={handleLockedClose}
               handlePaymentComplete={handlePaymentComplete}
-              handlePointUse={handlePointUse}
               handleLoginOpen={handleLoginOpen}
             />
           )}
