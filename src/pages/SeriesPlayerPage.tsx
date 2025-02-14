@@ -132,11 +132,12 @@ const SeriesPlayerPage = ({}) => {
     }
 
     try {
-      // 이전 요청이 있다면 취소
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
 
+      // 이전 요청이 있다면 취소
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+      
       // abortController 생성
       abortControllerRef.current = new AbortController();
       
@@ -264,38 +265,36 @@ const SeriesPlayerPage = ({}) => {
     }
   };
 
-  const handleEpisodeChange = useCallback(
-    (index: number) => {
-      setCurrentEp(episodeList[index]);
-      setProgress(0);
+  const handleEpisodeChange = useCallback((index: number) => {
+      
+    setCurrentEp(episodeList[index]);
+    setProgress(0);
 
-      if (videoRef.current) {
-        videoRef.current.pause();
-      }
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
 
-      if (index === unlockEpisode) {
-        setLocked(true);
-      }
+    if (index === unlockEpisode) {
+      setLocked(true);
+    }
 
-      if (index + 1 !== currentEp?.episode_num) {
-        URL.revokeObjectURL(blobUrlRef.current);
-      }
+    if (index + 1 !== currentEp?.episode_num) {
+      URL.revokeObjectURL(blobUrlRef.current);
+    }
 
-      if (isMobile) {
-        if (swiperRef.current) swiperRef.current.slideTo(index, 0);
-        setVisibleBottomSheetEpisode(false);
-      } else if (!isMobile && videoRef.current) {
-        dispatch(
-          userSlice.updateSeriesProgress({
-            userId: user.id,
-            seriesId: seriesIdRef.current,
-            ep: index + 1,
+    if (isMobile) {
+      if (swiperRef.current) swiperRef.current.slideTo(index, 0);
+      setVisibleBottomSheetEpisode(false);
+    } else if (!isMobile && videoRef.current) {
+      dispatch(
+        userSlice.updateSeriesProgress({
+          userId: user.id,
+          seriesId: seriesIdRef.current,
+          ep: index + 1,
           })
         );
       }
-    },
-    [episodeList, seriesIdRef.current, currentEp]
-  );
+    },[episodeList, seriesIdRef.current, currentEp]);
 
   const handleBottomSheetOpen = useCallback(() => {
     setVisibleBottomSheetEpisode(true);
@@ -746,6 +745,7 @@ const SeriesPlayerPage = ({}) => {
   useEffect(() => {
     const loadVideoBlobUrl = async () => {
       try {
+        console.log('loadVideoBlobUrl start');
         setVideoLoading(true);
 
         const blobUrl: any = await convertToBlobURL(
@@ -755,13 +755,13 @@ const SeriesPlayerPage = ({}) => {
         );
 
         if (blobUrl) {
-          setVideoLoading(false);
           blobUrlRef.current = blobUrl;
         }
       } catch (error) {
-        setVideoLoading(false);
+        console.log('loadVideoBlobUrl error')
         console.error("Error converting video to blob URL:", error);
       } finally {
+        console.log('loadVideoBlobUrl finally');
         setVideoLoading(false);
       }
     };
@@ -927,7 +927,7 @@ const SeriesPlayerPage = ({}) => {
                 <div className="progress-bar">
                   <input
                     style={{
-                      background: `linear-gradient(to right, #307FE2 ${progress}%, #535353 ${progress}%)`,
+                      background: `linear-gradient(to right, $brand-color ${progress}%, #535353 ${progress}%)`,
                     }}
                     type="range"
                     min="0"
@@ -1060,7 +1060,7 @@ const SeriesPlayerPage = ({}) => {
                     <div className="progress-bar">
                       <input
                         style={{
-                          background: `linear-gradient(to right, #307FE2 ${progress}%, #535353 ${progress}%)`,
+                          background: `linear-gradient(to right, #1A6EFF ${progress}%, #535353 ${progress}%)`,
                         }}
                         type="range"
                         min="0"

@@ -74,10 +74,10 @@ const UILayerLockedEpisode = ({
           onClick={(event) => event.stopPropagation()}
         >
           {renderPaymentButton()}
-          {/* <button className="view-ad-btn">
+          <button className="view-ad-btn">
             광고 보고 다음 화 보기
             <span>(준비중)</span>
-          </button> */}
+          </button>
           {/* <img onClick={handleLockedClose} src='/resources/icons/icon_close_l.svg'/> */}
         </div>
       )}
