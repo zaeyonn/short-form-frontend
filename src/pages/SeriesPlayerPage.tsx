@@ -379,7 +379,7 @@ const SeriesPlayerPage = ({}) => {
     if(abortControllerRef.current) {
       await abortControllerRef.current.abort();
     }
-    
+
     if (index + 1 === currentEp?.episode_num) {
       return;
     }
@@ -771,6 +771,10 @@ const SeriesPlayerPage = ({}) => {
     };
 
     if (currentEp) {
+      if(currentEp.thumbnail_img) {
+        videoRef.current.poster = `${import.meta.env.VITE_SERVER_URL}/images/thumbnail/${series?.id}/${currentEp.thumbnail_img}`
+      }
+
       loadVideoBlobUrl();
     }
 
