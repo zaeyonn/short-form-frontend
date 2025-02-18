@@ -375,7 +375,11 @@ const SeriesPlayerPage = ({}) => {
     }
   };
 
-  const handleEpisodeClick = (index: number) => {
+  const handleEpisodeClick = async (index: number) => {
+    if(abortControllerRef.current) {
+      await abortControllerRef.current.abort();
+    }
+    
     if (index + 1 === currentEp?.episode_num) {
       return;
     }
