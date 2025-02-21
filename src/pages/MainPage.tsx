@@ -92,7 +92,9 @@ const MainPage = () => {
               src={`/resources/icons/icon_hamburger.svg`}
               onClick={handleMenuOpen}
             />
-            <span className="title">Framez</span>
+            <Link to={window.location.origin} className="title">
+              <img className='logo' src={"/resources/images/main_logo.svg"}/>
+            </Link>
           </div>
           <div className="right-section">
             <Link to="/profile">

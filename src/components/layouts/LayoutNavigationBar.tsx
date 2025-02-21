@@ -9,7 +9,7 @@ const LayoutNavigationBar = () => {
       <div className="wrap">
         <div className="left-section">
           <Link to={window.location.origin} className="title">
-            <img className='logo' src={"/resources/images/logo_type_2.svg"}/>
+            <img className='logo' src={"/resources/images/main_logo.svg"}/>
           </Link>
           <Link
             className={`tab ${

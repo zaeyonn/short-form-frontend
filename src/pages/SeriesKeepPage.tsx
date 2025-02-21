@@ -13,7 +13,7 @@ const SeriesKeepPage = () => {
   const navigate = useNavigate();
 
   const { isMobile } = useSelector((state: any) => state.global);
-  const { seriesKeepList, seriesWatchList, user, userSeriesKeepListError, userSeriesKeepListResult, removeSeriesKeepResult, removeSeriesKeepError, userSeriesWatchListResult, userSeriesWatchListError } = useSelector((state: UserRootState) => state.user);
+  const { seriesKeepList, user, userSeriesKeepListError, userSeriesKeepListResult, removeSeriesKeepResult, removeSeriesKeepError, userSeriesWatchListResult, userSeriesWatchListError } = useSelector((state: UserRootState) => state.user);
 
   const [selectMode, setSelectMode] = useState(isMobile ? false : true);
   const [checkList, setCheckList] = useState<number []>([]);

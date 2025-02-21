@@ -49,9 +49,8 @@
     gap: 40px;
 
     .logo {
-      width: 140px;
-      height: 25px;
-      filter: invert(32%) sepia(33%) saturate(4228%) hue-rotate(208deg) brightness(101%) contrast(106%);
+      width: 140px !important;
+      height: 25px !important;
     }
 
     .title {
