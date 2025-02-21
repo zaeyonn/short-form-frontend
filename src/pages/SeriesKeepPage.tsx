@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import * as userSlice from 'src/redux/userSlice';
 import * as globalSlice from 'src/redux/globalSlice';
-import { UserRootState } from 'src/types';
+import { Series, UserRootState } from 'src/types';
 import UIMediumContentItem from '../components/ui/UIMediumContentItem';
 import LayoutFooter from 'components/layouts/LayoutFooter';
 
@@ -13,7 +13,7 @@ const SeriesKeepPage = () => {
   const navigate = useNavigate();
 
   const { isMobile } = useSelector((state: any) => state.global);
-  const { seriesKeepList, user, userSeriesKeepListError, userSeriesKeepListResult, removeSeriesKeepResult, removeSeriesKeepError } = useSelector((state: UserRootState) => state.user);
+  const { seriesKeepList, seriesWatchList, user, userSeriesKeepListError, userSeriesKeepListResult, removeSeriesKeepResult, removeSeriesKeepError, userSeriesWatchListResult, userSeriesWatchListError } = useSelector((state: UserRootState) => state.user);
 
   const [selectMode, setSelectMode] = useState(isMobile ? false : true);
   const [checkList, setCheckList] = useState<number []>([]);
@@ -90,7 +90,7 @@ const SeriesKeepPage = () => {
       }
     }, [removeSeriesKeepResult, removeSeriesKeepError]);
 
-  // 북마크 시리즈 리스트 조회 결과
+      // 북마크 시리즈 리스트 조회 결과
   useEffect(() => {
     if(userSeriesKeepListError) {
       console.log('userSeriesKeepListError ', userSeriesKeepListError);
@@ -103,11 +103,44 @@ const SeriesKeepPage = () => {
       
       dispatch(userSlice.setSeriesKeepList(userSeriesKeepListResult.data));
   
+      dispatch(userSlice.userSeriesWatchList({ userId: user.id }));
+
       dispatch(userSlice.clearUserState('userSeriesKeepListResult'));
     }
   }, [userSeriesKeepListResult, userSeriesKeepListError]);
-  
 
+
+     // 시청 시리즈 리스트 조회 결과
+  useEffect(() => {
+    if(userSeriesWatchListError) {
+      console.log('userSeriesWatchListError ', userSeriesWatchListError);
+  
+      dispatch(userSlice.clearUserState('userSeriesWatchListError'));
+    }
+  
+    if(userSeriesWatchListResult && userSeriesWatchListResult.status === 200) {
+      console.log('userSeriesWatchListResult ', userSeriesWatchListResult);
+      
+      dispatch(userSlice.setSeriesWatchList(userSeriesWatchListResult.data));
+  
+      dispatch(userSlice.clearUserState('userSeriesWatchListResult'));
+
+      if(seriesKeepList) {
+        const tmpSeriesKeepList = [...seriesKeepList].map((keep: Series) => {
+          const lastEpisode = userSeriesWatchListResult.data.find((watch: Series) => watch.id === keep.id) ?  userSeriesWatchListResult.data.find((watch: Series) => watch.id === keep.id).last_episode : '0';
+          
+          return {
+            ...keep,
+            last_episode: lastEpisode,
+          }
+        });
+
+        dispatch(userSlice.setSeriesKeepList(tmpSeriesKeepList));
+      }
+    }
+  }, [userSeriesWatchListResult, userSeriesWatchListError, seriesKeepList])
+
+ 
   useEffect(() => {
     if(user) {
       dispatch(userSlice.userSeriesKeepList({ userId: user.id }));
