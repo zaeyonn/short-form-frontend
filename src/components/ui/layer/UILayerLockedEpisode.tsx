@@ -54,11 +54,13 @@ const UILayerLockedEpisode = ({
       <>
         {user.paid_point + user.free_point > series.req_point ? (
           <button className="payment-btn" onClick={() => handlePointUse()}>
-            {`${series.req_point}P 사용하여 잠금해제`}
+            {'다음화 바로보기'}
+            <span className="req_point">{`${series.req_point}P 필요`}</span>
           </button>
         ) : (
           <button className="payment-btn" onClick={() => handlePaymentOpen()}>
           {'충전하고 바로보기'}
+          <span className="req_point">{`${series.req_point}P 필요`}</span>
           </button>
         )}
       </>
@@ -73,6 +75,8 @@ const UILayerLockedEpisode = ({
           style={{ cursor: "default" }}
           onClick={(event) => event.stopPropagation()}
         >
+          <div className="message">다음 화를 시청하시겠습니까?</div>
+          <div className="user-points">{ user.auth === 'guest' ? '로그인을 해주세요.' : `내 보유 포인트 : ${user.paid_point + user.free_point}`}</div>
           {renderPaymentButton()}
           <button className="view-ad-btn">
             광고 보고 다음 화 보기

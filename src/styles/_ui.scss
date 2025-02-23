@@ -1228,18 +1228,38 @@ a {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 12px;
+
+  .message {
+    font-weight: 600;
+    font-size: 18px;
+  }
+
+  .user-points {
+    margin-top: 3px;
+    font-weight: 400;
+    font-size: 16px;
+  }
 
   .payment-btn {
+    margin-top: 16px;
     width: 335px;
-    height: 52px;
     border-radius: 12px;
+    padding: 16px;
     background-color: $brand-color;
     font-weight: 600;
     font-size: 17px;
+    display: flex;
+    flex-direction: column;
+
+    .req_point {
+      margin-top: 4px;
+      font-weight: 400;
+      font-size: 12px;
+    }
   }
 
   .view-ad-btn {
+    margin-top: 12px;
     width: 335px;
     height: 72px;
     border-radius: 12px;
