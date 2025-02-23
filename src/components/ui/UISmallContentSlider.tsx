@@ -76,9 +76,6 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
         if(listRef.current) {
           listRef.current.style.scrollBehavior = 'auto';
 
-          console.log('listRef.current.scrollLeft', listRef.current.scrollLeft);
-          console.log('listRef.current.scrollWidth', listRef.current.scrollWidth);
-          console.log('listRef.current.clientWidth', listRef.current.clientWidth);
           if(listRef.current.scrollWidth - (listRef.current.clientWidth + listRef.current.scrollLeft) < 190) {
             setIsLast(true);
           } else {
@@ -112,9 +109,6 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
       if(listRef.current) {
         listRef.current.style.scrollBehavior = 'auto';
 
-        console.log('listRef.current.scrollLeft', listRef.current.scrollLeft);
-        console.log('listRef.current.scrollWidth', listRef.current.scrollWidth);
-        console.log('listRef.current.clientWidth', listRef.current.clientWidth);
         if(listRef.current.scrollWidth - (listRef.current.clientWidth + listRef.current.scrollLeft) < 190){
           setIsLast(true);
         } else {
@@ -143,9 +137,6 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
       if(listRef.current) {
         listRef.current.style.scrollBehavior = 'auto';
 
-        console.log('listRef.current.scrollLeft', listRef.current.scrollLeft);
-        console.log('listRef.current.scrollWidth', listRef.current.scrollWidth);
-        console.log('listRef.current.clientWidth', listRef.current.clientWidth);
         if(listRef.current.scrollWidth - (listRef.current.clientWidth + listRef.current.scrollLeft) < 190) {
           setIsLast(true);
         } else {

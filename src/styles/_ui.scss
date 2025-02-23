@@ -166,6 +166,8 @@ a {
     }
 
     .poster-wrap {
+      width: fit-content;
+      height: fit-content;
       position: relative;
       overflow: hidden;
       border-radius: 6px;
@@ -173,8 +175,7 @@ a {
       img {
         border-radius: 6px;
         width: 100%;
-        height: 150px;
-        object-fit: cover;
+        height: 100%;
         transition: transform 0.3s ease;
       }
 
@@ -206,7 +207,7 @@ a {
         overflow-x: scroll;
         white-space: nowrap;
         width: 100%;
-        padding: 0 4px 8px 4px;
+        padding: 0 4px 4px 4px;
         gap: 4px;
         display: flex;
         flex-direction: row;
