@@ -71,7 +71,7 @@ export const removeSeriesKeep = ({userId, seriesIdList}: any) => client.delete('
 export const usersPointDeduct = ({ userId, point }: any) => client.put('api/users/point/deduct', {
   user_id: userId,
   point,
-})
+});
 
 /* Series API */
 
@@ -105,9 +105,14 @@ export const paymentsRegist = ({userId, productId, amount, paidPoint, freePoint}
 });
 
 // 결제 승인
-export const paymentsConfirm = ({userId, orderId, amount, paymentKey}: any) => client.put('api/payments/confirm', {
+export const paymentsConfirm = ({ userId, orderId, amount, paymentKey }: any) => client.put('api/payments/confirm', {
   user_id: userId,
   order_id: orderId,
   amount: amount,
   payment_key: paymentKey
-})
+});
+
+/* Product API */
+
+// 전체 상품 리스트
+export const productList = () => client.get('api/products');
