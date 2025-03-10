@@ -11,6 +11,7 @@ export function* watcherSaga() {
     takeLatest(globalSlice.seriesList.type, globalHandler.handleSeriesList),
     takeLatest(globalSlice.seriesInfo.type, globalHandler.handleSeriesInfo),
     takeLatest(globalSlice.increaseSeriesView.type, globalHandler.handleIncreaseSeriesViews),
+    takeLatest(globalSlice.productList.type, globalHandler.handleProductList),
   
     // user
     takeLatest(userSlice.authGuest.type, userHandler.handleAuthGuest),

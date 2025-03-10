@@ -46,3 +46,14 @@ export function* handleIncreaseSeriesViews(action: PayloadAction<any>): Generato
     yield put(slice.increaseSeriesViewsFailure(error));
   }
 }
+
+
+export function* handleProductList(): Generator<any> {
+  try {
+    const response = yield call(api.productList);
+
+    yield put(slice.productListSuccess(response));
+  } catch (error) {
+    yield put(slice.productListFailure(error));
+  }
+}

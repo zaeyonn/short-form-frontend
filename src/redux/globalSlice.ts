@@ -15,6 +15,7 @@ const initialState = {
   seriesListTitle: '',
   seriesList: [],
   episodeList: [],
+  productList: [],
 }
 
 const globalSlice = createSlice({
@@ -93,6 +94,14 @@ const globalSlice = createSlice({
     },
     increaseSeriesViewsFailure(state: any, action: PayloadAction<any>) {
       state.increaseSeriesViewError = action.payload;
+    },
+    productList(_state: any, _action: PayloadAction<any>) {
+    },
+    productListSuccess(state: any, action: PayloadAction<any>) {
+      state.productListResult = action.payload;
+    },
+    productListFailure(state: any, action: PayloadAction<any>) {
+      state.productListError = action.payload;
     }
   }
 })
@@ -104,7 +113,8 @@ export const {
   seriesList, seriesListSuccess, seriesListFailure,
   episodeList, episodeListSuccess, episodeListFailure,
   setAlert, seriesInfo, seriesInfoSuccess, seriesInfoFailure, setPayments,
-  increaseSeriesView, increaseSeriesViewSuccess, increaseSeriesViewsFailure
+  increaseSeriesView, increaseSeriesViewSuccess, increaseSeriesViewsFailure,
+  productList, productListSuccess, productListFailure
 } = globalSlice.actions;
 
 export default globalSlice.reducer;
