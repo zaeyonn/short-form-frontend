@@ -16,7 +16,7 @@ const UIMainContentItem = ({ item }: Props) => {
       <div className="img-wrap" onClick={() => handleSeriesPlayerOpen()}>
         <img
           draggable="false"
-          src={`${import.meta.env.VITE_SERVER_URL}/images/poster/${
+          src={`${import.meta.env.VITE_SERVER_URL}/resources/images/poster/${
             item.poster_img
           }`}
         />

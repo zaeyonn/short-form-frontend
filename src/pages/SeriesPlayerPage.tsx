@@ -753,7 +753,7 @@ const SeriesPlayerPage = ({}) => {
         setVideoLoading(true);
 
         const blobUrl: any = await convertToBlobURL(
-          `${import.meta.env.VITE_SERVER_URL}/videos/${currentEp?.series_id}/${
+          `${import.meta.env.VITE_SERVER_URL}/resources/videos/${currentEp?.series_id}/${
             currentEp?.video
           }`
         );
@@ -772,7 +772,7 @@ const SeriesPlayerPage = ({}) => {
 
     if (currentEp) {
       if(currentEp.thumbnail_img) {
-        videoRef.current.poster = `${import.meta.env.VITE_SERVER_URL}/images/thumbnail/${series?.id}/${currentEp.thumbnail_img}`
+        videoRef.current.poster = `${import.meta.env.VITE_SERVER_URL}/resources/images/thumbnail/${series?.id}/${currentEp.thumbnail_img}`
       }
 
       loadVideoBlobUrl();

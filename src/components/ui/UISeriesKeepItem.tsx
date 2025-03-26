@@ -45,7 +45,7 @@ const UISeriesKeepItem = ({item, isManageMode, seriesList, removeVideos}: Props)
   return (
   <>
     <div className="video-item">
-      <img src={`${import.meta.env.VITE_SERVER_URL}/images/poster/${seriesInfo?.poster_img}`} onLoad={onLoadImg}/>
+      <img src={`${import.meta.env.VITE_SERVER_URL}/resources/images/poster/${seriesInfo?.poster_img}`} onLoad={onLoadImg}/>
       {isSelect ? (<div onClick={handleClick} style={{width:'100%', height:`${imgHeight}px`, position:'absolute', backgroundColor:'rgba(0, 0, 0, 0.5)'}}/>) : (
           <div onClick={handleClick} style={{width:'100%', height:'80%', position:'absolute', backgroundColor:'rgba(0, 0, 0, 0)'}}/>)}
 

@@ -32,7 +32,7 @@ const UIShortFormSwiper = ({locked, muted, episodeList, videoRef, handleTimeUpda
           <>
           <SwiperSlide className='short-form' key={index}>
             <video preload="auto" playsInline muted={muted} id={`slide-idx-${index}`} autoPlay={false} ref={lastEpisode - 1 === index ? videoRef : null} onTimeUpdate={handleTimeUpdate} onEnded={() => handleVideoEnded()}>
-              <source src={`${import.meta.env.VITE_SERVER_URL}/videos/${i.series_id}/${i.video}`}></source>
+              <source src={${import.meta.env.VITE_SERVER_URL}/resources/video/${i.series_id}/${i.video}`}></source>
             </video>
             {locked && <div className='locked-layer'/>}
           </SwiperSlide>

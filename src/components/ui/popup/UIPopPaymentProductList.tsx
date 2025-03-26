@@ -64,7 +64,7 @@ const UIPopPaymentProductList = (props: Props) => {
     }
   });
 
-  const { series } = useSelector((state: any) => state.global);
+  const { series, productListResult, productListError } = useSelector((state: any) => state.global);
   const { user, paymentsRegistResult, paymentsRegistError, paymentsConfirmResult, paymentsConfirmError } = useSelector((state: any) => state.user);
 
   const [selectedProduct, setSelectedProduct] = useState<PaymentProduct>(PAYMOUNT_PRODUCT_LIST[0]);
@@ -158,6 +158,13 @@ const UIPopPaymentProductList = (props: Props) => {
   const handleProductSelect = (product: PaymentProduct) => {
     setSelectedProduct(product);
   }
+
+  useEffect(() => {
+    if(productListError) {
+      console.log('productListError ', productListError);
+    }
+
+  }, [productListResult, productListError])
 
   useEffect(() => {
     if (paymentsConfirmError) {

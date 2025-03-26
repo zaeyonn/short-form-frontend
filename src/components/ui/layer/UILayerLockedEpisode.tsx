@@ -55,12 +55,12 @@ const UILayerLockedEpisode = ({
         {user.paid_point + user.free_point > series.req_point ? (
           <button className="payment-btn" onClick={() => handlePointUse()}>
             {'다음화 바로보기'}
-            <span className="req_point">{`${series.req_point}P 필요`}</span>
+            <span className="req_point">{`${series.req_point.toLocaleString()}P 필요`}</span>
           </button>
         ) : (
           <button className="payment-btn" onClick={() => handlePaymentOpen()}>
           {'충전하고 바로보기'}
-          <span className="req_point">{`${series.req_point}P 필요`}</span>
+          <span className="req_point">{`${series.req_point.toLocaleString()}P 필요`}</span>
           </button>
         )}
       </>

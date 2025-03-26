@@ -7,6 +7,9 @@ export default () => {
 
   return defineConfig({
     plugins: [react(), tsconfigPaths()],
+    server: {
+      port: 3001
+    }
   })
 } 
 
