@@ -204,7 +204,7 @@ const UISmallContentSlider = ({seriesList, headerTitle, highlight, handleSeriesL
               <div className='tag-list'>
               { item.keyword?.map((i: string, idx: number) => <span className='tag' key={idx}>{i}</span>) }
               </div>
-                <img draggable={false} className='poster-img' src={`${import.meta.env.VITE_SERVER_URL}/resources/images/poster/${item.poster_img}`}/>
+                <img draggable={false} className='poster-img' src={`${import.meta.env.VITE_SERVER_URL}/resources/images/posters/${item.poster_img}`}/>
               </div>
               <div className='series-title'>{item.title}</div>
             </div>

@@ -194,7 +194,7 @@ const UIDesktopMainContentSlider = (props: Props) => {
               <div className="img-wrap">
                 <img
                   draggable={false}
-                  src={`${import.meta.env.VITE_SERVER_URL}/resources/images/poster/${
+                  src={`${import.meta.env.VITE_SERVER_URL}/resources/images/posters/${
                     item.horizontal_poster_img
                       ? `horizontal/${item.horizontal_poster_img}`
                       : item.poster_img

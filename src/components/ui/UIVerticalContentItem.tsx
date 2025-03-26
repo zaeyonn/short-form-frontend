@@ -13,7 +13,7 @@ const UIVerticalContentItem = ({item}: Props) => {
 
   return (
     <div className='vertical-content-item' onClick={() => handleSeriesPlayerOpen()}>
-      <img src={`/resources/images/poster/${item.poster_img}`}/>
+      <img src={`/resources/images/posters/${item.poster_img}`}/>
       <div className='info-wrap'>
         <div className='tag-list'>
           { item.keyword?.map((i: string, index: number) => <span className='tag' key={index}>{i}</span>) }
