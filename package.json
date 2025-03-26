@@ -6,9 +6,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:stage": "tsc -b && vite build --mode stage",
+    "build:prod": "tsc -b && vite build --mode production",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "deploy:prod": "npm run build:prod && sudo rsync -av dist/ /var/www/framez-app/"
   },
   "dependencies": {
     "@react-spring/web": "^9.7.5",
