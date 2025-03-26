@@ -695,6 +695,8 @@
       .poster-wrap {
         img {
           width: 190px;
+          height: 250px;
+          object-fit: cover;
         }
 
         .highlight {
