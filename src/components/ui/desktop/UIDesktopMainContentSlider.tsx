@@ -196,7 +196,7 @@ const UIDesktopMainContentSlider = (props: Props) => {
                   draggable={false}
                   src={`${import.meta.env.VITE_SERVER_URL}/resources/images/posters/${
                     item.horizontal_poster_img
-                      ? `horizontal/${item.horizontal_poster_img}`
+                      ? item.horizontal_poster_img
                       : item.poster_img
                   }`}
                 />
