@@ -163,6 +163,20 @@ const userSlice = createSlice({
     },
     usersPointDeductFailure(state: any, action: PayloadAction<any>) {
       state.usersPointDeductError = action.payload
+    },
+    attendance(_state: any, _action: PayloadAction<any>) {},
+    attendanceSuccess(state: any, action: PayloadAction<any>) {
+      state.attendanceResult = action.payload
+    },
+    attendanceFailure(state: any, action: PayloadAction<any>) {
+      state.attendanceError = action.payload
+    },
+    attendanceCheck(_state: any, _action: PayloadAction<any>) {},
+    attendanceCheckSuccess(state: any, action: PayloadAction<any>) {
+      state.attendanceCheckResult = action.payload
+    },
+    attendanceCheckFailure(state: any, action: PayloadAction<any>) {
+      state.attendanceCheckError = action.payload
     }
   }
 });
@@ -179,5 +193,6 @@ export const {
   userInfo, userInfoSuccess, userInfoFailure, updateSeriesUnlockEpisode, updateSeriesUnlockEpisodeSuccess, updateSeriesUnlockEpisodeFailure,
   paymentsRegist, paymentsRegistSuccess, paymentsRegistFailure, paymentsConfirm, paymentsConfirmFailure, paymentsConfirmSuccess,
   usersPointDeduct, usersPointDeductSuccess, usersPointDeductFailure,
+  attendance, attendanceSuccess, attendanceCheckFailure, attendanceCheck, attendanceCheckSuccess, attendanceFailure
 } = userSlice.actions;
 export default userSlice.reducer;

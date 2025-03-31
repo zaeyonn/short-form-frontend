@@ -18,6 +18,7 @@ import UIPopPaymentProductList from "components/ui/popup/UIPopPaymentProductList
 import UIPopPayments from "components/ui/payments/UIPopPayments";
 import UIPopLogin from "components/ui/popup/UIPopLogin";
 import UILayerSpinner from "components/ui/layer/UILayerSpinner";
+import HlsPlayer from "components/HlsPlayer";
 
 const SeriesPlayerPage = ({}) => {
   const navigate = useNavigate();
@@ -271,7 +272,7 @@ const SeriesPlayerPage = ({}) => {
     setProgress(0);
 
     if (videoRef.current) {
-      videoRef.current.pause();
+      //videoRef.current.pause();
     }
 
     if (index === unlockEpisode) {
@@ -746,45 +747,45 @@ const SeriesPlayerPage = ({}) => {
   }, [seriesInfoResult, seriesInfoError]);
 
   // 비디오 URL -> blob URL 변환
-  useEffect(() => {
-    const loadVideoBlobUrl = async () => {
-      try {
-        console.log('loadVideoBlobUrl start');
-        setVideoLoading(true);
+  // useEffect(() => {
+  //   const loadVideoBlobUrl = async () => {
+  //     try {
+  //       console.log('loadVideoBlobUrl start');
+  //       setVideoLoading(true);
 
-        const blobUrl: any = await convertToBlobURL(
-          `${import.meta.env.VITE_SERVER_URL}/videos/${currentEp?.series_id}/${
-            currentEp?.video
-          }`
-        );
+  //       const blobUrl: any = await convertToBlobURL(
+  //         `${import.meta.env.VITE_SERVER_URL}/videos/${currentEp?.series_id}/${
+  //           currentEp?.video
+  //         }`
+  //       );
 
-        if (blobUrl) {
-          blobUrlRef.current = blobUrl;
-        }
-      } catch (error) {
-        console.log('loadVideoBlobUrl error')
-        console.error("Error converting video to blob URL:", error);
-      } finally {
-        console.log('loadVideoBlobUrl finally');
-        setVideoLoading(false);
-      }
-    };
+  //       if (blobUrl) {
+  //         blobUrlRef.current = blobUrl;
+  //       }
+  //     } catch (error) {
+  //       console.log('loadVideoBlobUrl error')
+  //       console.error("Error converting video to blob URL:", error);
+  //     } finally {
+  //       console.log('loadVideoBlobUrl finally');
+  //       setVideoLoading(false);
+  //     }
+  //   };
 
-    if (currentEp) {
-      if(currentEp.thumbnail_img) {
-        videoRef.current.poster = `${import.meta.env.VITE_SERVER_URL}/resources/images/thumbnail/${series?.id}/${currentEp.thumbnail_img}`
-      }
+  //   if (currentEp) {
+  //     if(currentEp.thumbnail_img) {
+  //       videoRef.current.poster = `${import.meta.env.VITE_SERVER_URL}/resources/images/thumbnail/${series?.id}/${currentEp.thumbnail_img}`
+  //     }
 
-      loadVideoBlobUrl();
-    }
+  //     loadVideoBlobUrl();
+  //   }
 
-    return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-      clearBlobUrlCache();
-    };
-  }, [currentEp, locked]);
+  //   return () => {
+  //     if (abortControllerRef.current) {
+  //       abortControllerRef.current.abort();
+  //     }
+  //     clearBlobUrlCache();
+  //   };
+  // }, [currentEp, locked]);
 
   // 현재 에피소드
   useEffect(() => {
@@ -987,15 +988,28 @@ const SeriesPlayerPage = ({}) => {
                       <TailSpin width={60} height={60} color={"#ffffff"} />
                     </div>
                   )}
-                  <video
+                  {/* <video
                     id="short-form-video"
-                    src={blobUrlRef.current}
+                    //src={blobUrlRef.current}
                     muted={muted}
                     preload="auto"
                     ref={videoRef}
                     onTimeUpdate={handleTimeUpdate}
                     onEnded={() => handleEpisodeChange(currentEp?.episode_num)}
-                  ></video>
+                  >
+                    {currentEp && (
+                    <source src={`${import.meta.env.VITE_SERVER_URL}/api/series/stream/${currentEp?.series_id}/${currentEp?.video}`} type="video/mp4"></source>
+                    )}
+                  </video> */}
+                  <HlsPlayer
+                    muted={muted}
+                    currentEp={currentEp}
+                    videoRef={videoRef}
+                    videoUrl={`${import.meta.env.VITE_WEB_RES_ROOT}/videos/1/1/hls/output.m3u8`}
+                    setVideoLoading={setVideoLoading}
+                    handleEpisodeChange={handleEpisodeChange}
+                    handleTimeUpdate={handleTimeUpdate}
+                  />
                   <div
                     className="bottom-container"
                     onClick={(event) => event.stopPropagation()}

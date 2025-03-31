@@ -19,6 +19,14 @@ const LayoutNavigationBar = () => {
           >
             북마크
           </Link>
+          <Link
+            className={`tab ${
+              location.pathname === "/mission" ? "active" : ""
+            }`}
+            to={"/mission"}
+          >
+            미션 & 이벤트
+          </Link>
         </div>
         <div className="right-section">
           <Link to={"/profile"} className="profile-btn">

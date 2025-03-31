@@ -152,3 +152,23 @@ export function* handleUsersPointDeduct(action: PayloadAction<any>): Generator<a
     yield put(slice.usersPointDeductFailure(error));
   }
 }
+
+export function* handleattendance(action: PayloadAction<any>): Generator<any> {
+  try {
+    const response = yield call(api.attendance, action.payload);
+
+    yield put(slice.attendanceSuccess(response));
+  } catch (error) {
+    yield put(slice.attendanceFailure(error));
+  }
+}
+
+export function* handleattendanceCheck(action: PayloadAction<any>): Generator<any> {
+  try {
+    const response = yield call(api.attendanceCheck, action.payload);
+
+    yield put(slice.attendanceCheckSuccess(response));
+  } catch (error) {
+    yield put(slice.attendanceCheckFailure(error));
+  }
+}

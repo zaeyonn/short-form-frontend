@@ -198,6 +198,7 @@
           }
 
           .description {
+            z-index: 1;
             cursor: default;
             -webkit-line-clamp: 3;
             display: -webkit-box;
@@ -1077,6 +1078,7 @@
       height: 28px;
     }
   }
+
 }
 
 

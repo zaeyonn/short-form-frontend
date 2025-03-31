@@ -1849,3 +1849,128 @@ a {
   transform: translate(-50%, -50%);
 }
 
+
+  
+.attendance-check-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .my-coin-text {
+    margin-top: 5px;
+    padding: 5px 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #FFFFFF;
+    background-color: #001B4A;
+    border-radius: 8px;;
+  }
+
+  .my-coin-count {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 32px;
+
+    img {
+      width: 42px;
+      height: 42px;
+    }
+  }
+  
+  .attendance-check-background {
+    display: flex;
+    flex-direction: column;;
+    margin-top: 20px;
+    width: 50%;
+    min-width: 500px;
+    min-height: 250px;
+    background-image: url('resources/images/attendance_check_background.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding-left: 60px;
+    padding-right: 60px;
+    justify-content: center;
+
+    .day-list-wrap {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      .day-item {
+        align-items: center;
+        justify-content: center;
+        color: #A1A9DA;
+        font-weight: 400;
+        font-size: 13px;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+
+        .day-circle-wrap {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
+          .circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: #A1A9DA;
+
+            span {
+              position: absolute;
+            }
+          }
+        }
+
+        .day-text {
+          transform: translateX(-34%);
+          .day-count {
+            margin-right: 1.5px;
+          }
+        }
+
+        .attended {
+          font-weight: 500;
+          color: $brand-color;
+        }
+        
+        .day-item-divider {
+          width: 14px;
+          height: 2px;
+          border-radius: 3px;
+          margin-left: 4px;
+          margin-right: 4px;
+          background-color: #DCDEEA;
+        }
+      }
+    }
+
+    .attendance-btn {
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 16px;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 30px;
+      width: 100%;
+      background-color: $brand-color;
+    }
+
+    
+    .attendance-btn:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
+
+

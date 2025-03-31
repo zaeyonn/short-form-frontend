@@ -8,6 +8,7 @@ import MyProfilePage from "pages/MyProfilePage";
 import SeriesKeepPage from "pages/SeriesKeepPage";
 import SeriesListPage from "pages/SeriesListPage";
 import PaymentProductListPage from "pages/PaymentProductListPage";
+import MissionPage from "pages/MissionPage";
 
 const RouteManager = () => {
   
@@ -16,6 +17,7 @@ const RouteManager = () => {
       <Route path='/' element={<MainPage/>} />
       <Route path='/home' element={<MainPage/>} />
       <Route path='/bookmark' element={<SeriesKeepPage/>} />
+      <Route path='/mission' element={<MissionPage/>} />
       <Route path='/series/:seriesId' element={<SeriesPlayerPage/>} />
       <Route path='/profile' element={<MyProfilePage/>} />
       <Route path='/series-list' element={<SeriesListPage/>} />
