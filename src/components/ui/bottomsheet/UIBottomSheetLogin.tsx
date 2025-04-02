@@ -1,6 +1,7 @@
 import { useEffect, forwardRef, useImperativeHandle } from "react";
 import { useSpring, animated } from '@react-spring/web';
 import { useGesture } from "@use-gesture/react";
+
 import SignInWithGoogle from "components/sns/SignInWithGoogle";
 
 interface Props {
@@ -73,6 +74,10 @@ const UIBottomSheetLogin = forwardRef<bottomSheetHandle, Props>(({signInProcess,
       <div className="auth-btn-list">
         <SignInWithGoogle
           signInProcess={signInProcess}/>
+        {/* <SignInWithKakao
+          signInProcess={signInProcess}/>
+        <SignInWithMeta
+          signInProcess={signInProcess}/> */}
         {/* <button className="email-auth" onClick={handleEmailSignUp}>
           <img src="resources/icons/icon_email.svg"/>
           이메일로 계속하기          

@@ -58,7 +58,7 @@ const SeriesPlayerPage = ({}) => {
   } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [videoLoading, setVideoLoading] = useState<boolean>(true);
+  const [videoLoading, _setVideoLoading] = useState<boolean>(true);
   const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
 
   const [playing, setPlaying] = useState<boolean>(true);
@@ -92,7 +92,7 @@ const SeriesPlayerPage = ({}) => {
 
   const currentTimeRef = useRef<number>(0);
 
-  const blobUrlCache = new Map<string, string>();
+  // const blobUrlCache = new Map<string, string>();
 
   const handleClose = () => {
     navigate(-1);
@@ -126,63 +126,63 @@ const SeriesPlayerPage = ({}) => {
   };
 
   // 비디오 URL을 Blob URL로 변환 함수
-  const convertToBlobURL = async (
-    videoUrl: string
-  ): Promise<string | undefined> => {
-    // 캐시된 Blob URL이 있는지 확인
-    if (blobUrlCache.has(videoUrl)) {
-      return blobUrlCache.get(videoUrl);
-    }
+  // const convertToBlobURL = async (
+  //   videoUrl: string
+  // ): Promise<string | undefined> => {
+  //   // 캐시된 Blob URL이 있는지 확인
+  //   if (blobUrlCache.has(videoUrl)) {
+  //     return blobUrlCache.get(videoUrl);
+  //   }
 
-    try {
+  //   try {
 
-      // 이전 요청이 있다면 취소
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
+  //     // 이전 요청이 있다면 취소
+  //   if (abortControllerRef.current) {
+  //     abortControllerRef.current.abort();
+  //   }
       
-      // abortController 생성
-      abortControllerRef.current = new AbortController();
+  //     // abortController 생성
+  //     abortControllerRef.current = new AbortController();
       
-      // video url로 부터 데이터 fetch
-      const response = await fetch(videoUrl, {
-        cache: "force-cache",
-        signal: abortControllerRef.current.signal
-      });
+  //     // video url로 부터 데이터 fetch
+  //     const response = await fetch(videoUrl, {
+  //       cache: "force-cache",
+  //       signal: abortControllerRef.current.signal
+  //     });
 
-      if (!response.ok) throw new Error("Network response was not ok");
+  //     if (!response.ok) throw new Error("Network response was not ok");
 
-      // response를 blob로 변환
-      const blob = await response.blob();
+  //     // response를 blob로 변환
+  //     const blob = await response.blob();
 
-      // blob URL 생성
-      blobUrlRef.current = URL.createObjectURL(blob);
+  //     // blob URL 생성
+  //     blobUrlRef.current = URL.createObjectURL(blob);
 
-      // 캐시에 저장
-      blobUrlCache.set(videoUrl, blobUrlRef.current);
+  //     // 캐시에 저장
+  //     blobUrlCache.set(videoUrl, blobUrlRef.current);
 
-      return blobUrlRef.current;
-    } catch (error: any) {
-      if (error.name === 'AbortError') {
-        console.log('Fetch aborted');
-        return;
-      }
-      console.error("Error converting video to blob URL:", error);
-      throw error;
-    } finally {
-      // 완료된 controller 정리 
-      abortControllerRef.current = null;
-    }
-  };
+  //     return blobUrlRef.current;
+  //   } catch (error: any) {
+  //     if (error.name === 'AbortError') {
+  //       console.log('Fetch aborted');
+  //       return;
+  //     }
+  //     console.error("Error converting video to blob URL:", error);
+  //     throw error;
+  //   } finally {
+  //     // 완료된 controller 정리 
+  //     abortControllerRef.current = null;
+  //   }
+  // };
 
   // 캐시 정리 함수
-  const clearBlobUrlCache = () => {
-    blobUrlCache.forEach((blobUrl) => {
-      URL.revokeObjectURL(blobUrl);
-    });
+  // const clearBlobUrlCache = () => {
+  //   blobUrlCache.forEach((blobUrl) => {
+  //     URL.revokeObjectURL(blobUrl);
+  //   });
 
-    blobUrlCache.clear();
-  };
+  //   blobUrlCache.clear();
+  // };
 
   const signInProcess = (code: string, authType: string) => {
     dispatch(userSlice.authGoogle({ code, userId: user?.id, authType }));
@@ -864,12 +864,14 @@ const SeriesPlayerPage = ({}) => {
         <div className={`${isMobile ? "player-wrap" : "page-wrap"}`}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
+              setLoading={setLoading}
               locked={locked}
               playing={playing}
               muted={muted}
               swiperRef={swiperRef}
               blobUrlRef={blobUrlRef}
               handleSlideChange={handleSlideChange}
+              handleEpisodeChange={handleEpisodeChange}
               handleSlideChangeStart={handleSlideChangeStart}
               handleVideoEnded={handleVideoEnded}
               episodeList={episodeList}
@@ -1016,7 +1018,7 @@ const SeriesPlayerPage = ({}) => {
                       episodeNum={currentEp.episode_num}
                       videoRef={videoRef}
                       videoUrl={`${import.meta.env.VITE_CDN_URL}/videos/${series.id}/${currentEp?.episode_num}/hls_output.m3u8`}
-                      setVideoLoading={setVideoLoading}
+                      setLoading={setLoading}
                       handleEpisodeChange={handleEpisodeChange}
                       handleTimeUpdate={handleTimeUpdate}
                     />

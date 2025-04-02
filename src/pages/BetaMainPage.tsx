@@ -1,8 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
-import { formattedSecond } from "common/utility";
 
 import * as globalSlice from "src/redux/globalSlice";
 import * as userSlice from "src/redux/userSlice";
@@ -12,18 +11,14 @@ import { User } from "src/types";
 import UIShortFormSwiper from "components/ui/UIShortFormSwiper";
 import UIBottomSheetEpisodeGrid from "../components/ui/bottomsheet/UIBottomSheetEpisodeGrid";
 import UILayerLockedEpisode from "components/ui/layer/UILayerLockedEpisode";
-import UIEpisodeNumGrid from "components/ui/UIEpisodeNumGrid";
-import LayoutFooter from "components/layouts/LayoutFooter";
 import UIPopPaymentProductList from "components/ui/popup/UIPopPaymentProductList";
 import UIPopPayments from "components/ui/payments/UIPopPayments";
 import UIPopLogin from "components/ui/popup/UIPopLogin";
 import UILayerSpinner from "components/ui/layer/UILayerSpinner";
-import HlsPlayer from "components/HlsPlayer";
 import UILeftMenu from "components/ui/UILeftMenu";
 
 const BetaMainPage = ({}) => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const {
@@ -59,7 +54,7 @@ const BetaMainPage = ({}) => {
   } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [videoLoading, setVideoLoading] = useState<boolean>(true);
+  // const [videoLoading, setVideoLoading] = useState<boolean>(true);
   const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
 
   const [playing, setPlaying] = useState<boolean>(true);
@@ -67,8 +62,7 @@ const BetaMainPage = ({}) => {
   const [progress, setProgress] = useState<number>(0);
   const [currentEp, setCurrentEp] = useState<any>();
   const [episodeList, setEpisodeList] = useState([]);
-  const [visibleBottomSheetEpisode, setVisibleBottomSheetEpisode] =
-    useState(false);
+  const [visibleBottomSheetEpisode, setVisibleBottomSheetEpisode] = useState(false);
   const [_visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
   const [keep, setKeep] = useState<boolean>();
   const [keepCount, setKeepCount] = useState<any>();
@@ -76,29 +70,29 @@ const BetaMainPage = ({}) => {
   const [unlockEpisode, setUnlockEpisode] = useState<number>();
   const [lastEpisode, setLastEpisode] = useState<number>(0);
   const [muted, setMuted] = useState<boolean>(true);
-  const [fullscreen, setFullscreen] = useState<boolean>(false);
+  // const [fullscreen, setFullscreen] = useState<boolean>(false);
   const [visibleMenu, setVisibleMenu] = useState<boolean>(false);
 
   const loginSheetRef = useRef<any>(null);
   const swiperRef = useRef<any>(null);
   const videoRef = useRef<any>(null);
   const hideToolsTimeout = useRef<any>();
-  const videoContainerRef = useRef<HTMLDivElement>(null);
+  // const videoContainerRef = useRef<HTMLDivElement>(null);
   const sequenceCountRef = useRef<number>(0);
   const progressChangingRef = useRef<boolean>(false);
   const blobUrlRef = useRef<string>("");
-  const abortControllerRef = useRef<AbortController | null>(null);
+  // const abortControllerRef = useRef<AbortController | null>(null);
 
   const seriesIdRef = useRef<string>('1');
   
 
   const currentTimeRef = useRef<number>(0);
 
-  const blobUrlCache = new Map<string, string>();
+  // const blobUrlCache = new Map<string, string>();
 
-  const handleClose = () => {
-    navigate(-1);
-  };
+  // const handleClose = () => {
+  //   navigate(-1);
+  // };
 
   const handleMenuOpen = () => {
     setVisibleMenu(true);
@@ -135,64 +129,64 @@ const BetaMainPage = ({}) => {
     }
   };
 
-  // 비디오 URL을 Blob URL로 변환 함수
-  const convertToBlobURL = async (
-    videoUrl: string
-  ): Promise<string | undefined> => {
-    // 캐시된 Blob URL이 있는지 확인
-    if (blobUrlCache.has(videoUrl)) {
-      return blobUrlCache.get(videoUrl);
-    }
+  // // 비디오 URL을 Blob URL로 변환 함수
+  // const convertToBlobURL = async (
+  //   videoUrl: string
+  // ): Promise<string | undefined> => {
+  //   // 캐시된 Blob URL이 있는지 확인
+  //   if (blobUrlCache.has(videoUrl)) {
+  //     return blobUrlCache.get(videoUrl);
+  //   }
 
-    try {
+  //   try {
 
-      // 이전 요청이 있다면 취소
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
+  //     // 이전 요청이 있다면 취소
+  //   if (abortControllerRef.current) {
+  //     abortControllerRef.current.abort();
+  //   }
       
-      // abortController 생성
-      abortControllerRef.current = new AbortController();
+  //     // abortController 생성
+  //     abortControllerRef.current = new AbortController();
       
-      // video url로 부터 데이터 fetch
-      const response = await fetch(videoUrl, {
-        cache: "force-cache",
-        signal: abortControllerRef.current.signal
-      });
+  //     // video url로 부터 데이터 fetch
+  //     const response = await fetch(videoUrl, {
+  //       cache: "force-cache",
+  //       signal: abortControllerRef.current.signal
+  //     });
 
-      if (!response.ok) throw new Error("Network response was not ok");
+  //     if (!response.ok) throw new Error("Network response was not ok");
 
-      // response를 blob로 변환
-      const blob = await response.blob();
+  //     // response를 blob로 변환
+  //     const blob = await response.blob();
 
-      // blob URL 생성
-      blobUrlRef.current = URL.createObjectURL(blob);
+  //     // blob URL 생성
+  //     blobUrlRef.current = URL.createObjectURL(blob);
 
-      // 캐시에 저장
-      blobUrlCache.set(videoUrl, blobUrlRef.current);
+  //     // 캐시에 저장
+  //     blobUrlCache.set(videoUrl, blobUrlRef.current);
 
-      return blobUrlRef.current;
-    } catch (error: any) {
-      if (error.name === 'AbortError') {
-        console.log('Fetch aborted');
-        return;
-      }
-      console.error("Error converting video to blob URL:", error);
-      throw error;
-    } finally {
-      // 완료된 controller 정리 
-      abortControllerRef.current = null;
-    }
-  };
+  //     return blobUrlRef.current;
+  //   } catch (error: any) {
+  //     if (error.name === 'AbortError') {
+  //       console.log('Fetch aborted');
+  //       return;
+  //     }
+  //     console.error("Error converting video to blob URL:", error);
+  //     throw error;
+  //   } finally {
+  //     // 완료된 controller 정리 
+  //     abortControllerRef.current = null;
+  //   }
+  // };
 
-  // 캐시 정리 함수
-  const clearBlobUrlCache = () => {
-    blobUrlCache.forEach((blobUrl) => {
-      URL.revokeObjectURL(blobUrl);
-    });
+  // // 캐시 정리 함수
+  // const clearBlobUrlCache = () => {
+  //   blobUrlCache.forEach((blobUrl) => {
+  //     URL.revokeObjectURL(blobUrl);
+  //   });
 
-    blobUrlCache.clear();
-  };
+  //   blobUrlCache.clear();
+  // };
 
   const signInProcess = (code: string, authType: string) => {
     dispatch(userSlice.authGoogle({ code, userId: user?.id, authType }));
@@ -382,64 +376,64 @@ const BetaMainPage = ({}) => {
     videoRef.current.muted = !videoRef.current.muted;
   };
 
-  const handleFullscreen = (event: any) => {
-    event.stopPropagation();
+  // const handleFullscreen = (event: any) => {
+  //   event.stopPropagation();
 
-    if (fullscreen) {
-      setFullscreen(false);
-      document.exitFullscreen();
-    } else {
-      setFullscreen(true);
-      videoContainerRef.current?.requestFullscreen();
-    }
-  };
+  //   if (fullscreen) {
+  //     setFullscreen(false);
+  //     document.exitFullscreen();
+  //   } else {
+  //     setFullscreen(true);
+  //     videoContainerRef.current?.requestFullscreen();
+  //   }
+  // };
 
-  const handleEpisodeClick = async (index: number) => {
-    if(abortControllerRef.current) {
-      await abortControllerRef.current.abort();
-    }
+  // const handleEpisodeClick = async (index: number) => {
+  //   if(abortControllerRef.current) {
+  //     await abortControllerRef.current.abort();
+  //   }
 
-    if (index + 1 === currentEp?.episode_num) {
-      return;
-    }
+  //   if (index + 1 === currentEp?.episode_num) {
+  //     return;
+  //   }
 
-    if (unlockEpisode && index <= unlockEpisode) {
-      handleEpisodeChange(index + 1);
-    }
+  //   if (unlockEpisode && index <= unlockEpisode) {
+  //     handleEpisodeChange(index + 1);
+  //   }
 
-    if (index === unlockEpisode) {
-      videoRef.current.currentTime = 0;
-      currentTimeRef.current = 0;
-      setProgress(0);
-      setLocked(true);
-    }
+  //   if (index === unlockEpisode) {
+  //     videoRef.current.currentTime = 0;
+  //     currentTimeRef.current = 0;
+  //     setProgress(0);
+  //     setLocked(true);
+  //   }
 
-    if (unlockEpisode && index > unlockEpisode) {
-      dispatch(
-        globalSlice.addToast({
-          id: Date.now(),
-          message: "앞에 놓친 에피소드가 있어요.",
-          duration: 1500,
-        })
-      );
-    }
-  };
+  //   if (unlockEpisode && index > unlockEpisode) {
+  //     dispatch(
+  //       globalSlice.addToast({
+  //         id: Date.now(),
+  //         message: "앞에 놓친 에피소드가 있어요.",
+  //         duration: 1500,
+  //       })
+  //     );
+  //   }
+  // };
 
   const handleFullscreenChange = () => {
     if (!document.fullscreenElement) {
-      setFullscreen(false);
+      // setFullscreen(false);
     }
   };
 
-  const handlePlayerClick = () => {
-    if (playing) {
-      videoRef.current.pause();
-      setPlaying(false);
-    } else {
-      videoRef.current.play();
-      setPlaying(true);
-    }
-  };
+  // const handlePlayerClick = () => {
+  //   if (playing) {
+  //     videoRef.current.pause();
+  //     setPlaying(false);
+  //   } else {
+  //     videoRef.current.play();
+  //     setPlaying(true);
+  //   }
+  // };
 
   const handleVideoEnded = () => {
     if (isMobile && currentEp?.episode_num < episodeList.length) {
@@ -886,7 +880,7 @@ const BetaMainPage = ({}) => {
               toggleTools={toggleTools}
               unlockEpisode={unlockEpisode}
               lastEpisode={lastEpisode}
-              setVideoLoading={setVideoLoading}
+              setLoading={setLoading}
               handleEpisodeChange={handleEpisodeChange}
             />
           </div>

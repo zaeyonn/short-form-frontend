@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import Hls from 'hls.js';
 
 import * as globalSlice from "src/redux/globalSlice";
@@ -10,17 +10,17 @@ interface Props {
   videoRef: any;
   videoUrl: string;
   muted: boolean;
-  setVideoLoading: any;
+  setLoading: any;
   handleTimeUpdate: () => any;
   handleEpisodeChange: (index: number) => any;
 }
 
 
-const HlsPlayer = ({ lastEpisode, index, episodeNum, videoRef, videoUrl, muted, setVideoLoading, handleTimeUpdate, handleEpisodeChange}: Props) => {
+const HlsPlayer = ({ lastEpisode, index, episodeNum, videoRef, videoUrl, muted, setLoading, handleTimeUpdate, handleEpisodeChange}: Props) => {
   
   useEffect(() => {
     if (Hls.isSupported() && (lastEpisode - 1 === index)) {
-      setVideoLoading(true);
+      setLoading(true);
       const hls = new Hls();
 
       hls.loadSource(videoUrl);
@@ -28,7 +28,7 @@ const HlsPlayer = ({ lastEpisode, index, episodeNum, videoRef, videoUrl, muted, 
       hls.attachMedia(videoRef.current);
 
       // 에러 핸들링
-      hls.on(Hls.Events.ERROR, function (event, data) {
+      hls.on(Hls.Events.ERROR, function (_event, data) {
         const errorType = data.type;
       
         switch (errorType) {
@@ -53,8 +53,8 @@ const HlsPlayer = ({ lastEpisode, index, episodeNum, videoRef, videoUrl, muted, 
       });
 
       if(videoRef.current) {
-        videoRef.current.addEventListener("canplay", (event: any) => {
-          setVideoLoading(false);
+        videoRef.current.addEventListener("canplay", () => {
+          setLoading(false);
         })
       }
     } 
