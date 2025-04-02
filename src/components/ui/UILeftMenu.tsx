@@ -47,7 +47,7 @@ const UILeftMenu = (props: Props) => {
       }}>
       <div className='item' style={{margin: '2px 0px 20px 0px'}}>
         <img src='resources/icons/icon_hamburger.svg'/>
-        Logo
+        <img className='logo' src={"/resources/images/main_logo_white.svg"}/>
       </div>
       <div className="divider"/>
       <div className='item'>
@@ -63,22 +63,22 @@ const UILeftMenu = (props: Props) => {
         북마크
       </Link>
       <div className="divider"/>
-      <div className='item'>
+      <Link to='/mission' className='item' onClick={handleClose}>
         <img src='resources/icons/icon_event_m.svg'/>
         미션 & 이벤트
-      </div>
-      <div className='item'>
+      </Link>
+      <Link to='https://www.gala.biz/ko/contact-us' target='_blank' className='item'>
         <img src='resources/icons/icon_call_m.svg'/>
         고객센터
-      </div>
+      </Link>
       <div className='item'>
         <img src='resources/icons/icon_setting_m.svg'/>
         설정
       </div>
-      <div className='item'>
+      <Link to='https://www.gala.biz/ko' target='_blank' className='item'>
         <img src='resources/icons/icon_company_m.svg'/>
         회사소개
-      </div>
+      </Link>
       <div className='divider'/>
     </animated.div>
     </>

@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import CallbackGoogle from "components/callback/CallbackGoogle";
 import CallbackTossPayment from "components/callback/CallbackTossPayment";
@@ -9,13 +10,14 @@ import SeriesKeepPage from "pages/SeriesKeepPage";
 import SeriesListPage from "pages/SeriesListPage";
 import PaymentProductListPage from "pages/PaymentProductListPage";
 import MissionPage from "pages/MissionPage";
+import BetaMainPage from "pages/BetaMainPage";
 
 const RouteManager = () => {
+  const { isMobile } = useSelector((state: any) => state.global)
   
   return (
     <Routes>
-      <Route path='/' element={<MainPage/>} />
-      <Route path='/home' element={<MainPage/>} />
+      <Route path='/' element={isMobile ? <BetaMainPage/> : <MainPage/>} />
       <Route path='/bookmark' element={<SeriesKeepPage/>} />
       <Route path='/mission' element={<MissionPage/>} />
       <Route path='/series/:seriesId' element={<SeriesPlayerPage/>} />

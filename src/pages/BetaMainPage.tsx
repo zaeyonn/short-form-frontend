@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
 import { formattedSecond } from "common/utility";
 
@@ -19,8 +19,9 @@ import UIPopPayments from "components/ui/payments/UIPopPayments";
 import UIPopLogin from "components/ui/popup/UIPopLogin";
 import UILayerSpinner from "components/ui/layer/UILayerSpinner";
 import HlsPlayer from "components/HlsPlayer";
+import UILeftMenu from "components/ui/UILeftMenu";
 
-const SeriesPlayerPage = ({}) => {
+const BetaMainPage = ({}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -76,6 +77,7 @@ const SeriesPlayerPage = ({}) => {
   const [lastEpisode, setLastEpisode] = useState<number>(0);
   const [muted, setMuted] = useState<boolean>(true);
   const [fullscreen, setFullscreen] = useState<boolean>(false);
+  const [visibleMenu, setVisibleMenu] = useState<boolean>(false);
 
   const loginSheetRef = useRef<any>(null);
   const swiperRef = useRef<any>(null);
@@ -87,7 +89,7 @@ const SeriesPlayerPage = ({}) => {
   const blobUrlRef = useRef<string>("");
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const seriesIdRef = useRef<string>(location.pathname.split("/")[2]);
+  const seriesIdRef = useRef<string>('1');
   
 
   const currentTimeRef = useRef<number>(0);
@@ -96,6 +98,14 @@ const SeriesPlayerPage = ({}) => {
 
   const handleClose = () => {
     navigate(-1);
+  };
+
+  const handleMenuOpen = () => {
+    setVisibleMenu(true);
+  };
+
+  const handleMenuClose = () => {
+    setVisibleMenu(false);
   };
 
   // 도구 토글
@@ -317,7 +327,7 @@ const SeriesPlayerPage = ({}) => {
     setKeep(!keep);
 
     if (keep) {
-      setKeepCount(keepCount - 1);
+      setKeepCount(keepCount - 1 >= 0 ? keepCount - 1 : 0);
       dispatch(
         userSlice.removeSeriesKeep({
           userId: user.id,
@@ -820,17 +830,17 @@ const SeriesPlayerPage = ({}) => {
     }
   }, [videoRef.current, lastEpisode, unlockEpisode, series]);
 
-  useEffect(() => {
-    if (blobUrlRef.current) {
-      if (!locked) {
-        setPlaying(true);
-        videoRef.current.play();
-      } else {
-        setPlaying(false);
-        videoRef.current.pause();
-      }
-    }
-  }, [blobUrlRef.current, locked]);
+  // useEffect(() => {
+  //   if (blobUrlRef.current) {
+  //     if (!locked) {
+  //       setPlaying(true);
+  //       videoRef.current.play();
+  //     } else {
+  //       setPlaying(false);
+  //       videoRef.current.pause();
+  //     }
+  //   }
+  // }, [blobUrlRef.current, locked]);
 
   useEffect(() => {
     console.log("window", window.location);
@@ -859,8 +869,6 @@ const SeriesPlayerPage = ({}) => {
 
   return (
     <>
-      {isMobile ? (
-        /* Mobile UI */
         <div className={`${isMobile ? "player-wrap" : "page-wrap"}`}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
@@ -878,6 +886,8 @@ const SeriesPlayerPage = ({}) => {
               toggleTools={toggleTools}
               unlockEpisode={unlockEpisode}
               lastEpisode={lastEpisode}
+              setVideoLoading={setVideoLoading}
+              handleEpisodeChange={handleEpisodeChange}
             />
           </div>
           {loading && (
@@ -885,28 +895,27 @@ const SeriesPlayerPage = ({}) => {
               <TailSpin width={60} height={60} color={"#ffffff"} />
             </div>
           )}
+          <div className="header">
+            <div className="left-section">
+              <img
+                src={`/resources/icons/icon_hamburger.svg`}
+                onClick={handleMenuOpen}
+              />
+              <Link to={window.location.origin} className="title">
+                <img className='logo' src={"/resources/images/main_logo_white.svg"}/>
+              </Link>
+            </div>
+            <div className="right-section">
+              <Link to="/profile">
+                <img
+                  className="profile-icon"
+                  src={`/resources/icons/icon_profile.svg`}
+                />
+              </Link>
+            </div>
+          </div>
           {visibleTools && (
             <>
-              <div className="header" style={{ background: "none" }}>
-                <div className="left-section">
-                  <img
-                    src={`/resources/icons/icon_arrow_left_m.svg`}
-                    onClick={handleClose}
-                  />
-                  <span className="title">{`${series?.title} ${
-                    currentEp?.episode_num ? `[${currentEp.episode_num}]` : ""
-                  }`}</span>
-                </div>
-                <div className="right-section">
-                  <img
-                    className="speaker-icon"
-                    src={`/resources/icons/${
-                      muted ? "icon_speaker_muted_l.svg" : "icon_speaker_l.svg"
-                    }`}
-                    onClick={handleMuted}
-                  />
-                </div>
-              </div>
               {!locked && !loading && (
                 <>
                   {playing && (
@@ -926,6 +935,15 @@ const SeriesPlayerPage = ({}) => {
                 </>
               )}
               <div className="right-menu">
+                <div className="btn-wrap" onClick={handleMuted}>
+                  <img
+                    className="speaker-icon"
+                    src={`/resources/icons/${
+                      muted ? "icon_speaker_muted_l.svg" : "icon_speaker_l.svg"
+                    }`}
+                    onClick={handleMuted}
+                  />
+                </div>
                 <div className="btn-wrap" onClick={handleSeriesKeep}>
                   <img
                     id="bookmark-btn"
@@ -944,7 +962,7 @@ const SeriesPlayerPage = ({}) => {
                 <div className="progress-bar">
                   <input
                     style={{
-                      background: `linear-gradient(to right, $brand-color ${progress}%, #535353 ${progress}%)`,
+                      background: `linear-gradient(to right, #1A6EFF ${progress}%, #535353 ${progress}%)`,
                     }}
                     type="range"
                     min="0"
@@ -979,189 +997,6 @@ const SeriesPlayerPage = ({}) => {
             />
           )}
         </div>
-      ) : (
-        /* Desktop UI */
-        <>
-          <div className="page-wrap" style={{ paddingTop: 0 }}>
-            <div className="page-body">
-              <div className="short-form-player-wrap" ref={videoContainerRef}>
-                <div
-                  className={`short-form-player ${
-                    fullscreen ? "fullscreen" : ""
-                  }`}
-                  onClick={handlePlayerClick}
-                >
-                  {videoLoading && (
-                    <div className="loading">
-                      <TailSpin width={60} height={60} color={"#ffffff"} />
-                    </div>
-                  )}
-                  {/* <video
-                    id="short-form-video"
-                    //src={blobUrlRef.current}
-                    muted={muted}
-                    preload="auto"
-                    ref={videoRef}
-                    onTimeUpdate={handleTimeUpdate}
-                    onEnded={() => handleEpisodeChange(currentEp?.episode_num)}
-                  >
-                    {currentEp && (
-                    <source src={`${import.meta.env.VITE_SERVER_URL}/api/series/stream/${currentEp?.series_id}/${currentEp?.video}`} type="video/mp4"></source>
-                    )}
-                  </video> */}
-                    <HlsPlayer
-                      index={currentEp.episode_num - 1}
-                      lastEpisode={lastEpisode}
-                      muted={muted}
-                      episodeNum={currentEp.episode_num}
-                      videoRef={videoRef}
-                      videoUrl={`${import.meta.env.VITE_CDN_URL}/videos/${series.id}/${currentEp?.episode_num}/hls_output.m3u8`}
-                      setVideoLoading={setVideoLoading}
-                      handleEpisodeChange={handleEpisodeChange}
-                      handleTimeUpdate={handleTimeUpdate}
-                    />
-                  <div
-                    className="bottom-container"
-                    onClick={(event) => event.stopPropagation()}
-                  >
-                    <div
-                      className="flex-row"
-                      style={{ justifyContent: "space-between" }}
-                    >
-                      <div
-                        className="flex-row"
-                        style={{
-                          gap: 9,
-                          visibility: videoLoading ? "hidden" : "visible",
-                        }}
-                      >
-                        <>
-                          {!playing && (
-                            <img
-                              src={"/resources/icons/icon_play_pc.svg"}
-                              className="play-btn"
-                              onClick={togglePlay}
-                            />
-                          )}
-                          {playing && (
-                            <img
-                              src={"/resources/icons/icon_pause_pc.svg"}
-                              className="play-btn"
-                              onClick={togglePlay}
-                            />
-                          )}
-                          {currentEp && (
-                            <span className="time">
-                              <span>
-                                {currentTimeRef.current > 0
-                                  ? formattedSecond(currentTimeRef.current)
-                                  : ""}
-                              </span>
-                              {currentTimeRef.current > 0 &&
-                              videoRef.current.duration > 0
-                                ? " / "
-                                : ""}
-                              <span>
-                                {isNaN(videoRef.current?.duration) ||
-                                videoRef.current.duration === 0
-                                  ? ""
-                                  : formattedSecond(videoRef.current?.duration)}
-                              </span>
-                            </span>
-                          )}
-                        </>
-                      </div>
-                      <div className="flex-row" style={{ gap: 20 }}>
-                        <img
-                          className="speaker-btn"
-                          src={`/resources/icons/${
-                            muted
-                              ? "icon_speaker_muted_l.svg"
-                              : "icon_speaker_l.svg"
-                          }`}
-                          onClick={handleMuted}
-                        />
-
-                        <img
-                          className="fullscreen-btn"
-                          src={"/resources/icons/icon_fullscreen.svg"}
-                          onClick={handleFullscreen}
-                        />
-                      </div>
-                    </div>
-                    <div className="progress-bar">
-                      <input
-                        style={{
-                          background: `linear-gradient(to right, #1A6EFF ${progress}%, #535353 ${progress}%)`,
-                        }}
-                        type="range"
-                        min="0"
-                        max="100"
-                        step="0.1"
-                        value={progress}
-                        onChange={handleProgressChange}
-                        onTouchEnd={handleProgressTouchEnd}
-                        onTouchStart={handleProgressTouchStart}
-                        onMouseDown={handleProgressTouchStart}
-                        onMouseUp={handleProgressTouchEnd}
-                      />
-                    </div>
-                  </div>
-                  {locked && (
-                    <>
-                      <UILayerLockedEpisode
-                        handleLockedClose={handleLockedClose}
-                        handlePaymentComplete={handlePaymentComplete}
-                        handlePointUse={handlePointUse}  
-                        handleLoginOpen={handleLoginOpen}
-                      />
-                    </>
-                  )}
-                </div>
-                {!loading && (
-                  <div
-                    className="info-container"
-                    style={
-                      fullscreen ? { paddingTop: 30, paddingRight: 25 } : {}
-                    }
-                  >
-                    <div className="detail-info">
-                      <div className="title">{series?.title}</div>
-                      <div
-                        className="description"
-                        data-hover={series?.description}
-                      >
-                        {series?.description}
-                      </div>
-                    </div>
-                    <div>
-                      <span className="bookmark" onClick={handleSeriesKeep}>
-                        <img
-                          id="bookmark-btn"
-                          src={`/resources/icons/icon_bookmark${
-                            keep ? "_fill" : ""
-                          }.svg`}
-                        />
-                        {keepCount}
-                      </span>
-                      <div className="episode">
-                        {`episode ${currentEp?.episode_num}/${series?.ep_count}`}
-                      </div>
-                      <UIEpisodeNumGrid
-                        series={series}
-                        currentEp={currentEp}
-                        unlockEpisode={unlockEpisode}
-                        handleEpisodeClick={handleEpisodeClick}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-          {!isMobile && <LayoutFooter />}
-        </>
-      )}
       {displayPopName === displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name && (
         <UIPopPaymentProductList
           setPaymentLoading={setPaymentLoading}
@@ -1177,8 +1012,9 @@ const SeriesPlayerPage = ({}) => {
       {paymentLoading && (
         <UILayerSpinner/>
       )}
+      <UILeftMenu visible={visibleMenu} handleMenuClose={handleMenuClose} />
     </>
   );
 };
 
-export default SeriesPlayerPage;
+export default BetaMainPage;

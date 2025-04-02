@@ -1,3 +1,4 @@
+import HlsPlayer from "components/HlsPlayer";
 import { RefObject } from "react";
 import { Swiper, SwiperSlide } from "swiper/react"
 
@@ -11,6 +12,8 @@ interface Props {
   blobUrlRef: RefObject<any>;
   lastEpisode: number;
   unlockEpisode: number | undefined;
+  setVideoLoading: any;
+  handleEpisodeChange: (index: number) => any;
   handleTimeUpdate: () => any;
   toggleTools: () => any;
   handleSlideChange: (swiper: any) => any;
@@ -18,7 +21,7 @@ interface Props {
   handleVideoEnded: () => any;
 }
 
-const UIShortFormSwiper = ({locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, handleVideoEnded}: Props) => {
+const UIShortFormSwiper = ({locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, handleEpisodeChange}: Props) => {
 
   return (
     <Swiper 
@@ -29,16 +32,22 @@ const UIShortFormSwiper = ({locked, muted, episodeList, videoRef, handleTimeUpda
       allowSlideNext={locked ? false : true}>
       { episodeList.map((i: any, index: number) => {
         return (
-          <>
           <SwiperSlide className='short-form' key={index}>
-            <video preload="auto" playsInline muted={muted} id={`slide-idx-${index}`} autoPlay={false} ref={lastEpisode - 1 === index ? videoRef : null} onTimeUpdate={handleTimeUpdate} onEnded={() => handleVideoEnded()}>
-              <source src={`${import.meta.env.VITE_SERVER_URL}/videos/${i.series_id}/${i.video}`}></source>
-            </video>
+            <HlsPlayer
+              lastEpisode={lastEpisode}
+              index={index}
+              muted={muted}
+              episodeNum={index+1}
+              videoRef={videoRef}
+              videoUrl={`https://storage.googleapis.com/framez-local/videos/${i.series_id}/hls/${index + 1}_hls_output.m3u8`}
+              setVideoLoading={setVideoLoading}
+              handleEpisodeChange={handleEpisodeChange}
+              handleTimeUpdate={handleTimeUpdate}
+            />
             {locked && <div className='locked-layer'/>}
           </SwiperSlide>
-          </>
           )
-      }) }
+      })}
     </Swiper>
   )
 }

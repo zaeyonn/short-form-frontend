@@ -28,11 +28,11 @@ const SeriesListPage = () => {
         </div>
       </div>
       <div className='page-body'>
-      <div className='title'>
-        { seriesListTitle }
-      </div>
+        <div className='title'>
+          { seriesListTitle }
+        </div>
         <div className='series-container'>
-        { seriesList?.map((item: any, index: number) => <UIMediumContentItem key={index} item={item}/>)}
+          { seriesList?.map((item: any, index: number) => <UIMediumContentItem key={index} item={item}/>)}
         </div>
       </div>
     </div>

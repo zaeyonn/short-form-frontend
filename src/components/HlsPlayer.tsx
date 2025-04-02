@@ -4,7 +4,9 @@ import Hls from 'hls.js';
 import * as globalSlice from "src/redux/globalSlice";
 
 interface Props {
-  currentEp: any;
+  lastEpisode: number;
+  index: number;
+  episodeNum: any;
   videoRef: any;
   videoUrl: string;
   muted: boolean;
@@ -14,10 +16,11 @@ interface Props {
 }
 
 
-const HlsPlayer = ({ currentEp, videoRef, videoUrl, muted, setVideoLoading, handleTimeUpdate, handleEpisodeChange}: Props) => {
+const HlsPlayer = ({ lastEpisode, index, episodeNum, videoRef, videoUrl, muted, setVideoLoading, handleTimeUpdate, handleEpisodeChange}: Props) => {
   
   useEffect(() => {
-    if (Hls.isSupported()) {
+    if (Hls.isSupported() && (lastEpisode - 1 === index)) {
+      setVideoLoading(true);
       const hls = new Hls();
 
       hls.loadSource(videoUrl);
@@ -48,17 +51,17 @@ const HlsPlayer = ({ currentEp, videoRef, videoUrl, muted, setVideoLoading, hand
             break;
         }
       });
-    } else if (videoRef.current.canPlayType("application/vnd.apple.mpegurl")) {
-      videoRef.current.src = videoUrl;
+
+      if(videoRef.current) {
+        videoRef.current.addEventListener("canplay", (event: any) => {
+          setVideoLoading(false);
+        })
+      }
     } 
 
-    videoRef.current.addEventListener("canplay", (event: any) => {
-      setVideoLoading(false);
-      videoRef.current.play();
-    })
-  }, [videoUrl])
+  }, [videoUrl, lastEpisode, index])
   
-  return  <video muted={muted} ref={videoRef} id="video" onTimeUpdate={handleTimeUpdate} onEnded={() => handleEpisodeChange(currentEp?.episode_num)}/>
+  return  <video autoPlay playsInline muted={muted} ref={lastEpisode - 1 === index ? videoRef : null}  id={`slide-idx-${index}`} onTimeUpdate={handleTimeUpdate} onEnded={() => handleEpisodeChange(episodeNum + 1)}/>
 }
 
 export default HlsPlayer;

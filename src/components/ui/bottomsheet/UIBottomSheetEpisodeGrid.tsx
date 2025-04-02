@@ -42,7 +42,7 @@ const UIBottomSheetEpisodeGrid = ({series, setLocked, currentEp, visibleBottomSh
 
   const handleEpisodeClick = (index: number) => {
     if(unlockEpisode && index <= unlockEpisode) { 
-      handleEpisodeChange(index);
+      handleEpisodeChange(index + 1);
       closeBottomSheet();
     }
 
@@ -80,7 +80,7 @@ const UIBottomSheetEpisodeGrid = ({series, setLocked, currentEp, visibleBottomSh
     }}
     className='bottom-sheet-wrap'>
       <div className='head'>
-        <div className='title'>{currentEp?.title + ` [${currentEp?.episode_num}회]`}</div>
+        <div className='title'>{series?.title + ` [${currentEp?.episode_num}회]`}</div>
         <div className='tag-list'>
           { series?.keyword?.map((i: any, idx: number) => <span className='tag type_c' key={idx}>{i}</span>)}
           <span className='tag type_b'>{`총 ${series?.ep_count}회`}</span>

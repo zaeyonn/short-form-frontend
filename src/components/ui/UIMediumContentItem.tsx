@@ -50,7 +50,7 @@ const UIMediumContentItem = (props: Props) => {
         </span>
       )}
       <span className='poster-wrap'>
-        <img src={`${import.meta.env.VITE_SERVER_URL}/resources/images/posters/${props.item.poster_img}`}/>
+        <img src={`${import.meta.env.VITE_WEB_RES_ROOT}/resources/images/posters/${props.item.poster_img}`}/>
       </span>
       <div className='series-title'>{props.item.title}</div>
       <div className='watch-status' style={{visibility: props.item.last_episode ? 'visible' : 'hidden'}}>{`${props.item.last_episode} / ${props.item.ep_count} 회`}</div>

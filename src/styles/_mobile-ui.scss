@@ -67,6 +67,12 @@
       .small-content-slider-wrap {
         .small-content-item {
           min-width: 120px;
+
+          .poster-wrap {
+            img {
+              max-width: 130px;
+            }
+          }
         }
       }
       
@@ -130,4 +136,137 @@
     }
     }
   }
+
+
+  .attendance-check-wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .my-coin-wrap {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  
+    .my-coin-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: #FFFFFF;
+    }
+  
+    .my-coin-count {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 18px;
+  
+      img {
+        width: 30px;
+        height: 30px;
+      }
+    }
+
+  
+  .attendance-check-background {
+    display: flex;
+    flex-direction: column;;
+    margin-top: 20px;
+    height: 300px;
+    background-image: url('resources/images/m_attendance_check_background.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding-left: 15px;
+    padding-right: 15px;
+    justify-content: center;
+
+    .day-list-wrap {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      .day-list-row {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .day-item {
+        align-items: center;
+        justify-content: center;
+        color: #A1A9DA;
+        font-weight: 400;
+        font-size: 13px;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+
+        .day-circle-wrap {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
+          .circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: #A1A9DA;
+
+            span {
+              position: absolute;
+            }
+          }
+        }
+
+        .day-text {
+          transform: translateX(-34%);
+          .day-count {
+            margin-right: 1.5px;
+          }
+        }
+
+        .attended {
+          font-weight: 500;
+          color: $brand-color;
+        }
+        
+        .day-item-divider {
+          width: 14px;
+          height: 2px;
+          border-radius: 3px;
+          margin-left: 4px;
+          margin-right: 4px;
+          background-color: #DCDEEA;
+        }
+      }
+    }
+
+    .attendance-btn {
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 16px;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 30px;
+      width: 100%;
+      background-color: $brand-color;
+    }
+
+    .disabled {
+      cursor: default;
+      opacity: 0.7;
+    }
+
+    
+    .attendance-btn:hover {
+      opacity: 0.7;
+    }
+  }
+}
 }
