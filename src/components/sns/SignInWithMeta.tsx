@@ -8,10 +8,10 @@ const SignInWithMeta = ({ signInProcess }: Props) => {
   const handleCredentialResponse = (e: any) => {
     if (
       e.origin.lastIndexOf(import.meta.env.VITE_WEB_ROOT) >= 0 &&
-      e.data.auth_type === "google" &&
+      e.data.auth_type === "meta" &&
       e.data.hasOwnProperty("code")
     ) {
-      signInProcess(e.data.code, "google");
+      signInProcess(e.data.code, "meta");
     }
   };
 
@@ -36,7 +36,7 @@ const SignInWithMeta = ({ signInProcess }: Props) => {
 
   return (
     <button onClick={handleLogin}>
-      <img src="/resources/icons/icon_google.svg" />
+      <img src="/resources/icons/icon_meta.svg" />
       Meta로 계속하기
     </button>
   );

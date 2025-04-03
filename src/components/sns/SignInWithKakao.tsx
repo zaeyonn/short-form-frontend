@@ -6,23 +6,15 @@ interface Props {
 
 const SignInWithKakao = ({ signInProcess }: Props) => {
   const handleCredentialResponse = (e: any) => {
-    if (
-      e.origin.lastIndexOf(import.meta.env.VITE_WEB_ROOT) >= 0 &&
-      e.data.auth_type === "google" &&
-      e.data.hasOwnProperty("code")
-    ) {
-      signInProcess(e.data.code, "google");
+    if (e.origin.lastIndexOf(import.meta.env.VITE_WEB_ROOT) >= 0 && e.data.auth_type === "kakao" && e.data.hasOwnProperty("code")) {
+      signInProcess(e.data.code, "kakao");
     }
   };
 
   // 로그인 처리
   const handleLogin = () => {
-    const loginUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${
-      import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID
-    }&redirect_uri=${
-      import.meta.env.VITE_GOOGLE_OAUTH_CALLBACK_URI
-    }&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email`;
-
+    const loginUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URI};
+`
     window.open(loginUrl, "sso", "height=700,width=480");
   };
 
@@ -35,9 +27,9 @@ const SignInWithKakao = ({ signInProcess }: Props) => {
   });
 
   return (
-    <button onClick={handleLogin}>
-      <img src="/resources/icons/icon_google.svg" />
-      Kakao로 계속하기
+    <button className='kakao-login-btn' onClick={handleLogin}>
+      <img src="/resources/icons/icon_kakao.svg" />
+      카카오로 계속하기
     </button>
   );
 };

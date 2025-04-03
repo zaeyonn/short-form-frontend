@@ -3,6 +3,8 @@ import { useSpring, animated } from '@react-spring/web';
 import { useGesture } from "@use-gesture/react";
 
 import SignInWithGoogle from "components/sns/SignInWithGoogle";
+import SignInWithMeta from "components/sns/SignInWithMeta";
+import SignInWithKakao from "components/sns/SignInWithKakao";
 
 interface Props {
   visible: boolean;
@@ -17,7 +19,7 @@ type bottomSheetHandle = {
 
 const UIBottomSheetLogin = forwardRef<bottomSheetHandle, Props>(({signInProcess, visible, handleLoginBottomSheetClose}: any, ref) => {
   const [springs, api] = useSpring(() => ({
-      from: { y: 280 },
+      from: { y: 360 },
       config: {mass: 0.6, tension: 270, friction: 25},
   }));
 
@@ -28,7 +30,7 @@ const UIBottomSheetLogin = forwardRef<bottomSheetHandle, Props>(({signInProcess,
       },
       onDragEnd: ({movement: [_, my]}) => {
         if(my > 20) {
-          api.start({ y: 280 });
+          api.start({ y: 360 });
           handleLoginBottomSheetClose();
         }
       }
@@ -36,7 +38,7 @@ const UIBottomSheetLogin = forwardRef<bottomSheetHandle, Props>(({signInProcess,
   )  
 
   const handleClose = () => {
-    api.start({ from: { y: 20 }, to: { y : 280 }});
+    api.start({ from: { y: 20 }, to: { y : 360 }});
 
     handleLoginBottomSheetClose();
   }
@@ -47,7 +49,7 @@ const UIBottomSheetLogin = forwardRef<bottomSheetHandle, Props>(({signInProcess,
 
   useEffect(() => {
       if(visible) {
-        api.start({ from: { y: 280 }, to: { y: 20 } });
+        api.start({ from: { y: 360 }, to: { y: 20 } });
       } 
     }, [visible])
 
@@ -60,7 +62,7 @@ const UIBottomSheetLogin = forwardRef<bottomSheetHandle, Props>(({signInProcess,
     {...bind()}
     style={{
       ...springs,
-      height: 280,
+      height: 360,
       backgroundColor: '#2A2A2A',
       touchAction: 'none'
     }} 
@@ -72,16 +74,12 @@ const UIBottomSheetLogin = forwardRef<bottomSheetHandle, Props>(({signInProcess,
         </div>
       </div>
       <div className="auth-btn-list">
+        <SignInWithKakao
+          signInProcess={signInProcess}/>
+          <SignInWithMeta
+            signInProcess={signInProcess}/>
         <SignInWithGoogle
           signInProcess={signInProcess}/>
-        {/* <SignInWithKakao
-          signInProcess={signInProcess}/>
-        <SignInWithMeta
-          signInProcess={signInProcess}/> */}
-        {/* <button className="email-auth" onClick={handleEmailSignUp}>
-          <img src="resources/icons/icon_email.svg"/>
-          이메일로 계속하기          
-        </button> */}
       </div>
     </animated.div>
     </>

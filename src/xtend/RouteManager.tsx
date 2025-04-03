@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 import CallbackGoogle from "components/callback/CallbackGoogle";
 import CallbackTossPayment from "components/callback/CallbackTossPayment";
+import CallbackKakao from "components/callback/CallbackKakao";
 import MainPage from "pages/MainPage";
 import SeriesPlayerPage from "pages/SeriesPlayerPage";
 import MyProfilePage from "pages/MyProfilePage";
@@ -26,6 +27,7 @@ const RouteManager = () => {
       <Route path='/payments' element={<PaymentProductListPage/>} />
       <Route path='/callback/google' element={<CallbackGoogle/>} />
       <Route path='/callback/tosspayment' element={<CallbackTossPayment/>} />
+      <Route path='/callback/kakao' element={<CallbackKakao/>} />
     </Routes>
   )
 }
