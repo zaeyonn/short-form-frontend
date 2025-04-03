@@ -16,6 +16,7 @@ import UIPopPayments from "components/ui/payments/UIPopPayments";
 import UIPopLogin from "components/ui/popup/UIPopLogin";
 import UILayerSpinner from "components/ui/layer/UILayerSpinner";
 import UILeftMenu from "components/ui/UILeftMenu";
+import UIBottomSheetLogin from "components/ui/bottomsheet/UIBottomSheetLogin";
 
 const BetaMainPage = ({}) => {
   // const navigate = useNavigate();
@@ -56,6 +57,7 @@ const BetaMainPage = ({}) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [videoLoading, setVideoLoading] = useState<boolean>(true);
   const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
+  
 
   const [playing, setPlaying] = useState<boolean>(true);
   const [visibleTools, setVisibleTools] = useState(true);
@@ -63,7 +65,7 @@ const BetaMainPage = ({}) => {
   const [currentEp, setCurrentEp] = useState<any>();
   const [episodeList, setEpisodeList] = useState([]);
   const [visibleBottomSheetEpisode, setVisibleBottomSheetEpisode] = useState(false);
-  const [_visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
+  const [visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
   const [keep, setKeep] = useState<boolean>();
   const [keepCount, setKeepCount] = useState<any>();
   const [locked, setLocked] = useState(false);
@@ -245,6 +247,10 @@ const BetaMainPage = ({}) => {
     }
   };
 
+  const handleLoginClose = () => {
+    setVisibleBottomSheetLogin(false);
+  };
+
   // Short Form Slide 변경
   const handleSlideChange = (swiper: any) => {
     const slidedVideo = document.getElementById(
@@ -377,7 +383,7 @@ const BetaMainPage = ({}) => {
   };
 
   const handleMore = () => {
-    
+
   }
 
   // const handleFullscreen = (event: any) => {
@@ -453,11 +459,12 @@ const BetaMainPage = ({}) => {
     }
   };
 
+  // 4초 후 Player Tool UI 숨김 처리
   useEffect(() => {
     if (visibleTools && playing) {
       hideToolsTimeout.current = setTimeout(() => {
         setVisibleTools(false);
-      }, 3000);
+      }, 4000);
     } else if (!playing && visibleTools) {
       clearTimeout(hideToolsTimeout.current);
     }
@@ -870,6 +877,7 @@ const BetaMainPage = ({}) => {
         <div className={`${isMobile ? "player-wrap" : "page-wrap"}`}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
+              series={series}
               locked={locked}
               playing={playing}
               muted={muted}
@@ -977,17 +985,6 @@ const BetaMainPage = ({}) => {
               )}
             </>
           )}
-          <UIBottomSheetEpisodeGrid
-            series={series}
-            locked={locked}
-            setLocked={setLocked}
-            currentEp={currentEp}
-            unlockEpisode={unlockEpisode}
-            visibleBottomSheet={visibleBottomSheetEpisode}
-            handleBottomSheetClose={handleBottomSheetClose}
-            handleEpisodeChange={handleEpisodeChange}
-            handleEpisodeLock={handleEpisodeLock}
-          />
           {locked && (
             <UILayerLockedEpisode
               handlePointUse={handlePointUse}
@@ -1011,6 +1008,27 @@ const BetaMainPage = ({}) => {
       )}
       {paymentLoading && (
         <UILayerSpinner/>
+      )}
+      {isMobile && (
+        <>
+          <UIBottomSheetLogin
+            ref={loginSheetRef}
+            visible={visibleBottomSheetLogin}
+            signInProcess={signInProcess}
+            handleLoginBottomSheetClose={handleLoginClose}
+          />
+          <UIBottomSheetEpisodeGrid
+            series={series}
+            locked={locked}
+            setLocked={setLocked}
+            currentEp={currentEp}
+            unlockEpisode={unlockEpisode}
+            visibleBottomSheet={visibleBottomSheetEpisode}
+            handleBottomSheetClose={handleBottomSheetClose}
+            handleEpisodeChange={handleEpisodeChange}
+            handleEpisodeLock={handleEpisodeLock}
+          />
+        </>
       )}
       <UILeftMenu visible={visibleMenu} handleMenuClose={handleMenuClose} />
     </>

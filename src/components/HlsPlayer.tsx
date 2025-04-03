@@ -2,9 +2,11 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Hls from 'hls.js';
 
+import { Series } from 'src/types';
 import * as globalSlice from "src/redux/globalSlice";
 
 interface Props {
+  series: Series;
   lastEpisode: number;
   index: number;
   episodeNum: any;
@@ -17,7 +19,7 @@ interface Props {
 }
 
 
-const HlsPlayer = ({ lastEpisode, index, episodeNum, videoRef, videoUrl, muted, setVideoLoading, handleTimeUpdate, handleEpisodeChange}: Props) => {
+const HlsPlayer = ({ series, lastEpisode, index, episodeNum, videoRef, videoUrl, muted, setVideoLoading, handleTimeUpdate, handleEpisodeChange}: Props) => {
   const dispatch = useDispatch();
   
   useEffect(() => {
@@ -61,7 +63,7 @@ const HlsPlayer = ({ lastEpisode, index, episodeNum, videoRef, videoUrl, muted, 
 
   }, [videoUrl, lastEpisode, index])
   
-  return  <video autoPlay playsInline muted={muted} ref={lastEpisode - 1 === index ? videoRef : null}  id={`slide-idx-${index}`} onTimeUpdate={handleTimeUpdate} onEnded={() => handleEpisodeChange(episodeNum + 1)}/>
+  return  <video autoPlay playsInline muted={muted} ref={lastEpisode - 1 === index ? videoRef : null}  id={`slide-idx-${index}`} onTimeUpdate={handleTimeUpdate} onEnded={() => handleEpisodeChange(episodeNum + 1)} poster={`resources/images/thumbnails/${series.id}_thumbnail.png`}/>
 }
 
 export default HlsPlayer;

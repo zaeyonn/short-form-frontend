@@ -2,7 +2,10 @@ import HlsPlayer from "components/HlsPlayer";
 import { RefObject } from "react";
 import { Swiper, SwiperSlide } from "swiper/react"
 
+import { Series } from "src/types";
+
 interface Props {
+  series: Series;
   muted: boolean;
   locked: boolean;
   playing: boolean;
@@ -21,7 +24,7 @@ interface Props {
   handleVideoEnded: () => any;
 }
 
-const UIShortFormSwiper = ({locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, handleEpisodeChange}: Props) => {
+const UIShortFormSwiper = ({series, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, handleEpisodeChange}: Props) => {
 
   return (
     <Swiper 
@@ -34,6 +37,7 @@ const UIShortFormSwiper = ({locked, muted, episodeList, videoRef, handleTimeUpda
         return (
           <SwiperSlide className='short-form' key={index}>
             <HlsPlayer
+              series={series}
               lastEpisode={lastEpisode}
               index={index}
               muted={muted}

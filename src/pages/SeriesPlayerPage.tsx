@@ -868,6 +868,7 @@ const SeriesPlayerPage = ({}) => {
         <div className={`${isMobile ? "player-wrap" : "page-wrap"}`}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
+              series={series}
               setVideoLoading={setVideoLoading}
               locked={locked}
               playing={playing}
