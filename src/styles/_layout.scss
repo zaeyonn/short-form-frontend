@@ -9,6 +9,14 @@
   overflow-x: hidden;
 }
 
+button {
+  -webkit-appearance: none;
+  appearance: none;
+  font-family: "Pretendard Variable Variable", Pretendard Variable, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+  display: inline-block;
+  background: none;
+  border: none;
+}
 
  body {
   width: 100vw;
