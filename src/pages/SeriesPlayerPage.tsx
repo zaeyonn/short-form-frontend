@@ -1017,7 +1017,7 @@ const SeriesPlayerPage = ({}) => {
                       episodeNum={currentEp.episode_num}
                       videoRef={videoRef}
                       videoUrl={`${import.meta.env.VITE_CDN_URL}/videos/${series.id}/${currentEp?.episode_num}/hls_output.m3u8`}
-                      setLoading={setLoading}
+                      setVideoLoading={setVideoLoading}
                       handleEpisodeChange={handleEpisodeChange}
                       handleTimeUpdate={handleTimeUpdate}
                     />
