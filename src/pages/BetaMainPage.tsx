@@ -54,7 +54,7 @@ const BetaMainPage = ({}) => {
   } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState<boolean>(true);
-  // const [videoLoading, setVideoLoading] = useState<boolean>(true);
+  const [videoLoading, setVideoLoading] = useState<boolean>(true);
   const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
 
   const [playing, setPlaying] = useState<boolean>(true);
@@ -375,6 +375,10 @@ const BetaMainPage = ({}) => {
     setMuted(!muted);
     videoRef.current.muted = !videoRef.current.muted;
   };
+
+  const handleMore = () => {
+    
+  }
 
   // const handleFullscreen = (event: any) => {
   //   event.stopPropagation();
@@ -880,9 +884,14 @@ const BetaMainPage = ({}) => {
               toggleTools={toggleTools}
               unlockEpisode={unlockEpisode}
               lastEpisode={lastEpisode}
-              setLoading={setLoading}
+              setVideoLoading={setVideoLoading}
               handleEpisodeChange={handleEpisodeChange}
             />
+            {videoLoading && (
+              <div className="loading">
+                <TailSpin width={60} height={60} color={"#ffffff"} />
+              </div>
+            )}
           </div>
           {loading && (
             <div className="loading">
@@ -910,7 +919,18 @@ const BetaMainPage = ({}) => {
           </div>
           {visibleTools && (
             <>
-              {!locked && !loading && (
+            <div className="beta-player-header" style={{ background: "none" }}>
+                <div className="left-section">
+                  <span className="title">
+                    {`${series?.title} ${currentEp?.episode_num ? `[${currentEp.episode_num}]` : ""}`}
+                  </span>
+                </div>
+                <div className="right-section">
+                  <img className="speaker-icon" src={`/resources/icons/${muted ? "icon_speaker_muted_l.svg" : "icon_speaker_l.svg"}`} onClick={handleMuted}/>
+                  <img className="kebab-icon" src={`/resources/icons/icon_kebab.svg`} onClick={handleMore}/>
+                </div>
+              </div>
+              {!locked && !loading && !videoLoading && (
                 <>
                   {playing && (
                     <img
@@ -929,22 +949,8 @@ const BetaMainPage = ({}) => {
                 </>
               )}
               <div className="right-menu">
-                <div className="btn-wrap" onClick={handleMuted}>
-                  <img
-                    className="speaker-icon"
-                    src={`/resources/icons/${
-                      muted ? "icon_speaker_muted_l.svg" : "icon_speaker_l.svg"
-                    }`}
-                    onClick={handleMuted}
-                  />
-                </div>
                 <div className="btn-wrap" onClick={handleSeriesKeep}>
-                  <img
-                    id="bookmark-btn"
-                    src={`/resources/icons/icon_bookmark${
-                      keep ? "_fill" : ""
-                    }.svg`}
-                  />
+                  <img id="bookmark-btn" src={`/resources/icons/icon_bookmark${keep ? "_fill" : ""}.svg`}/>
                   {keepCount}
                 </div>
                 <div className="btn-wrap" onClick={handleBottomSheetOpen}>

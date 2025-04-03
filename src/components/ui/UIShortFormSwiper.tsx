@@ -12,7 +12,7 @@ interface Props {
   blobUrlRef: RefObject<any>;
   lastEpisode: number;
   unlockEpisode: number | undefined;
-  setLoading: any;
+  setVideoLoading: any;
   handleEpisodeChange: (index: number) => any;
   handleTimeUpdate: () => any;
   toggleTools: () => any;
@@ -21,7 +21,7 @@ interface Props {
   handleVideoEnded: () => any;
 }
 
-const UIShortFormSwiper = ({locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setLoading, handleEpisodeChange}: Props) => {
+const UIShortFormSwiper = ({locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, handleEpisodeChange}: Props) => {
 
   return (
     <Swiper 
@@ -40,7 +40,7 @@ const UIShortFormSwiper = ({locked, muted, episodeList, videoRef, handleTimeUpda
               episodeNum={index+1}
               videoRef={videoRef}
               videoUrl={`https://storage.googleapis.com/framez-local/videos/${i.series_id}/hls/${index + 1}_hls_output.m3u8`}
-              setLoading={setLoading}
+              setVideoLoading={setVideoLoading}
               handleEpisodeChange={handleEpisodeChange}
               handleTimeUpdate={handleTimeUpdate}
             />

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { TailSpin } from "react-loader-spinner";
 import moment from 'moment';
 
 import * as userSlice from 'src/redux/userSlice';
@@ -13,6 +14,7 @@ const MissionPage = () => {
   const { isMobile } = useSelector((state: any) => state.global);
   const { user, attendanceResult, attendanceError, attendanceCheckError, attendanceCheckResult } = useSelector((state: any) => state.user);
 
+  const [loading, setLoading] = useState(false);
   const [streak, setStreak] = useState(0);
   const [isAttended, setIsAttended] = useState(false);
 
@@ -60,12 +62,14 @@ const MissionPage = () => {
   useEffect(() => {
     if(attendanceError) {
       console.log("attendanceError ", attendanceError);
+      setLoading(false);
 
       dispatch(userSlice.clearUserState("attendanceError"));
     }
 
     if(attendanceResult && attendanceResult.status === 200) {
       console.log("attendanceResult ", attendanceResult);
+      setLoading(false);
 
       const today = moment().format('YYYY-MM-DD');
       setStreak(attendanceResult.data.currentStreak);
@@ -79,6 +83,8 @@ const MissionPage = () => {
   }, [attendanceResult, attendanceError])
 
   useEffect(() => {
+    setLoading(true);
+
     dispatch(userSlice.attendance({userId: user.id}))
   }, []);
 
@@ -154,20 +160,26 @@ const MissionPage = () => {
           <span className='empty'/>
         </div>
       </div>
+      {loading && (
+      <div className="loading">
+        <TailSpin width={60} height={60} color={"#ffffff"} />
+      </div>
+      )}
+      {!loading && (
       <div className='page-body'>
         <div className='title'>
           미션 & 이벤트
         </div>
         <div className='attendance-check-wrap'>
           <div className='my-coin-wrap'>
-            <div className='my-coin-text'>
+            <div className='page-title'>
               내 보유 코인
             </div>
             <div className='my-coin-count'>{((user.paid_point + user.free_point) ? (user.paid_point + user.free_point) : 0).toLocaleString()}
               <img src={'resources/icons/icon_graphic_coin.svg'}/>  
             </div>
           </div>
-          <div className='attendance-check-background'>
+          <div className='attendance-check-background' style={{backgroundImage: 'url(resources/images/m_attendance_check_background.svg)'}}>
             <div className='day-list-wrap'>
               {isMobile ? renderAttendanceBoardMobile() : renderAttendanceBoardPc()}
             </div>
@@ -176,7 +188,22 @@ const MissionPage = () => {
             </button>
           </div>
         </div>
+        <div className='mission-wrap'>
+          <div className='page-title'>
+            이달의 미션
+          </div>
+          <div className='mission-item-wrap'>
+            <img src={'/resources/images/mission_ad.svg'}/>
+            <div>
+              매일 광고 보기
+            </div>
+            <div>
+              미션 완료
+            </div>
+          </div>
+        </div>
       </div>
+      )}
     </div>
   )
 }

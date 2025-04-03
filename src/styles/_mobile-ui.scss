@@ -137,6 +137,12 @@
     }
   }
 
+  
+  .page-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #FFFFFF;
+  }
 
   .attendance-check-wrap {
     width: 100%;
@@ -148,12 +154,6 @@
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
-    }
-  
-    .my-coin-text {
-      font-size: 18px;
-      font-weight: 600;
-      color: #FFFFFF;
     }
   
     .my-coin-count {
@@ -175,7 +175,6 @@
     flex-direction: column;;
     margin-top: 20px;
     height: 300px;
-    background-image: url('resources/images/m_attendance_check_background.svg');
     background-repeat: no-repeat;
     background-size: contain;
     padding-left: 15px;
@@ -269,4 +268,101 @@
     }
   }
 }
+
+ .mission-wrap {
+    margin-top: 44px;
+
+    .mission-item-wrap {
+      border-radius: 16px;
+      margin-top: 13px;
+      background-color: #181818;
+      padding: 24px 15px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+ }
+
+ 
+ .beta-player-header {
+  background: #000000;
+  position: fixed;
+  box-sizing: border-box;
+  top: 38px;
+  width: 100vw;
+  height: 48px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  z-index: 4;
+
+  .left-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+
+    .title {
+      font-size: 16px;
+      font-weight: 500;
+      color: #ffffff;
+    }
+
+    img {
+      cursor: pointer;
+    }
+  }
+
+  .title {
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .right-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    font-size: 15px;
+
+    button {
+      width: 52px;
+      height: 28px;
+    }
+
+    .next-btn {
+      background: none;
+      color: $brand-color; 
+      font-weight: 500;
+      font-size: 16px;
+    }
+
+    .speaker-icon {
+      cursor: pointer;
+      width: 25px;
+      height: 25px;
+    }
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+
+    &.profile-icon {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  .logo {
+    padding-top:5px;
+    width: 85px;
+  }
+}
+
 }

@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import Hls from 'hls.js';
 
 import * as globalSlice from "src/redux/globalSlice";
@@ -10,17 +11,18 @@ interface Props {
   videoRef: any;
   videoUrl: string;
   muted: boolean;
-  setLoading: any;
+  setVideoLoading: any;
   handleTimeUpdate: () => any;
   handleEpisodeChange: (index: number) => any;
 }
 
 
-const HlsPlayer = ({ lastEpisode, index, episodeNum, videoRef, videoUrl, muted, setLoading, handleTimeUpdate, handleEpisodeChange}: Props) => {
+const HlsPlayer = ({ lastEpisode, index, episodeNum, videoRef, videoUrl, muted, setVideoLoading, handleTimeUpdate, handleEpisodeChange}: Props) => {
+  const dispatch = useDispatch();
   
   useEffect(() => {
     if (Hls.isSupported() && (lastEpisode - 1 === index)) {
-      setLoading(true);
+      setVideoLoading(true);
       const hls = new Hls();
 
       hls.loadSource(videoUrl);
@@ -30,21 +32,19 @@ const HlsPlayer = ({ lastEpisode, index, episodeNum, videoRef, videoUrl, muted, 
       // 에러 핸들링
       hls.on(Hls.Events.ERROR, function (_event, data) {
         const errorType = data.type;
+        console.log('Video hls streaming error: ', errorType);
       
         switch (errorType) {
           case Hls.ErrorTypes.NETWORK_ERROR:
-            globalSlice.addToast({
+            setVideoLoading(true);
+            dispatch(globalSlice.addToast({
               id: Date.now(),
               message: "네트워크가 원할하지 않습니다.",
               duration: 1500,
-            })
+            }))
             break;
           case Hls.ErrorTypes.MEDIA_ERROR:
-            globalSlice.addToast({
-              id: Date.now(),
-              message: "영상 오류입니다.",
-              duration: 1500,
-            })
+            setVideoLoading(true);
             hls.recoverMediaError();
             break;
           default:
@@ -54,7 +54,7 @@ const HlsPlayer = ({ lastEpisode, index, episodeNum, videoRef, videoUrl, muted, 
 
       if(videoRef.current) {
         videoRef.current.addEventListener("canplay", () => {
-          setLoading(false);
+          setVideoLoading(false);
         })
       }
     } 

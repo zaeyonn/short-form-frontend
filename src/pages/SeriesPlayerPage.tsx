@@ -372,6 +372,10 @@ const SeriesPlayerPage = ({}) => {
     videoRef.current.muted = !videoRef.current.muted;
   };
 
+  const handleMore = () => {
+    
+  }
+
   const handleFullscreen = (event: any) => {
     event.stopPropagation();
 
@@ -900,13 +904,8 @@ const SeriesPlayerPage = ({}) => {
                   }`}</span>
                 </div>
                 <div className="right-section">
-                  <img
-                    className="speaker-icon"
-                    src={`/resources/icons/${
-                      muted ? "icon_speaker_muted_l.svg" : "icon_speaker_l.svg"
-                    }`}
-                    onClick={handleMuted}
-                  />
+                  <img className="speaker-icon" src={`/resources/icons/${ muted ? "icon_speaker_muted_l.svg" : "icon_speaker_l.svg" }`} onClick={handleMuted}/>
+                   <img className="kebab-icon" src={`/resources/icons/icon_kebab.svg`} onClick={handleMore}/>
                 </div>
               </div>
               {!locked && !loading && (
