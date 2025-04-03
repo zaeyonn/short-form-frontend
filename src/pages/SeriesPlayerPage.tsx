@@ -58,7 +58,7 @@ const SeriesPlayerPage = ({}) => {
   } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [videoLoading, _setVideoLoading] = useState<boolean>(true);
+  const [videoLoading, setVideoLoading] = useState<boolean>(true);
   const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
 
   const [playing, setPlaying] = useState<boolean>(true);
@@ -373,7 +373,7 @@ const SeriesPlayerPage = ({}) => {
   };
 
   const handleMore = () => {
-    
+
   }
 
   const handleFullscreen = (event: any) => {
@@ -868,7 +868,7 @@ const SeriesPlayerPage = ({}) => {
         <div className={`${isMobile ? "player-wrap" : "page-wrap"}`}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
-              setLoading={setLoading}
+              setVideoLoading={setVideoLoading}
               locked={locked}
               playing={playing}
               muted={muted}
