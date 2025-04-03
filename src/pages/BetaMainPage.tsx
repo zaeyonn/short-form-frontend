@@ -1010,6 +1010,7 @@ const BetaMainPage = ({}) => {
         <UILayerSpinner/>
       )}
       {isMobile && (
+        /* Bottom Sheet */
         <>
           <UIBottomSheetLogin
             ref={loginSheetRef}

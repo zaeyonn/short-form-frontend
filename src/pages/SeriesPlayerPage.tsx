@@ -1012,6 +1012,7 @@ const SeriesPlayerPage = ({}) => {
                     )}
                   </video> */}
                     <HlsPlayer
+                      series={series}
                       index={currentEp.episode_num - 1}
                       lastEpisode={lastEpisode}
                       muted={muted}
