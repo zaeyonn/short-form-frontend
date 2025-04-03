@@ -13,8 +13,7 @@ const SignInWithKakao = ({ signInProcess }: Props) => {
 
   // 로그인 처리
   const handleLogin = () => {
-    const loginUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URI};
-`
+    const loginUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_CLIENT_ID}&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URI}`
     window.open(loginUrl, "sso", "height=700,width=480");
   };
 

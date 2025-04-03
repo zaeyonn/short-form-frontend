@@ -81,6 +81,9 @@ const UIBottomSheetLogin = forwardRef<bottomSheetHandle, Props>(({signInProcess,
         <SignInWithGoogle
           signInProcess={signInProcess}/>
       </div>
+      <div className='auth-login-guide'>
+        게스트 계정으로 얻은 보너스 코인은 연동되지 않습니다.
+      </div>
     </animated.div>
     </>
   )

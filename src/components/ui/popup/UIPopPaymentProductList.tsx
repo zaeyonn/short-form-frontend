@@ -188,7 +188,7 @@ const UIPopPaymentProductList = (props: Props) => {
       console.log("paymentsConfirmResult ", paymentsConfirmResult);
       props.setPaymentLoading(false);
 
-      // 사용자 포인트 업데이트
+      // 사용자 코인 업데이트
       dispatch(userSlice.setUser({ ...user, paid_point: paymentsConfirmResult.paid_point, free_point: paymentsConfirmResult.free_point }));
 
       // 에피소드 잠금 해제
@@ -276,14 +276,14 @@ const UIPopPaymentProductList = (props: Props) => {
         <img className='close-btn' src='/resources/icons/icon_close.svg' alt='닫기' onClick={handleClose}/>
         <div className='popup-body' style={{gap: 10}}>
           <div className='title'>
-            다음화를 볼려면 포인트가 필요해요.
+            다음화를 볼려면 코인가 필요해요.
           </div>
           <div className='point-wrap' style={{marginTop: 20, cursor: 'default'}}>
-            <div className='item'><div className='label'>보유한 포인트</div><span className='point'>{user?.paid_point + user?.free_point}<img src='/resources/icons/icon_point_s.svg'/></span></div>
-            {series && <div className='item'><div className='label'>다음 화 필요 포인트</div><span className='point'>{series?.req_point}<img src='/resources/icons/icon_point_s.svg'/></span></div>}
+            <div className='item'><div className='label'>보유한 코인</div><span className='point'>{user?.paid_point + user?.free_point}<img src='/resources/icons/icon_point_s.svg'/></span></div>
+            {series && <div className='item'><div className='label'>다음 화 필요 코인</div><span className='point'>{series?.req_point}<img src='/resources/icons/icon_point_s.svg'/></span></div>}
           </div>
           <div className={`point-wrap ${selectedProduct.id === 1 ? 'selected' : ''}`} onClick={() => handleProductSelect(PAYMOUNT_PRODUCT_LIST[0])}>
-            <div className='item'><div className='label light'><span className='discount-sign'>첫 충전 할인</span><div>{`${(PAYMOUNT_PRODUCT_LIST[0].paid_point).toLocaleString()} 포인트`}<span className='bonus'>{` + ${PAYMOUNT_PRODUCT_LIST[0].free_point.toLocaleString()}`}</span></div></div><button>{`${(PAYMOUNT_PRODUCT_LIST[0].amount).toLocaleString()}원`}<span></span></button></div>
+            <div className='item'><div className='label light'><span className='discount-sign'>첫 충전 할인</span><div>{`${(PAYMOUNT_PRODUCT_LIST[0].paid_point).toLocaleString()} 코인`}<span className='bonus'>{` + ${PAYMOUNT_PRODUCT_LIST[0].free_point.toLocaleString()}`}</span></div></div><button>{`${(PAYMOUNT_PRODUCT_LIST[0].amount).toLocaleString()}원`}<span></span></button></div>
           </div>
           <div className='product-grid-wrap'>
           { PAYMOUNT_PRODUCT_LIST.map((product, index) => {
@@ -291,10 +291,10 @@ const UIPopPaymentProductList = (props: Props) => {
               return (
                 <div key={index} className={`product-item ${selectedProduct.id === product.id ? 'selected' : ''}`} onClick={() => handleProductSelect(product)}>
                   <div className='paid-point'>
-                  {product.paid_point.toLocaleString()} 포인트
+                  {product.paid_point.toLocaleString()} 코인
                   </div>
                 <div className='bonus-point'>
-                   +{product.free_point.toLocaleString()} 포인트
+                   +{product.free_point.toLocaleString()} 코인
                 </div>
                   <div className='price'>
                   {product.amount.toLocaleString()} 원

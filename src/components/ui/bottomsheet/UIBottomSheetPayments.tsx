@@ -15,7 +15,7 @@ interface Props {
 const UIBottomSheetPayment = (props: Props) => {
   const { user } = useSelector((state: UserRootState) => state.user);  
   const [springs, api] = useSpring(() => ({
-        from: { y: 600 },
+        from: { y: 620 },
         config: {mass: 1.1, tension: 270, friction: 25},
     }))
 
@@ -26,7 +26,7 @@ const UIBottomSheetPayment = (props: Props) => {
           },
           onDragEnd: ({movement: [_, my]}) => {
             if(my > 20) {
-              api.start({ y: 600 });
+              api.start({ y: 620 });
               props.handleBottomSheetClose();
             }
           }
@@ -38,14 +38,14 @@ const UIBottomSheetPayment = (props: Props) => {
   }
 
   const handleClose = () => {
-    api.start({ from: { y: 20 }, to: { y: 600 }});
+    api.start({ from: { y: 20 }, to: { y: 620 }});
 
     props.handleBottomSheetClose();
   }
 
   useEffect(() => {
     if(props.visible) {
-      api.start({ from: { y: 600 }, to: { y: 20 }})
+      api.start({ from: { y: 620 }, to: { y: 20 }})
     }
   }, [props.visible])
 
@@ -77,31 +77,31 @@ const UIBottomSheetPayment = (props: Props) => {
     {...bind()}
       style={{
       ...springs,
-      height: 591,
+      height: 620,
       touchAction: 'none'
       }}
       className='bottom-sheet-wrap'>
       <div className='head'>
         {props.series && (
-          <div className='title'>다음 화를 보려면 포인트가 필요해요</div>
+          <div className='title'>다음 화를 보려면 코인이 필요해요</div>
         )}
       </div>
       <div className='body'>
         <div className='point-wrap' style={{marginTop: 16}}>
-          <div className='item'><div className='label'>보유한 포인트</div><span className='point'>{user?.paid_point + user?.free_point}<img src='/resources/icons/icon_point_s.svg'/></span></div>
-          {props.series && <div className='item'><div className='label'>다음 화 필요 포인트</div><span className='point'>{props.series?.req_point}<img src='/resources/icons/icon_point_s.svg'/></span></div>}
+          <div className='item'><div className='label'>보유한 코인</div><span className='point'>{user?.paid_point + user?.free_point}<img src='/resources/icons/icon_coin_s.svg'/></span></div>
+          {props.series && <div className='item'><div className='label'>다음 화 필요 코인</div><span className='point'>{props.series?.req_point}<img src='/resources/icons/icon_coin_s.svg'/></span></div>}
         </div>
         <div className='point-wrap highlight'>
-          <div className='item'><div className='label light'><span className='discount-sign'>첫 충전 할인</span><div>2,000 포인트<span className='bonus'> + 2,000</span></div></div><button onClick={() => handlePaymentStart()}>20,000<span>원</span></button></div>
+          <div className='item'><div className='label light'><span className='discount-sign'>주간 패스권</span><div className='product-name'>2,000 코인<span className='bonus'> + 2,000</span></div></div><button onClick={() => handlePaymentStart()}>20,000<span>원</span></button></div>
         </div>
         <div className='point-wrap' style={{gap: 27}}>
-          <div className='item'><div className='label light'><div>500 포인트</div></div><button onClick={() => handlePaymentStart()}>5,800<span>원</span></button></div>
+          <div className='item'><div className='label light'><div className='product-name'>500 코인</div></div><button onClick={() => handlePaymentStart()}>5,800<span>원</span></button></div>
           <div className='divider'/>
-          <div className='item'><div className='label light'><div>1,000 포인트<span className='bonus'> + 2,000</span></div></div><button onClick={() => handlePaymentStart()}>13,000<span>원</span></button></div>
+          <div className='item'><div className='label light'><div className='product-name'>1,000 코인<span className='bonus'> + 2,000</span></div></div><button onClick={() => handlePaymentStart()}>13,000<span>원</span></button></div>
           <div className='divider'/>
-          <div className='item'><div className='label light'><div>3,000 포인트<span className='bonus'> + 3,000</span></div></div><button onClick={() => handlePaymentStart()}>33,000<span>원</span></button></div>
+          <div className='item'><div className='label light'><div className='product-name'>3,000 코인<span className='bonus'> + 3,000</span></div></div><button onClick={() => handlePaymentStart()}>33,000<span>원</span></button></div>
           <div className='divider'/>
-          <div className='item'><div className='label light'><div>5,000 포인트<span className='bonus'> + 4,000</span></div></div><button onClick={() => handlePaymentStart()}>60,000<span>원</span></button></div>
+          <div className='item'><div className='label light'><div className='product-name'>5,000 코인<span className='bonus'> + 4,000</span></div></div><button onClick={() => handlePaymentStart()}>60,000<span>원</span></button></div>
         </div>
       </div>
     </animated.div>

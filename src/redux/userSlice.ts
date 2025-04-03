@@ -48,15 +48,15 @@ const userSlice = createSlice({
       state.authGuestError = action.payload;
       state.loading = false;
     },
-    authGoogle(state: any, _action: PayloadAction<any>) {
+    authSns(state: any, _action: PayloadAction<any>) {
       state.loading = true;
     },
-    authGoogleSuccess(state: any, action) {
-      state.authGoogleResult = action.payload;
+    authSnsSuccess(state: any, action) {
+      state.authSnsResult = action.payload;
       state.loading = false;
     },
-    authGoogleFailure(state: any, action) {
-      state.authGoogleError = action.payload;
+    authSnsFailure(state: any, action) {
+      state.authSnsError = action.payload;
       state.loading = false;
     },
     addVideoWatched(state, action: PayloadAction<any>) {
@@ -183,7 +183,7 @@ const userSlice = createSlice({
 
 export const {
   clearUserState, setUser, setSeriesKeepList, setSeriesWatchList, authGuest, authGuestSuccess, authGuestFailure,
-  authGoogle, authGoogleSuccess, authGoogleFailure,
+  authSns, authSnsSuccess, authSnsFailure,
   addVideoWatched, addSeriesKeep, addSeriesKeepSuccess, addSeriesKeepFailure,
   addSeriesWatched, removeSeriesWatched, removeSeriesKeep, removeSeriesKeepSuccess, removeSeriesKeepFailure, 
   changeBookmarkState, userSeriesKeepList, userSeriesKeepListSuccess, userSeriesKeepListFailure,

@@ -15,13 +15,13 @@ export function* handleAuthGuest(): Generator<any> {
   }
 }
 
-export function* handleAuthGoogle(action: PayloadAction<any>): Generator<any> {
+export function* handleAuthSns(action: PayloadAction<any>): Generator<any> {
   try {
-    const response = yield call(api.authGoogle, action.payload);
+    const response = yield call(api.authSns, action.payload);
     
-    yield put(slice.authGoogleSuccess(response));
+    yield put(slice.authSnsSuccess(response));
   } catch (error) {
-    yield put(slice.authGoogleFailure(error));
+    yield put(slice.authSnsFailure(error));
   }
 }
 

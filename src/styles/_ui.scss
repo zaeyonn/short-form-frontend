@@ -852,13 +852,13 @@ a {
       line-height: 24px;
     }
 
-    .menu-list {
-      margin-top: 15px;
+    .setting-list {
+      margin-top: 20px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 23px;
 
-      div {
+      .setting-item {
         cursor: pointer;
         display: flex;
         flex-direction: row;
@@ -1052,6 +1052,50 @@ a {
     flex-direction: column;
     gap: 12px;
   }
+
+  .option-list-wrap {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+
+    .option-item {
+      padding: 8px 0px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 400;
+      font-size: 16px;
+      color: #A2A2A2;
+
+      img {
+        opacity: 0.6;
+      }
+    }
+
+    .option-value-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 6px 0px;
+      color: #FFFFFF;
+      font-size: 16px;
+      font-weight: 400;
+      gap: 4px;
+
+      &.selected {
+        color: #1A6EFF;
+        font-weight: 800;
+      }
+
+      img {
+        filter: invert(49%) sepia(80%) saturate(6303%) hue-rotate(211deg) brightness(101%) contrast(101%);
+        width: 22px;
+        height: 22px;
+      }
+    }
+  }
 }
 
 
@@ -1075,7 +1119,7 @@ a {
     justify-content: space-between;
 
     button {
-      width: 74px;
+      width: 77px;
       padding: 8px 12px;
       border-radius: 6px;
       background-color: $brand-color;
@@ -1103,8 +1147,8 @@ a {
     .discount-sign {
       padding: 3px 5px;
       border-radius: 4px;
-      background-color: #72162D;
-      color: #FF96B0;
+      background-color: #1A6EFF;
+      color: #FFFFFF;
       font-weight: 500;
       font-size: 11px;
     }
@@ -1115,6 +1159,12 @@ a {
 
     .bonus {
       color: $brand-color;
+    }
+
+    .product-name {
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 400;
     }
   }
 
@@ -1128,8 +1178,8 @@ a {
   }
 
   img {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -1711,6 +1761,13 @@ a {
       height: 20px;
     }
   }
+}
+
+.auth-login-guide {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 400;
 }
 
 // 잠금 해제 에니메이션

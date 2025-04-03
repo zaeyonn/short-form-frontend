@@ -6,7 +6,7 @@ import client from './client';
 export const authGuest = () => client.post('auth/guest');
 
 // 사용자 구글 인증
-export const authGoogle = ({code, userId, authType}: any) => client.put('auth/google', {
+export const authSns = ({code, userId, authType}: any) => client.put(`auth/${authType}`, {
   user_id: userId,
   code: code,
   auth_type: authType,
@@ -67,7 +67,7 @@ export const removeSeriesKeep = ({userId, seriesIdList}: any) => client.delete('
   }
 });
 
-// 사용자 포인트 감소
+// 사용자 코인 감소
 export const usersPointDeduct = ({ userId, point }: any) => client.put('users/point/deduct', {
   user_id: userId,
   point,

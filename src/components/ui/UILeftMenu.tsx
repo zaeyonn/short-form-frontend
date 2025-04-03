@@ -54,10 +54,6 @@ const UILeftMenu = (props: Props) => {
         <img src='resources/icons/icon_profile.svg'/>
         로그인
       </div>
-      <div className='item' onClick={() => handleClose()}>
-        <img src='resources/icons/icon_home_m.svg'/>
-        홈
-      </div>
       <Link to='/bookmark' className='item' onClick={handleClose}>
         <img src='resources/icons/icon_bookmark_m.svg'/>
         북마크

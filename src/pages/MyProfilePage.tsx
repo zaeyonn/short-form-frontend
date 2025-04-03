@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
 
 import * as globalSlice from "src/redux/globalSlice";
@@ -25,8 +25,8 @@ const MyProfilePage = () => {
   const {
     user,
     seriesWatchList,
-    authGoogleResult,
-    authGoogleError,
+    authSnsResult,
+    authSnsError,
     userSeriesWatchListResult,
     userSeriesWatchListError,
   } = useSelector((state: any) => state.user);
@@ -76,21 +76,21 @@ const MyProfilePage = () => {
   };
 
   const signInProcess = (code: string, authType: string) => {
-    dispatch(userSlice.authGoogle({ code, userId: user?.id, authType }));
+    dispatch(userSlice.authSns({ code, userId: user?.id, authType }));
   };
 
   // 구글 로그인 결과
   useEffect(() => {
-    if (authGoogleError) {
-      console.log("authGoogleError ", authGoogleError);
+    if (authSnsError) {
+      console.log("authSnsError ", authSnsError);
       setVisibleBottomSheetLogin(false);
 
-      dispatch(userSlice.clearUserState("authGoogleError"));
+      dispatch(userSlice.clearUserState("authSnsError"));
     }
 
-    if (authGoogleResult && authGoogleResult.status === 200) {
-      console.log("authGoogleResult ", authGoogleResult);
-      const user = authGoogleResult.data;
+    if (authSnsResult && authSnsResult.status === 200) {
+      console.log("authSnsResult ", authSnsResult);
+      const user = authSnsResult.data;
 
       if (loginSheetRef.current && isMobile)
         loginSheetRef.current.handleClose();
@@ -103,10 +103,10 @@ const MyProfilePage = () => {
 
       localStorage.setItem("user-id", user.id);
 
-      dispatch(userSlice.clearUserState("authGoogleResult"));
+      dispatch(userSlice.clearUserState("authSnsResult"));
       return;
     }
-  }, [authGoogleResult, authGoogleError, displayPopName, isMobile]);
+  }, [authSnsResult, authSnsError, displayPopName, isMobile]);
 
   // 사용자 시청 기록 조회 결과
   useEffect(() => {
@@ -185,13 +185,13 @@ const MyProfilePage = () => {
               {user?.auth !== "guest" && (
                 <div className="wallet">
                   <div className="head">
-                    내 지갑
+                    코인 내역
                     {/* <img src='resources/icons/icon_arrow_right_s.svg'/> */}
                   </div>
                   <div className="divider"></div>
                   <div className="point">
                     <div className="my-point">
-                      <img src="resources/icons/icon_point.svg" />
+                      <img src="resources/icons/icon_coin_s.svg" />
                       <span>{`${user?.paid_point + user?.free_point}`}</span>
                     </div>
                     <button onClick={handlePayment}>충전하기</button>
@@ -214,29 +214,29 @@ const MyProfilePage = () => {
                 </div>
               )}
               <div className="setting">
-                {/* <div className='head'>설정</div> */}
-                <div className="menu-list">
-                  {/* <div>
-              미션 또는 이벤트
-              <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-            </div>
-            <div>
-              고객 센터
-              <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-            </div>
-            <div>
-              설정
-              <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-            </div>
-            <div>
-              회사 소개
-              <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-            </div> */}
+                <div className='head'>설정</div>
+                <div className="setting-list">
+                  <div className='setting-item'>
+                    미션 & 이벤트
+                    <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
+                  </div>
+                  <Link className='setting-item' to='https://www.gala.biz/ko/contact-us' target='_blank'>
+                    고객 센터
+                    <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
+                  </Link>
+                  <Link className='setting-item' to='https://www.gala.biz/ko' target='_blank'>
+                    회사소개
+                    <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
+                  </Link>
+                  <div className='setting-item'>
+                    설정
+                    <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
+                  </div>
                   {!isMobile && (
                     <div className="menu-item selected">시청 기록</div>
                   )}
                   {user?.auth !== "guest" && (
-                    <div onClick={handleLogout}>
+                    <div onClick={handleLogout} className="setting-item">
                       로그아웃
                       <img
                         className="arrow-right"

@@ -17,6 +17,9 @@ import UIPopLogin from "components/ui/popup/UIPopLogin";
 import UILayerSpinner from "components/ui/layer/UILayerSpinner";
 import UILeftMenu from "components/ui/UILeftMenu";
 import UIBottomSheetLogin from "components/ui/bottomsheet/UIBottomSheetLogin";
+import UIBottomSheetVideoOption from "components/ui/bottomsheet/UIBottomSheetVideoOption";
+import UIBottomSheetQuality from "components/ui/bottomsheet/UIBottomSheetQuality";
+import UIBottomSheetSpeed from "components/ui/bottomsheet/UIBottomSheetSpeed";
 
 const BetaMainPage = ({}) => {
   // const navigate = useNavigate();
@@ -48,8 +51,8 @@ const BetaMainPage = ({}) => {
     removeSeriesKeepResult,
     userSeriesKeepListError,
     userSeriesKeepListResult,
-    authGoogleError,
-    authGoogleResult,
+    authSnsError,
+    authSnsResult,
     usersPointDeductResult,
     usersPointDeductError,
   } = useSelector((state: any) => state.user);
@@ -60,22 +63,31 @@ const BetaMainPage = ({}) => {
   
 
   const [playing, setPlaying] = useState<boolean>(true);
-  const [visibleTools, setVisibleTools] = useState(true);
   const [progress, setProgress] = useState<number>(0);
   const [currentEp, setCurrentEp] = useState<any>();
   const [episodeList, setEpisodeList] = useState([]);
-  const [visibleBottomSheetEpisode, setVisibleBottomSheetEpisode] = useState(false);
-  const [visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
   const [keep, setKeep] = useState<boolean>();
   const [keepCount, setKeepCount] = useState<any>();
   const [locked, setLocked] = useState(false);
   const [unlockEpisode, setUnlockEpisode] = useState<number>();
   const [lastEpisode, setLastEpisode] = useState<number>(0);
   const [muted, setMuted] = useState<boolean>(true);
+  const [speed, setSpeed] = useState<number>(1);
+  const [quality, setQuality] = useState<string>("auto");
   // const [fullscreen, setFullscreen] = useState<boolean>(false);
+
+  const [visibleTools, setVisibleTools] = useState(true);
   const [visibleMenu, setVisibleMenu] = useState<boolean>(false);
+  const [visibleBottomSheetEpisode, setVisibleBottomSheetEpisode] = useState(false);
+  const [visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
+  const [visibleBottomSheetOption, setVisibleBottomSheetOption] = useState(false);
+  const [visibleBottomSheetQuality, setVisibleBottomSheetQuality] = useState(false);
+  const [visibleBottomSheetSpeed, setVisibleBottomSheetSpeed] = useState(false);
 
   const loginSheetRef = useRef<any>(null);
+  const optionSheetRef = useRef<any>(null);
+  const qualitySheetRef = useRef<any>(null);
+  const speedSheetRef = useRef<any>(null);
   const swiperRef = useRef<any>(null);
   const videoRef = useRef<any>(null);
   const hideToolsTimeout = useRef<any>();
@@ -191,7 +203,7 @@ const BetaMainPage = ({}) => {
   // };
 
   const signInProcess = (code: string, authType: string) => {
-    dispatch(userSlice.authGoogle({ code, userId: user?.id, authType }));
+    dispatch(userSlice.authSns({ code, userId: user?.id, authType }));
   };
 
   // 재생 시간 업데이트
@@ -321,7 +333,46 @@ const BetaMainPage = ({}) => {
 
   const handleBottomSheetClose = useCallback(() => {
     setVisibleBottomSheetEpisode(false);
-  }, []);  
+  }, []);
+  
+  const handleOptionClose = useCallback(() => {
+    setVisibleBottomSheetOption(false);
+  }, []);
+
+  const handleOptionOpen = useCallback(() => {
+    setVisibleBottomSheetOption(true);
+  }, []);
+
+  const handleQualityOpen = useCallback(() => {
+    optionSheetRef.current.handleClose();
+    setVisibleBottomSheetQuality(true);
+  }, []);
+
+  
+  const handleQualityClose = useCallback(() => {
+    setVisibleBottomSheetQuality(false);
+  }, []);
+
+  
+  const handleSpeedOpen = useCallback(() => {
+    optionSheetRef.current.handleClose();
+    setVisibleBottomSheetSpeed(true);
+  }, []);
+
+  
+  const handleSpeedClose = useCallback(() => {
+    setVisibleBottomSheetSpeed(false);
+  }, []);
+
+  const handleQualityChange = useCallback((quality: string) => {
+    setQuality(quality);
+  }, []);
+
+  const handleSpeedChange = useCallback((speed: number) => {
+    setSpeed(speed);
+    videoRef.current.playbackRate = speed;
+    speedSheetRef.current.handleClose();
+  }, [videoRef.current]);
 
   const handleSeriesKeep = () => {
     setKeep(!keep);
@@ -371,7 +422,7 @@ const BetaMainPage = ({}) => {
 
   const handlePointUse = () => {
 
-    // 사용자 포인트 차감
+    // 사용자 코인 차감
     dispatch(userSlice.usersPointDeduct({ userId: user.id, point: series.req_point }));
   }
 
@@ -381,10 +432,8 @@ const BetaMainPage = ({}) => {
     setMuted(!muted);
     videoRef.current.muted = !videoRef.current.muted;
   };
-
-  const handleMore = () => {
-
-  }
+  
+  
 
   // const handleFullscreen = (event: any) => {
   //   event.stopPropagation();
@@ -470,7 +519,7 @@ const BetaMainPage = ({}) => {
     }
   }, [visibleTools, playing]);
 
-  // 사용자 포인트 차감 결과
+  // 사용자 코인 차감 결과
   useEffect(() => {
     if (usersPointDeductError) {
       console.log('usersPointDeductError ', usersPointDeductError);
@@ -481,7 +530,7 @@ const BetaMainPage = ({}) => {
     if (usersPointDeductResult && usersPointDeductResult.status === 201) {
       console.log('usersPointDeductResult ', usersPointDeductResult);
 
-      // 사용자 포인트 정보 업데이트
+      // 사용자 코인 정보 업데이트
       dispatch(userSlice.setUser(usersPointDeductResult.data))
 
       // 사용자 잠금 회차 업데이트
@@ -499,16 +548,16 @@ const BetaMainPage = ({}) => {
 
   // 구글 로그인 결과
   useEffect(() => {
-    if (authGoogleError) {
-      console.log("authGoogleError ", authGoogleError);
+    if (authSnsError) {
+      console.log("authSnsError ", authSnsError);
       setVisibleBottomSheetLogin(false);
 
-      dispatch(userSlice.clearUserState("authGoogleError"));
+      dispatch(userSlice.clearUserState("authSnsError"));
     }
 
-    if (authGoogleResult && authGoogleResult.status === 200) {
-      console.log("authGoogleResult ", authGoogleResult);
-      const user:User = authGoogleResult.data;
+    if (authSnsResult && authSnsResult.status === 200) {
+      console.log("authSnsResult ", authSnsResult);
+      const user:User = authSnsResult.data;
 
       if (loginSheetRef.current && isMobile)
         loginSheetRef.current.handleClose();
@@ -529,10 +578,10 @@ const BetaMainPage = ({}) => {
 
       localStorage.setItem("user-id", user.id);
 
-      dispatch(userSlice.clearUserState("authGoogleResult"));
+      dispatch(userSlice.clearUserState("authSnsResult"));
       return;
     }
-  }, [authGoogleResult, authGoogleError, displayPopName, isMobile, series]);
+  }, [authSnsResult, authSnsError, displayPopName, isMobile, series]);
 
   // 북마크 시리즈 리스트 조회 결과
   useEffect(() => {
@@ -935,7 +984,7 @@ const BetaMainPage = ({}) => {
                 </div>
                 <div className="right-section">
                   <img className="speaker-icon" src={`/resources/icons/${muted ? "icon_speaker_muted_l.svg" : "icon_speaker_l.svg"}`} onClick={handleMuted}/>
-                  <img className="kebab-icon" src={`/resources/icons/icon_kebab.svg`} onClick={handleMore}/>
+                  <img className="kebab-icon" src={`/resources/icons/icon_kebab.svg`} onClick={handleOptionOpen}/>
                 </div>
               </div>
               {!locked && !loading && !videoLoading && (
@@ -1028,6 +1077,27 @@ const BetaMainPage = ({}) => {
             handleBottomSheetClose={handleBottomSheetClose}
             handleEpisodeChange={handleEpisodeChange}
             handleEpisodeLock={handleEpisodeLock}
+          />
+          <UIBottomSheetVideoOption
+            ref={optionSheetRef}
+            visible={visibleBottomSheetOption}
+            handleBottomSheetClose={handleOptionClose}
+            handleQualityOpen={handleQualityOpen}
+            handleSpeedOpen={handleSpeedOpen}
+          />
+          <UIBottomSheetQuality
+            ref={qualitySheetRef}
+            visible={visibleBottomSheetQuality}
+            quality={quality}
+            handleBottomSheetClose={handleQualityClose}
+            handleQualityChange={handleQualityChange}
+          />
+          <UIBottomSheetSpeed
+            ref={speedSheetRef}
+            visible={visibleBottomSheetSpeed}
+            speed={speed}
+            handleBottomSheetClose={handleSpeedClose}
+            handleSpeedChange={handleSpeedChange}
           />
         </>
       )}

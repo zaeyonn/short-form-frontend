@@ -51,8 +51,8 @@ const SeriesPlayerPage = ({}) => {
     removeSeriesKeepResult,
     userSeriesKeepListError,
     userSeriesKeepListResult,
-    authGoogleError,
-    authGoogleResult,
+    authSnsError,
+    authSnsResult,
     usersPointDeductResult,
     usersPointDeductError,
   } = useSelector((state: any) => state.user);
@@ -185,7 +185,7 @@ const SeriesPlayerPage = ({}) => {
   // };
 
   const signInProcess = (code: string, authType: string) => {
-    dispatch(userSlice.authGoogle({ code, userId: user?.id, authType }));
+    dispatch(userSlice.authSns({ code, userId: user?.id, authType }));
   };
 
   // 재생 시간 업데이트
@@ -361,7 +361,7 @@ const SeriesPlayerPage = ({}) => {
 
   const handlePointUse = () => {
 
-    // 사용자 포인트 차감
+    // 사용자 코인 차감
     dispatch(userSlice.usersPointDeduct({ userId: user.id, point: series.req_point }));
   }
 
@@ -459,7 +459,7 @@ const SeriesPlayerPage = ({}) => {
     }
   }, [visibleTools, playing]);
 
-  // 사용자 포인트 차감 결과
+  // 사용자 코인 차감 결과
   useEffect(() => {
     if (usersPointDeductError) {
       console.log('usersPointDeductError ', usersPointDeductError);
@@ -470,7 +470,7 @@ const SeriesPlayerPage = ({}) => {
     if (usersPointDeductResult && usersPointDeductResult.status === 201) {
       console.log('usersPointDeductResult ', usersPointDeductResult);
 
-      // 사용자 포인트 정보 업데이트
+      // 사용자 코인 정보 업데이트
       dispatch(userSlice.setUser(usersPointDeductResult.data))
 
       // 사용자 잠금 회차 업데이트
@@ -488,16 +488,16 @@ const SeriesPlayerPage = ({}) => {
 
   // 구글 로그인 결과
   useEffect(() => {
-    if (authGoogleError) {
-      console.log("authGoogleError ", authGoogleError);
+    if (authSnsError) {
+      console.log("authSnsError ", authSnsError);
       setVisibleBottomSheetLogin(false);
 
-      dispatch(userSlice.clearUserState("authGoogleError"));
+      dispatch(userSlice.clearUserState("authSnsError"));
     }
 
-    if (authGoogleResult && authGoogleResult.status === 200) {
-      console.log("authGoogleResult ", authGoogleResult);
-      const user:User = authGoogleResult.data;
+    if (authSnsResult && authSnsResult.status === 200) {
+      console.log("authSnsResult ", authSnsResult);
+      const user:User = authSnsResult.data;
 
       if (loginSheetRef.current && isMobile)
         loginSheetRef.current.handleClose();
@@ -518,10 +518,10 @@ const SeriesPlayerPage = ({}) => {
 
       localStorage.setItem("user-id", user.id);
 
-      dispatch(userSlice.clearUserState("authGoogleResult"));
+      dispatch(userSlice.clearUserState("authSnsResult"));
       return;
     }
-  }, [authGoogleResult, authGoogleError, displayPopName, isMobile, series]);
+  }, [authSnsResult, authSnsError, displayPopName, isMobile, series]);
 
   // 북마크 시리즈 리스트 조회 결과
   useEffect(() => {
