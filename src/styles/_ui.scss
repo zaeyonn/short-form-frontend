@@ -1,10 +1,6 @@
 @use './mixin' as *;
 @use './variables' as *;
 
-button {
-  font-family: 'Pretendard';
-}
-
 .primary-btn {
   cursor: pointer;
   background-color: $brand-color;
