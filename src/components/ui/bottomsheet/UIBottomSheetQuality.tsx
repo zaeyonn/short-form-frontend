@@ -59,7 +59,7 @@ const UIBottomSheetQuality = forwardRef<bottomSheetHandle, Props>(({visible, han
     {...bind()}
       style={{
         ...springs,
-        height: 345,
+        height: 325,
         touchAction: 'none'
       }} 
       className="bottom-sheet-wrap">

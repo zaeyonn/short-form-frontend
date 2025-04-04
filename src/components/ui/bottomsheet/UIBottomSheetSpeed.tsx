@@ -62,7 +62,7 @@ const UIBottomSheetSpeed = forwardRef<bottomSheetHandle, Props>(({visible, handl
     {...bind()}
       style={{
         ...springs,
-        height: 350,
+        height: 340,
         touchAction: 'none'
       }} 
       className="bottom-sheet-wrap">
