@@ -1099,6 +1099,8 @@ a {
 }
 
 
+
+
 .point-wrap {
   background-color: #1B1B1B;
   padding: 16px 20px;
@@ -1165,6 +1167,97 @@ a {
       color: #FFFFFF;
       font-size: 14px;
       font-weight: 400;
+    }
+  }
+
+  .point {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    color: #FFFFFF;
+    font-size: 12px;
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.product-list-wrap {
+  padding: 0px 20px;
+  background-color: #1B1B1B;
+  border-radius: 12px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+
+  &.selected {
+    border: 1px solid $brand-color;
+  }
+
+  .product-item {
+    padding: 20px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #353535;
+
+    &.last-child {
+      border-bottom: none;
+    }
+
+    button {
+      width: 77px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background-color: $brand-color;
+      color: #ffffff;
+      font-weight: 500;
+      font-size: 12px;
+    }
+  }
+
+  .divider {
+    width: 100%;
+    height: 2px;
+    background-color: #353535;
+  }
+
+  .label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    color: #808080;
+    font-size: 14px;
+
+    .discount-sign {
+      padding: 3px 5px;
+      border-radius: 4px;
+      background-color: #1A6EFF;
+      color: #FFFFFF;
+      font-weight: 500;
+      font-size: 11px;
+    }
+
+    &.light {
+      color: #A2A2A2;
+    }
+
+    .bonus-point {
+      color: $brand-color;
+    }
+
+    .product-name {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 500;
     }
   }
 

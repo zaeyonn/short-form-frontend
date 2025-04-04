@@ -12,7 +12,7 @@ import UIShortFormSwiper from "components/ui/UIShortFormSwiper";
 import UIBottomSheetEpisodeGrid from "../components/ui/bottomsheet/UIBottomSheetEpisodeGrid";
 import UILayerLockedEpisode from "components/ui/layer/UILayerLockedEpisode";
 import UIPopPaymentProductList from "components/ui/popup/UIPopPaymentProductList";
-import UIPopPayments from "components/ui/payments/UIPopPayments";
+import TossPayment from "components/ui/payments/TossPayment";
 import UIPopLogin from "components/ui/popup/UIPopLogin";
 import UILayerSpinner from "components/ui/layer/UILayerSpinner";
 import UILeftMenu from "components/ui/UILeftMenu";
@@ -33,7 +33,8 @@ const BetaMainPage = ({}) => {
     seriesInfoError,
     isMobile,
     displayPopName,
-    payments,
+    productListResult,
+    productListError,
   } = useSelector((state: any) => state.global);
   const {
     user,
@@ -55,6 +56,7 @@ const BetaMainPage = ({}) => {
     authSnsResult,
     usersPointDeductResult,
     usersPointDeductError,
+    paymentProduct
   } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -302,6 +304,7 @@ const BetaMainPage = ({}) => {
     setProgress(0);
 
     if (videoRef.current) {
+      videoRef.current.currentTime = 0;
       //videoRef.current.pause();
     }
 
@@ -400,7 +403,7 @@ const BetaMainPage = ({}) => {
     setLocked(true);
     setVisibleBottomSheetEpisode(false);
 
-    videoRef.current.pause();
+    // videoRef.current.pause();
   }, []);
 
   const handleLockedClose = () => {
@@ -408,7 +411,6 @@ const BetaMainPage = ({}) => {
   };
 
   const handlePaymentComplete = () => {
-    setLocked(false);
 
     // 사용자 잠금 회차 업데이트
     dispatch(
@@ -664,6 +666,7 @@ const BetaMainPage = ({}) => {
       }
 
       setUnlockEpisode(updateSeriesUnlockEpisodeResult.data.unlock_episode);
+      setLastEpisode(updateSeriesUnlockEpisodeResult.data.last_episode);
 
       videoRef.current.play();
       setPlaying(true);
@@ -818,6 +821,24 @@ const BetaMainPage = ({}) => {
     }
   }, [seriesInfoResult, seriesInfoError]);
 
+  // 결제 상품 조회 결과
+  useEffect(() => {
+    if (productListError) {
+      console.log("productListError ", productListError);
+
+      dispatch(globalSlice.clearGlobalState("productListError"));
+    }
+
+    if(productListResult && productListResult.status === 200) {
+      console.log("productListResult ", productListResult);
+      const productList = productListResult.data;
+
+      dispatch(globalSlice.setProductList(productList));
+
+      dispatch(globalSlice.clearGlobalState("productListResult"));
+    }
+  }, [productListResult, productListError])
+
   // 비디오 URL -> blob URL 변환
   // useEffect(() => {
   //   const loadVideoBlobUrl = async () => {
@@ -913,6 +934,9 @@ const BetaMainPage = ({}) => {
     // 사용자 북마크 리스트 조회
     dispatch(userSlice.userSeriesKeepList({ userId: user.id }));
 
+    // 결제 상품 조회
+    dispatch(globalSlice.productList({}));
+
     // 전체화면 이벤트 등록
     document.addEventListener("fullscreenchange", handleFullscreenChange);
 
@@ -932,6 +956,8 @@ const BetaMainPage = ({}) => {
               muted={muted}
               swiperRef={swiperRef}
               blobUrlRef={blobUrlRef}
+              setVideoLoading={setVideoLoading}
+              setPlaying={setPlaying}
               handleSlideChange={handleSlideChange}
               handleSlideChangeStart={handleSlideChangeStart}
               handleVideoEnded={handleVideoEnded}
@@ -941,7 +967,6 @@ const BetaMainPage = ({}) => {
               toggleTools={toggleTools}
               unlockEpisode={unlockEpisode}
               lastEpisode={lastEpisode}
-              setVideoLoading={setVideoLoading}
               handleEpisodeChange={handleEpisodeChange}
             />
             {videoLoading && (
@@ -1049,8 +1074,8 @@ const BetaMainPage = ({}) => {
           handlePaymentComplete={handlePaymentComplete}
         />
       )}
-      {payments && (
-        <UIPopPayments handlePaymentComplete={handlePaymentComplete} />
+      {paymentProduct && !isMobile && (
+        <TossPayment handlePaymentComplete={handlePaymentComplete} />
       )}
       {displayPopName === displayPopType.POPUP_LOGIN.name && (
         <UIPopLogin signInProcess={signInProcess} />

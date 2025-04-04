@@ -96,9 +96,10 @@ export const episodeList = ({seriesId}: any) => client.get(`episodes/${seriesId}
 /* Payment API */
 
 // 결제 요청
-export const paymentsRegist = ({userId, productId, amount, paidPoint, freePoint}: any) => client.post('payments', {
+export const paymentsRegist = ({userId, productId, productType, amount, paidPoint, freePoint}: any) => client.post('payments', {
   user_id: userId,
   product_id: productId,
+  product_type: productType, 
   amount: amount,
   paid_point: paidPoint,
   free_point: freePoint,

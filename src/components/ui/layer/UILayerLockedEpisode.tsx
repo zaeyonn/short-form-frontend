@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import UIBottomSheetPayment from "components/ui/bottomsheet/UIBottomSheetPayments";
+import UIBottomSheetProductList from "components/ui/bottomsheet/UIBottomSheetProductList";
 
 import * as globalSlice from "src/redux/globalSlice";
 import { displayPopType } from "common/define";
@@ -88,7 +88,7 @@ const UILayerLockedEpisode = ({
         </div>
       )}
       {isMobile && (
-        <UIBottomSheetPayment
+        <UIBottomSheetProductList
           visible={visibleBottomSheetPayment}
           series={series}
           handleBottomSheetClose={handlePaymentClose}

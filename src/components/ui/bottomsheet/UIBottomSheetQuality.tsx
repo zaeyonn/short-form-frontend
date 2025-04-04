@@ -64,7 +64,7 @@ const UIBottomSheetQuality = forwardRef<bottomSheetHandle, Props>(({visible, han
       }} 
       className="bottom-sheet-wrap">
       <div className='head'>
-        <div className='title'>화질</div>
+        <div className='title'>해상도</div>
       </div>
       <div className='option-list-wrap'>
         <div className='option-value-item'>

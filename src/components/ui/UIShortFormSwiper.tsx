@@ -16,6 +16,7 @@ interface Props {
   lastEpisode: number;
   unlockEpisode: number | undefined;
   setVideoLoading: any;
+  setPlaying: any;
   handleEpisodeChange: (index: number) => any;
   handleTimeUpdate: () => any;
   toggleTools: () => any;
@@ -24,7 +25,7 @@ interface Props {
   handleVideoEnded: () => any;
 }
 
-const UIShortFormSwiper = ({series, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, handleEpisodeChange}: Props) => {
+const UIShortFormSwiper = ({series, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, setPlaying, handleEpisodeChange}: Props) => {
 
   return (
     <Swiper 
@@ -37,6 +38,7 @@ const UIShortFormSwiper = ({series, locked, muted, episodeList, videoRef, handle
         return (
           <SwiperSlide className='short-form' key={index}>
             <HlsPlayer
+              locked={locked}
               series={series}
               lastEpisode={lastEpisode}
               index={index}
@@ -45,6 +47,7 @@ const UIShortFormSwiper = ({series, locked, muted, episodeList, videoRef, handle
               videoRef={videoRef}
               videoUrl={`https://storage.googleapis.com/framez-local/videos/${i.series_id}/hls/${index + 1}_hls_output.m3u8`}
               setVideoLoading={setVideoLoading}
+              setPlaying={setPlaying}
               handleEpisodeChange={handleEpisodeChange}
               handleTimeUpdate={handleTimeUpdate}
             />

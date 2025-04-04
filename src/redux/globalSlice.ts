@@ -85,9 +85,6 @@ const globalSlice = createSlice({
     setSeriesListTitle(state: any, action: PayloadAction<any>) {
       state.seriesListTitle = action.payload;
     },
-    setPayments(state: any, action: PayloadAction<any>) {
-      state.payments = action.payload;
-    },
     increaseSeriesView(_state: any, _action: PayloadAction<any>) {},
     increaseSeriesViewSuccess(state: any, action: PayloadAction<any>) {
       state.increaseSeriesViewResult = action.payload;
@@ -95,6 +92,9 @@ const globalSlice = createSlice({
     increaseSeriesViewsFailure(state: any, action: PayloadAction<any>) {
       state.increaseSeriesViewError = action.payload;
     },
+    setProductList(state: any, action: PayloadAction<any>) {
+      state.productList = action.payload;
+    }, 
     productList(_state: any, _action: PayloadAction<any>) {
     },
     productListSuccess(state: any, action: PayloadAction<any>) {
@@ -112,9 +112,9 @@ export const {
 
   seriesList, seriesListSuccess, seriesListFailure,
   episodeList, episodeListSuccess, episodeListFailure,
-  setAlert, seriesInfo, seriesInfoSuccess, seriesInfoFailure, setPayments,
+  setAlert, seriesInfo, seriesInfoSuccess, seriesInfoFailure,
   increaseSeriesView, increaseSeriesViewSuccess, increaseSeriesViewsFailure,
-  productList, productListSuccess, productListFailure
+  productList, productListSuccess, productListFailure, setProductList
 } = globalSlice.actions;
 
 export default globalSlice.reducer;

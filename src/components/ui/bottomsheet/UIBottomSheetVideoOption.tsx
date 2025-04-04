@@ -68,7 +68,7 @@ const UIBottomSheetVideoOption = forwardRef<bottomSheetHandle, Props>(({visible,
       </div>
       <div className='option-list-wrap'>
         <div className='option-item' onClick={handleQualityOpen}>
-          화질
+          해상도
           <img src='resources/icons/icon_arrow_right_s.svg'/>
         </div>
         <div className='option-item' onClick={handleSpeedOpen}>

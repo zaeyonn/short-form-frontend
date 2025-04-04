@@ -15,7 +15,7 @@ import UILayerLockedEpisode from "components/ui/layer/UILayerLockedEpisode";
 import UIEpisodeNumGrid from "components/ui/UIEpisodeNumGrid";
 import LayoutFooter from "components/layouts/LayoutFooter";
 import UIPopPaymentProductList from "components/ui/popup/UIPopPaymentProductList";
-import UIPopPayments from "components/ui/payments/UIPopPayments";
+import TossPayment from "components/ui/payments/TossPayment";
 import UIPopLogin from "components/ui/popup/UIPopLogin";
 import UILayerSpinner from "components/ui/layer/UILayerSpinner";
 import HlsPlayer from "components/HlsPlayer";
@@ -872,6 +872,7 @@ const SeriesPlayerPage = ({}) => {
               setVideoLoading={setVideoLoading}
               locked={locked}
               playing={playing}
+              setPlaying={setPlaying}
               muted={muted}
               swiperRef={swiperRef}
               blobUrlRef={blobUrlRef}
@@ -1012,6 +1013,7 @@ const SeriesPlayerPage = ({}) => {
                     )}
                   </video> */}
                     <HlsPlayer
+                      locked={locked}
                       series={series}
                       index={currentEp.episode_num - 1}
                       lastEpisode={lastEpisode}
@@ -1020,6 +1022,7 @@ const SeriesPlayerPage = ({}) => {
                       videoRef={videoRef}
                       videoUrl={`${import.meta.env.VITE_CDN_URL}/videos/${series.id}/${currentEp?.episode_num}/hls_output.m3u8`}
                       setVideoLoading={setVideoLoading}
+                      setPlaying={setPlaying}
                       handleEpisodeChange={handleEpisodeChange}
                       handleTimeUpdate={handleTimeUpdate}
                     />
@@ -1172,7 +1175,7 @@ const SeriesPlayerPage = ({}) => {
         />
       )}
       {payments && (
-        <UIPopPayments handlePaymentComplete={handlePaymentComplete} />
+        <TossPayment handlePaymentComplete={handlePaymentComplete} />
       )}
       {displayPopName === displayPopType.POPUP_LOGIN.name && (
         <UIPopLogin signInProcess={signInProcess} />

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserRootState } from 'src/types';
+import { UserRootState, Product } from 'src/types';
 
 const initialState: UserRootState = {
   user: {
@@ -11,7 +11,9 @@ const initialState: UserRootState = {
   seriesKeepList: [],
 
   userInfoResult: null,
-  userInfoError: null
+  userInfoError: null,
+
+  paymentProduct: null,
 }
 
 const userSlice = createSlice({
@@ -143,7 +145,12 @@ const userSlice = createSlice({
     updateSeriesUnlockEpisodeFailure(state: any, action) {
       state.updateSeriesUnlockEpisodeError = action.payload
     },
-    paymentsRegist(_state: any, _action: PayloadAction<any>) {},
+    setPaymentProduct(state: any, action: PayloadAction<any>) {
+      state.paymentProduct = action.payload;
+    },
+    paymentsRegist(_state: any, _action: PayloadAction<any>) {
+
+    },
     paymentsRegistSuccess(state: any, action: PayloadAction<any>) {
       state.paymentsRegistResult = action.payload
     },
@@ -193,6 +200,6 @@ export const {
   userInfo, userInfoSuccess, userInfoFailure, updateSeriesUnlockEpisode, updateSeriesUnlockEpisodeSuccess, updateSeriesUnlockEpisodeFailure,
   paymentsRegist, paymentsRegistSuccess, paymentsRegistFailure, paymentsConfirm, paymentsConfirmFailure, paymentsConfirmSuccess,
   usersPointDeduct, usersPointDeductSuccess, usersPointDeductFailure,
-  attendance, attendanceSuccess, attendanceCheckFailure, attendanceCheck, attendanceCheckSuccess, attendanceFailure
+  attendance, attendanceSuccess, attendanceCheckFailure, attendanceCheck, attendanceCheckSuccess, attendanceFailure, setPaymentProduct
 } = userSlice.actions;
 export default userSlice.reducer;

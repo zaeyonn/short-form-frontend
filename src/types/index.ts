@@ -8,6 +8,8 @@ export interface UserRootState {
 
   userInfoResult: any,
   userInfoError: any,
+
+  paymentProduct: Product,
 }
 
 
@@ -37,9 +39,18 @@ export type Series = {
   created_at: string // 등록 날짜
 }
 
-export type PaymentProduct = {
+export type Product = {
   id: number,
+  name: string,
   amount: number,
   paid_point: number,
-  free_point: number
+  free_point: number,
+  discount_rate: number,
+  first_charging_event: boolean,
+  description: string,
+  is_active: boolean,
+  type: string,
+  created_at: string,
+  updated_at: string,
 }
+

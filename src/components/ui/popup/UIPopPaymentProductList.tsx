@@ -5,44 +5,12 @@ import { useSpring, animated} from '@react-spring/web';
 import * as globalSlice from 'src/redux/globalSlice';
 import * as userSlice from 'src/redux/userSlice';
 
-import { PaymentProduct } from 'src/types';
+import { Product } from 'src/types';
 
 interface Props {
   setPaymentLoading: (loading: boolean) => any;
   handlePaymentComplete: () => void;
 }
-
-const PAYMOUNT_PRODUCT_LIST = [
-  {
-    id: 1,
-    amount: 20000,
-    paid_point: 2000,
-    free_point: 2000,
-  },
-  {
-    id: 2,
-    amount: 5800,
-    paid_point: 500,
-    free_point: 2000
-  },
-  {
-    id: 3,
-    amount: 13800,
-    paid_point: 1000,
-    free_point: 2000
-  },{
-    id: 4,
-    amount: 49800,
-    paid_point: 2000,
-    free_point: 2000
-  },
-  {
-    id: 5,
-    amount: 99800,
-    paid_point: 5000,
-    free_point: 2000
-  }
-]
 
 const UIPopPaymentProductList = (props: Props) => {
   const dispatch = useDispatch();
@@ -64,10 +32,10 @@ const UIPopPaymentProductList = (props: Props) => {
     }
   });
 
-  const { series, productListResult, productListError } = useSelector((state: any) => state.global);
+  const { series, productList, productListResult, productListError } = useSelector((state: any) => state.global);
   const { user, paymentsRegistResult, paymentsRegistError, paymentsConfirmResult, paymentsConfirmError } = useSelector((state: any) => state.user);
 
-  const [selectedProduct, setSelectedProduct] = useState<PaymentProduct>(PAYMOUNT_PRODUCT_LIST[0]);
+  const [selectedProduct, setSelectedProduct] = useState<Product>(productList[0]);
 
   const orderIdRef = useRef<any>(null);
   const paymentWindowRef = useRef<any>(null);
@@ -155,7 +123,7 @@ const UIPopPaymentProductList = (props: Props) => {
   };
 
 
-  const handleProductSelect = (product: PaymentProduct) => {
+  const handleProductSelect = (product: Product) => {
     setSelectedProduct(product);
   }
 
@@ -282,11 +250,11 @@ const UIPopPaymentProductList = (props: Props) => {
             <div className='item'><div className='label'>보유한 코인</div><span className='point'>{user?.paid_point + user?.free_point}<img src='/resources/icons/icon_point_s.svg'/></span></div>
             {series && <div className='item'><div className='label'>다음 화 필요 코인</div><span className='point'>{series?.req_point}<img src='/resources/icons/icon_point_s.svg'/></span></div>}
           </div>
-          <div className={`point-wrap ${selectedProduct.id === 1 ? 'selected' : ''}`} onClick={() => handleProductSelect(PAYMOUNT_PRODUCT_LIST[0])}>
-            <div className='item'><div className='label light'><span className='discount-sign'>첫 충전 할인</span><div>{`${(PAYMOUNT_PRODUCT_LIST[0].paid_point).toLocaleString()} 코인`}<span className='bonus'>{` + ${PAYMOUNT_PRODUCT_LIST[0].free_point.toLocaleString()}`}</span></div></div><button>{`${(PAYMOUNT_PRODUCT_LIST[0].amount).toLocaleString()}원`}<span></span></button></div>
+          <div className={`point-wrap ${selectedProduct.id === 1 ? 'selected' : ''}`} onClick={() => handleProductSelect(productList[0])}>
+            <div className='item'><div className='label light'><span className='discount-sign'>첫 충전 할인</span><div>{`${(productList[0].paid_point).toLocaleString()} 코인`}<span className='bonus'>{` + ${productList[0].free_point.toLocaleString()}`}</span></div></div><button>{`${(productList[0].amount).toLocaleString()}원`}<span></span></button></div>
           </div>
           <div className='product-grid-wrap'>
-          { PAYMOUNT_PRODUCT_LIST.map((product, index) => {
+          { productList.map((product: Product, index: number) => {
             if(index >= 1) {
               return (
                 <div key={index} className={`product-item ${selectedProduct.id === product.id ? 'selected' : ''}`} onClick={() => handleProductSelect(product)}>
