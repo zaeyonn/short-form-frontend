@@ -105,9 +105,6 @@ const HlsPlayer = ({ locked, series, lastEpisode, index, episodeNum, videoRef, v
       id={`slide-idx-${index}`} 
       onTimeUpdate={handleTimeUpdate} 
       onEnded={() => handleEpisodeChange(episodeNum + 1)} 
-      style={{
-        visibility: 'visible',  // hidden 대신 visible 사용
-      }}
     />
   )
 }
