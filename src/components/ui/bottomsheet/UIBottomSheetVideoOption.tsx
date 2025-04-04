@@ -59,7 +59,7 @@ const UIBottomSheetVideoOption = forwardRef<bottomSheetHandle, Props>(({visible,
     {...bind()}
       style={{
         ...springs,
-        height: 220,
+        height: 200,
         touchAction: 'none'
       }} 
       className="bottom-sheet-wrap">
