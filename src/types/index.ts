@@ -9,7 +9,7 @@ export interface UserRootState {
   userInfoResult: any,
   userInfoError: any,
 
-  paymentProduct: Product,
+  paymentProduct: Product | null,
 }
 
 

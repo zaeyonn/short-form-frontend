@@ -13,7 +13,7 @@ type bottomSheetHandle = {
   handleClose: () => void;
 }
 
-const UIBottomSheetQuality = forwardRef<bottomSheetHandle, Props>(({visible, handleBottomSheetClose, quality, handleQualityChange}: any, ref) => {
+const UIBottomSheetQuality = forwardRef<bottomSheetHandle, Props>(({visible, handleBottomSheetClose}: any, ref) => {
   const [springs, api] = useSpring(() => ({
     from: { y: 325 },
     config: { mass: 0.6, tension: 270, friction: 25},

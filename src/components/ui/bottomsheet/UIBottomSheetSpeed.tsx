@@ -1,4 +1,4 @@
-import { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import { useEffect, forwardRef, useImperativeHandle } from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import { useGesture } from "@use-gesture/react"
 

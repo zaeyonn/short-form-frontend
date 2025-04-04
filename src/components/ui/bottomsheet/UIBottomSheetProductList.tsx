@@ -17,7 +17,7 @@ interface Props {
 const UIBottomSheetProductList = (props: Props) => {
   const dispatch = useDispatch();
 
-  const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
+  const [_paymentLoading, setPaymentLoading] = useState<boolean>(false);
   const { user, paymentProduct, paymentsConfirmResult, paymentsConfirmError, paymentsRegistError, paymentsRegistResult } = useSelector((state: UserRootState) => state.user);
   const { productList } = useSelector((state: any) => state.global);
 
