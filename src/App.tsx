@@ -22,8 +22,8 @@ const App = () => {
   }, [])
 
   return (
-    <>
-      <LayoutNavigationBar/>
+		<>
+      {/* Beta <LayoutNavigationBar/> */}
       <RouteManager/>
       <AuthManager/>
       <AlertManager/>

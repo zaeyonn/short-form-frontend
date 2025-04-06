@@ -946,8 +946,8 @@ const BetaMainPage = ({}) => {
   }, []);
 
   return (
-    <>
-        <div className={`${isMobile ? "player-wrap" : "page-wrap"}`}>
+    <div className={'beta-main-wrap'}>
+        <div className={"player-wrap"}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
               series={series}
@@ -1066,25 +1066,7 @@ const BetaMainPage = ({}) => {
               handlePaymentComplete={handlePaymentComplete}
               handleLoginOpen={handleLoginOpen}
             />
-          )}
-        </div>
-      {displayPopName === displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name && (
-        <UIPopPaymentProductList
-          setPaymentLoading={setPaymentLoading}
-          handlePaymentComplete={handlePaymentComplete}
-        />
-      )}
-      {paymentProduct && !isMobile && (
-        <TossPayment handlePaymentComplete={handlePaymentComplete} />
-      )}
-      {displayPopName === displayPopType.POPUP_LOGIN.name && (
-        <UIPopLogin signInProcess={signInProcess} />
-      )}
-      {paymentLoading && (
-        <UILayerSpinner/>
-      )}
-      {isMobile && (
-        /* Bottom Sheet */
+				)}
         <>
           <UIBottomSheetLogin
             ref={loginSheetRef}
@@ -1125,9 +1107,24 @@ const BetaMainPage = ({}) => {
             handleSpeedChange={handleSpeedChange}
           />
         </>
+        </div>
+      {displayPopName === displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name && (
+        <UIPopPaymentProductList
+          setPaymentLoading={setPaymentLoading}
+          handlePaymentComplete={handlePaymentComplete}
+        />
+      )}
+      {paymentProduct && !isMobile && (
+        <TossPayment handlePaymentComplete={handlePaymentComplete} />
+      )}
+      {displayPopName === displayPopType.POPUP_LOGIN.name && (
+        <UIPopLogin signInProcess={signInProcess} />
+      )}
+      {paymentLoading && (
+        <UILayerSpinner/>
       )}
       <UILeftMenu visible={visibleMenu} handleMenuClose={handleMenuClose} />
-    </>
+    </div>
   );
 };
 

@@ -198,6 +198,22 @@ const MyProfilePage = () => {
                   </div>
                 </div>
               )}
+              {(
+                <div className="view-list">
+                  <div className="head">내 시청 기록</div>
+                  {seriesWatchList.length === 0 ? (
+                    <div className="no-content">저장된 기록이 없습니다.</div>
+                  ) : (
+                    <div style={{ marginTop: 14 }}>
+                      <UISmallContentSlider
+                        seriesList={seriesWatchList}
+                        highlight=""
+                      />
+                    </div>
+                  )}
+                </div>
+							)}
+{/* 					Beta
               {isMobile && (
                 <div className="view-list">
                   <div className="head">내 시청 기록</div>
@@ -212,7 +228,7 @@ const MyProfilePage = () => {
                     </div>
                   )}
                 </div>
-              )}
+              )} */}
               <div className="setting">
                 <div className='head'>설정</div>
                 <div className="setting-list">
@@ -232,9 +248,9 @@ const MyProfilePage = () => {
                     설정
                     <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
                   </div>
-                  {!isMobile && (
+                  {/* Beta {!isMobile && (
                     <div className="menu-item selected">시청 기록</div>
-                  )}
+                  )} */}
                   {user?.auth !== "guest" && (
                     <div onClick={handleLogout} className="setting-item">
                       로그아웃
@@ -250,9 +266,9 @@ const MyProfilePage = () => {
               </div>
             </div>
             <div className="content-container">
-              {selectedMenu === "WATCH_LIST" && (
+              {/* {selectedMenu === "WATCH_LIST" && (
                 <div className="menu-title">내 시청 기록</div>
-              )}
+              )} */}
               <div className="series-container">
                 {seriesWatchList?.map((item: any, index: number) => (
                   <UIMediumContentItem key={index} item={item} />

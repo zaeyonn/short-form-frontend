@@ -18,7 +18,7 @@ const RouteManager = () => {
   
   return (
     <Routes>
-      <Route path='/' element={isMobile ? <BetaMainPage/> : <MainPage/>} />
+      <Route path='/' element={<BetaMainPage/>} />
       <Route path='/bookmark' element={<SeriesKeepPage/>} />
       <Route path='/mission' element={<MissionPage/>} />
       <Route path='/series/:seriesId' element={<SeriesPlayerPage/>} />
