@@ -6,19 +6,20 @@ import { TailSpin } from "react-loader-spinner";
 import * as globalSlice from "src/redux/globalSlice";
 import * as userSlice from "src/redux/userSlice";
 
-import { displayPopType } from "src/common/define";
+import { authType, displayPopType } from "src/common/define";
 import UIBottomSheetLogin from "components/ui/bottomsheet/UIBottomSheetLogin";
 import UISmallContentSlider from "components/ui/UISmallContentSlider";
 import UIPopLogin from "components/ui/popup/UIPopLogin";
 import LayoutFooter from "components/layouts/LayoutFooter";
 // import UIMediumContentItem from "components/ui/UIMediumContentItem";
 import UIPopPaymentProductList from "components/ui/popup/UIPopPaymentProductList";
+import { User } from "src/types";
 
 const MyProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isMobile, displayPopName } = useSelector(
+  const { isMobile, displayPopName, series } = useSelector(
     (state: any) => state.global
   );
 
@@ -82,28 +83,44 @@ const MyProfilePage = () => {
     dispatch(userSlice.authSns({ code, userId: user?.id, authType }));
   };
 
-  // 구글 로그인 결과
+  // SNS 로그인 결과
   useEffect(() => {
     if (authSnsError) {
       console.log("authSnsError ", authSnsError);
-      setVisibleBottomSheetLogin(false);
+      dispatch(globalSlice.toggleBottomSheetLogin({}));
 
       dispatch(userSlice.clearUserState("authSnsError"));
     }
 
     if (authSnsResult && authSnsResult.status === 200) {
-      console.log("authSnsResult ", authSnsResult);
-      const user = authSnsResult.data;
+      const user:User = authSnsResult.data;
 
-      // Beta
-      // if (loginSheetRef.current && isMobile)
-      //   loginSheetRef.current.handleClose();
+      
+      if(authSnsResult.data?.request_auth_type !== user.auth) {
+        dispatch(globalSlice.addToast({
+          id: Date.now(),
+          message: `${authType[user.auth].name}로 가입된 계정입니다.`,
+          duration: 3000,
+        }))
 
-       if (loginSheetRef.current)
+        dispatch(userSlice.clearUserState("authSnsResult"));
+        return;
+      }
+
+
+      if (loginSheetRef.current)
         loginSheetRef.current.handleClose();
 
-      if (displayPopName) {
-        dispatch(globalSlice.setDisplayPopName(""));
+      if (user.free_point + user.paid_point < series.req_point) {
+        if (displayPopName) {
+          dispatch(
+            globalSlice.setDisplayPopName(
+              displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name
+            )
+          );
+        }
+      } else {
+        dispatch(globalSlice.setDisplayPopName(''));
       }
 
       dispatch(userSlice.setUser(user));
@@ -113,7 +130,7 @@ const MyProfilePage = () => {
       dispatch(userSlice.clearUserState("authSnsResult"));
       return;
     }
-  }, [authSnsResult, authSnsError, displayPopName, isMobile]);
+  }, [authSnsResult, authSnsError, displayPopName, isMobile, series]);
 
   // 사용자 시청 기록 조회 결과
   useEffect(() => {

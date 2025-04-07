@@ -36,7 +36,7 @@ const SignInWithGoogle = ({ signInProcess }: Props) => {
 
   return (
     <button onClick={handleLogin}>
-      <img src="/resources/icons/icon_google.svg" />
+      <img src="/resources/icons/icon_google.png" />
       Google로 계속하기
     </button>
   );

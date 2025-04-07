@@ -3,7 +3,7 @@ import { useSpring, animated } from '@react-spring/web';
 import { useGesture } from "@use-gesture/react";
 
 import SignInWithGoogle from "components/sns/SignInWithGoogle";
-import SignInWithMeta from "components/sns/SignInWithMeta";
+import SignInWithFacebook from "components/sns/SignInWithFacebook";
 import SignInWithKakao from "components/sns/SignInWithKakao";
 
 interface Props {
@@ -76,7 +76,7 @@ const UIBottomSheetLogin = forwardRef<bottomSheetHandle, Props>(({signInProcess,
       <div className="auth-btn-list">
         <SignInWithKakao
           signInProcess={signInProcess}/>
-          <SignInWithMeta
+          <SignInWithFacebook
             signInProcess={signInProcess}/>
         <SignInWithGoogle
           signInProcess={signInProcess}/>

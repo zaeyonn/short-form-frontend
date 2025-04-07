@@ -16,6 +16,8 @@ const initialState = {
   seriesList: [],
   episodeList: [],
   productList: [],
+
+  visibleBottomSheetLogin: false,
 }
 
 const globalSlice = createSlice({
@@ -102,6 +104,9 @@ const globalSlice = createSlice({
     },
     productListFailure(state: any, action: PayloadAction<any>) {
       state.productListError = action.payload;
+    },
+    toggleBottomSheetLogin(state: any, _action: PayloadAction<any>) {
+      state.visibleBottomSheetLogin = !state.visibleBottomSheetLogin
     }
   }
 })
@@ -114,7 +119,7 @@ export const {
   episodeList, episodeListSuccess, episodeListFailure,
   setAlert, seriesInfo, seriesInfoSuccess, seriesInfoFailure,
   increaseSeriesView, increaseSeriesViewSuccess, increaseSeriesViewsFailure,
-  productList, productListSuccess, productListFailure, setProductList
+  productList, productListSuccess, productListFailure, setProductList, toggleBottomSheetLogin
 } = globalSlice.actions;
 
 export default globalSlice.reducer;

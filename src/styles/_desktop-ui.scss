@@ -680,6 +680,7 @@
   }
 
   .item {
+    cursor: pointer;
     box-sizing: border-box;
     padding: 12px 20px;
     display: flex;
@@ -694,6 +695,28 @@
     img {
       width: 24px;
       height: 24px;
+    }
+  }
+
+  .user-profile {
+    .nickname {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      font-weight: 600;
+      font-size: 17px;
+
+      img {
+        margin-left: 4px;
+        width: 16px;
+        height: 16px;
+      }
+    }
+    .email {
+      margin-top: 4px;
+      font-size: 13px;
+      font-weight: 400;
+      color: #A2A2A2;
     }
   }
 

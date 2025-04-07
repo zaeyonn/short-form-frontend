@@ -6,7 +6,7 @@ import { TailSpin } from "react-loader-spinner";
 import * as globalSlice from "src/redux/globalSlice";
 import * as userSlice from "src/redux/userSlice";
 
-import { displayPopType } from "common/define";
+import { displayPopType, authType } from "common/define";
 import { User } from "src/types";
 import UIShortFormSwiper from "components/ui/UIShortFormSwiper";
 import UIBottomSheetEpisodeGrid from "../components/ui/bottomsheet/UIBottomSheetEpisodeGrid";
@@ -35,6 +35,7 @@ const BetaMainPage = ({}) => {
     displayPopName,
     productListResult,
     productListError,
+    visibleBottomSheetLogin
   } = useSelector((state: any) => state.global);
   const {
     user,
@@ -80,7 +81,6 @@ const BetaMainPage = ({}) => {
   const [visibleTools, setVisibleTools] = useState(true);
   const [visibleMenu, setVisibleMenu] = useState<boolean>(false);
   const [visibleBottomSheetEpisode, setVisibleBottomSheetEpisode] = useState(false);
-  const [visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
   const [visibleBottomSheetOption, setVisibleBottomSheetOption] = useState(false);
   const [visibleBottomSheetQuality, setVisibleBottomSheetQuality] = useState(false);
   const [visibleBottomSheetSpeed, setVisibleBottomSheetSpeed] = useState(false);
@@ -261,9 +261,11 @@ const BetaMainPage = ({}) => {
     }
   };
 
-  const handleLoginClose = () => {
-    setVisibleBottomSheetLogin(false);
-  };
+  const handleLoginClose = useCallback(() => {
+    console.log('handleLoginClose 2');
+  //    setVisibleBottomSheetLogin(false);
+    dispatch(globalSlice.toggleBottomSheetLogin({}));
+  }, []);
 
   // Short Form Slide 변경
   const handleSlideChange = (swiper: any) => {
@@ -507,15 +509,16 @@ const BetaMainPage = ({}) => {
     }
   };
 
-  const handleLoginOpen = () => {
+  const handleLoginOpen = useCallback(() => {
     
-    setVisibleBottomSheetLogin(true);
+    console.log('handleLoginClose 1');
+    dispatch(globalSlice.toggleBottomSheetLogin({}));
     // if (isMobile) {
     //   setVisibleBottomSheetLogin(true);
     // } else {
     //   dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_LOGIN.name));
     // }
-  };
+  }, []);
 
   // 4초 후 Player Tool UI 숨김 처리
   useEffect(() => {
@@ -555,18 +558,31 @@ const BetaMainPage = ({}) => {
     }
   }, [usersPointDeductResult, usersPointDeductError, unlockEpisode])
 
-  // 구글 로그인 결과
+  // SNS 로그인 결과
   useEffect(() => {
     if (authSnsError) {
-      console.log("authSnsError ", authSnsError);
-      setVisibleBottomSheetLogin(false);
+      //setVisibleBottomSheetLogin(false);
+    console.log('handleLoginClose 3');
+      dispatch(globalSlice.toggleBottomSheetLogin({}));
 
       dispatch(userSlice.clearUserState("authSnsError"));
     }
 
     if (authSnsResult && authSnsResult.status === 200) {
-      console.log("authSnsResult ", authSnsResult);
       const user:User = authSnsResult.data;
+
+      
+      if(authSnsResult.data?.request_auth_type !== user.auth) {
+        dispatch(globalSlice.addToast({
+          id: Date.now(),
+          message: `${authType[user.auth].name}로 가입된 계정입니다.`,
+          duration: 3000,
+        }))
+
+        dispatch(userSlice.clearUserState("authSnsResult"));
+        return;
+      }
+
 
       if (loginSheetRef.current)
         loginSheetRef.current.handleClose();
@@ -582,6 +598,12 @@ const BetaMainPage = ({}) => {
       } else {
         dispatch(globalSlice.setDisplayPopName(''));
       }
+
+      dispatch(globalSlice.addToast({
+        id: Date.now(),
+        message: '로그인 성공',
+        duration: 2000,
+      }))
 
       dispatch(userSlice.setUser(user));
 
@@ -1077,12 +1099,13 @@ const BetaMainPage = ({}) => {
             />
 				)}
         <>
-          <UIBottomSheetLogin
+          { user.auth === 'guest' && (
+            <UIBottomSheetLogin
             ref={loginSheetRef}
             visible={visibleBottomSheetLogin}
             signInProcess={signInProcess}
             handleLoginBottomSheetClose={handleLoginClose}
-          />
+          />)}
           <UIBottomSheetEpisodeGrid
             series={series}
             locked={locked}

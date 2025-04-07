@@ -34,19 +34,12 @@ const HlsPlayer = ({ locked, series, lastEpisode, index, episodeNum, videoRef, v
         levelLoadingMaxRetry: 3,
       });
 
-      // 초기 로딩시에만 poster 표시
-      if (videoRef.current) {
-        videoRef.current.poster = `resources/images/thumbnails/${series.id}_thumbnail.png`;
-      }
-
       hls.loadSource(videoUrl);
       hls.attachMedia(videoRef.current);
 
       // 비디오 재생 시작되면 poster 제거
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        if (videoRef.current) {
-          videoRef.current.poster = '';
-        }
+        console.log('video play')
       });
 
       // 에러 핸들링
@@ -105,6 +98,7 @@ const HlsPlayer = ({ locked, series, lastEpisode, index, episodeNum, videoRef, v
       id={`slide-idx-${index}`} 
       onTimeUpdate={handleTimeUpdate} 
       onEnded={() => handleEpisodeChange(episodeNum + 1)} 
+      poster={`resources/images/thumbnails/${series.id}_thumbnail.png`}
     />
   )
 }
