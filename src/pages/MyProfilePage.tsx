@@ -11,7 +11,7 @@ import UIBottomSheetLogin from "components/ui/bottomsheet/UIBottomSheetLogin";
 import UISmallContentSlider from "components/ui/UISmallContentSlider";
 import UIPopLogin from "components/ui/popup/UIPopLogin";
 import LayoutFooter from "components/layouts/LayoutFooter";
-import UIMediumContentItem from "components/ui/UIMediumContentItem";
+// import UIMediumContentItem from "components/ui/UIMediumContentItem";
 import UIPopPaymentProductList from "components/ui/popup/UIPopPaymentProductList";
 
 const MyProfilePage = () => {
@@ -36,7 +36,7 @@ const MyProfilePage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [_paymentLoading, setPaymentLoading] = useState<boolean>(false);
   const [visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
-  const [selectedMenu] = useState<string>("WATCH_LIST");
+  // const [selectedMenu] = useState<string>("WATCH_LIST");
 
 
   const handleClose = () => {

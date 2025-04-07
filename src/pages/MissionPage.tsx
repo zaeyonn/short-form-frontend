@@ -6,13 +6,10 @@ import moment from 'moment';
 
 import * as userSlice from 'src/redux/userSlice';
 import * as globalSlice from 'src/redux/globalSlice';
-import { render } from 'react-dom';
-
 const MissionPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isMobile } = useSelector((state: any) => state.global);
   const { user, attendanceResult, attendanceError, attendanceCheckError, attendanceCheckResult } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState(false);
@@ -89,25 +86,25 @@ const MissionPage = () => {
     dispatch(userSlice.attendance({userId: user.id}))
   }, []);
 
-  const renderAttendanceBoardPc = () => {
-    return (
-      <>
-      {[1, 2, 3, 4, 5, 6, 7].map(day => {
-        return (
-        <div className='day-item' key={day}>
-          <div className='day-circle-wrap'>
-            <div className='circle'>
-              <img src={`resources/images/${streak >= day ? 'attendance_checked_day.svg' : 'attendance_unchecked_day.svg'}`}/>
-              <span>{streak >= day ? '' : day}</span>
-            </div>
-            {day !== 7 && <span style={streak > day ? {backgroundColor: '#458AFF'} : {}} className='day-item-divider'/>}
-          </div>
-          <span className={`day-text ${streak >= day ? 'attended' : ''}`} style={day === 7 ? {transform: 'translateX(0%)'} : {}}><span className='day-count'>{day}</span>일차</span>
-        </div>
-      )
-      })}
-      </>
-  )}
+  // const renderAttendanceBoardPc = () => {
+  //   return (
+  //     <>
+  //     {[1, 2, 3, 4, 5, 6, 7].map(day => {
+  //       return (
+  //       <div className='day-item' key={day}>
+  //         <div className='day-circle-wrap'>
+  //           <div className='circle'>
+  //             <img src={`resources/images/${streak >= day ? 'attendance_checked_day.svg' : 'attendance_unchecked_day.svg'}`}/>
+  //             <span>{streak >= day ? '' : day}</span>
+  //           </div>
+  //           {day !== 7 && <span style={streak > day ? {backgroundColor: '#458AFF'} : {}} className='day-item-divider'/>}
+  //         </div>
+  //         <span className={`day-text ${streak >= day ? 'attended' : ''}`} style={day === 7 ? {transform: 'translateX(0%)'} : {}}><span className='day-count'>{day}</span>일차</span>
+  //       </div>
+  //     )
+  //     })}
+  //     </>
+  // )}
 
   
   const renderAttendanceBoardMobile = () => {

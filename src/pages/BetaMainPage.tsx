@@ -12,7 +12,7 @@ import UIShortFormSwiper from "components/ui/UIShortFormSwiper";
 import UIBottomSheetEpisodeGrid from "../components/ui/bottomsheet/UIBottomSheetEpisodeGrid";
 import UILayerLockedEpisode from "components/ui/layer/UILayerLockedEpisode";
 import UIPopPaymentProductList from "components/ui/popup/UIPopPaymentProductList";
-import TossPayment from "components/ui/payments/TossPayment";
+// import TossPayment from "components/ui/payments/TossPayment";
 import UIPopLogin from "components/ui/popup/UIPopLogin";
 import UILayerSpinner from "components/ui/layer/UILayerSpinner";
 import UILeftMenu from "components/ui/UILeftMenu";
@@ -56,7 +56,6 @@ const BetaMainPage = ({}) => {
     authSnsResult,
     usersPointDeductResult,
     usersPointDeductError,
-    paymentProduct
   } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState<boolean>(true);

@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 import CallbackGoogle from "components/callback/CallbackGoogle";
 import CallbackTossPayment from "components/callback/CallbackTossPayment";
 import CallbackKakao from "components/callback/CallbackKakao";
-import MainPage from "pages/MainPage";
+// import MainPage from "pages/MainPage";
 import SeriesPlayerPage from "pages/SeriesPlayerPage";
 import MyProfilePage from "pages/MyProfilePage";
 import SeriesKeepPage from "pages/SeriesKeepPage";
@@ -14,7 +14,7 @@ import MissionPage from "pages/MissionPage";
 import BetaMainPage from "pages/BetaMainPage";
 
 const RouteManager = () => {
-  const { isMobile } = useSelector((state: any) => state.global)
+  // const { isMobile } = useSelector((state: any) => state.global)
   
   return (
     <Routes>
