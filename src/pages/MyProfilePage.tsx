@@ -44,11 +44,12 @@ const MyProfilePage = () => {
   };
 
   const handleLoginOpen = () => {
-    if (isMobile) {
-      setVisibleBottomSheetLogin(true);
-    } else {
-      dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_LOGIN.name));
-    }
+    // Beta if (isMobile) {
+    //   setVisibleBottomSheetLogin(true);
+    // } else {
+    //   dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_LOGIN.name));
+    // }
+    setVisibleBottomSheetLogin(true);
   };
 
   const handleLoginClose = () => {
@@ -60,15 +61,17 @@ const MyProfilePage = () => {
   };
 
   const handlePayment = () => {
-    if (isMobile) {
-      navigate("/payments");
-    } else {
-      dispatch(
-        globalSlice.setDisplayPopName(
-          displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name
-        )
-      );
-    }
+    navigate("/payments");
+    // Beta
+    // if (isMobile) {
+    //   navigate("/payments");
+    // } else {
+    //   dispatch(
+    //     globalSlice.setDisplayPopName(
+    //       displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name
+    //     )
+    //   );
+    // }
   };
 
   const handlePaymentComplete = () => {
@@ -92,7 +95,11 @@ const MyProfilePage = () => {
       console.log("authSnsResult ", authSnsResult);
       const user = authSnsResult.data;
 
-      if (loginSheetRef.current && isMobile)
+      // Beta
+      // if (loginSheetRef.current && isMobile)
+      //   loginSheetRef.current.handleClose();
+
+       if (loginSheetRef.current)
         loginSheetRef.current.handleClose();
 
       if (displayPopName) {
@@ -265,20 +272,26 @@ const MyProfilePage = () => {
                 </div>
               </div>
             </div>
-            <div className="content-container">
-              {/* {selectedMenu === "WATCH_LIST" && (
+            {/* Beta <div className="content-container">
+              {selectedMenu === "WATCH_LIST" && (
                 <div className="menu-title">내 시청 기록</div>
-              )} */}
+              )}
               <div className="series-container">
                 {seriesWatchList?.map((item: any, index: number) => (
                   <UIMediumContentItem key={index} item={item} />
                 ))}
               </div>
-            </div>
+            </div> */}
           </div>
         )}
+        <UIBottomSheetLogin
+            ref={loginSheetRef}
+            visible={visibleBottomSheetLogin}
+            signInProcess={signInProcess}
+            handleLoginBottomSheetClose={handleLoginClose}
+          />
       </div>
-      {isMobile && (
+      {/* Beta {(
         <>
           <UIBottomSheetLogin
             ref={loginSheetRef}
@@ -287,7 +300,7 @@ const MyProfilePage = () => {
             handleLoginBottomSheetClose={handleLoginClose}
           />
         </>
-      )}
+      )} */}
       {displayPopName === displayPopType.POPUP_LOGIN.name && (
         <UIPopLogin signInProcess={signInProcess} />
       )}

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSpring, animated } from '@react-spring/web';
 import { useGesture } from '@use-gesture/react';
 
@@ -21,8 +21,13 @@ interface Props {
 
 const UIBottomSheetEpisodeGrid = ({series, setLocked, currentEp, visibleBottomSheet, handleBottomSheetClose, handleEpisodeChange, unlockEpisode}: Props) => {
   const dispatch = useDispatch();
+  
+  const { isMobile } = useSelector((state: any) => state.global);
+
+  const BOTTOM_SHEEET_HEIGHT = isMobile ? 460 : 600;
+
   const [springs, api] = useSpring(() => ({
-    from: { y: 470 },
+    from: { y: BOTTOM_SHEEET_HEIGHT },
     config: {mass: 0.6, tension: 270, friction: 25},
   }));
 
@@ -33,7 +38,7 @@ const UIBottomSheetEpisodeGrid = ({series, setLocked, currentEp, visibleBottomSh
       },
       onDragEnd: ({movement: [_, my]}) => {
         if(my > 20) {
-          api.start({ y: 470 });
+          api.start({ y: BOTTOM_SHEEET_HEIGHT });
           handleBottomSheetClose();
         }
       }
@@ -57,13 +62,13 @@ const UIBottomSheetEpisodeGrid = ({series, setLocked, currentEp, visibleBottomSh
   }
   
   const closeBottomSheet = () => {
-    api.start({ from: {y: 0}, to: {y: 470}});
+    api.start({ from: {y: 0}, to: {y: BOTTOM_SHEEET_HEIGHT}});
   }
 
 
   useEffect(() => {
     if(visibleBottomSheet) {
-      api.start({ from: { y: 470 }, to: { y: 0 } });
+      api.start({ from: { y: BOTTOM_SHEEET_HEIGHT }, to: { y: 0 } });
     }
   }, [visibleBottomSheet])
 
@@ -76,7 +81,8 @@ const UIBottomSheetEpisodeGrid = ({series, setLocked, currentEp, visibleBottomSh
     {...bind()}
     style={{
       ...springs,
-      touchAction: 'none'
+      touchAction: 'none',
+      height: BOTTOM_SHEEET_HEIGHT
     }}
     className='bottom-sheet-wrap'>
       <div className='head'>

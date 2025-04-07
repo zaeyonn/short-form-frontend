@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import * as userSlice from 'src/redux/userSlice';
 import * as globalSlice from 'src/redux/globalSlice';
+import { render } from 'react-dom';
 
 const MissionPage = () => {
   const dispatch = useDispatch();
@@ -181,7 +182,8 @@ const MissionPage = () => {
           </div>
           <div className='attendance-check-background' style={{backgroundImage: 'url(resources/images/m_attendance_check_background.svg)'}}>
             <div className='day-list-wrap'>
-              {isMobile ? renderAttendanceBoardMobile() : renderAttendanceBoardPc()}
+              {/* {isMobile ? renderAttendanceBoardMobile() : renderAttendanceBoardPc()} */}
+              {renderAttendanceBoardMobile()}
             </div>
             <button disabled={isAttended} className={`attendance-btn ${isAttended ? 'disabled' : ''}`} onClick={handleAttend}>
               출석 체크

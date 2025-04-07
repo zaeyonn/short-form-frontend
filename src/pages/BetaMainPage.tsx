@@ -204,6 +204,7 @@ const BetaMainPage = ({}) => {
   //   blobUrlCache.clear();
   // };
 
+
   const signInProcess = (code: string, authType: string) => {
     dispatch(userSlice.authSns({ code, userId: user?.id, authType }));
   };
@@ -316,18 +317,23 @@ const BetaMainPage = ({}) => {
     //   URL.revokeObjectURL(blobUrlRef.current);
     // }
 
-    if (isMobile) {
-      if (swiperRef.current) swiperRef.current.slideTo(index, 0);
-      setVisibleBottomSheetEpisode(false);
-    } else if (!isMobile && videoRef.current) {
-      dispatch(
-        userSlice.updateSeriesProgress({
-          userId: user.id,
-          seriesId: seriesIdRef.current,
-          ep: index + 1,
-          })
-        );
-      }
+    if (swiperRef.current) swiperRef.current.slideTo(index, 0);
+    
+    setVisibleBottomSheetEpisode(false);
+
+    // if (isMobile) {
+    //   Beta
+    //   if (swiperRef.current) swiperRef.current.slideTo(index, 0);
+    //   setVisibleBottomSheetEpisode(false);
+    // } else if (!isMobile && videoRef.current) {
+    //   dispatch(
+    //     userSlice.updateSeriesProgress({
+    //       userId: user.id,
+    //       seriesId: seriesIdRef.current,
+    //       ep: index + 1,
+    //       })
+    //     );
+    //   }
     },[episodeList, seriesIdRef.current, currentEp]);
 
   const handleBottomSheetOpen = useCallback(() => {
@@ -497,17 +503,19 @@ const BetaMainPage = ({}) => {
   // };
 
   const handleVideoEnded = () => {
-    if (isMobile && currentEp?.episode_num < episodeList.length) {
+    if (currentEp?.episode_num < episodeList.length) {
       swiperRef.current.slideTo(currentEp?.episode_num, 0);
     }
   };
 
   const handleLoginOpen = () => {
-    if (isMobile) {
-      setVisibleBottomSheetLogin(true);
-    } else {
-      dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_LOGIN.name));
-    }
+    
+    setVisibleBottomSheetLogin(true);
+    // if (isMobile) {
+    //   setVisibleBottomSheetLogin(true);
+    // } else {
+    //   dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_LOGIN.name));
+    // }
   };
 
   // 4초 후 Player Tool UI 숨김 처리
@@ -561,7 +569,7 @@ const BetaMainPage = ({}) => {
       console.log("authSnsResult ", authSnsResult);
       const user:User = authSnsResult.data;
 
-      if (loginSheetRef.current && isMobile)
+      if (loginSheetRef.current)
         loginSheetRef.current.handleClose();
 
       if (user.free_point + user.paid_point < series.req_point) {
@@ -897,7 +905,7 @@ const BetaMainPage = ({}) => {
     } else {
       setLocked(false);
     }
-  }, [currentEp, unlockEpisode, isMobile]);
+  }, [currentEp, unlockEpisode]);
 
   useEffect(() => {
     if (videoRef.current && lastEpisode && unlockEpisode && series) {
@@ -980,7 +988,8 @@ const BetaMainPage = ({}) => {
               <TailSpin width={60} height={60} color={"#ffffff"} />
             </div>
           )}
-          <div className="header">
+          {isMobile && (
+            <div className="header">
             <div className="left-section">
               <img
                 src={`/resources/icons/icon_hamburger.svg`}
@@ -999,9 +1008,10 @@ const BetaMainPage = ({}) => {
               </Link>
             </div>
           </div>
+          )}
           {visibleTools && (
             <>
-            <div className="beta-player-header" style={{ background: "none" }}>
+             <div className="beta-player-header" style={{ background: "none" }}>
                 <div className="left-section">
                   <span className="title">
                     {`${series?.title} ${currentEp?.episode_num ? `[${currentEp.episode_num}]` : ""}`}
@@ -1114,16 +1124,16 @@ const BetaMainPage = ({}) => {
           handlePaymentComplete={handlePaymentComplete}
         />
       )}
-      {paymentProduct && !isMobile && (
+      {/* Beta {paymentProduct && !isMobile && (
         <TossPayment handlePaymentComplete={handlePaymentComplete} />
-      )}
+      )} */}
       {displayPopName === displayPopType.POPUP_LOGIN.name && (
         <UIPopLogin signInProcess={signInProcess} />
       )}
       {paymentLoading && (
         <UILayerSpinner/>
       )}
-      <UILeftMenu visible={visibleMenu} handleMenuClose={handleMenuClose} />
+     {isMobile &&  <UILeftMenu visible={visibleMenu} handleMenuClose={handleMenuClose} />}
     </div>
   );
 };

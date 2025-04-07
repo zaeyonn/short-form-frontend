@@ -51,7 +51,7 @@ const AlertManager = () => {
     { alert && (
       <UIPopAlert/>
     )}
-    <UIScrollTopButton/>
+    {/* Beta <UIScrollTopButton/> */}
     </>
   )
 }

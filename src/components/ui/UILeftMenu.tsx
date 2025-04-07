@@ -1,14 +1,17 @@
 import { useEffect } from "react";
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { useSpring, animated } from '@react-spring/web';
 
 interface Props {
-  visible: boolean;
-  handleMenuClose: () => void;
+  visible?: boolean;
+  handleMenuClose?: () => void;
 }
 
-const UILeftMenu = (props: Props) => {
+const UILeftMenu = ({handleMenuClose = () => 0, visible = true}: Props) => {
+
+  const { isMobile } = useSelector((state: any) => state.global);
 
   const [springs, api] = useSpring(() => ({
     from: { x: 0, y: 0 },
@@ -16,7 +19,7 @@ const UILeftMenu = (props: Props) => {
   }));
 
   const handleClose = () => {
-    props.handleMenuClose();
+    handleMenuClose();
 
     closeMenu();
   }
@@ -30,14 +33,14 @@ const UILeftMenu = (props: Props) => {
   }
 
   useEffect(() => {
-    if(props.visible) {
+    if(visible) {
       openMenu();
     }
-  }, [props.visible])
+  }, [visible])
 
   return ( 
     <>
-    { props.visible && (
+    { (visible && isMobile) && (
       <div className='scrim' onClick={handleClose}/>
     )}
     <animated.div 
