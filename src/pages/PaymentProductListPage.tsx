@@ -15,7 +15,7 @@ const PaymentProductListPage = () => {
   const { productList, productListResult, productListError } = useSelector((state: any) => state.global);
   const { user, paymentProduct, paymentsConfirmError, paymentsConfirmResult, paymentsRegistError, paymentsRegistResult, subscribeResult, subscribeError } = useSelector((state: UserRootState) => state.user);
 
-  const [paymentLoading, setPaymentLoading] = useState(false);
+  const [_paymentLoading, setPaymentLoading] = useState(false);
 
   const orderIdRef = useRef();
   const paymentWindowRef = useRef<any>(null);

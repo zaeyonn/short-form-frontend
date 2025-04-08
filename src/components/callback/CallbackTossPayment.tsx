@@ -1,11 +1,8 @@
 import { useEffect, useState, useRef } from "react";
-import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
 
 const CallbackTossPayment = ({}) => {
-
-  const { paymentProduct } = useSelector((state: any) => state.global)
 
   const [searchParams] = useSearchParams();
   const [widgets, setWidgets] = useState<any>(null);
