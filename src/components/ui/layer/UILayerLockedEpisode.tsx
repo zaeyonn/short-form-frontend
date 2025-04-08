@@ -33,16 +33,19 @@ const UILayerLockedEpisode = ({
       return;
     }
 
-    if (isMobile) {
-      setVisibleBtnList(false);
-      setVisibleBottomSheetPayment(true);
-    } else {
-      dispatch(
-        globalSlice.setDisplayPopName(
-          displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name
-        )
-      );
-    }
+    // Beta
+    // if (isMobile) {
+    //   setVisibleBtnList(false);
+    //   setVisibleBottomSheetPayment(true);
+    // } else {
+    //   dispatch(
+    //     globalSlice.setDisplayPopName(
+    //       displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name
+    //     )
+    //   );
+    // }
+    setVisibleBtnList(false);
+    setVisibleBottomSheetPayment(true);
   };
 
   const handlePaymentClose = () => {
@@ -87,7 +90,7 @@ const UILayerLockedEpisode = ({
           {/* <img onClick={handleLockedClose} src='/resources/icons/icon_close_l.svg'/> */}
         </div>
       )}
-      {isMobile && (
+      {(
         <UIBottomSheetProductList
           visible={visibleBottomSheetPayment}
           series={series}

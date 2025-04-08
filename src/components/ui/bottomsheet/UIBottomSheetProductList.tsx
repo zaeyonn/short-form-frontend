@@ -158,7 +158,8 @@ const UIBottomSheetProductList = (props: Props) => {
 
       if(paymentsConfirmResult.data.product_type === 'coin') {
         // 사용자 코인 업데이트
-        dispatch(userSlice.setUser({ ...user, paid_point: paymentsConfirmResult.paid_point, free_point: paymentsConfirmResult.free_point }));
+        
+        dispatch(userSlice.setUser({ ...user, paid_point: user.paid_point + paymentsConfirmResult.data.paid_point, free_point: user.free_point + paymentsConfirmResult.data.free_point }));
       } else if(paymentsConfirmResult.data.product_type === 'subscription') {
         // 사용자 구독 업데이트
       }
@@ -179,7 +180,7 @@ const UIBottomSheetProductList = (props: Props) => {
 
       dispatch(userSlice.clearUserState("paymentsConfirmResult"));
     }
-  }, [paymentsConfirmResult, paymentsConfirmError]);
+  }, [paymentsConfirmResult, paymentsConfirmError, user]);
 
   useEffect(() => {
     if (paymentsRegistError) {

@@ -588,16 +588,15 @@ const BetaMainPage = ({}) => {
         loginSheetRef.current.handleClose();
 
       if (user.free_point + user.paid_point < series.req_point) {
-        if (displayPopName) {
-          dispatch(
-            globalSlice.setDisplayPopName(
-              displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name
-            )
-          );
-        }
-      } else {
-        dispatch(globalSlice.setDisplayPopName(''));
-      }
+        // if (displayPopName) {
+        //   dispatch(
+        //     globalSlice.setDisplayPopName(
+        //       displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name
+        //     )
+        //   );
+        // }
+        
+      } 
 
       dispatch(globalSlice.addToast({
         id: Date.now(),

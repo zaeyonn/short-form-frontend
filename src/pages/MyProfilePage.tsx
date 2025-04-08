@@ -207,6 +207,12 @@ const MyProfilePage = () => {
                 )}
               </div>
               {user?.auth !== "guest" && (
+                <>
+                <div className="weekly-pass-wrap">
+                  <div>
+                    <img src='resources/icons/icon_pass.svg'/>
+                  </div>
+                </div>
                 <div className="wallet">
                   <div className="head">
                     코인 내역
@@ -221,6 +227,7 @@ const MyProfilePage = () => {
                     <button onClick={handlePayment}>충전하기</button>
                   </div>
                 </div>
+                </>
               )}
               {(
                 <div className="view-list">
