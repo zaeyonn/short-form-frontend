@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import UIBottomSheetProductList from "components/ui/bottomsheet/UIBottomSheetProductList";
 
-import * as globalSlice from "src/redux/globalSlice";
-import { displayPopType } from "common/define";
+// import * as globalSlice from "src/redux/globalSlice";
+// import { displayPopType } from "common/define";
 
 interface Props {
   handleLockedClose: () => any;
@@ -17,9 +17,9 @@ const UILayerLockedEpisode = ({
   handleLoginOpen,
   handlePointUse,
 }: Props) => {
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
 
-  const { isMobile, series } = useSelector((state: any) => state.global);
+  const { series } = useSelector((state: any) => state.global);
   const { user } = useSelector((state: any) => state.user);
 
   const [visibleBtnList, setVisibleBtnList] = useState(true);
