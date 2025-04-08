@@ -6,7 +6,7 @@ import { TailSpin } from "react-loader-spinner";
 import * as globalSlice from "src/redux/globalSlice";
 import * as userSlice from "src/redux/userSlice";
 
-import { authType, displayPopType } from "src/common/define";
+import { authType, displayPopType, subscriptionType } from "src/common/define";
 import UIBottomSheetLogin from "components/ui/bottomsheet/UIBottomSheetLogin";
 import UISmallContentSlider from "components/ui/UISmallContentSlider";
 import UIPopLogin from "components/ui/popup/UIPopLogin";
@@ -30,6 +30,7 @@ const MyProfilePage = () => {
     authSnsError,
     userSeriesWatchListResult,
     userSeriesWatchListError,
+    subscription
   } = useSelector((state: any) => state.user);
 
   const loginSheetRef = useRef<any>(null);
@@ -200,7 +201,7 @@ const MyProfilePage = () => {
                   <div>
                     <div className="nickname">
                       {`${user?.nickname}님`}
-                      {/* <img src='resources/icons/icon_arrow_right_s.svg'/> */}
+                      <img src='resources/icons/icon_arrow_right_s.svg'/>
                     </div>
                     <div className="email">{user?.email}</div>
                   </div>
@@ -208,23 +209,56 @@ const MyProfilePage = () => {
               </div>
               {user?.auth !== "guest" && (
                 <>
+                <div className="gradient-border">
+                {!subscription && (
                 <div className="weekly-pass-wrap">
-                  <div>
+                  <div className='weekly-pass-name'>
                     <img src='resources/icons/icon_pass.svg'/>
+                    주간 패스권
                   </div>
+                  <button onClick={handlePayment}>구독하기</button>
+                </div>
+                )}
+                {subscription && (
+                <div className="weekly-pass-wrap">
+                  <div className='weekly-pass-name'>
+                    <img src='resources/icons/icon_pass.svg'/>
+                    {subscriptionType[subscription.duration].name}
+                  </div>
+                  <button disabled>구독 중</button>
+                </div>
+                )}
                 </div>
                 <div className="wallet">
                   <div className="head">
-                    코인 내역
-                    {/* <img src='resources/icons/icon_arrow_right_s.svg'/> */}
-                  </div>
-                  <div className="divider"></div>
-                  <div className="point">
-                    <div className="my-point">
-                      <img src="resources/icons/icon_coin_s.svg" />
-                      <span>{`${user?.paid_point + user?.free_point}`}</span>
+                    <div>
+                      코인 내역
+                      <img src='resources/icons/icon_arrow_right_s.svg'/>
                     </div>
                     <button onClick={handlePayment}>충전하기</button>
+                  </div>
+                  <div className="divider"></div>
+                  <div className="my-point-wrap">
+                    <div className="my-point">
+                      <label>
+                        내 코인
+                        <img src='resources/icons/icon_bang.svg'/>
+                      </label>
+                      <div className="point-value">
+                        {(user?.paid_point) ? (user?.paid_point).toLocaleString() : 0}
+                        <img src="resources/icons/icon_coin_s.png" />  
+                      </div>
+                    </div>
+                    <div className="my-point">
+                      <label>
+                        보너스 코인
+                        <img src='resources/icons/icon_bang.svg'/>
+                      </label>
+                      <div className="point-value">
+                      {(user?.free_point) ? (user?.free_point).toLocaleString() : 0}
+                        <img src="resources/icons/icon_coin_s.png" />  
+                      </div>
+                    </div>
                   </div>
                 </div>
                 </>

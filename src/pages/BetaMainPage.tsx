@@ -39,6 +39,7 @@ const BetaMainPage = ({}) => {
   } = useSelector((state: any) => state.global);
   const {
     user,
+    subscription,
     addSeriesProgressResult,
     addSeriesProgressError,
     userSeriesProgressResult,
@@ -262,7 +263,6 @@ const BetaMainPage = ({}) => {
   };
 
   const handleLoginClose = useCallback(() => {
-    console.log('handleLoginClose 2');
   //    setVisibleBottomSheetLogin(false);
     dispatch(globalSlice.toggleBottomSheetLogin({}));
   }, []);
@@ -561,9 +561,12 @@ const BetaMainPage = ({}) => {
   // SNS 로그인 결과
   useEffect(() => {
     if (authSnsError) {
-      //setVisibleBottomSheetLogin(false);
-    console.log('handleLoginClose 3');
-      dispatch(globalSlice.toggleBottomSheetLogin({}));
+      console.log('authSnsError ', authSnsError);
+      dispatch(globalSlice.addToast({
+        id: Date.now(),
+        message: authSnsError.response.data.error,
+        duration: 3000,
+      }))
 
       dispatch(userSlice.clearUserState("authSnsError"));
     }
@@ -785,6 +788,11 @@ const BetaMainPage = ({}) => {
         setLastEpisode(userSeriesProgressResult.data.last_episode);
         setUnlockEpisode(userSeriesProgressResult.data.unlock_episode);
         handleEpisodeChange(userSeriesProgressResult.data.last_episode);
+      }
+
+      // 패스권 구독중인 사용자인 경우 전체 회차 잠금 해제
+      if(subscription?.status === 'active') {
+        setUnlockEpisode(episodeList.length);
       }
 
       // 사용자의 해당 시리즈 진행 상태가 존재하지 않는 경우

@@ -15,9 +15,11 @@ const LayoutMenu = () => {
 
   return ( 
     <div className="menu">
-      <div className='item' style={{margin: '2px 0px 20px 0px'}}>
+      <div className='item' style={{margin: '2px 0px 0px 0px'}}>
         {/* <img src='resources/icons/icon_hamburger.svg'/> */}
-        <img className='logo' src={"/resources/images/main_logo_white.svg"}/>
+        <Link to='/' style={{paddingBottom: 0}}>
+          <img className='logo' src={"/resources/images/main_logo_white.svg"}/>
+        </Link>
       </div>
       <div className="divider"/>
       { user.auth === 'guest' ? (

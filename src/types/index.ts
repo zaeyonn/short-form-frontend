@@ -10,6 +10,8 @@ export interface UserRootState {
   userInfoError: any,
 
   paymentProduct: Product | null,
+
+  subscription: Subscription | null,
 }
 
 
@@ -52,5 +54,15 @@ export type Product = {
   type: string,
   created_at: string,
   updated_at: string,
+}
+
+export type Subscription = {
+  id: number;
+  user_id: string;
+  product_id: number;
+  status: string;
+  start_date: Date,
+  end_date: Date,
+  duration: string,
 }
 

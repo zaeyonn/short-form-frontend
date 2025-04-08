@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
 import * as userSlice from "src/redux/userSlice";
+import { Subscription } from 'src/types';
 
 const AuthManager = () => {
   const dispatch = useDispatch();
@@ -21,6 +23,14 @@ const AuthManager = () => {
       const user = userInfoResult.data;
       localStorage.setItem("user-id", user.id);
       dispatch(userSlice.setUser(user));
+
+      if(user.subscriptions.length > 0) {
+        user.subscriptions.forEach((subscription: Subscription) => {
+          if(subscription.status === 'active') {
+            dispatch(userSlice.setSubscription(subscription));
+          }
+        })
+      }
     }
   }, [userInfoResult, userInfoError]);
 

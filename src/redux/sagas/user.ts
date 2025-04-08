@@ -172,3 +172,13 @@ export function* handleattendanceCheck(action: PayloadAction<any>): Generator<an
     yield put(slice.attendanceCheckFailure(error));
   }
 }
+
+export function* handleSubscribe(action: PayloadAction<any>): Generator<any> {
+  try {
+    const response = yield call(api.subscribe, action.payload);
+
+    yield put(slice.subscribeSuccess(response));
+  } catch (error) {
+    yield put(slice.subscribeFailure(error));
+  }
+}

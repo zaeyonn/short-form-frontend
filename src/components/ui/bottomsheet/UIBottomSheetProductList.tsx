@@ -24,7 +24,7 @@ const UIBottomSheetProductList = (props: Props) => {
   const orderIdRef = useRef();
   const paymentWindowRef = useRef<any>(null);
 
-  const weeklySubProduct = productList.find((item: Product) => item.name === 'weekly_subscription');
+  const weeklySubProduct = productList.find((item: Product) => item.name === 'weekly');
   
   const [springs, api] = useSpring(() => ({
     from: { y: 620 },
@@ -194,7 +194,6 @@ const UIBottomSheetProductList = (props: Props) => {
 
       setPaymentLoading(true);
 
-      // Use MutableRefObject type to allow assignment
       orderIdRef.current = paymentsRegistResult.data.order_id;
 
       setTimeout(() => {
@@ -253,9 +252,9 @@ const UIBottomSheetProductList = (props: Props) => {
           )}
         </div>
         <div className='body'>
-          <div className='point-wrap' style={{ marginTop: 16 }}>
-            <div className='item'><div className='label'>보유한 코인</div><span className='point'>{(user?.paid_point + user?.free_point).toLocaleString()}<img src='/resources/icons/icon_coin_s.svg' /></span></div>
-            {props.series && <div className='item'><div className='label'>다음 화 필요 코인</div><span className='point'>{props.series?.req_point}<img src='/resources/icons/icon_coin_s.svg' /></span></div>}
+          <div className='point-list-wrap' style={{ marginTop: 16 }}>
+            <div className='item'><div className='label'>보유한 코인</div><span className='point'>{(user?.paid_point + user?.free_point).toLocaleString()}<img src='/resources/icons/icon_coin_s.png' /></span></div>
+            {props.series && <div className='item'><div className='label'>다음 화 필요 코인</div><span className='point'>{props.series?.req_point}<img src='/resources/icons/icon_coin_s.png' /></span></div>}
           </div>
           <div className='product-list-wrap selected'>
             <div className='product-item'>

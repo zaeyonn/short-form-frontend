@@ -125,3 +125,16 @@ export const attendance = ({ userId }: any) => client.get(`attendance/${userId}`
 
 // 출석 체크
 export const attendanceCheck = ({ userId }: any) => client.post(`attendance/${userId}/check`);
+
+/* Subscription API */
+
+// 구독하기
+interface subscribeParams {
+  userId: string;
+  productId: number;
+}
+
+export const subscribe = ({ userId, productId }: subscribeParams) => client.post(`subscriptions`, {
+  user_id: userId,
+  product_id: productId,
+})

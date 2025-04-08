@@ -357,6 +357,13 @@ a {
   }
 
   .page-body {
+    overflow: auto;
+
+    // 스크롤바 숨김 처리
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
     .select-mode {
       .delete-btn {
         font-weight: 400;
@@ -500,6 +507,7 @@ a {
       flex-direction: row;
       align-items: center;
       gap: 14px;
+      padding: 15px 0px;
   
       .title {
         font-size: 16px;
@@ -518,6 +526,7 @@ a {
     }
   
     .right-section {
+      padding: 15px 0px;
       display: flex;
       flex-direction: row;
       gap: 12px;
@@ -622,10 +631,17 @@ a {
     }
   }
 
+  
+  .p-title {
+    margin-top: 34px;
+    font-weight: 600;
+    font-size: 18px;
+  }
+
   .profile {
     margin: 0 20px;
     box-sizing: border-box;
-    margin-top: 10px;
+    margin-top: 20px;
     align-items: center;
     display: flex;
     height: 54px;
@@ -665,9 +681,41 @@ a {
     }
   }
 
-  .weekly-pass-wrap {
+  .gradient-border {
+    position: relative;
     margin: 20px 20px;
+    padding: 2px; /* border 두께처럼 사용됨 */
+    border-radius: 12px;
+    background: linear-gradient(0deg, #000000, $brand-color);
   }
+
+  .weekly-pass-wrap {
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    background-color: #000000;
+
+    .weekly-pass-name {
+      gap: 6px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      font-size: 15px;
+      color: #FFFFFF;
+    }
+
+    button {
+      font-weight: 500;
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background-color: $brand-color;
+    }
+  }
+  
 
   .wallet {
     margin: 0 20px;
@@ -675,11 +723,10 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    padding: 18px 16px;
+    padding: 22px 16px;
     margin-top: 20px;
     border-radius: 12px;
     background-color:#1B1B1B;
-    height: 108px;
     gap: 14px;
 
     .divider {
@@ -694,44 +741,62 @@ a {
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
-      color: #A2A2A2;
       font-weight: 500;
-      font-size: 13px;
-    }
+      font-size: 15px;
 
-    .point {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 500;
-
-      .my-point {
+      div {
         display: flex;
+        flex-direction: row;
         align-items: center;
-      }
-
-      img {
-        width: 20px;
-        height: 20px;
-      }
-
-      span {
-        margin-left: 3px;
+        gap: 4px;
       }
 
       button {
-        padding: 6px 10px;
-        box-sizing: border-box;
-        border-radius: 35px;
-        background-color: $brand-color;
-        color: #ffffff;
-        font-size: 13px;
         font-weight: 500;
+        font-size: 13px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        background-color: $brand-color;
       }
+    }    
+  }
+
+  .my-point-wrap {
+    margin-top: 20px;
+    border-radius: 12px;
+    background-color: #1B1B1B;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .my-point {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      font-weight: 500;
+      font-size: 14px;
+      color: #A2A2A2;
+    }
+
+    .point-value {
+      gap: 6px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      font-weight: 500;
+      font-size: 16px;
+    }
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
   }
 
   .view-list {
@@ -1105,7 +1170,7 @@ a {
 
 
 
-.point-wrap {
+.point-list-wrap {
   background-color: #1B1B1B;
   padding: 16px 20px;
   border-radius: 12px;
@@ -1214,7 +1279,8 @@ a {
     }
 
     button {
-      width: 77px;
+      white-space: nowrap;
+      width: 81px;
       padding: 8px 12px;
       border-radius: 6px;
       background-color: $brand-color;
@@ -1258,7 +1324,7 @@ a {
     .product-name {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       color: #FFFFFF;
       font-size: 14px;
       font-weight: 500;
@@ -1279,6 +1345,20 @@ a {
     height: 20px;
   }
 }
+
+.provision-wrap {
+  margin-top: 14px;
+  font-size: 16px;
+  color: #A2A2A2;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+}
+
+
 
 .episode-grid {
   margin-top: 20px;

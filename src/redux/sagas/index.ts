@@ -1,4 +1,4 @@
-import { takeLatest, all } from 'redux-saga/effects';
+import { takeLatest, all, take } from 'redux-saga/effects';
 import * as globalHandler from './global.ts';
 import * as globalSlice from '../globalSlice';
 import * as userHandler from './user.ts';
@@ -29,6 +29,7 @@ export function* watcherSaga() {
     takeLatest(userSlice.paymentsConfirm.type, userHandler.handlePaymentsConfirm),
     takeLatest(userSlice.usersPointDeduct.type, userHandler.handleUsersPointDeduct),
     takeLatest(userSlice.attendance.type, userHandler.handleattendance),
-    takeLatest(userSlice.attendanceCheck.type, userHandler.handleattendanceCheck)
+    takeLatest(userSlice.attendanceCheck.type, userHandler.handleattendanceCheck),
+    takeLatest(userSlice.subscribe.type, userHandler.handleSubscribe)
   ])
 }
