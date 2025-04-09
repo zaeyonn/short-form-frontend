@@ -76,7 +76,7 @@ const BetaMainPage = ({}) => {
   const [lastEpisode, setLastEpisode] = useState<number>(0);
   const [muted, setMuted] = useState<boolean>(true);
   const [speed, setSpeed] = useState<number>(1);
-  const [quality, setQuality] = useState<string>("auto");
+  const [quality, setQuality] = useState<string>("Auto");
   // const [fullscreen, setFullscreen] = useState<boolean>(false);
 
   const [visibleTools, setVisibleTools] = useState(true);
@@ -93,6 +93,7 @@ const BetaMainPage = ({}) => {
   const swiperRef = useRef<any>(null);
   const videoRef = useRef<any>(null);
   const hideToolsTimeout = useRef<any>();
+  const hlsRef = useRef<any>(null);
   // const videoContainerRef = useRef<HTMLDivElement>(null);
   const sequenceCountRef = useRef<number>(0);
   const progressChangingRef = useRef<boolean>(false);
@@ -374,9 +375,21 @@ const BetaMainPage = ({}) => {
     setVisibleBottomSheetSpeed(false);
   }, []);
 
-  const handleQualityChange = useCallback((quality: string) => {
+  const handleQualityChange = (quality: string) => {
+    console.log('handleQualityChange quality', hlsRef.current.levels);
     setQuality(quality);
-  }, []);
+    
+    if(quality === 'Auto') {
+      hlsRef.current.currentLevel = -1;
+    } else if(quality === '480p') {
+      hlsRef.current.currentLevel = 0;
+    } else if(quality === '720p') {
+      hlsRef.current.currentLevel = 1;
+    } else if(quality === '1080p') {
+      hlsRef.current.currentLevel = 2;
+    } 
+    qualitySheetRef.current.handleClose();
+  };
 
   const handleSpeedChange = useCallback((speed: number) => {
     setSpeed(speed);
@@ -986,12 +999,15 @@ const BetaMainPage = ({}) => {
         <div className={"player-wrap"}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
+              quality={quality}
               series={series}
               locked={locked}
               playing={playing}
               muted={muted}
+              hlsRef={hlsRef}
               swiperRef={swiperRef}
               blobUrlRef={blobUrlRef}
+              currentTimeRef={currentTimeRef}
               setVideoLoading={setVideoLoading}
               setPlaying={setPlaying}
               handleSlideChange={handleSlideChange}

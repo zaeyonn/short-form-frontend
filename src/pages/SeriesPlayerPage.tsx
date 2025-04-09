@@ -885,8 +885,7 @@ const SeriesPlayerPage = ({}) => {
               handleTimeUpdate={handleTimeUpdate}
               toggleTools={toggleTools}
               unlockEpisode={unlockEpisode}
-              lastEpisode={lastEpisode}
-            />
+              lastEpisode={lastEpisode} quality={""} hlsRef={undefined} currentTimeRef={undefined}            />
           </div>
           {loading && (
             <div className="loading">
@@ -1013,6 +1012,7 @@ const SeriesPlayerPage = ({}) => {
                     )}
                   </video> */}
                     <HlsPlayer
+                      currentTimeRef={currentTimeRef}
                       locked={locked}
                       series={series}
                       index={currentEp.episode_num - 1}
@@ -1024,8 +1024,7 @@ const SeriesPlayerPage = ({}) => {
                       setVideoLoading={setVideoLoading}
                       setPlaying={setPlaying}
                       handleEpisodeChange={handleEpisodeChange}
-                      handleTimeUpdate={handleTimeUpdate}
-                    />
+                      handleTimeUpdate={handleTimeUpdate} quality={""} hlsRef={undefined}                    />
                   <div
                     className="bottom-container"
                     onClick={(event) => event.stopPropagation()}

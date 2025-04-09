@@ -6,11 +6,14 @@ import { Series } from 'src/types';
 import * as globalSlice from "src/redux/globalSlice";
 
 interface Props {
+  quality: string,
   locked: boolean,
   series: Series;
   lastEpisode: number;
+  currentTimeRef: any;
   index: number;
   episodeNum: any;
+  hlsRef: any;
   videoRef: any;
   videoUrl: string;
   muted: boolean;
@@ -21,7 +24,7 @@ interface Props {
 }
 
 
-const HlsPlayer = ({ locked, series, lastEpisode, index, episodeNum, videoRef, videoUrl, muted, setVideoLoading, setPlaying, handleTimeUpdate, handleEpisodeChange}: Props) => {
+const HlsPlayer = ({ quality, locked, series, hlsRef, currentTimeRef, lastEpisode, index, episodeNum, videoRef, videoUrl, muted, setVideoLoading, setPlaying, handleTimeUpdate, handleEpisodeChange}: Props) => {
   const dispatch = useDispatch();
   
   useEffect(() => {
@@ -33,13 +36,29 @@ const HlsPlayer = ({ locked, series, lastEpisode, index, episodeNum, videoRef, v
         manifestLoadingMaxRetry: 3,
         levelLoadingMaxRetry: 3,
       });
+      hlsRef.current = hls;
 
       hls.loadSource(videoUrl);
       hls.attachMedia(videoRef.current);
 
+      if(quality === 'Auto') {
+        hlsRef.current.currentLevel = -1;
+      } else if(quality === '480p') {
+        hlsRef.current.currentLevel = 0;
+      } else if(quality === '720p') {
+        hlsRef.current.currentLevel = 1;
+      } else if(quality === '1080p') {
+        hlsRef.current.currentLevel = 2;
+      } 
+
       // 비디오 재생 시작되면 poster 제거
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         console.log('video play')
+      });
+
+      hls.once(Hls.Events.LEVEL_SWITCHED, () => {
+        console.log('화질 변경됨')
+        videoRef.current.currentTime = currentTimeRef.current;
       });
 
       // 에러 핸들링
@@ -86,8 +105,13 @@ const HlsPlayer = ({ locked, series, lastEpisode, index, episodeNum, videoRef, v
           setVideoLoading(false);
         });
       }
+
+      
+      return () => {
+        hls.destroy();
+      };  
     } 
-  }, [videoUrl, lastEpisode, index])
+  }, [videoUrl, lastEpisode, index, quality, videoRef.current])
   
   return (
     <video 

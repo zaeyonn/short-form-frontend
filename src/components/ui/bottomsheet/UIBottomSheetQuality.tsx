@@ -13,9 +13,11 @@ type bottomSheetHandle = {
   handleClose: () => void;
 }
 
-const UIBottomSheetQuality = forwardRef<bottomSheetHandle, Props>(({visible, handleBottomSheetClose}: any, ref) => {
+const QUALITY_OPTION_LIST = ['Auto', '480p', '720p', '1080p'];
+
+const UIBottomSheetQuality = forwardRef<bottomSheetHandle, Props>(({visible, quality, handleBottomSheetClose, handleQualityChange}: any, ref) => {
   const [springs, api] = useSpring(() => ({
-    from: { y: 325 },
+    from: { y: 280 },
     config: { mass: 0.6, tension: 270, friction: 25},
   }));
 
@@ -26,7 +28,7 @@ const UIBottomSheetQuality = forwardRef<bottomSheetHandle, Props>(({visible, han
       },
       onDragEnd: ({movement: [_, my]}) => {
         if(my > 20) {
-          api.start({ y: 325 });
+          api.start({ y: 280 });
           handleBottomSheetClose();
         }
       }
@@ -34,7 +36,7 @@ const UIBottomSheetQuality = forwardRef<bottomSheetHandle, Props>(({visible, han
   )
   
   const handleClose = () => {
-    api.start({ from: { y: 20 }, to: { y : 325 }});
+    api.start({ from: { y: 20 }, to: { y : 280 }});
 
     handleBottomSheetClose();
   }
@@ -45,7 +47,7 @@ const UIBottomSheetQuality = forwardRef<bottomSheetHandle, Props>(({visible, han
 
   useEffect(() => {
     if(visible) {
-      api.start({ from: { y: 325 }, to: { y: 20 } });
+      api.start({ from: { y: 280 }, to: { y: 20 } });
     } 
   }, [visible])
 
@@ -59,7 +61,7 @@ const UIBottomSheetQuality = forwardRef<bottomSheetHandle, Props>(({visible, han
     {...bind()}
       style={{
         ...springs,
-        height: 325,
+        height: 280,
         touchAction: 'none'
       }} 
       className="bottom-sheet-wrap">
@@ -67,18 +69,25 @@ const UIBottomSheetQuality = forwardRef<bottomSheetHandle, Props>(({visible, han
         <div className='title'>해상도</div>
       </div>
       <div className='option-list-wrap'>
-        <div className='option-value-item'>
-          Auto
-        </div>
-        <div className='option-value-item'>
-          540p
-        </div>
-        <div className='option-value-item'>
-          720p
-        </div>
-        <div className='option-value-item'>
-          1080p
-        </div>
+        {QUALITY_OPTION_LIST.map((item, index) => {
+          return (
+            <div key={index} className={`option-value-item ${quality === item ? 'selected' : ''}`} onClick={() => handleQualityChange(item)}>
+             <div>
+              <div className='option-value'>
+              {quality === item && (
+              <img src='resources/icons/icon_check_s.svg'/>
+             )}
+              {`${item}`}
+              </div>
+              { item === 'Auto' && (
+              <div className={`guide ${quality === item ? 'selected' : ''}`}>
+              환경에 따라 최적의 해상도로 제공합니다.
+              </div>
+              )}
+             </div>
+            </div>
+          )
+        })}
       </div>
     </animated.div>
     </>

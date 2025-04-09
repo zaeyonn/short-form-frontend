@@ -165,40 +165,94 @@ const MissionPage = () => {
       )}
       {!loading && (
       <div className='page-body'>
-        <div className='title'>
-          미션 & 이벤트
-        </div>
         <div className='attendance-check-wrap'>
-          <div className='my-coin-wrap'>
-            <div className='page-title'>
-              내 보유 코인
-            </div>
-            <div className='my-coin-count'>{((user.paid_point + user.free_point) ? (user.paid_point + user.free_point) : 0).toLocaleString()}
+            <div className='p-title' style={{marginTop: 15}}>
+              <div className='align-items'>
+                내 보유 코인
+                <img src='resources/icons/icon_bang_fill.svg'/>
+              </div>
+              <div className='my-coin-count'>{((user.paid_point + user.free_point) ? (user.paid_point + user.free_point) : 0).toLocaleString()}
               <img src={'resources/icons/icon_graphic_coin.svg'}/>  
+              </div>
             </div>
-          </div>
-          <div className='attendance-check-background' style={{backgroundImage: 'url(resources/images/m_attendance_check_background.svg)'}}>
+          <div className='attendance-check-background'>
             <div className='day-list-wrap'>
               {/* {isMobile ? renderAttendanceBoardMobile() : renderAttendanceBoardPc()} */}
               {renderAttendanceBoardMobile()}
             </div>
             <button disabled={isAttended} className={`attendance-btn ${isAttended ? 'disabled' : ''}`} onClick={handleAttend}>
-              출석 체크
+              {isAttended ? '출석 완료' : '출석 체크'}
             </button>
           </div>
         </div>
         <div className='mission-wrap'>
-          <div className='page-title'>
+          <div className='p-title'>
+            <div>
             이달의 미션
+            <img src='resources/icons/icon_bang_fill.svg'/>
+            </div>
           </div>
           <div className='mission-item-wrap'>
-            <img src={'/resources/images/mission_ad.svg'}/>
-            <div>
-              매일 광고 보기
-            </div>
-            <div>
-              미션 완료
-            </div>
+              <img src={'/resources/images/mission_ad.png'}/>
+              <div className='mission-info'>
+                <div className='mission-title'>매일 광고 보기</div>
+                <div className='reward'>+ 3 코인</div>
+                <div className='progress-wrap'>
+                  <div className='progress-bar'></div>
+                  <span>10/10</span>
+                </div>
+              </div>
+            <button>
+              광고 보기
+            </button>
+          </div>
+          <div className='mission-item-wrap'>
+              <img src={'/resources/images/mission_watch.png'}/>
+              <div className='mission-info'>
+                <div className='mission-title'>매일 에피소드 10편 보기</div>
+                <div className='guide'>이미 본 회차는 제외됩니다.</div>
+                <div className='reward'>+ 15 코인</div>
+                <div className='progress-wrap'>
+                  <div className='progress-bar'></div>
+                  <span>10/10</span>
+                </div>
+              </div>
+            <button>
+              시청 하기
+            </button>
+          </div>
+          <div className='mission-item-wrap'>
+              <img src={'/resources/images/mission_share.png'}/>
+              <div className='mission-info'>
+                <div className='mission-title'>매일 에피소드 공유하기</div>
+                <div className='guide'>친구에게 에피소드 공유하기</div>
+                <div className='reward'>+ 7 코인</div>
+              </div>
+            <button>
+              공유 하기
+            </button>
+          </div>
+          <div className='mission-item-wrap'>
+              <img src={'/resources/images/mission_link.png'}/>
+              <div className='mission-info'>
+                <div className='mission-title'>계정 연결하기</div>
+                <div className='guide'>계정 연결 시 1번 지급 됩니다.</div>
+                <div className='reward'>+ 30 코인</div>
+              </div>
+            <button>
+              계정 연결
+            </button>
+          </div>
+          <div className='mission-item-wrap'>
+              <img src={'/resources/images/mission_alarm.png'}/>
+              <div className='mission-info'>
+                <div className='mission-title'>알림 받기</div>
+                <div className='guide'>계정 연결 시 1번 지급 됩니다.</div>
+                <div className='reward'>+ 50 코인</div>
+              </div>
+            <button>
+              알림 받기
+            </button>
           </div>
         </div>
       </div>

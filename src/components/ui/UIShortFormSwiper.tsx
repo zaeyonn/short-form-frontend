@@ -5,6 +5,8 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import { Series } from "src/types";
 
 interface Props {
+  quality: string;
+  hlsRef: any;
   series: Series;
   muted: boolean;
   locked: boolean;
@@ -15,6 +17,7 @@ interface Props {
   blobUrlRef: RefObject<any>;
   lastEpisode: number;
   unlockEpisode: number | undefined;
+  currentTimeRef: any;
   setVideoLoading: any;
   setPlaying: any;
   handleEpisodeChange: (index: number) => any;
@@ -25,7 +28,7 @@ interface Props {
   handleVideoEnded: () => any;
 }
 
-const UIShortFormSwiper = ({series, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, setPlaying, handleEpisodeChange}: Props) => {
+const UIShortFormSwiper = ({quality, hlsRef, series, locked, muted, episodeList, videoRef, currentTimeRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, setPlaying, handleEpisodeChange}: Props) => {
 
   return (
     <Swiper 
@@ -38,6 +41,8 @@ const UIShortFormSwiper = ({series, locked, muted, episodeList, videoRef, handle
         return (
           <SwiperSlide className='short-form' key={index}>
             <HlsPlayer
+              quality={quality}
+              hlsRef={hlsRef}
               locked={locked}
               series={series}
               lastEpisode={lastEpisode}
@@ -45,7 +50,8 @@ const UIShortFormSwiper = ({series, locked, muted, episodeList, videoRef, handle
               muted={muted}
               episodeNum={index+1}
               videoRef={videoRef}
-              videoUrl={`https://storage.googleapis.com/framez-local/videos/${i.series_id}/hls/${index + 1}_hls_output.m3u8`}
+              currentTimeRef={currentTimeRef}
+              videoUrl={`https://storage.googleapis.com/framez-local/videos_by_quality/${i.series_id}/${index + 1}/master.m3u8`}
               setVideoLoading={setVideoLoading}
               setPlaying={setPlaying}
               handleEpisodeChange={handleEpisodeChange}

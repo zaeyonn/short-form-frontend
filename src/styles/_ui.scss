@@ -636,6 +636,17 @@ a {
     margin-top: 34px;
     font-weight: 600;
     font-size: 18px;
+    display: flex; 
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    div {
+      display: flex; 
+      flex-direction: row;
+      align-items: center;
+      gap: 4px;
+    }
   }
 
   .profile {
@@ -1130,6 +1141,7 @@ a {
     width: 100%;
 
     .option-item {
+      cursor: pointer;
       padding: 8px 0px;
       display: flex;
       align-items: center;
@@ -1144,6 +1156,7 @@ a {
     }
 
     .option-value-item {
+      cursor: pointer;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -1152,10 +1165,28 @@ a {
       font-size: 16px;
       font-weight: 400;
       gap: 4px;
+      margin-left: 23px;
 
       &.selected {
+        margin-left: 0px;
         color: #1A6EFF;
         font-weight: 800;
+      }
+
+      .guide {
+        margin-top: 5px;
+        color: #A2A2A2;
+        font-size: 14px;
+        font-weight: 400;
+
+        &.selected {
+          margin-left: 23px;
+        }
+      }
+
+      .option-value {
+        display: flex;
+        align-items: center;
       }
 
       img {
@@ -2094,6 +2125,217 @@ a {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.attendance-check-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .my-coin-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .my-coin-count {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    font-size: 18px;
+
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+
+.attendance-check-background {
+  margin-top: 11px;
+  background-color: #181818;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 25px 15px;
+
+  .day-list-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    .day-list-row {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .day-item {
+      align-items: center;
+      justify-content: center;
+      color: #4A4A4A;
+      font-weight: 400;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+
+      .day-circle-wrap {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .circle {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 14px;
+          color: #A2A2A2;
+
+          span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+        }
+      }
+
+      .day-text {
+        transform: translateX(-34%);
+        .day-count {
+          margin-right: 1.5px;
+        }
+      }
+
+      .attended {
+        font-weight: 500;
+        color: $brand-color;
+      }
+      
+      .day-item-divider {
+        width: 14px;
+        height: 2px;
+        border-radius: 3px;
+        margin-left: 4px;
+        margin-right: 4px;
+        background-color: #4A4A4A;
+      }
+    }
+  }
+
+  .attendance-btn {
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 16px;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 30px;
+    width: 100%;
+    background-color: $brand-color;
+
+    &.disabled {
+      cursor: default;
+      background-color: #4A4A4A;
+      color: #A2A2A2;
+    }
+  }
+
+  .attendance-btn:hover {
+    opacity: 0.7;
+  }
+}
+}
+
+
+.mission-wrap {
+  margin-top: 44px;
+
+  .mission-item-wrap {
+    border-radius: 16px;
+    margin-top: 12px;
+    background-color: #181818;
+    padding: 24px 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    img {
+      width: 46px;
+    }
+
+    .mission-info {
+      margin-left: 14px;
+      margin-right: 30px;
+      width: 60%;
+      display: flex;
+      flex-direction: column;
+
+      .mission-title {
+        font-weight: 500;
+        font-size: 15px;
+      }
+
+      .guide {
+        margin-top: 4px;
+        color: #A2A2A2;
+        font-weight: 300;
+        font-size: 13px;
+      }
+
+      .reward {
+        margin-top: 10px;
+        color: $brand-color;
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .progress-wrap {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .progress-bar {
+          position: static;
+          width: 100%;
+          background-color: #4A4A4A;
+          border-radius: 4px;
+          height: 6px !important;
+          padding: 0;
+        }
+
+        span {
+          color: #A2A2A2;
+          font-weight: 400;
+          font-size: 11px;
+        }
+
+      }
+    }
+
+    button {
+      white-space: nowrap;
+      width: 18%;
+      background-color: $brand-color;
+      padding: 10px 12px;
+      font-weight: 600;
+      font-size: 13px;
+      border-radius: 8px;
+
+      &.disabled {
+        background-color: #353535;
+        color: #A2A2A2;
+      }
+    }
+  }
 }
 
 
