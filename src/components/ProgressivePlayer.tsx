@@ -10,7 +10,7 @@ interface SecureVideoPlayerProps {
   setVideoLoading: any;
   lastEpisode: number;
   index: number
-  handleTimeUpdate: () => any;
+  handleTimeUpdate: (index: number) => any;
   handleEpisodeChange: (index: number) => any;
 }
 
@@ -46,7 +46,7 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ videoListRef, loc
         muted={muted}  
         id={`slide-idx-${index}`} 
         style={{ width: '100%', height: '100%', borderRadius: '12px' }}
-        onTimeUpdate={handleTimeUpdate} 
+        onTimeUpdate={() => handleTimeUpdate(index)} 
         onEnded={() => handleEpisodeChange(episodeNum + 1)} 
         poster={`resources/images/thumbnails/${seriesId}_thumbnail.png`}
       >
