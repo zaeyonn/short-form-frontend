@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 
 import { Series } from "src/types";
 
-import HlsPlayer from "components/HlsPlayer";
+// import HlsPlayer from "components/HlsPlayer";
 import ProgressivePlayer from "components/ProgressivePlayer";
 
 interface Props {
@@ -31,7 +31,7 @@ interface Props {
   handleSlideChangeTransitionStart: () => any;
 }
 
-const UIShortFormSwiper = ({quality, hlsRef, series, locked, muted, episodeList, videoRef, currentTimeRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, setPlaying, handleEpisodeChange, handleSlideChangeTransitionStart}: Props) => {
+const UIShortFormSwiper = ({locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, handleEpisodeChange, handleSlideChangeTransitionStart}: Props) => {
 
   return (
     <Swiper 
