@@ -1,8 +1,10 @@
-import HlsPlayer from "components/HlsPlayer";
 import { RefObject } from "react";
 import { Swiper, SwiperSlide } from "swiper/react"
 
 import { Series } from "src/types";
+
+import HlsPlayer from "components/HlsPlayer";
+import ProgressivePlayer from "components/ProgressivePlayer";
 
 interface Props {
   quality: string;
@@ -42,7 +44,7 @@ const UIShortFormSwiper = ({quality, hlsRef, series, locked, muted, episodeList,
       { episodeList.map((i: any, index: number) => {
         return (
           <SwiperSlide className='short-form' key={index}>
-            <HlsPlayer
+            {/* <HlsPlayer
               quality={quality}
               hlsRef={hlsRef}
               locked={locked}
@@ -56,6 +58,18 @@ const UIShortFormSwiper = ({quality, hlsRef, series, locked, muted, episodeList,
               videoUrl={`https://storage.googleapis.com/framez-local/videos_by_quality/${i.series_id}/${index + 1}/master.m3u8`}
               setVideoLoading={setVideoLoading}
               setPlaying={setPlaying}
+              handleEpisodeChange={handleEpisodeChange}
+              handleTimeUpdate={handleTimeUpdate}
+            /> */}
+            <ProgressivePlayer
+              locked={locked}
+              muted={muted}
+              lastEpisode={lastEpisode}
+              index={index}
+              seriesId={i.series_id}
+              episodeNum={index + 1}
+              videoRef={videoRef}
+              setVideoLoading={setVideoLoading}
               handleEpisodeChange={handleEpisodeChange}
               handleTimeUpdate={handleTimeUpdate}
             />
