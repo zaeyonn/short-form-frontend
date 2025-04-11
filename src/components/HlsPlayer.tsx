@@ -32,9 +32,9 @@ const HlsPlayer = ({ quality, locked, series, hlsRef, currentTimeRef, lastEpisod
       console.log('잠김 에피소드 ', locked);
       setVideoLoading(true);
       const hls = new Hls({
-        fragLoadingMaxRetry: 3,
-        manifestLoadingMaxRetry: 3,
-        levelLoadingMaxRetry: 3,
+        maxBufferLength: 30,
+        maxMaxBufferLength: 60,
+        liveSyncDuration: 10
       });
       hlsRef.current = hls;
 

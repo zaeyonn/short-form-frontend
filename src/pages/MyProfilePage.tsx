@@ -19,7 +19,7 @@ const MyProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isMobile, displayPopName, series } = useSelector(
+  const { isMobile, displayPopName, series, visibleBottomSheetLogin } = useSelector(
     (state: any) => state.global
   );
 
@@ -37,7 +37,6 @@ const MyProfilePage = () => {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [_paymentLoading, setPaymentLoading] = useState<boolean>(false);
-  const [visibleBottomSheetLogin, setVisibleBottomSheetLogin] = useState(false);
   // const [selectedMenu] = useState<string>("WATCH_LIST");
 
 
@@ -51,11 +50,11 @@ const MyProfilePage = () => {
     // } else {
     //   dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_LOGIN.name));
     // }
-    setVisibleBottomSheetLogin(true);
+    dispatch(globalSlice.toggleBottomSheetLogin({}));
   };
 
   const handleLoginClose = () => {
-    setVisibleBottomSheetLogin(false);
+    dispatch(globalSlice.toggleBottomSheetLogin({}));
   };
 
   const handleLogout = () => {
@@ -295,24 +294,24 @@ const MyProfilePage = () => {
                 </div>
               )} */}
               <div className="setting">
-                <div className='head'>설정</div>
+                {/* <div className='head'>설정</div> */}
                 <div className="setting-list">
-                  <div className='setting-item'>
+                  {/* <div className='setting-item'>
                     미션 & 이벤트
                     <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-                  </div>
-                  <Link className='setting-item' to='https://www.gala.biz/ko/contact-us' target='_blank'>
+                  </div> */}
+                  {/* <Link className='setting-item' to='https://www.gala.biz/ko/contact-us' target='_blank'>
                     고객 센터
                     <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
                   </Link>
                   <Link className='setting-item' to='https://www.gala.biz/ko' target='_blank'>
                     회사소개
                     <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-                  </Link>
-                  <div className='setting-item'>
+                  </Link> */}
+                  {/* <div className='setting-item'>
                     설정
                     <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-                  </div>
+                  </div> */}
                   {/* Beta {!isMobile && (
                     <div className="menu-item selected">시청 기록</div>
                   )} */}
@@ -342,12 +341,14 @@ const MyProfilePage = () => {
             </div> */}
           </div>
         )}
-        <UIBottomSheetLogin
+        { user.auth === 'guest' && (
+          <UIBottomSheetLogin
             ref={loginSheetRef}
             visible={visibleBottomSheetLogin}
             signInProcess={signInProcess}
             handleLoginBottomSheetClose={handleLoginClose}
           />
+          )}
       </div>
       {/* Beta {(
         <>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { TailSpin } from "react-loader-spinner";
@@ -6,25 +6,40 @@ import moment from 'moment';
 
 import * as userSlice from 'src/redux/userSlice';
 import * as globalSlice from 'src/redux/globalSlice';
+import UIBottomSheetLogin from 'components/ui/bottomsheet/UIBottomSheetLogin';
+
 const MissionPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { visibleBottomSheetLogin } = useSelector((state: any) => state.global);
   const { user, attendanceResult, attendanceError, attendanceCheckError, attendanceCheckResult } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState(false);
   const [streak, setStreak] = useState(0);
   const [isAttended, setIsAttended] = useState(false);
 
+  const loginSheetRef = useRef<any>(null);
+
   const handleClose = () => {
     navigate(-1);
   }
+  
+  const handleLoginClose = useCallback(() => {
+    dispatch(globalSlice.toggleBottomSheetLogin({}));
+  }, []);
 
   const handleAttend = () => {
     if(isAttended) return;
 
     dispatch(userSlice.attendanceCheck({userId: user.id}));
   }
+
+  
+  const signInProcess = (code: string, authType: string) => {
+    dispatch(userSlice.authSns({ code, userId: user?.id, authType }));
+  };
+
 
   // 사용자 출석 체크
   useEffect(() => {
@@ -82,6 +97,10 @@ const MissionPage = () => {
 
   useEffect(() => {
     setLoading(true);
+
+    if(user.auth === 'guest') {
+      dispatch(globalSlice.toggleBottomSheetLogin({}));
+    }
 
     dispatch(userSlice.attendance({userId: user.id}))
   }, []);
@@ -172,7 +191,7 @@ const MissionPage = () => {
                 <img src='resources/icons/icon_bang_fill.svg'/>
               </div>
               <div className='my-coin-count'>{((user.paid_point + user.free_point) ? (user.paid_point + user.free_point) : 0).toLocaleString()}
-              <img src={'resources/icons/icon_graphic_coin.svg'}/>  
+              <img src={'resources/icons/icon_graphic_coin.png'}/>  
               </div>
             </div>
           <div className='attendance-check-background'>
@@ -256,6 +275,14 @@ const MissionPage = () => {
           </div>
         </div>
       </div>
+      )}
+      { user.auth === 'guest' && (
+        <UIBottomSheetLogin
+          ref={loginSheetRef}
+          visible={visibleBottomSheetLogin}
+          signInProcess={signInProcess}
+          handleLoginBottomSheetClose={handleLoginClose}
+        />
       )}
     </div>
   )

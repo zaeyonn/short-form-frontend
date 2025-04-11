@@ -12,6 +12,9 @@ import SeriesListPage from "pages/SeriesListPage";
 import PaymentProductListPage from "pages/PaymentProductListPage";
 import MissionPage from "pages/MissionPage";
 import BetaMainPage from "pages/BetaMainPage";
+import SettingPage from "pages/SettingPage";
+import ServiceTermsPage from "pages/ServiceTermsPage";
+import PrivacyPage from "pages/PrivacyPage";
 
 const RouteManager = () => {
   // const { isMobile } = useSelector((state: any) => state.global)
@@ -25,6 +28,9 @@ const RouteManager = () => {
       <Route path='/profile' element={<MyProfilePage/>} />
       <Route path='/series-list' element={<SeriesListPage/>} />
       <Route path='/payments' element={<PaymentProductListPage/>} />
+      <Route path='/setting' element={<SettingPage/>}/>
+      <Route path='/setting/terms' element={<ServiceTermsPage/>} />
+      <Route path='/setting/privacy' element={<PrivacyPage/>} />
       <Route path='/callback/google' element={<CallbackGoogle/>} />
       <Route path='/callback/tosspayment' element={<CallbackTossPayment/>} />
       <Route path='/callback/kakao' element={<CallbackKakao/>} />

@@ -264,7 +264,6 @@ const BetaMainPage = ({}) => {
   };
 
   const handleLoginClose = useCallback(() => {
-  //    setVisibleBottomSheetLogin(false);
     dispatch(globalSlice.toggleBottomSheetLogin({}));
   }, []);
 
@@ -273,6 +272,8 @@ const BetaMainPage = ({}) => {
     const slidedVideo = document.getElementById(
       `slide-idx-${swiper.activeIndex}`
     );
+
+    currentTimeRef.current = 0;
 
     if (videoRef.current) {
       videoRef.current.currentTime = 0;
@@ -305,6 +306,7 @@ const BetaMainPage = ({}) => {
       
     setCurrentEp(episodeList[index]);
     setProgress(0);
+    currentTimeRef.current = 0;
 
     if (videoRef.current) {
       videoRef.current.currentTime = 0;
