@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
 interface SecureVideoPlayerProps {
+  currentIndex: number;
   quality: string;
   videoListRef: any;
   locked: boolean;
@@ -15,7 +16,7 @@ interface SecureVideoPlayerProps {
   handleEpisodeChange: (index: number) => any;
 }
 
-const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ quality, videoListRef, locked, muted, seriesId, episodeNum, setVideoLoading, lastEpisode, index, handleTimeUpdate, handleEpisodeChange }) => {
+const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ currentIndex, quality, videoListRef, locked, muted, seriesId, episodeNum, setVideoLoading, lastEpisode, index, handleTimeUpdate, handleEpisodeChange }) => {
   const videoUrlsRef = useRef<any>({});
   
   useEffect(() => {
@@ -23,25 +24,24 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ quality, videoLis
       try {
         setVideoLoading(true);
         const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/series/videos/${seriesId}/${episodeNum}`, {
-          credentials: 'include', // 로그인 쿠키 포함
+          credentials: 'include',
         });
         const data = await res.json();
         if (videoListRef.current[index]) {
-          console.log('data', data);
           videoListRef.current[index].src = data[quality];
           videoUrlsRef.current = data;
           setVideoLoading(false);
         }
       } catch (error) {
-        console.error('영상 URL 가져오기 실패', error);
+        console.error('fetchSignedUrl Error', error);
       }
     };
 
-    if(lastEpisode - 1 === index) {
+    if(currentIndex === index) {
       fetchSignedUrl();
 
     }
-  }, [seriesId, episodeNum, lastEpisode, index]);
+  }, [seriesId, episodeNum, currentIndex, index]);
 
   return (
       <video
@@ -52,7 +52,6 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ quality, videoLis
         playsInline 
         muted={muted}  
         id={`slide-idx-${index}`} 
-        style={{ width: '100%', height: '100%', borderRadius: '12px' }}
         onTimeUpdate={() => handleTimeUpdate(index)} 
         onEnded={() => handleEpisodeChange(episodeNum + 1)} 
         poster={`resources/images/thumbnails/${seriesId}_thumbnail.png`}

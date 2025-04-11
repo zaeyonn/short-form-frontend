@@ -7,6 +7,7 @@ import { Series } from "src/types";
 import ProgressivePlayer from "components/ProgressivePlayer";
 
 interface Props {
+  currentIndex: number;
   quality: string;
   videoListRef: any;
   hlsRef: any;
@@ -26,20 +27,20 @@ interface Props {
   handleEpisodeChange: (index: number) => any;
   handleTimeUpdate: (index: number) => any;
   toggleTools: () => any;
-  handleSlideChange: (swiper: any) => any;
   handleSlideChangeStart: (swiper: any) => any;
   handleVideoEnded: () => any;
   handleSlideTransitionEnd: any;
+  handleSlideTransitionStart: any;
 }
 
-const UIShortFormSwiper = ({videoListRef, quality, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, handleSlideTransitionEnd, handleEpisodeChange}: Props) => {
+const UIShortFormSwiper = ({currentIndex, videoListRef, quality, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, swiperRef, lastEpisode, setVideoLoading, handleSlideTransitionEnd, handleEpisodeChange, handleSlideTransitionStart}: Props) => {
 
   return (
     <Swiper
       onSwiper={swiper => swiperRef.current = swiper} 
       className='short-form-swiper' direction="vertical" 
-      onSlideChange={handleSlideChange} 
       onSlideChangeTransitionEnd={handleSlideTransitionEnd}
+      onSlideChangeTransitionStart={handleSlideTransitionStart}
       onClick={toggleTools}
       allowSlideNext={locked ? false : true}>
       { episodeList.map((i: any, index: number) => {
@@ -64,6 +65,7 @@ const UIShortFormSwiper = ({videoListRef, quality, locked, muted, episodeList, v
               handleTimeUpdate={handleTimeUpdate}
             /> */}
             <ProgressivePlayer
+              currentIndex={currentIndex}
               quality={quality}
               videoListRef={videoListRef}
               locked={locked}

@@ -77,6 +77,7 @@ const BetaMainPage = ({}) => {
   const [muted, setMuted] = useState<boolean>(true);
   const [speed, setSpeed] = useState<number>(1);
   const [quality, setQuality] = useState<string>("720p");
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
   // const [fullscreen, setFullscreen] = useState<boolean>(false);
 
   const [visibleTools, setVisibleTools] = useState(true);
@@ -267,67 +268,22 @@ const BetaMainPage = ({}) => {
     dispatch(globalSlice.toggleBottomSheetLogin({}));
   }, []);
 
-  // Short Form Slide 변경
-  const handleSlideChange = (_swiper: any) => {
-    // const slidedVideo = document.getElementById(
-    //   `slide-idx-${swiper.activeIndex}`
-    // );
+  const handleSlideTransitionStart = (swiper: any) => {
 
-    // currentTimeRef.current = 0;
-
-    // if (videoRef.current) {
-    //   videoRef.current.currentTime = 0;
-    //   videoRef.current.pause();
-
-    //   videoRef.current = slidedVideo;
-    //   // setPlaying(true);
-    // }
-
-    // videoListRef.current.forEach((video, index) => {
-    //   if (index !== swiper.activeIndex && video && !video.paused) {
-    //     video.pause();
-    //     video.currentTime = 0;
-    //     video.removeAttribute('src'); // 메모리 해제
-    //     video.load(); // 브라우저 메모리에서 비우기
-    //   }
-    // });
-
-    // setCurrentEp(episodeList[swiper.activeIndex]);
-
-    // if (unlockEpisode && swiper.activeIndex + 1 <= unlockEpisode) {
-    //   dispatch(
-    //     userSlice.updateSeriesProgress({
-    //       userId: user.id,
-    //       seriesId: seriesIdRef.current,
-    //       ep: swiper.activeIndex + 1,
-    //     })
-    //   );
-    // }
+    setProgress(0);
   };
 
   const handleSlideTransitionEnd = (swiper: any) => {
-    // const slidedVideo = document.getElementById(
-    //   `slide-idx-${swiper.activeIndex}`
-    // );
 
-    // currentTimeRef.current = 0;
+    // 메모리에서 이전 video 데이터 제거 
+    if(swiper.previousIndex) {
+      videoListRef.current[swiper.previousIndex].pause();
+      videoListRef.current[swiper.previousIndex].currentTime = 0;
+      videoListRef.current[swiper.previousIndex].removeAttribute('src');
+      videoListRef.current[swiper.previousIndex].load();
+    }
 
-    // if (videoRef.current) {
-    //   videoRef.current.currentTime = 0;
-    //   videoRef.current.pause();
-
-    //   videoRef.current = slidedVideo;
-    //   // setPlaying(true);
-    // }
-
-    videoListRef.current.forEach((video, index) => {
-      if (index !== swiper.activeIndex && video && !video.paused) {
-        video.pause();
-        video.currentTime = 0;
-        video.removeAttribute('src'); // 메모리 해제
-        video.load(); // 브라우저 메모리에서 비우기
-      }
-    });
+    setPlaying(true);
 
     setCurrentEp(episodeList[swiper.activeIndex]);
 
@@ -354,8 +310,8 @@ const BetaMainPage = ({}) => {
     setProgress(0);
     currentTimeRef.current = 0;
 
-    if (videoRef.current) {
-      videoRef.current.currentTime = 0;
+    if (videoListRef.current[index]) {
+      videoListRef.current[index].currentTime = 0;
       //videoRef.current.pause();
     }
 
@@ -423,18 +379,14 @@ const BetaMainPage = ({}) => {
     setVisibleBottomSheetSpeed(false);
   }, []);
 
-  const handleQualityChange = (quality: string) => {
+  const handleQualityChange = (quality: string) => { 
     setQuality(quality);
-    
-    // if(quality === 'Auto') {
-    //   hlsRef.current.currentLevel = -1;
-    // } else if(quality === '480p') {
-    //   hlsRef.current.currentLevel = 0;
-    // } else if(quality === '720p') {
-    //   hlsRef.current.currentLevel = 1;
-    // } else if(quality === '1080p') {
-    //   hlsRef.current.currentLevel = 2;
-    // } 
+
+    setTimeout(() => {
+      videoListRef.current[currentEp.episode_num - 1].currentTime = currentTimeRef.current;
+      videoListRef.current[currentEp.episode_num - 1].play();
+    }, 100);
+  
     qualitySheetRef.current.handleClose();
   };
 
@@ -499,7 +451,7 @@ const BetaMainPage = ({}) => {
     event.stopPropagation();
 
     setMuted(!muted);
-    videoListRef.current[currentEp.episode_num].muted = !videoListRef.current[currentEp.episode_num].muted;
+    videoListRef.current[currentEp?.episode_num].muted = !videoListRef.current[currentEp?.episode_num].muted;
   };
 
   
@@ -760,7 +712,7 @@ const BetaMainPage = ({}) => {
       setUnlockEpisode(updateSeriesUnlockEpisodeResult.data.unlock_episode);
       setLastEpisode(updateSeriesUnlockEpisodeResult.data.last_episode);
 
-      videoRef.current.play();
+      videoListRef.current[currentEp.episode_num - 1].play();
       setPlaying(true);
 
       dispatch(userSlice.clearUserState("updateSeriesUnlockEpisodeResult"));
@@ -789,7 +741,7 @@ const BetaMainPage = ({}) => {
   }, [
     addSeriesProgressResult,
     addSeriesProgressError,
-    videoRef.current,
+    videoListRef.current,
     sequenceCountRef.current,
   ]);
 
@@ -994,6 +946,8 @@ const BetaMainPage = ({}) => {
     } else {
       setLocked(false);
     }
+
+    setCurrentIndex(currentEp?.episode_num - 1);
   }, [currentEp, unlockEpisode]);
 
   useEffect(() => {
@@ -1047,6 +1001,7 @@ const BetaMainPage = ({}) => {
         <div className={"player-wrap"}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
+              currentIndex={currentIndex}
               videoListRef={videoListRef}
               quality={quality}
               series={series}
@@ -1059,7 +1014,6 @@ const BetaMainPage = ({}) => {
               currentTimeRef={currentTimeRef}
               setVideoLoading={setVideoLoading}
               setPlaying={setPlaying}
-              handleSlideChange={handleSlideChange}
               handleSlideChangeStart={handleSlideChangeStart}
               handleVideoEnded={handleVideoEnded}
               episodeList={episodeList}
@@ -1070,6 +1024,7 @@ const BetaMainPage = ({}) => {
               lastEpisode={lastEpisode}
               handleEpisodeChange={handleEpisodeChange}
               handleSlideTransitionEnd={handleSlideTransitionEnd}
+              handleSlideTransitionStart={handleSlideTransitionStart}
             />
             {videoLoading && (
               <div className="loading">

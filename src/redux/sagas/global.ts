@@ -57,3 +57,14 @@ export function* handleProductList(): Generator<any> {
     yield put(slice.productListFailure(error));
   }
 }
+
+
+export function* handleMissionList(): Generator<any> {
+  try {
+    const response = yield call(api.missionList);
+
+    yield put(slice.missionListSuccess(response));
+  } catch (error) {
+    yield put(slice.missionListFailure(error));
+  }
+}

@@ -16,6 +16,7 @@ const initialState = {
   seriesList: [],
   episodeList: [],
   productList: [],
+  missionList: [],
 
   visibleBottomSheetLogin: false,
 }
@@ -107,7 +108,18 @@ const globalSlice = createSlice({
     },
     toggleBottomSheetLogin(state: any, _action: PayloadAction<any>) {
       state.visibleBottomSheetLogin = !state.visibleBottomSheetLogin
-    }
+    },
+    setMissionList(state: any, action: PayloadAction<any>) {
+      state.missionList = action.payload;
+    }, 
+    missionList(_state: any, _action: PayloadAction<any>) {
+    },
+    missionListSuccess(state: any, action: PayloadAction<any>) {
+      state.missionListResult = action.payload;
+    },
+    missionListFailure(state: any, action: PayloadAction<any>) {
+      state.missionListError = action.payload;
+    },
   }
 })
 
@@ -119,7 +131,8 @@ export const {
   episodeList, episodeListSuccess, episodeListFailure,
   setAlert, seriesInfo, seriesInfoSuccess, seriesInfoFailure,
   increaseSeriesView, increaseSeriesViewSuccess, increaseSeriesViewsFailure,
-  productList, productListSuccess, productListFailure, setProductList, toggleBottomSheetLogin
+  productList, productListSuccess, productListFailure, setProductList, toggleBottomSheetLogin,
+  missionList, setMissionList, missionListSuccess, missionListFailure
 } = globalSlice.actions;
 
 export default globalSlice.reducer;

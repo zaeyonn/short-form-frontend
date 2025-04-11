@@ -66,3 +66,15 @@ export type Subscription = {
   duration: string,
 }
 
+export type Mission = {
+  id: number;
+  type: string;
+  description: string | null;
+  repeat_cycle: string;
+  reward: number | null;
+  target_value: number;
+  is_active: boolean;
+  user_type: string;
+  created_at: string;
+}
+

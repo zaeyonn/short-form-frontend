@@ -7,13 +7,15 @@ import moment from 'moment';
 import * as userSlice from 'src/redux/userSlice';
 import * as globalSlice from 'src/redux/globalSlice';
 import UIBottomSheetLogin from 'components/ui/bottomsheet/UIBottomSheetLogin';
+import { authType, missionType } from 'common/define';
+import { Mission, User } from 'src/types';
 
 const MissionPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { visibleBottomSheetLogin } = useSelector((state: any) => state.global);
-  const { user, attendanceResult, attendanceError, attendanceCheckError, attendanceCheckResult } = useSelector((state: any) => state.user);
+  const { missionList, visibleBottomSheetLogin, isMobile, missionListResult, missionListError } = useSelector((state: any) => state.global);
+  const { user, attendanceResult, attendanceError, attendanceCheckError, attendanceCheckResult, authSnsResult, authSnsError } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState(false);
   const [streak, setStreak] = useState(0);
@@ -40,6 +42,54 @@ const MissionPage = () => {
     dispatch(userSlice.authSns({ code, userId: user?.id, authType }));
   };
 
+  // SNS 로그인 결과
+  useEffect(() => {
+    if (authSnsError) {
+      console.log('authSnsError ', authSnsError);
+      dispatch(globalSlice.addToast({
+        id: Date.now(),
+        message: authSnsError.response.data.error,
+        duration: 3000,
+      }))
+
+      dispatch(userSlice.clearUserState("authSnsError"));
+    }
+
+    if (authSnsResult && authSnsResult.status === 200) {
+      const user:User = authSnsResult.data;
+
+      
+      if(authSnsResult.data?.request_auth_type !== user.auth) {
+        dispatch(globalSlice.addToast({
+          id: Date.now(),
+          message: `${authType[user.auth].name}로 가입된 계정입니다.`,
+          duration: 3000,
+        }))
+
+        dispatch(userSlice.clearUserState("authSnsResult"));
+        return;
+      }
+
+
+      if (loginSheetRef.current)
+        loginSheetRef.current.handleClose();
+
+
+      dispatch(globalSlice.addToast({
+        id: Date.now(),
+        message: '로그인 성공',
+        duration: 2000,
+      }))
+
+      dispatch(userSlice.setUser(user));
+
+      localStorage.setItem("user-id", user.id);
+
+      dispatch(userSlice.clearUserState("authSnsResult"));
+      return;
+    }
+  }, [authSnsResult, authSnsError, isMobile]);
+
 
   // 사용자 출석 체크
   useEffect(() => {
@@ -57,7 +107,7 @@ const MissionPage = () => {
 
       dispatch(globalSlice.addToast({
         id: Date.now(),
-        message: `${attendanceCheckResult.data.reward} 코인을 받았어요!.`,
+        message: `${attendanceCheckResult.data.reward} 코인을 받았어요!`,
         duration: 1500,
       }))
 
@@ -82,7 +132,6 @@ const MissionPage = () => {
 
     if(attendanceResult && attendanceResult.status === 200) {
       console.log("attendanceResult ", attendanceResult);
-      setLoading(false);
 
       const today = moment().format('YYYY-MM-DD');
       setStreak(attendanceResult.data.currentStreak);
@@ -95,6 +144,25 @@ const MissionPage = () => {
     }
   }, [attendanceResult, attendanceError])
 
+  // 미션 리스트 조회
+  useEffect(() => {
+    if(missionListError) {
+      console.log("missionListError ", missionListError);
+      setLoading(false);
+
+      dispatch(globalSlice.clearGlobalState("missionListError"));
+    }
+
+    if(missionListResult && missionListResult.status === 200) {
+      console.log("missionListResult ", missionListResult);
+      setLoading(false);
+
+      dispatch(globalSlice.setMissionList(missionListResult.data));
+
+      dispatch(userSlice.clearUserState("attendanceResult"));
+    }
+  }, [missionListResult, missionListError])
+
   useEffect(() => {
     setLoading(true);
 
@@ -102,7 +170,9 @@ const MissionPage = () => {
       dispatch(globalSlice.toggleBottomSheetLogin({}));
     }
 
-    dispatch(userSlice.attendance({userId: user.id}))
+    dispatch(userSlice.attendance({userId: user.id}));
+    dispatch(globalSlice.missionList({}));
+
   }, []);
 
   // const renderAttendanceBoardPc = () => {
@@ -211,68 +281,26 @@ const MissionPage = () => {
             <img src='resources/icons/icon_bang_fill.svg'/>
             </div>
           </div>
-          <div className='mission-item-wrap'>
-              <img src={'/resources/images/mission_ad.png'}/>
-              <div className='mission-info'>
-                <div className='mission-title'>매일 광고 보기</div>
-                <div className='reward'>+ 3 코인</div>
-                <div className='progress-wrap'>
-                  <div className='progress-bar'></div>
-                  <span>10/10</span>
-                </div>
+          {missionList.map((mission: Mission) => {
+            const userMission = user.userMissions?.find((item: any) => item.mission_id === mission.id);
+
+            return (
+              <div className='mission-item-wrap' key={mission.id}>
+                  <img src={`/resources/images/mission_${mission.type}.png`}/>
+                  <div className='mission-info'>
+                    <div className='mission-title'>{missionType[mission.type].name}</div>
+                    <div className='reward'>{`+ ${mission.reward} 코인`}</div>
+                    <div className='progress-wrap'>
+                      <div className='progress-bar'></div>
+                      <span>{`${userMission?.progress_value}/${mission.target_value}`}</span>
+                    </div>
+                  </div>
+                <button>
+                  {userMission?.status === 'completed' ? '코인 받기' : userMission?.status === 'rewarded' ? '미션 완료' : missionType[mission.type].btn_label }
+                </button>
               </div>
-            <button>
-              광고 보기
-            </button>
-          </div>
-          <div className='mission-item-wrap'>
-              <img src={'/resources/images/mission_watch.png'}/>
-              <div className='mission-info'>
-                <div className='mission-title'>매일 에피소드 10편 보기</div>
-                <div className='guide'>이미 본 회차는 제외됩니다.</div>
-                <div className='reward'>+ 15 코인</div>
-                <div className='progress-wrap'>
-                  <div className='progress-bar'></div>
-                  <span>10/10</span>
-                </div>
-              </div>
-            <button>
-              시청 하기
-            </button>
-          </div>
-          <div className='mission-item-wrap'>
-              <img src={'/resources/images/mission_share.png'}/>
-              <div className='mission-info'>
-                <div className='mission-title'>매일 에피소드 공유하기</div>
-                <div className='guide'>친구에게 에피소드 공유하기</div>
-                <div className='reward'>+ 7 코인</div>
-              </div>
-            <button>
-              공유 하기
-            </button>
-          </div>
-          <div className='mission-item-wrap'>
-              <img src={'/resources/images/mission_link.png'}/>
-              <div className='mission-info'>
-                <div className='mission-title'>계정 연결하기</div>
-                <div className='guide'>계정 연결 시 1번 지급 됩니다.</div>
-                <div className='reward'>+ 30 코인</div>
-              </div>
-            <button>
-              계정 연결
-            </button>
-          </div>
-          <div className='mission-item-wrap'>
-              <img src={'/resources/images/mission_alarm.png'}/>
-              <div className='mission-info'>
-                <div className='mission-title'>알림 받기</div>
-                <div className='guide'>계정 연결 시 1번 지급 됩니다.</div>
-                <div className='reward'>+ 50 코인</div>
-              </div>
-            <button>
-              알림 받기
-            </button>
-          </div>
+            )
+          })}
         </div>
       </div>
       )}
