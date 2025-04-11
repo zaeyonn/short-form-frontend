@@ -456,6 +456,13 @@ const BetaMainPage = ({}) => {
     setMuted(!muted);
     videoRef.current.muted = !videoRef.current.muted;
   };
+
+  const handleSlideChangeTransitionStart = () => {
+    console.log('handleSlideChangeTransitionStart');
+    if(videoRef.current) {
+      videoRef.current.pause();
+    }
+  }
   
   
 
@@ -1022,6 +1029,7 @@ const BetaMainPage = ({}) => {
               unlockEpisode={unlockEpisode}
               lastEpisode={lastEpisode}
               handleEpisodeChange={handleEpisodeChange}
+              handleSlideChangeTransitionStart={handleSlideChangeTransitionStart}
             />
             {videoLoading && (
               <div className="loading">
