@@ -283,26 +283,26 @@ const BetaMainPage = ({}) => {
     //   // setPlaying(true);
     // }
 
-    videoListRef.current.forEach((video, index) => {
-      if (index !== swiper.activeIndex && video && !video.paused) {
-        video.pause();
-        video.currentTime = 0;
-        video.removeAttribute('src'); // 메모리 해제
-        video.load(); // 브라우저 메모리에서 비우기
-      }
-    });
+    // videoListRef.current.forEach((video, index) => {
+    //   if (index !== swiper.activeIndex && video && !video.paused) {
+    //     video.pause();
+    //     video.currentTime = 0;
+    //     video.removeAttribute('src'); // 메모리 해제
+    //     video.load(); // 브라우저 메모리에서 비우기
+    //   }
+    // });
 
-    setCurrentEp(episodeList[swiper.activeIndex]);
+    // setCurrentEp(episodeList[swiper.activeIndex]);
 
-    if (unlockEpisode && swiper.activeIndex + 1 <= unlockEpisode) {
-      dispatch(
-        userSlice.updateSeriesProgress({
-          userId: user.id,
-          seriesId: seriesIdRef.current,
-          ep: swiper.activeIndex + 1,
-        })
-      );
-    }
+    // if (unlockEpisode && swiper.activeIndex + 1 <= unlockEpisode) {
+    //   dispatch(
+    //     userSlice.updateSeriesProgress({
+    //       userId: user.id,
+    //       seriesId: seriesIdRef.current,
+    //       ep: swiper.activeIndex + 1,
+    //     })
+    //   );
+    // }
   };
 
   const handleSlideTransitionEnd = (swiper: any) => {
