@@ -33,7 +33,7 @@ interface Props {
   handleSlideChangeTransitionStart: () => any;
 }
 
-const UIShortFormSwiper = ({videoListRef, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, handleSlideTransitionEnd, handleEpisodeChange, handleSlideChangeTransitionStart}: Props) => {
+const UIShortFormSwiper = ({videoListRef, quality, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, handleSlideTransitionEnd, handleEpisodeChange, handleSlideChangeTransitionStart}: Props) => {
 
   return (
     <Swiper
@@ -66,6 +66,7 @@ const UIShortFormSwiper = ({videoListRef, locked, muted, episodeList, videoRef, 
               handleTimeUpdate={handleTimeUpdate}
             /> */}
             <ProgressivePlayer
+              quality={quality}
               videoListRef={videoListRef}
               locked={locked}
               muted={muted}

@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface SecureVideoPlayerProps {
+  quality: string;
   videoListRef: any;
   locked: boolean;
   muted: boolean;
@@ -14,16 +15,21 @@ interface SecureVideoPlayerProps {
   handleEpisodeChange: (index: number) => any;
 }
 
-const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ videoListRef, locked, muted, seriesId, episodeNum, setVideoLoading, lastEpisode, index, handleTimeUpdate, handleEpisodeChange }) => {
+const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ quality, videoListRef, locked, muted, seriesId, episodeNum, setVideoLoading, lastEpisode, index, handleTimeUpdate, handleEpisodeChange }) => {
+  const videoUrlsRef = useRef<any>({});
+  
   useEffect(() => {
     const fetchSignedUrl = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/series/stream/${seriesId}/${episodeNum}`, {
+        setVideoLoading(true);
+        const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/series/videos/${seriesId}/${episodeNum}`, {
           credentials: 'include', // 로그인 쿠키 포함
         });
         const data = await res.json();
         if (videoListRef.current[index]) {
-          videoListRef.current[index].src = data.url;
+          console.log('data', data);
+          videoListRef.current[index].src = data[quality];
+          videoUrlsRef.current = data;
           setVideoLoading(false);
         }
       } catch (error) {
@@ -39,6 +45,7 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ videoListRef, loc
 
   return (
       <video
+        src={(quality && videoUrlsRef.current ? videoUrlsRef.current[quality] : '')}
         ref={(el) => videoListRef.current[index] = el}
         preload='none'
         autoPlay={!locked} 

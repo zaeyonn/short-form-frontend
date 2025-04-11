@@ -76,7 +76,7 @@ const BetaMainPage = ({}) => {
   const [lastEpisode, setLastEpisode] = useState<number>(0);
   const [muted, setMuted] = useState<boolean>(true);
   const [speed, setSpeed] = useState<number>(1);
-  const [quality, setQuality] = useState<string>("Auto");
+  const [quality, setQuality] = useState<string>("720p");
   // const [fullscreen, setFullscreen] = useState<boolean>(false);
 
   const [visibleTools, setVisibleTools] = useState(true);
@@ -138,11 +138,11 @@ const BetaMainPage = ({}) => {
       return;
     }
 
-    if (videoRef.current && videoRef.current.paused) {
-      videoRef.current.play();
+    if (videoListRef.current[currentEp?.episode_num - 1] && videoListRef.current[currentEp?.episode_num - 1].paused) {
+      videoListRef.current[currentEp?.episode_num - 1].play();
       setPlaying(true);
-    } else if (videoRef.current && !videoRef.current.paused) {
-      videoRef.current.pause();
+    } else if (videoListRef.current[currentEp?.episode_num - 1] && !videoListRef.current[currentEp?.episode_num - 1].paused) {
+      videoListRef.current[currentEp?.episode_num - 1].pause();
       setPlaying(false);
     }
   };
@@ -242,8 +242,8 @@ const BetaMainPage = ({}) => {
     event.stopPropagation();
     setPlaying(false);
     progressChangingRef.current = true;
-    if (videoRef.current) {
-      videoRef.current.pause();
+    if (videoListRef.current[currentEp?.episode_num - 1]) {
+      videoListRef.current[currentEp?.episode_num - 1].pause();
     }
   };
 
@@ -252,8 +252,8 @@ const BetaMainPage = ({}) => {
     event.stopPropagation();
     progressChangingRef.current = false;
     setPlaying(true);
-    if (videoRef.current) {
-      videoRef.current.play();
+    if (videoListRef.current[currentEp?.episode_num - 1]) {
+      videoListRef.current[currentEp?.episode_num - 1]
     }
   };
 
@@ -424,26 +424,25 @@ const BetaMainPage = ({}) => {
   }, []);
 
   const handleQualityChange = (quality: string) => {
-    console.log('handleQualityChange quality', hlsRef.current.levels);
     setQuality(quality);
     
-    if(quality === 'Auto') {
-      hlsRef.current.currentLevel = -1;
-    } else if(quality === '480p') {
-      hlsRef.current.currentLevel = 0;
-    } else if(quality === '720p') {
-      hlsRef.current.currentLevel = 1;
-    } else if(quality === '1080p') {
-      hlsRef.current.currentLevel = 2;
-    } 
+    // if(quality === 'Auto') {
+    //   hlsRef.current.currentLevel = -1;
+    // } else if(quality === '480p') {
+    //   hlsRef.current.currentLevel = 0;
+    // } else if(quality === '720p') {
+    //   hlsRef.current.currentLevel = 1;
+    // } else if(quality === '1080p') {
+    //   hlsRef.current.currentLevel = 2;
+    // } 
     qualitySheetRef.current.handleClose();
   };
 
   const handleSpeedChange = useCallback((speed: number) => {
     setSpeed(speed);
-    videoRef.current.playbackRate = speed;
+    videoListRef.current[currentEp?.episode_num - 1].playbackRate = speed;
     speedSheetRef.current.handleClose();
-  }, [videoRef.current]);
+  }, [videoListRef.current, currentEp]);
 
   const handleSeriesKeep = () => {
     setKeep(!keep);
