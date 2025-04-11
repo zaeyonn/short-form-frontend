@@ -3,8 +3,8 @@ import { Swiper, SwiperSlide } from "swiper/react"
 
 import { Series } from "src/types";
 
-import HlsPlayer from "components/HlsPlayer";
-// import ProgressivePlayer from "components/ProgressivePlayer";
+// import HlsPlayer from "components/HlsPlayer";
+import ProgressivePlayer from "components/ProgressivePlayer";
 
 interface Props {
   quality: string;
@@ -33,7 +33,7 @@ interface Props {
   handleSlideChangeTransitionStart: () => any;
 }
 
-const UIShortFormSwiper = ({quality, hlsRef, series, currentTimeRef, setPlaying, videoListRef, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, handleSlideTransitionEnd, handleEpisodeChange, handleSlideChangeTransitionStart}: Props) => {
+const UIShortFormSwiper = ({videoListRef, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, handleSlideTransitionEnd, handleEpisodeChange, handleSlideChangeTransitionStart}: Props) => {
 
   return (
     <Swiper
@@ -47,7 +47,7 @@ const UIShortFormSwiper = ({quality, hlsRef, series, currentTimeRef, setPlaying,
       { episodeList.map((i: any, index: number) => {
         return (
           <SwiperSlide className='short-form' key={index}>
-            <HlsPlayer
+            {/* <HlsPlayer
               quality={quality}
               hlsRef={hlsRef}
               locked={locked}
@@ -64,8 +64,8 @@ const UIShortFormSwiper = ({quality, hlsRef, series, currentTimeRef, setPlaying,
               setPlaying={setPlaying}
               handleEpisodeChange={handleEpisodeChange}
               handleTimeUpdate={handleTimeUpdate}
-            />
-            {/* <ProgressivePlayer
+            /> */}
+            <ProgressivePlayer
               videoListRef={videoListRef}
               locked={locked}
               muted={muted}
@@ -77,7 +77,7 @@ const UIShortFormSwiper = ({quality, hlsRef, series, currentTimeRef, setPlaying,
               setVideoLoading={setVideoLoading}
               handleEpisodeChange={handleEpisodeChange}
               handleTimeUpdate={handleTimeUpdate}
-            /> */}
+            />
             {locked && <div className='locked-layer'/>}
           </SwiperSlide>
           )
