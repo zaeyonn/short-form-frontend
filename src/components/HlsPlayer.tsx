@@ -28,10 +28,11 @@ const HlsPlayer = ({ quality, locked, series, hlsRef, currentTimeRef, lastEpisod
   const dispatch = useDispatch();
   
   useEffect(() => {
+    let hls: any;
     if (Hls.isSupported() && (lastEpisode - 1 === index)) {
       console.log('잠김 에피소드 ', locked);
       setVideoLoading(true);
-      const hls = new Hls({
+      hls = new Hls({
         maxBufferLength: 30,
         maxMaxBufferLength: 60,
         liveSyncDuration: 10
@@ -62,7 +63,7 @@ const HlsPlayer = ({ quality, locked, series, hlsRef, currentTimeRef, lastEpisod
       });
 
       // 에러 핸들링
-      hls.on(Hls.Events.ERROR, function (_event, data) {
+      hls.on(Hls.Events.ERROR, function (_event: any, data: any) {
         const errorType = data.type;
         console.log('Video hls streaming error: ', errorType);
       
@@ -106,11 +107,15 @@ const HlsPlayer = ({ quality, locked, series, hlsRef, currentTimeRef, lastEpisod
         });
       }
 
-      
-      return () => {
+    } else if(hls) {
+      hls.destroy();
+    }
+
+    return () => {
+      if(hls) {
         hls.destroy();
-      };  
-    } 
+      }
+    }
   }, [videoUrl, lastEpisode, index, quality, videoRef.current])
   
   return (
