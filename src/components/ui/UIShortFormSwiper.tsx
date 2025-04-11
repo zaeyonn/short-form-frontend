@@ -3,8 +3,8 @@ import { Swiper, SwiperSlide } from "swiper/react"
 
 import { Series } from "src/types";
 
-// import HlsPlayer from "components/HlsPlayer";
-import ProgressivePlayer from "components/ProgressivePlayer";
+import HlsPlayer from "components/HlsPlayer";
+// import ProgressivePlayer from "components/ProgressivePlayer";
 
 interface Props {
   quality: string;
@@ -24,15 +24,16 @@ interface Props {
   setVideoLoading: any;
   setPlaying: any;
   handleEpisodeChange: (index: number) => any;
-  handleTimeUpdate: () => any;
+  handleTimeUpdate: (index: number) => any;
   toggleTools: () => any;
   handleSlideChange: (swiper: any) => any;
   handleSlideChangeStart: (swiper: any) => any;
   handleVideoEnded: () => any;
+  handleSlideTransitionEnd: any;
   handleSlideChangeTransitionStart: () => any;
 }
 
-const UIShortFormSwiper = ({videoListRef, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, handleEpisodeChange, handleSlideChangeTransitionStart}: Props) => {
+const UIShortFormSwiper = ({quality, hlsRef, series, currentTimeRef, setPlaying, videoListRef, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, handleSlideTransitionEnd, handleEpisodeChange, handleSlideChangeTransitionStart}: Props) => {
 
   return (
     <Swiper
@@ -40,12 +41,13 @@ const UIShortFormSwiper = ({videoListRef, locked, muted, episodeList, videoRef, 
       className='short-form-swiper' direction="vertical" 
       onSlideChange={handleSlideChange} 
       onSlideChangeTransitionStart={handleSlideChangeTransitionStart}
+      onSlideChangeTransitionEnd={handleSlideTransitionEnd}
       onClick={toggleTools}
       allowSlideNext={locked ? false : true}>
       { episodeList.map((i: any, index: number) => {
         return (
           <SwiperSlide className='short-form' key={index}>
-            {/* <HlsPlayer
+            <HlsPlayer
               quality={quality}
               hlsRef={hlsRef}
               locked={locked}
@@ -55,14 +57,15 @@ const UIShortFormSwiper = ({videoListRef, locked, muted, episodeList, videoRef, 
               muted={muted}
               episodeNum={index+1}
               videoRef={videoRef}
+              videoListRef={videoListRef}
               currentTimeRef={currentTimeRef}
               videoUrl={`https://storage.googleapis.com/framez-local/videos_by_quality/${i.series_id}/${index + 1}/master.m3u8`}
               setVideoLoading={setVideoLoading}
               setPlaying={setPlaying}
               handleEpisodeChange={handleEpisodeChange}
               handleTimeUpdate={handleTimeUpdate}
-            /> */}
-            <ProgressivePlayer
+            />
+            {/* <ProgressivePlayer
               videoListRef={videoListRef}
               locked={locked}
               muted={muted}
@@ -74,7 +77,7 @@ const UIShortFormSwiper = ({videoListRef, locked, muted, episodeList, videoRef, 
               setVideoLoading={setVideoLoading}
               handleEpisodeChange={handleEpisodeChange}
               handleTimeUpdate={handleTimeUpdate}
-            />
+            /> */}
             {locked && <div className='locked-layer'/>}
           </SwiperSlide>
           )

@@ -19,12 +19,13 @@ interface Props {
   muted: boolean;
   setVideoLoading: any;
   setPlaying: any;
-  handleTimeUpdate: () => any;
+  videoListRef: any;
+  handleTimeUpdate: any;
   handleEpisodeChange: (index: number) => any;
 }
 
 
-const HlsPlayer = ({ quality, locked, series, hlsRef, currentTimeRef, lastEpisode, index, episodeNum, videoRef, videoUrl, muted, setVideoLoading, setPlaying, handleTimeUpdate, handleEpisodeChange}: Props) => {
+const HlsPlayer = ({ videoListRef, quality, locked, series, hlsRef, lastEpisode, index, episodeNum, videoUrl, muted, setVideoLoading, setPlaying, handleTimeUpdate, handleEpisodeChange}: Props) => {
   const dispatch = useDispatch();
   
   useEffect(() => {
@@ -40,7 +41,7 @@ const HlsPlayer = ({ quality, locked, series, hlsRef, currentTimeRef, lastEpisod
       hlsRef.current = hls;
 
       hls.loadSource(videoUrl);
-      hls.attachMedia(videoRef.current);
+      hls.attachMedia(videoListRef.current[index]);
 
       if(quality === 'Auto') {
         hlsRef.current.currentLevel = -1;
@@ -59,7 +60,7 @@ const HlsPlayer = ({ quality, locked, series, hlsRef, currentTimeRef, lastEpisod
 
       hls.once(Hls.Events.LEVEL_SWITCHED, () => {
         console.log('화질 변경됨')
-        videoRef.current.currentTime = currentTimeRef.current;
+        // videoListRef.current[index].currentTime = currentTimeRef.current;
       });
 
       // 에러 핸들링
@@ -85,11 +86,11 @@ const HlsPlayer = ({ quality, locked, series, hlsRef, currentTimeRef, lastEpisod
         }
       });
 
-      if(videoRef.current) {
+      if(videoListRef.current[index]) {
         // 마지막 프레임 유지를 위한 스타일 설정
-        videoRef.current.style.visibility = 'visible';
+        videoListRef.current[index].style.visibility = 'visible';
         
-        videoRef.current.addEventListener("canplay", () => {
+        videoListRef.current[index].addEventListener("canplay", () => {
           setVideoLoading(false);
           if (!locked) {
             setPlaying(true);
@@ -97,12 +98,12 @@ const HlsPlayer = ({ quality, locked, series, hlsRef, currentTimeRef, lastEpisod
         });
 
         // 버퍼링 시작할 때
-        videoRef.current.addEventListener("waiting", () => {
+        videoListRef.current[index].addEventListener("waiting", () => {
           setVideoLoading(true);
         });
 
         // 버퍼링 끝나고 재생 가능할 때
-        videoRef.current.addEventListener("playing", () => {
+        videoListRef.current[index].addEventListener("playing", () => {
           setVideoLoading(false);
         });
       }
@@ -116,16 +117,16 @@ const HlsPlayer = ({ quality, locked, series, hlsRef, currentTimeRef, lastEpisod
         hls.destroy();
       }
     }
-  }, [videoUrl, lastEpisode, index, quality, videoRef.current])
+  }, [videoUrl, lastEpisode, index, quality, videoListRef.current[index]])
   
   return (
     <video 
       autoPlay={!locked} 
       playsInline 
       muted={muted} 
-      ref={lastEpisode - 1 === index ? videoRef : null}  
+      ref={(el) => videoListRef.current[index] = el}
       id={`slide-idx-${index}`} 
-      onTimeUpdate={handleTimeUpdate} 
+      onTimeUpdate={() => handleTimeUpdate(index)} 
       onEnded={() => handleEpisodeChange(episodeNum + 1)} 
       poster={`resources/images/thumbnails/${series.id}_thumbnail.png`}
     />

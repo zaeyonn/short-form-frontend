@@ -212,28 +212,27 @@ const BetaMainPage = ({}) => {
   };
 
   // 재생 시간 업데이트
-  const handleTimeUpdate = () => {
+  const handleTimeUpdate = (index: number) => {
     if (
-      videoRef.current &&
-      videoRef.current.currentTime &&
-      videoRef.current.duration
+      videoListRef.current[index] &&
+      videoListRef.current[index].currentTime &&
+      videoListRef.current[index].duration
     ) {
-      currentTimeRef.current = videoRef.current.currentTime;
+      currentTimeRef.current = videoListRef.current[index].currentTime;
 
-      const duration = videoRef.current.duration;
+      const duration = videoListRef.current[index].duration;
 
       setProgress((currentTimeRef.current / duration) * 100);
     }
   };
-
   // 재생바 드래그로 위치 변경
-  const handleProgressChange = (event: any) => {
+  const handleProgressChange = (event: any, index: number) => {
     event.stopPropagation();
     const newProgress = event.target.value;
 
-    if (videoRef.current) {
-      const duration = videoRef.current.duration;
-      videoRef.current.currentTime = (newProgress / 100) * duration;
+    if (videoListRef.current[index]) {
+      const duration = videoListRef.current[index].duration;
+      videoListRef.current[index].currentTime = (newProgress / 100) * duration;
       setProgress(newProgress);
     }
   };
@@ -270,6 +269,43 @@ const BetaMainPage = ({}) => {
 
   // Short Form Slide 변경
   const handleSlideChange = (swiper: any) => {
+    // const slidedVideo = document.getElementById(
+    //   `slide-idx-${swiper.activeIndex}`
+    // );
+
+    // currentTimeRef.current = 0;
+
+    // if (videoRef.current) {
+    //   videoRef.current.currentTime = 0;
+    //   videoRef.current.pause();
+
+    //   videoRef.current = slidedVideo;
+    //   // setPlaying(true);
+    // }
+
+    videoListRef.current.forEach((video, index) => {
+      if (index !== swiper.activeIndex && video && !video.paused) {
+        video.pause();
+        video.currentTime = 0;
+        video.removeAttribute('src'); // 메모리 해제
+        video.load(); // 브라우저 메모리에서 비우기
+      }
+    });
+
+    setCurrentEp(episodeList[swiper.activeIndex]);
+
+    if (unlockEpisode && swiper.activeIndex + 1 <= unlockEpisode) {
+      dispatch(
+        userSlice.updateSeriesProgress({
+          userId: user.id,
+          seriesId: seriesIdRef.current,
+          ep: swiper.activeIndex + 1,
+        })
+      );
+    }
+  };
+
+  const handleSlideTransitionEnd = (swiper: any) => {
     // const slidedVideo = document.getElementById(
     //   `slide-idx-${swiper.activeIndex}`
     // );
@@ -968,10 +1004,10 @@ const BetaMainPage = ({}) => {
   }, [currentEp, unlockEpisode]);
 
   useEffect(() => {
-    if (videoRef.current && lastEpisode && unlockEpisode && series) {
+    if (videoListRef.current && lastEpisode && unlockEpisode && series) {
       setLoading(false);
     }
-  }, [videoRef.current, lastEpisode, unlockEpisode, series]);
+  }, [videoListRef.current, lastEpisode, unlockEpisode, series]);
 
   // useEffect(() => {
   //   if (blobUrlRef.current) {
@@ -1040,6 +1076,7 @@ const BetaMainPage = ({}) => {
               unlockEpisode={unlockEpisode}
               lastEpisode={lastEpisode}
               handleEpisodeChange={handleEpisodeChange}
+              handleSlideTransitionEnd={handleSlideTransitionEnd}
               handleSlideChangeTransitionStart={handleSlideChangeTransitionStart}
             />
             {videoLoading && (
@@ -1126,7 +1163,7 @@ const BetaMainPage = ({}) => {
                     max="100"
                     step="0.1"
                     value={progress}
-                    onChange={handleProgressChange}
+                    onChange={(event) => handleProgressChange(event, currentEp.episode_num - 1)}
                     onTouchEnd={handleProgressTouchEnd}
                     onTouchStart={handleProgressTouchStart}
                   />

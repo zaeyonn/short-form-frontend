@@ -190,15 +190,15 @@ const SeriesPlayerPage = ({}) => {
   };
 
   // 재생 시간 업데이트
-  const handleTimeUpdate = () => {
+  const handleTimeUpdate = (index: number) => {
     if (
-      videoRef.current &&
-      videoRef.current.currentTime &&
-      videoRef.current.duration
+      videoListRef.current[index] &&
+      videoListRef.current[index].currentTime &&
+      videoListRef.current[index].duration
     ) {
-      currentTimeRef.current = videoRef.current.currentTime;
+      currentTimeRef.current = videoListRef.current[index].currentTime;
 
-      const duration = videoRef.current.duration;
+      const duration = videoListRef.current[index].duration;
 
       setProgress((currentTimeRef.current / duration) * 100);
     }
@@ -456,6 +456,44 @@ const SeriesPlayerPage = ({}) => {
       setVisibleBottomSheetLogin(true);
     } else {
       dispatch(globalSlice.setDisplayPopName(displayPopType.POPUP_LOGIN.name));
+    }
+  };
+
+  
+  const handleSlideTransitionEnd = (swiper: any) => {
+    // const slidedVideo = document.getElementById(
+    //   `slide-idx-${swiper.activeIndex}`
+    // );
+
+    // currentTimeRef.current = 0;
+
+    // if (videoRef.current) {
+    //   videoRef.current.currentTime = 0;
+    //   videoRef.current.pause();
+
+    //   videoRef.current = slidedVideo;
+    //   // setPlaying(true);
+    // }
+
+    videoListRef.current.forEach((video, index) => {
+      if (index !== swiper.activeIndex && video && !video.paused) {
+        video.pause();
+        video.currentTime = 0;
+        video.removeAttribute('src'); // 메모리 해제
+        video.load(); // 브라우저 메모리에서 비우기
+      }
+    });
+
+    setCurrentEp(episodeList[swiper.activeIndex]);
+
+    if (unlockEpisode && swiper.activeIndex + 1 <= unlockEpisode) {
+      dispatch(
+        userSlice.updateSeriesProgress({
+          userId: user.id,
+          seriesId: seriesIdRef.current,
+          ep: swiper.activeIndex + 1,
+        })
+      );
     }
   };
 
@@ -897,7 +935,8 @@ const SeriesPlayerPage = ({}) => {
               handleTimeUpdate={handleTimeUpdate}
               toggleTools={toggleTools}
               unlockEpisode={unlockEpisode}
-              lastEpisode={lastEpisode} quality={""} hlsRef={undefined} currentTimeRef={undefined}            />
+              lastEpisode={lastEpisode} quality={""} hlsRef={undefined} currentTimeRef={undefined}
+              handleSlideTransitionEnd={handleSlideTransitionEnd}/>
           </div>
           {loading && (
             <div className="loading">
@@ -1024,6 +1063,7 @@ const SeriesPlayerPage = ({}) => {
                     )}
                   </video> */}
                     <HlsPlayer
+                    videoListRef={videoListRef}
                       currentTimeRef={currentTimeRef}
                       locked={locked}
                       series={series}
