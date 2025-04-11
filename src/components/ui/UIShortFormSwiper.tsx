@@ -30,17 +30,15 @@ interface Props {
   handleSlideChangeStart: (swiper: any) => any;
   handleVideoEnded: () => any;
   handleSlideTransitionEnd: any;
-  handleSlideChangeTransitionStart: () => any;
 }
 
-const UIShortFormSwiper = ({videoListRef, quality, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, handleSlideTransitionEnd, handleEpisodeChange, handleSlideChangeTransitionStart}: Props) => {
+const UIShortFormSwiper = ({videoListRef, quality, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, handleSlideChange, swiperRef, lastEpisode, setVideoLoading, handleSlideTransitionEnd, handleEpisodeChange}: Props) => {
 
   return (
     <Swiper
       onSwiper={swiper => swiperRef.current = swiper} 
       className='short-form-swiper' direction="vertical" 
       onSlideChange={handleSlideChange} 
-      onSlideChangeTransitionStart={handleSlideChangeTransitionStart}
       onSlideChangeTransitionEnd={handleSlideTransitionEnd}
       onClick={toggleTools}
       allowSlideNext={locked ? false : true}>

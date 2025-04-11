@@ -499,15 +499,9 @@ const BetaMainPage = ({}) => {
     event.stopPropagation();
 
     setMuted(!muted);
-    videoRef.current.muted = !videoRef.current.muted;
+    videoListRef.current[currentEp.episode_num].muted = !videoListRef.current[currentEp.episode_num].muted;
   };
 
-  const handleSlideChangeTransitionStart = () => {
-    console.log('handleSlideChangeTransitionStart');
-    if(videoRef.current) {
-      videoRef.current.pause();
-    }
-  }
   
   
 
@@ -993,10 +987,10 @@ const BetaMainPage = ({}) => {
   // 에피소드 변경될때 잠긴 에피소드인 경우 재생 중지
   useEffect(() => {
     if (unlockEpisode && currentEp?.episode_num > unlockEpisode) {
-      videoRef.current.play();
+      videoListRef.current[currentEp.episode_num].play();
       setLocked(true);
       setPlaying(false);
-      videoRef.current.pause();
+      videoListRef.current[currentEp.episode_num].pause();
     } else {
       setLocked(false);
     }
@@ -1076,7 +1070,6 @@ const BetaMainPage = ({}) => {
               lastEpisode={lastEpisode}
               handleEpisodeChange={handleEpisodeChange}
               handleSlideTransitionEnd={handleSlideTransitionEnd}
-              handleSlideChangeTransitionStart={handleSlideChangeTransitionStart}
             />
             {videoLoading && (
               <div className="loading">

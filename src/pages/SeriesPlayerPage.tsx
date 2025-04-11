@@ -315,14 +315,6 @@ const SeriesPlayerPage = ({}) => {
   }, []);  
 
   
-  const handleSlideChangeTransitionStart = () => {
-    console.log('handleSlideChangeTransitionStart');
-    if(videoRef.current) {
-      videoRef.current.pause();
-    }
-  }
-  
-
   const handleSeriesKeep = () => {
     setKeep(!keep);
 
@@ -929,7 +921,6 @@ const SeriesPlayerPage = ({}) => {
               handleEpisodeChange={handleEpisodeChange}
               handleSlideChangeStart={handleSlideChangeStart}
               handleVideoEnded={handleVideoEnded}
-              handleSlideChangeTransitionStart={handleSlideChangeTransitionStart}
               episodeList={episodeList}
               videoRef={videoRef}
               handleTimeUpdate={handleTimeUpdate}
