@@ -92,6 +92,7 @@ const BetaMainPage = ({}) => {
   const speedSheetRef = useRef<any>(null);
   const swiperRef = useRef<any>(null);
   const videoRef = useRef<any>(null);
+  const videoListRef = useRef<HTMLVideoElement[]>([]);
   const hideToolsTimeout = useRef<any>();
   const hlsRef = useRef<any>(null);
   // const videoContainerRef = useRef<HTMLDivElement>(null);
@@ -269,19 +270,28 @@ const BetaMainPage = ({}) => {
 
   // Short Form Slide 변경
   const handleSlideChange = (swiper: any) => {
-    const slidedVideo = document.getElementById(
-      `slide-idx-${swiper.activeIndex}`
-    );
+    // const slidedVideo = document.getElementById(
+    //   `slide-idx-${swiper.activeIndex}`
+    // );
 
-    currentTimeRef.current = 0;
+    // currentTimeRef.current = 0;
 
-    if (videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.pause();
+    // if (videoRef.current) {
+    //   videoRef.current.currentTime = 0;
+    //   videoRef.current.pause();
 
-      videoRef.current = slidedVideo;
-      // setPlaying(true);
-    }
+    //   videoRef.current = slidedVideo;
+    //   // setPlaying(true);
+    // }
+
+    videoListRef.current.forEach((video, index) => {
+      if (index !== swiper.activeIndex && video && !video.paused) {
+        video.pause();
+        video.currentTime = 0;
+        video.removeAttribute('src'); // 메모리 해제
+        video.load(); // 브라우저 메모리에서 비우기
+      }
+    });
 
     setCurrentEp(episodeList[swiper.activeIndex]);
 
@@ -1008,6 +1018,7 @@ const BetaMainPage = ({}) => {
         <div className={"player-wrap"}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
+              videoListRef={videoListRef}
               quality={quality}
               series={series}
               locked={locked}

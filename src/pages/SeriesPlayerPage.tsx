@@ -86,6 +86,7 @@ const SeriesPlayerPage = ({}) => {
   const progressChangingRef = useRef<boolean>(false);
   const blobUrlRef = useRef<string>("");
   const abortControllerRef = useRef<AbortController | null>(null);
+  const videoListRef = useRef<HTMLVideoElement[]>([]);
 
   const seriesIdRef = useRef<string>(location.pathname.split("/")[2]);
   
@@ -877,6 +878,7 @@ const SeriesPlayerPage = ({}) => {
         <div className={`${isMobile ? "player-wrap" : "page-wrap"}`}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
+              videoListRef={videoListRef}
               series={series}
               setVideoLoading={setVideoLoading}
               locked={locked}

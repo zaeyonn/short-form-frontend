@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 interface SecureVideoPlayerProps {
+  videoListRef: any;
   locked: boolean;
   muted: boolean;
   seriesId: number;
@@ -13,7 +14,7 @@ interface SecureVideoPlayerProps {
   handleEpisodeChange: (index: number) => any;
 }
 
-const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ locked, muted, seriesId, episodeNum, videoRef, setVideoLoading, lastEpisode, index, handleTimeUpdate, handleEpisodeChange }) => {
+const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ videoListRef, locked, muted, seriesId, episodeNum, setVideoLoading, lastEpisode, index, handleTimeUpdate, handleEpisodeChange }) => {
   useEffect(() => {
     const fetchSignedUrl = async () => {
       try {
@@ -21,8 +22,8 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ locked, muted, se
           credentials: 'include', // 로그인 쿠키 포함
         });
         const data = await res.json();
-        if (videoRef.current) {
-          videoRef.current.src = data.url;
+        if (videoListRef.current[index]) {
+          videoListRef.current[index].src = data.url;
           setVideoLoading(false);
         }
       } catch (error) {
@@ -38,11 +39,12 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ locked, muted, se
 
   return (
       <video
+        ref={(el) => videoListRef.current[index] = el}
+        preload='none'
         autoPlay={!locked} 
         playsInline 
         muted={muted}  
         id={`slide-idx-${index}`} 
-        ref={lastEpisode - 1 === index ? videoRef : null}
         style={{ width: '100%', height: '100%', borderRadius: '12px' }}
         onTimeUpdate={handleTimeUpdate} 
         onEnded={() => handleEpisodeChange(episodeNum + 1)} 
