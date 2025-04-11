@@ -268,7 +268,7 @@ const BetaMainPage = ({}) => {
   }, []);
 
   // Short Form Slide 변경
-  const handleSlideChange = (swiper: any) => {
+  const handleSlideChange = (_swiper: any) => {
     // const slidedVideo = document.getElementById(
     //   `slide-idx-${swiper.activeIndex}`
     // );
