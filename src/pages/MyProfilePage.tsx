@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
 
 import * as globalSlice from "src/redux/globalSlice";
@@ -87,7 +87,11 @@ const MyProfilePage = () => {
   useEffect(() => {
     if (authSnsError) {
       console.log("authSnsError ", authSnsError);
-      dispatch(globalSlice.toggleBottomSheetLogin({}));
+			dispatch(globalSlice.addToast({
+        id: Date.now(),
+        message: '로그인에 실패하였습니다.',
+        duration: 3000,
+      }))
 
       dispatch(userSlice.clearUserState("authSnsError"));
     }
@@ -197,11 +201,13 @@ const MyProfilePage = () => {
                     <img src="resources/icons/icon_arrow_right_s.svg" />
                   </div>
                 ) : (
-                  <div>
-                    <div className="nickname">
-                      {`${user?.nickname}님`}
-                      <img src='resources/icons/icon_arrow_right_s.svg'/>
-                    </div>
+										<div>
+										<Link to='/profile/edit'>
+                    	<div className="nickname">
+                      	{`${user?.nickname}님`}
+                     	 <img src='resources/icons/icon_arrow_right_s.svg'/>
+												</div>
+												</Link>
                     <div className="email">{user?.email}</div>
                   </div>
                 )}
@@ -315,7 +321,7 @@ const MyProfilePage = () => {
                   {/* Beta {!isMobile && (
                     <div className="menu-item selected">시청 기록</div>
                   )} */}
-                  {user?.auth !== "guest" && (
+                  {/* {user?.auth !== "guest" && (
                     <div onClick={handleLogout} className="setting-item">
                       로그아웃
                       <img
@@ -325,7 +331,7 @@ const MyProfilePage = () => {
                         style={{ marginLeft: "auto" }}
                       />
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>

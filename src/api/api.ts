@@ -73,6 +73,12 @@ export const usersPointDeduct = ({ userId, point }: any) => client.put('users/po
   point,
 });
 
+// 사용자 프로필 업데이트
+export const usersProfileUpdate = ({userId, nickname}: any) => client.put('users/profile', {
+  user_id: userId,
+  nickname: nickname,
+});
+
 /* Series API */
 
 // 전체 시리즈 리스트

@@ -530,7 +530,12 @@ const SeriesPlayerPage = ({}) => {
   useEffect(() => {
     if (authSnsError) {
       console.log("authSnsError ", authSnsError);
-      setVisibleBottomSheetLogin(false);
+			setVisibleBottomSheetLogin(false);
+			dispatch(globalSlice.addToast({
+        id: Date.now(),
+        message: '로그인에 실패하였습니다.',
+        duration: 3000,
+      }))
 
       dispatch(userSlice.clearUserState("authSnsError"));
     }

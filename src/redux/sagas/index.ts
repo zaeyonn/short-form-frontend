@@ -31,6 +31,7 @@ export function* watcherSaga() {
     takeLatest(userSlice.usersPointDeduct.type, userHandler.handleUsersPointDeduct),
     takeLatest(userSlice.attendance.type, userHandler.handleattendance),
     takeLatest(userSlice.attendanceCheck.type, userHandler.handleattendanceCheck),
-    takeLatest(userSlice.subscribe.type, userHandler.handleSubscribe)
+    takeLatest(userSlice.subscribe.type, userHandler.handleSubscribe),
+    takeLatest(userSlice.usersProfileUpdate.type, userHandler.handleUsersProfileUpdate),
   ])
 }

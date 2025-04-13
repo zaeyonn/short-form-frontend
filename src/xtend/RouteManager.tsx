@@ -15,6 +15,7 @@ import BetaMainPage from "pages/BetaMainPage";
 import SettingPage from "pages/SettingPage";
 import ServiceTermsPage from "pages/ServiceTermsPage";
 import PrivacyPage from "pages/PrivacyPage";
+import ProfileEditPage from "pages/ProfileEditPage";
 
 const RouteManager = () => {
   // const { isMobile } = useSelector((state: any) => state.global)
@@ -30,7 +31,8 @@ const RouteManager = () => {
       <Route path='/payments' element={<PaymentProductListPage/>} />
       <Route path='/setting' element={<SettingPage/>}/>
       <Route path='/setting/terms' element={<ServiceTermsPage/>} />
-      <Route path='/setting/privacy' element={<PrivacyPage/>} />
+			<Route path='/setting/privacy' element={<PrivacyPage />} />
+			<Route path='/profile/edit' element={<ProfileEditPage />}/>
       <Route path='/callback/google' element={<CallbackGoogle/>} />
       <Route path='/callback/tosspayment' element={<CallbackTossPayment/>} />
       <Route path='/callback/kakao' element={<CallbackKakao/>} />

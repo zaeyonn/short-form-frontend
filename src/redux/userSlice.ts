@@ -196,6 +196,13 @@ const userSlice = createSlice({
     },
     setSubscription(state: UserRootState, action: PayloadAction<any>) {
       state.subscription = action.payload
+    },
+    usersProfileUpdate(_state: any, _action: PayloadAction<any>) {},
+    usersProfileUpdateSuccess(state: any, action: PayloadAction<any>) {
+      state.usersProfileUpdateResult = action.payload
+    },
+    usersProfileUpdateFailure(state: any, action: PayloadAction<any>) {
+      state.usersProfileUpdateError = action.payload
     }
   }
 });
@@ -213,6 +220,6 @@ export const {
   paymentsRegist, paymentsRegistSuccess, paymentsRegistFailure, paymentsConfirm, paymentsConfirmFailure, paymentsConfirmSuccess,
   usersPointDeduct, usersPointDeductSuccess, usersPointDeductFailure,
   attendance, attendanceSuccess, attendanceCheckFailure, attendanceCheck, attendanceCheckSuccess, attendanceFailure, setPaymentProduct,
-  subscribe, subscribeSuccess, subscribeFailure, setSubscription
+  subscribe, subscribeSuccess, subscribeFailure, setSubscription, usersProfileUpdate, usersProfileUpdateSuccess, usersProfileUpdateFailure 
 } = userSlice.actions;
 export default userSlice.reducer;

@@ -182,3 +182,13 @@ export function* handleSubscribe(action: PayloadAction<any>): Generator<any> {
     yield put(slice.subscribeFailure(error));
   }
 }
+
+export function* handleUsersProfileUpdate(action: PayloadAction<any>): Generator<any> {
+  try {
+    const response = yield call(api.usersProfileUpdate, action.payload);
+
+    yield put(slice.usersProfileUpdateSuccess(response));
+  } catch (error) {
+    yield put(slice.usersProfileUpdateFailure(error));
+  }
+}

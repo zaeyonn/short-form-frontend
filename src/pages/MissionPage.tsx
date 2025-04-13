@@ -48,7 +48,7 @@ const MissionPage = () => {
       console.log('authSnsError ', authSnsError);
       dispatch(globalSlice.addToast({
         id: Date.now(),
-        message: authSnsError.response.data.error,
+        message: '로그인에 실패하였습니다.',
         duration: 3000,
       }))
 

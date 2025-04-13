@@ -40,7 +40,12 @@ const SettingPage = () => {
   useEffect(() => {
     if (authSnsError) {
       console.log("authSnsError ", authSnsError);
-      dispatch(globalSlice.toggleBottomSheetLogin({}));
+			dispatch(globalSlice.toggleBottomSheetLogin({}));
+			dispatch(globalSlice.addToast({
+        id: Date.now(),
+        message: '로그인에 실패하였습니다.',
+        duration: 3000,
+      }))
 
       dispatch(userSlice.clearUserState("authSnsError"));
     }
