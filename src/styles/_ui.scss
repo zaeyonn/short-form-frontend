@@ -762,6 +762,10 @@ a {
         gap: 4px;
       }
 
+      .coin-history {
+        cursor: pointer;
+      }
+
       button {
         font-weight: 500;
         font-size: 13px;
@@ -2430,6 +2434,76 @@ a {
     color: #A2A2A2;
   }
 }
+}
+
+.total-coin-wrap {
+  border-radius: 12px;
+  background-color: #1B1B1B;
+  padding: 22px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .total-coin {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    font-size: 15px;
+
+    .value {
+      text-align: center;
+      margin-top: 6px;
+      font-weight: 600;
+      font-size: 22px;
+    }
+  }
+
+  .horizontal-line {
+    margin-top: 18px;
+    width: 100%;
+    height: 1px;
+    background-color: #353535;
+  }
+
+  .my-point-wrap {
+    margin-top: 18px;
+    width: 100%;
+  }
+}
+
+.coin-history-wrap {
+  margin-top: 16px;
+
+  .tab-wrap {
+    border-radius: 12px;
+    background-color: #1B1B1B;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px;
+
+    .tab {
+      cursor: pointer;
+      flex: 1;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #A2A2A2;
+
+      &.focused {
+        background-color: #4A4A4A;
+        color: #FFFFFF;
+        border-radius: 8px;
+      }
+    }
+  }
+
+
 }
 
 

@@ -16,6 +16,7 @@ import SettingPage from "pages/SettingPage";
 import ServiceTermsPage from "pages/ServiceTermsPage";
 import PrivacyPage from "pages/PrivacyPage";
 import ProfileEditPage from "pages/ProfileEditPage";
+import CoinHistoryPage from "pages/CoinHistoryPage";
 
 const RouteManager = () => {
   // const { isMobile } = useSelector((state: any) => state.global)
@@ -33,6 +34,7 @@ const RouteManager = () => {
       <Route path='/setting/terms' element={<ServiceTermsPage/>} />
 			<Route path='/setting/privacy' element={<PrivacyPage />} />
 			<Route path='/profile/edit' element={<ProfileEditPage />}/>
+      <Route path='/profile/coin' element={<CoinHistoryPage/>} />
       <Route path='/callback/google' element={<CallbackGoogle/>} />
       <Route path='/callback/tosspayment' element={<CallbackTossPayment/>} />
       <Route path='/callback/kakao' element={<CallbackKakao/>} />

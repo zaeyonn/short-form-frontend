@@ -236,10 +236,12 @@ const MyProfilePage = () => {
                 </div>
                 <div className="wallet">
                   <div className="head">
-                    <div>
+                    <Link to='coin'>
+                    <div className="coin-history">
                       코인 내역
                       <img src='resources/icons/icon_arrow_right_s.svg'/>
                     </div>
+                    </Link>
                     <button onClick={handlePayment}>충전하기</button>
                   </div>
                   <div className="divider"></div>
