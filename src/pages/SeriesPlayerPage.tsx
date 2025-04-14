@@ -76,6 +76,7 @@ const SeriesPlayerPage = ({}) => {
   const [lastEpisode, setLastEpisode] = useState<number>(0);
   const [muted, setMuted] = useState<boolean>(true);
   const [fullscreen, setFullscreen] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const loginSheetRef = useRef<any>(null);
   const swiperRef = useRef<any>(null);
@@ -242,33 +243,7 @@ const SeriesPlayerPage = ({}) => {
     }
   };
 
-  // Short Form Slide 변경
-  const handleSlideChange = (swiper: any) => {
-    const slidedVideo = document.getElementById(
-      `slide-idx-${swiper.activeIndex}`
-    );
-
-    if (videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.pause();
-
-      videoRef.current = slidedVideo;
-      // setPlaying(true);
-    }
-
-    setCurrentEp(episodeList[swiper.activeIndex]);
-
-    if (unlockEpisode && swiper.activeIndex + 1 <= unlockEpisode) {
-      dispatch(
-        userSlice.updateSeriesProgress({
-          userId: user.id,
-          seriesId: seriesIdRef.current,
-          ep: swiper.activeIndex + 1,
-        })
-      );
-    }
-  };
-
+ 
   /*
   * 에피소드 회차 변경
   * @Params
@@ -451,6 +426,10 @@ const SeriesPlayerPage = ({}) => {
     }
   };
 
+  const handleSlideTransitionStart = () => {
+
+    setProgress(0);
+  };
   
   const handleSlideTransitionEnd = (swiper: any) => {
     // const slidedVideo = document.getElementById(
@@ -861,6 +840,8 @@ const SeriesPlayerPage = ({}) => {
     } else {
       setLocked(false);
     }
+    
+    setCurrentIndex(currentEp?.episode_num - 1);
   }, [currentEp, unlockEpisode, isMobile]);
 
   useEffect(() => {
@@ -913,6 +894,7 @@ const SeriesPlayerPage = ({}) => {
         <div className={`${isMobile ? "player-wrap" : "page-wrap"}`}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
+              currentIndex={currentIndex}
               videoListRef={videoListRef}
               series={series}
               setVideoLoading={setVideoLoading}
@@ -922,7 +904,6 @@ const SeriesPlayerPage = ({}) => {
               muted={muted}
               swiperRef={swiperRef}
               blobUrlRef={blobUrlRef}
-              handleSlideChange={handleSlideChange}
               handleEpisodeChange={handleEpisodeChange}
               handleSlideChangeStart={handleSlideChangeStart}
               handleVideoEnded={handleVideoEnded}
@@ -931,7 +912,11 @@ const SeriesPlayerPage = ({}) => {
               handleTimeUpdate={handleTimeUpdate}
               toggleTools={toggleTools}
               unlockEpisode={unlockEpisode}
-              lastEpisode={lastEpisode} quality={""} hlsRef={undefined} currentTimeRef={undefined}
+              lastEpisode={lastEpisode} 
+              quality={""} 
+              hlsRef={undefined} 
+              currentTimeRef={undefined}
+              handleSlideTransitionStart={handleSlideTransitionStart}
               handleSlideTransitionEnd={handleSlideTransitionEnd}/>
           </div>
           {loading && (

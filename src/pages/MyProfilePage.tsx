@@ -57,10 +57,6 @@ const MyProfilePage = () => {
     dispatch(globalSlice.toggleBottomSheetLogin({}));
   };
 
-  const handleLogout = () => {
-    dispatch(userSlice.authGuest());
-  };
-
   const handlePayment = () => {
     navigate("/payments");
     // Beta

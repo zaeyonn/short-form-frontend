@@ -268,7 +268,7 @@ const BetaMainPage = ({}) => {
     dispatch(globalSlice.toggleBottomSheetLogin({}));
   }, []);
 
-  const handleSlideTransitionStart = (swiper: any) => {
+  const handleSlideTransitionStart = () => {
 
     setProgress(0);
   };
