@@ -15,7 +15,7 @@ const MissionPage = () => {
   const navigate = useNavigate();
 
   const { missionList, visibleBottomSheetLogin, isMobile, missionListResult, missionListError } = useSelector((state: any) => state.global);
-  const { user, attendanceResult, attendanceError, attendanceCheckError, attendanceCheckResult, authSnsResult, authSnsError } = useSelector((state: any) => state.user);
+  const { user, attendanceResult, attendanceError, attendanceCheckError, attendanceCheckResult, authSnsResult, authSnsError, missionsCompleteResult, missionsCompleteError } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState(false);
   const [streak, setStreak] = useState(0);
@@ -37,6 +37,15 @@ const MissionPage = () => {
     dispatch(userSlice.attendanceCheck({userId: user.id}));
   }
 
+  const handleConnectSns = (mission: Mission, status: string) => {
+    if(status === 'in_progress') {
+      dispatch(globalSlice.toggleBottomSheetLogin({}));
+    } else if(status === 'completed') {
+      dispatch(userSlice.missionsComplete({userId: user.id, missionType: mission.type}))
+    }
+    
+  }
+
   
   const signInProcess = (code: string, authType: string) => {
     dispatch(userSlice.authSns({ code, userId: user?.id, authType }));
@@ -56,10 +65,11 @@ const MissionPage = () => {
     }
 
     if (authSnsResult && authSnsResult.status === 200) {
-      const user:User = authSnsResult.data;
+      console.log('authSnsResult ', authSnsResult);
+      const user:User = authSnsResult.data.user;
 
       
-      if(authSnsResult.data?.request_auth_type !== user.auth) {
+      if(authSnsResult.data?.request_auth_type !== user?.auth) {
         dispatch(globalSlice.addToast({
           id: Date.now(),
           message: `${authType[user.auth].name}로 가입된 계정입니다.`,
@@ -144,6 +154,43 @@ const MissionPage = () => {
     }
   }, [attendanceResult, attendanceError])
 
+  // 미션 완료 업데이트
+  useEffect(() => {
+    if(missionsCompleteError) {
+      console.log('missionsCompleteError ', missionsCompleteError);
+
+      dispatch(userSlice.clearUserState("missionsCompleteError"));
+    }
+
+    if(missionsCompleteResult && missionsCompleteResult.status === 200) {
+      console.log("missionsCompleteResult ", missionsCompleteResult);
+      const mission = missionsCompleteResult.data.mission; 
+
+      const freePoint = user.free_point + mission.reward;
+      const userMissions = user.userMissions.map((item: any) => {
+        if(item.mission_id === missionsCompleteResult.data.mission_id) {
+          return {
+            ...item,
+            status: missionsCompleteResult.data.status
+          }
+        } else {
+          return item;
+        }
+      })
+
+      dispatch(globalSlice.addToast({
+        id: new Date(),
+        duration: 2000,
+        message: `${missionsCompleteResult.data.mission.reward} 코인을 받았어요!`
+      }))
+
+      dispatch(userSlice.setUser({...user, free_point: freePoint, userMissions}));
+
+      dispatch(userSlice.clearUserState("missionsCompleteResult"));
+    }
+    
+  }, [missionsCompleteResult, missionsCompleteError])
+
   // 미션 리스트 조회
   useEffect(() => {
     if(missionListError) {
@@ -166,7 +213,7 @@ const MissionPage = () => {
   useEffect(() => {
     setLoading(true);
 
-    if(user.auth === 'guest') {
+    if(user?.auth === 'guest') {
       dispatch(globalSlice.toggleBottomSheetLogin({}));
     }
 
@@ -290,21 +337,35 @@ const MissionPage = () => {
                   <div className='mission-info'>
                     <div className='mission-title'>{missionType[mission.type].name}</div>
                     <div className='reward'>{`+ ${mission.reward} 코인`}</div>
+                    { mission.target_value > 1 && (
                     <div className='progress-wrap'>
                       <div className='progress-bar'></div>
                       <span>{`${userMission?.progress_value}/${mission.target_value}`}</span>
                     </div>
+                    )}
                   </div>
-                <button>
+                  { mission.type === 'connect_sns' && (
+                  <button disabled={userMission?.status === 'rewarded'} onClick={() => handleConnectSns(mission, userMission.status)}>
                   {userMission?.status === 'completed' ? '코인 받기' : userMission?.status === 'rewarded' ? '미션 완료' : missionType[mission.type].btn_label }
-                </button>
+                  </button>
+                  )}
               </div>
             )
           })}
         </div>
+        <div className='p-title'>
+          이용 안내
+        </div>
+        <div className='provision-wrap'>
+          <ul>
+            <li>보너스 코인은 구매 취소 및 환불이 불가하다.</li>
+            <li>미션과 이벤트를 통해 지급 받은 보너스 코인의 유효기간은 모두 7일입니다.</li>
+            <li>드라마 시청 시 코인(유상)이 먼저 사용되고 부족한 경우 유효기간이 짧은 코너스 코인부터 자동으로 사용됩니다. </li>
+          </ul>
+        </div>
       </div>
       )}
-      { user.auth === 'guest' && (
+      { user?.auth === 'guest' && (
         <UIBottomSheetLogin
           ref={loginSheetRef}
           visible={visibleBottomSheetLogin}

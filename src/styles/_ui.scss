@@ -1389,7 +1389,7 @@ a {
   ul {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 15px;
   }
 }
 
@@ -2334,7 +2334,8 @@ a {
       font-size: 13px;
       border-radius: 8px;
 
-      &.disabled {
+      &:disabled {
+        cursor: default;
         background-color: #353535;
         color: #A2A2A2;
       }

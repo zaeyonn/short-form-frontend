@@ -192,3 +192,13 @@ export function* handleUsersProfileUpdate(action: PayloadAction<any>): Generator
     yield put(slice.usersProfileUpdateFailure(error));
   }
 }
+
+export function* handleMissionsComplete(action: PayloadAction<any>): Generator<any> {
+  try {
+    const response = yield call(api.missionsComplete, action.payload);
+
+    yield put(slice.missionsCompleteSuccess(response));
+  } catch (error) {
+    yield put(slice.missionsCompleteFailure(error));
+  }
+}

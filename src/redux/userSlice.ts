@@ -203,6 +203,15 @@ const userSlice = createSlice({
     },
     usersProfileUpdateFailure(state: any, action: PayloadAction<any>) {
       state.usersProfileUpdateError = action.payload
+    },
+    missionsComplete(_state: any, _action: PayloadAction<any>) {
+
+    },
+    missionsCompleteSuccess(state: any, action: PayloadAction<any>) {
+      state.missionsCompleteResult = action.payload
+    },
+    missionsCompleteFailure(state: any, action: PayloadAction<any>) {
+      state.missionsCompleteError = action.payload
     }
   }
 });
@@ -220,6 +229,7 @@ export const {
   paymentsRegist, paymentsRegistSuccess, paymentsRegistFailure, paymentsConfirm, paymentsConfirmFailure, paymentsConfirmSuccess,
   usersPointDeduct, usersPointDeductSuccess, usersPointDeductFailure,
   attendance, attendanceSuccess, attendanceCheckFailure, attendanceCheck, attendanceCheckSuccess, attendanceFailure, setPaymentProduct,
-  subscribe, subscribeSuccess, subscribeFailure, setSubscription, usersProfileUpdate, usersProfileUpdateSuccess, usersProfileUpdateFailure 
+  subscribe, subscribeSuccess, subscribeFailure, setSubscription, usersProfileUpdate, usersProfileUpdateSuccess, usersProfileUpdateFailure,
+  missionsCompleteSuccess, missionsCompleteFailure, missionsComplete,
 } = userSlice.actions;
 export default userSlice.reducer;
