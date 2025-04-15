@@ -65,6 +65,7 @@ const UIShortFormSwiper = ({currentIndex, videoListRef, quality, locked, muted, 
               handleTimeUpdate={handleTimeUpdate}
             /> */}
             <ProgressivePlayer
+              swiperRef={swiperRef}
               currentIndex={currentIndex}
               quality={quality}
               videoListRef={videoListRef}

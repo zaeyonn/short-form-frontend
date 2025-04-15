@@ -16,6 +16,27 @@ export interface UserRootState {
   userMissionList: UserMission [],
 }
 
+export interface GlobalRootState {
+  loading: boolean,
+  alert: any,
+  isMobile: boolean,
+  
+  displayPopName: string,
+  toast: any,
+  navigationBar: any,
+  seriesPlayer: boolean,
+  payments: any,
+
+  series: Series,
+  seriesListTitle: string,
+  seriesList: Series [],
+  episodeList: Episode [],
+  productList: Product [],
+  missionList: Mission [],
+
+  visibleBottomSheetLogin: false,
+}
+
 
 export type User = {
   id: string,
@@ -42,6 +63,17 @@ export type Series = {
   views: number // 조회 수
   keeps: number // 북마크 수
   created_at: string // 등록 날짜
+}
+
+export type Episode = {
+  title: string | null;
+  video: string;
+  description: string | null;
+  episode_num: number;
+  series_id: number;
+  thumbnail_img: string | null;
+  created_at: string;
+  id: number;
 }
 
 export type Product = {

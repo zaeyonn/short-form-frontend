@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { GlobalRootState } from "src/types";
 
-const initialState = {
+const initialState: GlobalRootState = {
   loading: false,
   alert: null,
   isMobile: window.innerWidth <= 480,
@@ -11,7 +12,7 @@ const initialState = {
   seriesPlayer: false,
   payments: null,
 
-  series: {id: 0, title: '', description: '', poster_img: '', ep_count: 0, free_count: 0, keyword: [], req_point: 0, views: 0, keeps: 0, created_at: ''},
+  series: {id: 0, title: '', description: '', poster_img: '', ep_count: 0, free_count: 0, keyword: [], req_point: 0, views: 0, keeps: 0, created_at: '', horizontal_poster_img: ''},
   seriesListTitle: '',
   seriesList: [],
   episodeList: [],

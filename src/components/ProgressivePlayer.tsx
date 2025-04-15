@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
 interface SecureVideoPlayerProps {
+  swiperRef: any;
   currentIndex: number;
   quality: string;
   videoListRef: any;
@@ -16,7 +17,7 @@ interface SecureVideoPlayerProps {
   handleEpisodeChange: (index: number) => any;
 }
 
-const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ currentIndex, quality, videoListRef, locked, muted, seriesId, episodeNum, setVideoLoading, index, handleTimeUpdate, handleEpisodeChange }) => {
+const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ videoRef, swiperRef, currentIndex, quality, locked, muted, seriesId, episodeNum, setVideoLoading, index, handleTimeUpdate, handleEpisodeChange }) => {
   const videoUrlsRef = useRef<any>({});
   
   useEffect(() => {
@@ -27,8 +28,8 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ currentIndex, qua
           credentials: 'include',
         });
         const data = await res.json();
-        if (videoListRef.current[index]) {
-          videoListRef.current[index].src = data[quality];
+        if (videoRef.current) {
+          videoRef.current.src = data[quality];
           videoUrlsRef.current = data;
           setVideoLoading(false);
         }
@@ -46,7 +47,7 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ currentIndex, qua
   return (
       <video
         src={(quality && videoUrlsRef.current ? videoUrlsRef.current[quality] : '')}
-        ref={(el) => videoListRef.current[index] = el}
+        ref={(el) => swiperRef.current.activeIndex === index ? videoRef.current = el : ''}
         preload='none'
         autoPlay={!locked} 
         playsInline 

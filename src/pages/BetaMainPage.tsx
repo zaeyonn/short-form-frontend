@@ -144,13 +144,21 @@ const BetaMainPage = ({}) => {
       return;
     }
 
-    if (videoListRef.current[currentEp?.episode_num - 1] && videoListRef.current[currentEp?.episode_num - 1].paused) {
-      videoListRef.current[currentEp?.episode_num - 1].play();
+    if (videoRef.current && videoRef.current.paused) {
+      videoRef.current.play();
       setPlaying(true);
-    } else if (videoListRef.current[currentEp?.episode_num - 1] && !videoListRef.current[currentEp?.episode_num - 1].paused) {
-      videoListRef.current[currentEp?.episode_num - 1].pause();
+    } else if (videoRef.current && !videoRef.current.paused) {
+      videoRef.current.pause();
       setPlaying(false);
     }
+
+    // if (videoListRef.current[currentEp?.episode_num - 1] && videoListRef.current[currentEp?.episode_num - 1].paused) {
+    //   videoListRef.current[currentEp?.episode_num - 1].play();
+    //   setPlaying(true);
+    // } else if (videoListRef.current[currentEp?.episode_num - 1] && !videoListRef.current[currentEp?.episode_num - 1].paused) {
+    //   videoListRef.current[currentEp?.episode_num - 1].pause();
+    //   setPlaying(false);
+    // }
   };
 
   // // 비디오 URL을 Blob URL로 변환 함수
@@ -218,15 +226,15 @@ const BetaMainPage = ({}) => {
   };
 
   // 재생 시간 업데이트
-  const handleTimeUpdate = (index: number) => {
+  const handleTimeUpdate = (_index: number) => {
     if (
-      videoListRef.current[index] &&
-      videoListRef.current[index].currentTime &&
-      videoListRef.current[index].duration
+      videoRef.current &&
+      videoRef.current.currentTime &&
+      videoRef.current.duration
     ) {
-      currentTimeRef.current = videoListRef.current[index].currentTime;
+      currentTimeRef.current = videoRef.current.currentTime;
 
-      const duration = videoListRef.current[index].duration;
+      const duration = videoRef.current.duration;
 
       setProgress((currentTimeRef.current / duration) * 100);
 
@@ -243,7 +251,8 @@ const BetaMainPage = ({}) => {
     }
 
     // 전체 시간의 90% 시청완료했으면 에피소드 시청 미션 업데이트
-    const duration = videoListRef.current[currentEp?.episode_num - 1].duration;
+    // const duration = videoListRef.current[currentEp?.episode_num - 1].duration;
+    const duration = videoRef.current.duration;
     const watchedCount = watchedListRef.current.filter(i => i === true).length;
 
     const isWatched = watchedCount >= duration * 0.90;
@@ -253,15 +262,21 @@ const BetaMainPage = ({}) => {
   };
 
   // 재생바 드래그로 위치 변경
-  const handleProgressChange = (event: any, index: number) => {
+  const handleProgressChange = (event: any, _index: number) => {
     event.stopPropagation();
     const newProgress = event.target.value;
 
-    if (videoListRef.current[index]) {
-      const duration = videoListRef.current[index].duration;
-      videoListRef.current[index].currentTime = (newProgress / 100) * duration;
+    if (videoRef.current) {
+      const duration = videoRef.current.duration;
+      videoRef.current.currentTime = (newProgress / 100) * duration;
       setProgress(newProgress);
     }
+
+    // if (videoListRef.current[index]) {
+    //   const duration = videoListRef.current[index].duration;
+    //   videoListRef.current[index].currentTime = (newProgress / 100) * duration;
+    //   setProgress(newProgress);
+    // }
   };
 
   // 재생바 터치 시작 이벤트
@@ -269,9 +284,13 @@ const BetaMainPage = ({}) => {
     event.stopPropagation();
     setPlaying(false);
     progressChangingRef.current = true;
-    if (videoListRef.current[currentEp?.episode_num - 1]) {
-      videoListRef.current[currentEp?.episode_num - 1].pause();
+    if (videoRef.current) {
+      videoRef.current.pause();
     }
+
+    // if (videoListRef.current[currentEp?.episode_num - 1]) {
+    //   videoListRef.current[currentEp?.episode_num - 1].pause();
+    // }
   };
 
   // 재생바 터지 종료 이벤트
@@ -279,9 +298,13 @@ const BetaMainPage = ({}) => {
     event.stopPropagation();
     progressChangingRef.current = false;
     setPlaying(true);
-    if (videoListRef.current[currentEp?.episode_num - 1]) {
-      videoListRef.current[currentEp?.episode_num - 1]
+    if (videoRef.current) {
+      videoRef.current.play();
     }
+
+    // if (videoListRef.current[currentEp?.episode_num - 1]) {
+    //   videoListRef.current[currentEp?.episode_num - 1]
+    // }
   };
 
   const handleSlideChangeStart = (swiper: any) => {
@@ -296,18 +319,36 @@ const BetaMainPage = ({}) => {
 
   const handleSlideTransitionStart = () => {
 
+    if(videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+      videoRef.current.removeAttribute('src');
+    }
+    
     setProgress(0);
   };
 
   const handleSlideTransitionEnd = (swiper: any) => {
 
     // 메모리에서 이전 video 데이터 제거 
-    if(swiper.previousIndex) {
-      videoListRef.current[swiper.previousIndex].pause();
-      videoListRef.current[swiper.previousIndex].currentTime = 0;
-      videoListRef.current[swiper.previousIndex].removeAttribute('src');
-      videoListRef.current[swiper.previousIndex].load();
-    }
+    // if(swiper.previousIndex) {
+    //   videoListRef.current[swiper.previousIndex].pause();
+    //   videoListRef.current[swiper.previousIndex].currentTime = 0;
+    //   videoListRef.current[swiper.previousIndex].removeAttribute('src');
+    //   videoListRef.current[swiper.previousIndex].load();
+    // } else if(videoListRef.current) {
+    //   videoListRef.current.forEach((video: HTMLVideoElement) => {
+    //     if(!video.paused) {
+    //       video.pause();
+    //       video.currentTime = 0;
+    //       video.removeAttribute('src');
+    //       video.load();
+    //     }
+    //   })
+    // }
+    videoRef.current.pause();
+    videoRef.current.currentTime = 0;
+    videoRef.current.removeAttribute('src');
 
     setPlaying(true);
 
@@ -332,7 +373,9 @@ const BetaMainPage = ({}) => {
   const handleEpisodeChange = useCallback((episodeNum: number) => {
 
     // 전체 시간의 90% 시청완료했으면 에피소드 시청 미션 업데이트
-    const duration = videoListRef.current[currentEp?.episode_num - 1]?.duration;
+    //const duration = videoListRef.current[currentEp?.episode_num - 1]?.duration;
+    
+    const duration = videoRef.current?.duration;
     const watchedCount = watchedListRef.current.filter(i => i === true).length;
 
     const isWatched = watchedCount >= duration * 0.90;
@@ -347,9 +390,9 @@ const BetaMainPage = ({}) => {
     setProgress(0);
     currentTimeRef.current = 0;
 
-    if (videoListRef.current[index]) {
-      videoListRef.current[index].currentTime = 0;
-      //videoRef.current.pause();
+    if (videoRef.current) {
+      // videoListRef.current[index].currentTime = 0;
+      videoRef.current.pause();
     }
 
     if (index === unlockEpisode) {
@@ -419,26 +462,33 @@ const BetaMainPage = ({}) => {
   const handleQualityChange = (quality: string) => { 
     setQuality(quality);
 
+    // setTimeout(() => {
+    //   videoListRef.current[currentEp.episode_num - 1].currentTime = currentTimeRef.current;
+    //   videoListRef.current[currentEp.episode_num - 1].play();
+    // }, 100);
+
     setTimeout(() => {
-      videoListRef.current[currentEp.episode_num - 1].currentTime = currentTimeRef.current;
-      videoListRef.current[currentEp.episode_num - 1].play();
+      videoRef.current.currentTime = currentTimeRef.current;
+      videoRef.current.play();
     }, 100);
+
+    
   
     qualitySheetRef.current.handleClose();
   };
 
   const handleSpeedChange = useCallback((speed: number) => {
     setSpeed(speed);
-    videoListRef.current[currentEp?.episode_num - 1].playbackRate = speed;
+    videoRef.current.playbackRate = speed;
     speedSheetRef.current.handleClose();
-  }, [videoListRef.current, currentEp]);
+  }, [videoRef.current, currentEp]);
 
   const handleEpisodeShare = async () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: '제목',
-          text: '설명 텍스트',
+          title: `${series?.title} ${currentEp?.episode_num}화`,
+          text: series.description,
           url: window.location.href,
         });
         console.log('공유 완료!');
@@ -505,7 +555,8 @@ const BetaMainPage = ({}) => {
     event.stopPropagation();
 
     setMuted(!muted);
-    videoListRef.current[currentEp?.episode_num].muted = !videoListRef.current[currentEp?.episode_num].muted;
+    //videoListRef.current[currentEp?.episode_num].muted = !videoListRef.current[currentEp?.episode_num].muted;
+    videoRef.current.muted = !videoRef.current.muted;
   };
 
   
@@ -761,7 +812,9 @@ const BetaMainPage = ({}) => {
       setUnlockEpisode(updateSeriesUnlockEpisodeResult.data.unlock_episode);
       setLastEpisode(updateSeriesUnlockEpisodeResult.data.last_episode);
 
-      videoListRef.current[currentEp.episode_num - 1].play();
+      //videoListRef.current[currentEp.episode_num - 1].play();
+      
+      videoRef.current.play();
       setPlaying(true);
 
       dispatch(userSlice.clearUserState("updateSeriesUnlockEpisodeResult"));
@@ -790,7 +843,7 @@ const BetaMainPage = ({}) => {
   }, [
     addSeriesProgressResult,
     addSeriesProgressError,
-    videoListRef.current,
+    videoRef.current,
     sequenceCountRef.current,
   ]);
 
@@ -1025,10 +1078,10 @@ const BetaMainPage = ({}) => {
   // 에피소드 변경될때 잠긴 에피소드인 경우 재생 중지
   useEffect(() => {
     if (unlockEpisode && currentEp?.episode_num > unlockEpisode) {
-      videoListRef.current[currentEp.episode_num].play();
+      videoRef.current.play();
       setLocked(true);
       setPlaying(false);
-      videoListRef.current[currentEp.episode_num].pause();
+      videoRef.current.pause();
     } else {
       setLocked(false);
     }
@@ -1037,10 +1090,10 @@ const BetaMainPage = ({}) => {
   }, [currentEp, unlockEpisode]);
 
   useEffect(() => {
-    if (videoListRef.current && lastEpisode && unlockEpisode && series) {
+    if (videoRef.current && lastEpisode && unlockEpisode && series) {
       setLoading(false);
     }
-  }, [videoListRef.current, lastEpisode, unlockEpisode, series]);
+  }, [videoRef.current, lastEpisode, unlockEpisode, series]);
 
   // useEffect(() => {
   //   if (blobUrlRef.current) {
