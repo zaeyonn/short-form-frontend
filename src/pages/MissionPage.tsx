@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { TailSpin } from "react-loader-spinner";
-import { useSpring, animated, useSpringValue } from '@react-spring/web';
+import { useSpring, animated } from '@react-spring/web';
 import moment from 'moment';
 
 import * as userSlice from 'src/redux/userSlice';
@@ -21,7 +21,6 @@ const MissionPage = () => {
   const [loading, setLoading] = useState(false);
   const [streak, setStreak] = useState(0);
   const [isAttended, setIsAttended] = useState(false);
-  const [progressBarWidth, setProgressBarWidth] = useState(0);
   const [watchEpPercent, setWatchEpPercent] = useState(0);
   const [watchAdPercent, setWatchAdPercent] = useState(0);
 

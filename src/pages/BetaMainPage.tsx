@@ -433,6 +433,23 @@ const BetaMainPage = ({}) => {
     speedSheetRef.current.handleClose();
   }, [videoListRef.current, currentEp]);
 
+  const handleEpisodeShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: '제목',
+          text: '설명 텍스트',
+          url: window.location.href,
+        });
+        console.log('공유 완료!');
+      } catch (error) {
+        console.error('공유 실패:', error);
+      }
+    } else {
+      alert('현재 브라우저는 공유 기능을 지원하지 않습니다.');
+    }
+  }
+
   const handleSeriesKeep = () => {
     setKeep(!keep);
 
@@ -1159,6 +1176,10 @@ const BetaMainPage = ({}) => {
                 </>
               )}
               <div className="right-menu">
+              <div className="btn-wrap" onClick={handleEpisodeShare}>
+                  <img id="list-btn" src="/resources/icons/icon_list.svg" />
+                  Share
+                </div>
                 <div className="btn-wrap" onClick={handleSeriesKeep}>
                   <img id="bookmark-btn" src={`/resources/icons/icon_bookmark${keep ? "_fill" : ""}.svg`}/>
                   {keepCount}
