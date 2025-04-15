@@ -23,6 +23,7 @@ const AuthManager = () => {
       const user = userInfoResult.data;
       localStorage.setItem("user-id", user.id);
       dispatch(userSlice.setUser(user));
+      dispatch(userSlice.setUserMissionList(user.userMissions));
 
       if(user.subscriptions.length > 0) {
         user.subscriptions.forEach((subscription: Subscription) => {
@@ -47,6 +48,7 @@ const AuthManager = () => {
       const user = authGuestResult.data;
       localStorage.setItem("user-id", user.id);
       dispatch(userSlice.setUser(user));
+      dispatch(userSlice.setUserMissionList(user.userMissions))
 
       dispatch(userSlice.clearUserState("authGuestResult"));
       return;

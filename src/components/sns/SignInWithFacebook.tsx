@@ -51,7 +51,7 @@ const SignInWithFacebook = ({ signInProcess }: Props) => {
 
   return (
     <button onClick={handleLogin}>
-      <img src="/resources/icons/icon_meta.svg" />
+      <img src="/resources/icons/icon_facebook.png" />
       페이스북으로 계속하기
     </button>
   );

@@ -7,7 +7,7 @@ import * as globalSlice from "src/redux/globalSlice";
 import * as userSlice from "src/redux/userSlice";
 
 import { displayPopType, authType } from "common/define";
-import { User } from "src/types";
+import { User, UserMission } from "src/types";
 import UIShortFormSwiper from "components/ui/UIShortFormSwiper";
 import UIBottomSheetEpisodeGrid from "../components/ui/bottomsheet/UIBottomSheetEpisodeGrid";
 import UILayerLockedEpisode from "components/ui/layer/UILayerLockedEpisode";
@@ -39,6 +39,7 @@ const BetaMainPage = ({}) => {
   } = useSelector((state: any) => state.global);
   const {
     user,
+    userMissionList,
     subscription,
     addSeriesProgressResult,
     addSeriesProgressError,
@@ -58,6 +59,9 @@ const BetaMainPage = ({}) => {
     authSnsResult,
     usersPointDeductResult,
     usersPointDeductError,
+    missionsUpdateResult,
+    missionsUpdateError,
+    
   } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -100,6 +104,7 @@ const BetaMainPage = ({}) => {
   const sequenceCountRef = useRef<number>(0);
   const progressChangingRef = useRef<boolean>(false);
   const blobUrlRef = useRef<string>("");
+  const watchedListRef = useRef<boolean[]>([]);
   // const abortControllerRef = useRef<AbortController | null>(null);
 
   const seriesIdRef = useRef<string>('1');
@@ -224,8 +229,29 @@ const BetaMainPage = ({}) => {
       const duration = videoListRef.current[index].duration;
 
       setProgress((currentTimeRef.current / duration) * 100);
+
+      // 시청 시간 기록
+      const currentTime = Math.floor(currentTimeRef.current);
+      watchedListRef.current[currentTime] = true;
     }
   };
+
+  
+  const handleVideoEnded = () => {
+    if (currentEp?.episode_num < episodeList.length) {
+      swiperRef.current.slideTo(currentEp?.episode_num, 0);
+    }
+
+    // 전체 시간의 90% 시청완료했으면 에피소드 시청 미션 업데이트
+    const duration = videoListRef.current[currentEp?.episode_num - 1].duration;
+    const watchedCount = watchedListRef.current.filter(i => i === true).length;
+
+    const isWatched = watchedCount >= duration * 0.90;
+    if(isWatched) {
+      console.log('90% 이상 시청 완료 ')
+    }
+  };
+
   // 재생바 드래그로 위치 변경
   const handleProgressChange = (event: any, index: number) => {
     event.stopPropagation();
@@ -304,6 +330,17 @@ const BetaMainPage = ({}) => {
   * episodeNum : 변경할 회차
   */ 
   const handleEpisodeChange = useCallback((episodeNum: number) => {
+
+    // 전체 시간의 90% 시청완료했으면 에피소드 시청 미션 업데이트
+    const duration = videoListRef.current[currentEp?.episode_num - 1]?.duration;
+    const watchedCount = watchedListRef.current.filter(i => i === true).length;
+
+    const isWatched = watchedCount >= duration * 0.90;
+
+    if(isWatched) {
+      dispatch(userSlice.missionsUpdate({ userId: user.id, missionType: 'watch_ep' }));
+    }
+
     const index = episodeNum - 1;
       
     setCurrentEp(episodeList[index]);
@@ -516,11 +553,6 @@ const BetaMainPage = ({}) => {
   //   }
   // };
 
-  const handleVideoEnded = () => {
-    if (currentEp?.episode_num < episodeList.length) {
-      swiperRef.current.slideTo(currentEp?.episode_num, 0);
-    }
-  };
 
   const handleLoginOpen = useCallback(() => {
     
@@ -888,6 +920,42 @@ const BetaMainPage = ({}) => {
     }
   }, [productListResult, productListError])
 
+  // 사용자 미션 업데이트 결과
+  useEffect(() => {
+    if (missionsUpdateError) {
+      console.log("missionsUpdateError ", missionsUpdateError);
+
+      dispatch(userSlice.clearUserState("missionsUpdateError"));
+    }
+
+    if(missionsUpdateResult && missionsUpdateResult.status === 200) {
+      console.log("missionsUpdateResult ", missionsUpdateResult);
+
+      const updatedUserMission = missionsUpdateResult.data;
+
+      // 전역 상태 사용자 미션 리스트 업데이트
+      const updatedUserMissionList = userMissionList.map((userMission: UserMission) => {
+        if(userMission.id === updatedUserMission.id) {
+          return {
+            id: updatedUserMission.id,
+            progress_value: updatedUserMission.progress_value,
+            completed_at: updatedUserMission.completed_at,
+            created_at: updatedUserMission.created_at,
+            mission_id: updatedUserMission.mission_id,
+            status: updatedUserMission.status,
+            user_id: updatedUserMission.user_id,
+          }
+        } else {
+          return userMission
+        }
+      })
+
+      dispatch(userSlice.setUserMissionList(updatedUserMissionList));
+
+      dispatch(userSlice.clearUserState("missionsUpdateResult"));
+    }
+  }, [missionsUpdateResult, missionsUpdateError])
+
   // 비디오 URL -> blob URL 변환
   // useEffect(() => {
   //   const loadVideoBlobUrl = async () => {
@@ -933,6 +1001,7 @@ const BetaMainPage = ({}) => {
   useEffect(() => {
     if (episodeList[0] && lastEpisode) {
       setCurrentEp(episodeList[lastEpisode - 1]);
+      watchedListRef.current = [];
     }
   }, [episodeList, lastEpisode]);
 

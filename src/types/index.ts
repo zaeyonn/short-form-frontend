@@ -12,6 +12,8 @@ export interface UserRootState {
   paymentProduct: Product | null,
 
   subscription: Subscription | null,
+
+  userMissionList: UserMission [],
 }
 
 
@@ -24,6 +26,7 @@ export type User = {
   paid_point: number,
   free_point: number,
   created_at: Date;
+  userMissions: UserMission [];
 }
 
 export type Series = {
@@ -76,5 +79,15 @@ export type Mission = {
   is_active: boolean;
   user_type: string;
   created_at: string;
+}
+
+export type UserMission = {
+  id: number;
+  progress_value: number;
+  completed_at: Date | null;
+  created_at: Date;
+  mission_id: number;
+  status: string;
+  user_id: string;
 }
 

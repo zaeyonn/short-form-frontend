@@ -2308,12 +2308,20 @@ a {
         gap: 6px;
 
         .progress-bar {
-          position: static;
+          position: relative;
+          bottom: 0;
           width: 100%;
           background-color: #4A4A4A;
           border-radius: 4px;
           height: 6px !important;
           padding: 0;
+
+          .progress-spring {
+            border-radius: 4px;
+            position: absolute;
+            height: 100%;
+            background-color: $brand-color; 
+          }
         }
 
         span {
@@ -2338,6 +2346,15 @@ a {
         cursor: default;
         background-color: #353535;
         color: #A2A2A2;
+      }
+
+      &:disabled:hover {
+        opacity: 1;
+      }
+
+
+      &:hover {
+        opacity: 0.7;
       }
     }
   }

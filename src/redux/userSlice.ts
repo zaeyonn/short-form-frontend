@@ -16,6 +16,7 @@ const initialState: UserRootState = {
   paymentProduct: null,
   
   subscription: null,
+  userMissionList: [],
 }
 
 const userSlice = createSlice({
@@ -40,6 +41,9 @@ const userSlice = createSlice({
     },
     setSeriesWatchList(state, action: PayloadAction<any>) {
       state.seriesWatchList = action.payload
+    },
+    setUserMissionList(state: UserRootState, action:PayloadAction<any>) {
+      state.userMissionList = action.payload
     },
     authGuest(state: any) {
       state.loading = true;
@@ -212,13 +216,22 @@ const userSlice = createSlice({
     },
     missionsCompleteFailure(state: any, action: PayloadAction<any>) {
       state.missionsCompleteError = action.payload
+    },
+    missionsUpdate(_state: any, _action: PayloadAction<any>) {
+
+    },
+    missionsUpdateSuccess(state: any, action: PayloadAction<any>) {
+      state.missionsUpdateResult = action.payload
+    },
+    missionsUpdateFailure(state: any, action: PayloadAction<any>) {
+      state.missionsUpdateError = action.payload
     }
   }
 });
 
 export const {
-  clearUserState, setUser, setSeriesKeepList, setSeriesWatchList, authGuest, authGuestSuccess, authGuestFailure,
-  authSns, authSnsSuccess, authSnsFailure,
+  clearUserState, setUser, setSeriesKeepList, setSeriesWatchList, setUserMissionList,
+  authGuest, authGuestSuccess, authGuestFailure, authSns, authSnsSuccess, authSnsFailure,
   addVideoWatched, addSeriesKeep, addSeriesKeepSuccess, addSeriesKeepFailure,
   addSeriesWatched, removeSeriesWatched, removeSeriesKeep, removeSeriesKeepSuccess, removeSeriesKeepFailure, 
   changeBookmarkState, userSeriesKeepList, userSeriesKeepListSuccess, userSeriesKeepListFailure,
@@ -230,6 +243,6 @@ export const {
   usersPointDeduct, usersPointDeductSuccess, usersPointDeductFailure,
   attendance, attendanceSuccess, attendanceCheckFailure, attendanceCheck, attendanceCheckSuccess, attendanceFailure, setPaymentProduct,
   subscribe, subscribeSuccess, subscribeFailure, setSubscription, usersProfileUpdate, usersProfileUpdateSuccess, usersProfileUpdateFailure,
-  missionsCompleteSuccess, missionsCompleteFailure, missionsComplete,
+  missionsCompleteSuccess, missionsCompleteFailure, missionsComplete, missionsUpdate, missionsUpdateFailure, missionsUpdateSuccess
 } = userSlice.actions;
 export default userSlice.reducer;

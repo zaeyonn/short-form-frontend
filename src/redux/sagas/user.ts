@@ -202,3 +202,13 @@ export function* handleMissionsComplete(action: PayloadAction<any>): Generator<a
     yield put(slice.missionsCompleteFailure(error));
   }
 }
+
+export function* handleMissionsUpdate(action: PayloadAction<any>): Generator<any> {
+  try {
+    const response = yield call(api.missionsUpdate, action.payload);
+
+    yield put(slice.missionsUpdateSuccess(response));
+  } catch (error) {
+    yield put(slice.missionsUpdateFailure(error));
+  }
+}

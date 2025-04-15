@@ -150,13 +150,19 @@ export const subscribe = ({ userId, productId }: subscribeParams) => client.post
 // 전체 미션 리스트
 export const missionList = () => client.get('missions');
 
-interface missionCompleteParams {
+interface missionParams {
   userId: string;
   missionType: string;
 }
 
-// 사용자 미션 완료 업데이트
-export const missionsComplete = ({ userId, missionType }: missionCompleteParams) => client.put('missions/complete', {
+// 사용자 미션 완료 
+export const missionsComplete = ({ userId, missionType }: missionParams) => client.put('missions/complete', {
+  user_id: userId,
+  mission_type: missionType
+})
+
+// 사용자 미션 업데이트
+export const missionsUpdate = ({ userId, missionType }: missionParams) => client.put('missions/update', {
   user_id: userId,
   mission_type: missionType
 })
