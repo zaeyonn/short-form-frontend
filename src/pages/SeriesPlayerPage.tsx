@@ -81,6 +81,7 @@ const SeriesPlayerPage = ({}) => {
   const loginSheetRef = useRef<any>(null);
   const swiperRef = useRef<any>(null);
   const videoRef = useRef<any>(null);
+  const trackRef = useRef<any>(null);
   const hideToolsTimeout = useRef<any>();
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const sequenceCountRef = useRef<number>(0);
@@ -894,6 +895,7 @@ const SeriesPlayerPage = ({}) => {
         <div className={`${isMobile ? "player-wrap" : "page-wrap"}`}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
+              trackRef={trackRef}
               currentIndex={currentIndex}
               videoListRef={videoListRef}
               series={series}

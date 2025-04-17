@@ -388,7 +388,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1px;
+    gap: 2px;
     font-weight: 500;
     font-size: 11px;
 
@@ -396,6 +396,11 @@
       width: 33px;
       height: 33px;
     }
+  }
+
+  #shar-btn {
+    width: 36px;
+    height: 36px;
   }
 
   .list-btn {

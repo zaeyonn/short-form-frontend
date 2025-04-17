@@ -17,6 +17,7 @@ interface Props {
   playing: boolean;
   episodeList: any [];
   videoRef: RefObject<HTMLVideoElement>;
+  trackRef: any;
   swiperRef: any;
   blobUrlRef: RefObject<any>;
   lastEpisode: number;
@@ -33,7 +34,7 @@ interface Props {
   handleSlideTransitionStart: any;
 }
 
-const UIShortFormSwiper = ({currentIndex, videoListRef, quality, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, swiperRef, lastEpisode, setVideoLoading, handleSlideTransitionEnd, handleEpisodeChange, handleSlideTransitionStart}: Props) => {
+const UIShortFormSwiper = ({currentIndex, trackRef, videoListRef, quality, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, swiperRef, lastEpisode, setVideoLoading, handleSlideTransitionEnd, handleEpisodeChange, handleSlideTransitionStart}: Props) => {
 
   return (
     <Swiper
@@ -66,6 +67,7 @@ const UIShortFormSwiper = ({currentIndex, videoListRef, quality, locked, muted, 
             /> */}
             <ProgressivePlayer
               swiperRef={swiperRef}
+              trackRef={trackRef}
               currentIndex={currentIndex}
               quality={quality}
               videoListRef={videoListRef}

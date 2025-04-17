@@ -79,7 +79,7 @@ const MissionPage = () => {
 
   const handleShareEp = (mission: Mission, status: string) => {
     if (status === 'in_progress') {
-      dispatch(globalSlice.toggleBottomSheetLogin({}));
+      navigate('/');
     } else if (status === 'completed') {
       dispatch(userSlice.missionsComplete({ userId: user.id, missionType: mission.type }))
     }
@@ -445,19 +445,6 @@ const MissionPage = () => {
                 </div>
               )
             })}
-            <div className='mission-item-wrap' style={{ visibility: 'hidden', maxHeight: 20, padding: 0 }}>
-              <img src={`/resources/images/mission_connect_sns.png`} />
-              <div className='mission-info'>
-                <div className='progress-wrap'>
-                  <div className='progress-bar' ref={progressBarRef}></div>
-                  <span>10/10</span>
-                </div>
-              </div>
-              <button>
-                코인 받기
-              </button>
-            </div>
-
           </div>
           <div className='p-title'>
             이용 안내

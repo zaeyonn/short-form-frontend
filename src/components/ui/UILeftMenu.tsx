@@ -1,8 +1,11 @@
 import { useEffect } from "react";
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+
+import * as globalSlice from 'src/redux/globalSlice';
 
 import { useSpring, animated } from '@react-spring/web';
+import { UserRootState } from "src/types";
 
 interface Props {
   visible?: boolean;
@@ -10,13 +13,22 @@ interface Props {
 }
 
 const UILeftMenu = ({handleMenuClose = () => 0, visible = true}: Props) => {
+  const dispatch = useDispatch();
 
   const { isMobile } = useSelector((state: any) => state.global);
+
+  const { user } = useSelector((state: UserRootState) => state.user);
 
   const [springs, api] = useSpring(() => ({
     from: { x: 0, y: 0 },
     config: {mass: 0.6, tension: 270, friction: 25},
   }));
+
+  const handleLogin = () => {
+    closeMenu();
+    handleMenuClose();
+    dispatch(globalSlice.toggleBottomSheetLogin({}));
+  }
 
   const handleClose = () => {
     handleMenuClose();
@@ -53,10 +65,25 @@ const UILeftMenu = ({handleMenuClose = () => 0, visible = true}: Props) => {
         <img className='logo' src={"/resources/images/main_logo_white.svg"}/>
       </div>
       <div className="divider"/>
-      <div className='item'>
-        <img src='resources/icons/icon_profile.svg'/>
-        로그인
-      </div>
+      { user.auth === 'guest' ? (
+        <div className='item' onClick={handleLogin}>
+          <img src='/resources/icons/icon_profile.svg'/>
+          로그인
+        </div>
+      ) : 
+        <Link to='/profile' className='item' onClick={handleLogin}>
+          <div className='user-profile'>
+            <div className='nickname'>
+            {user.nickname}
+            <img 
+            src='/resources/icons/icon_arrow_right_s.svg'/>
+            </div>
+            <div className='email'>
+            {user.email}
+            </div>
+          </div>
+        </Link> 
+      }
       <Link to='/bookmark' className='item' onClick={handleClose}>
         <img src='resources/icons/icon_bookmark_m.svg'/>
         북마크
@@ -74,10 +101,10 @@ const UILeftMenu = ({handleMenuClose = () => 0, visible = true}: Props) => {
         <img src='resources/icons/icon_company_m.svg'/>
         회사소개
       </Link> */}
-      <div className='item'>
+      <Link to='/setting' className='item'>
         <img src='resources/icons/icon_setting_m.svg'/>
         설정
-      </div>
+      </Link>
       <div className='divider'/>
     </animated.div>
     </>

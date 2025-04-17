@@ -10,6 +10,7 @@ interface SecureVideoPlayerProps {
   seriesId: number;
   episodeNum: number;
   videoRef: any;
+  trackRef: any;
   setVideoLoading: any;
   lastEpisode: number;
   index: number
@@ -17,7 +18,7 @@ interface SecureVideoPlayerProps {
   handleEpisodeChange: (index: number) => any;
 }
 
-const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ videoRef, swiperRef, currentIndex, quality, locked, muted, seriesId, episodeNum, setVideoLoading, index, handleTimeUpdate, handleEpisodeChange }) => {
+const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ videoRef, trackRef, swiperRef, currentIndex, quality, locked, muted, seriesId, episodeNum, setVideoLoading, index, handleTimeUpdate, handleEpisodeChange }) => {
   const videoUrlsRef = useRef<any>({});
   
   useEffect(() => {
@@ -29,8 +30,9 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ videoRef, swiperR
         });
         const data = await res.json();
         if (videoRef.current) {
-          videoRef.current.src = data[quality];
-          videoUrlsRef.current = data;
+          videoRef.current.src = data.videos_url[quality];
+          videoUrlsRef.current = data.videos_url;
+
           setVideoLoading(false);
         }
       } catch (error) {
@@ -55,8 +57,8 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ videoRef, swiperR
         id={`slide-idx-${index}`} 
         onTimeUpdate={() => handleTimeUpdate(index)} 
         onEnded={() => handleEpisodeChange(episodeNum + 1)} 
-        poster={`resources/images/thumbnails/${seriesId}_thumbnail.png`}
-      >
+        poster={`resources/images/thumbnails/${seriesId}_thumbnail.png`}>
+         <track default ref={(el) => swiperRef.current.activeIndex === index ? trackRef.current = el : ''} kind="subtitles" srcLang='en'/>
       </video>
   );
 };

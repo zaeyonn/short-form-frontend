@@ -20,6 +20,7 @@ import UIBottomSheetLogin from "components/ui/bottomsheet/UIBottomSheetLogin";
 import UIBottomSheetVideoOption from "components/ui/bottomsheet/UIBottomSheetVideoOption";
 import UIBottomSheetQuality from "components/ui/bottomsheet/UIBottomSheetQuality";
 import UIBottomSheetSpeed from "components/ui/bottomsheet/UIBottomSheetSpeed";
+import UIBottomSheetSubtitle from "components/ui/bottomsheet/UIBottomSheetSubtitle";
 
 const BetaMainPage = ({}) => {
   // const navigate = useNavigate();
@@ -81,6 +82,7 @@ const BetaMainPage = ({}) => {
   const [muted, setMuted] = useState<boolean>(true);
   const [speed, setSpeed] = useState<number>(1);
   const [quality, setQuality] = useState<string>("720p");
+  const [subtitle, setSubtitle] = useState<any>({name: '없음', code: 'none'});
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   // const [fullscreen, setFullscreen] = useState<boolean>(false);
 
@@ -90,13 +92,16 @@ const BetaMainPage = ({}) => {
   const [visibleBottomSheetOption, setVisibleBottomSheetOption] = useState(false);
   const [visibleBottomSheetQuality, setVisibleBottomSheetQuality] = useState(false);
   const [visibleBottomSheetSpeed, setVisibleBottomSheetSpeed] = useState(false);
+  const [visibleBottomSheetSubtitle, setVisibleBottomSheetSubtitle] = useState(false);
 
   const loginSheetRef = useRef<any>(null);
   const optionSheetRef = useRef<any>(null);
   const qualitySheetRef = useRef<any>(null);
   const speedSheetRef = useRef<any>(null);
+  const subtitleSheetRef = useRef<any>(null);
   const swiperRef = useRef<any>(null);
   const videoRef = useRef<any>(null);
+  const trackRef = useRef<any>(null);
   const videoListRef = useRef<HTMLVideoElement[]>([]);
   const hideToolsTimeout = useRef<any>();
   const hlsRef = useRef<any>(null);
@@ -346,9 +351,11 @@ const BetaMainPage = ({}) => {
     //     }
     //   })
     // }
-    videoRef.current.pause();
-    videoRef.current.currentTime = 0;
-    videoRef.current.removeAttribute('src');
+    if(videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+      videoRef.current.removeAttribute('src');
+    }
 
     setPlaying(true);
 
@@ -459,6 +466,16 @@ const BetaMainPage = ({}) => {
     setVisibleBottomSheetSpeed(false);
   }, []);
 
+  const handleSubtitleOpen = useCallback(() => {
+    optionSheetRef.current.handleClose();
+    setVisibleBottomSheetSubtitle(true);
+  }, []);
+
+  
+  const handleSubtitleClose = useCallback(() => {
+    setVisibleBottomSheetSubtitle(false);
+  }, []);
+
   const handleQualityChange = (quality: string) => { 
     setQuality(quality);
 
@@ -483,6 +500,19 @@ const BetaMainPage = ({}) => {
     speedSheetRef.current.handleClose();
   }, [videoRef.current, currentEp]);
 
+  const handleSubtitleChange = useCallback((subtitle: any) => {
+    setSubtitle(subtitle);
+    subtitleSheetRef.current.handleClose();
+
+    if(subtitle.code === 'none') {
+      trackRef.current.src = '';
+    } else {
+      trackRef.current.src = `/resources/subtitles/${series.id}/ep${currentEp.episode_num}_${subtitle.code}.vtt`;
+    }
+
+    
+  }, [trackRef.current, series, currentEp]);
+
   const handleEpisodeShare = async () => {
     if (navigator.share) {
       try {
@@ -490,8 +520,9 @@ const BetaMainPage = ({}) => {
           title: `${series?.title} ${currentEp?.episode_num}화`,
           text: series.description,
           url: window.location.href,
-        });
-        console.log('공유 완료!');
+        })
+      
+        dispatch(userSlice.missionsUpdate({ userId: user.id, missionType: 'share_ep' }));
       } catch (error) {
         console.error('공유 실패:', error);
       }
@@ -685,13 +716,13 @@ const BetaMainPage = ({}) => {
     }
 
     if (authSnsResult && authSnsResult.status === 200) {
-      const user:User = authSnsResult.data;
+      const user:User = authSnsResult.data.user;
 
       
       if(authSnsResult.data?.request_auth_type !== user.auth) {
         dispatch(globalSlice.addToast({
           id: Date.now(),
-          message: `${authType[user.auth].name}로 가입된 계정입니다.`,
+          message: `${authType[user.auth]?.name}로 가입된 계정입니다.`,
           duration: 3000,
         }))
 
@@ -1157,6 +1188,7 @@ const BetaMainPage = ({}) => {
               handleVideoEnded={handleVideoEnded}
               episodeList={episodeList}
               videoRef={videoRef}
+              trackRef={trackRef}
               handleTimeUpdate={handleTimeUpdate}
               toggleTools={toggleTools}
               unlockEpisode={unlockEpisode}
@@ -1230,7 +1262,7 @@ const BetaMainPage = ({}) => {
               )}
               <div className="right-menu">
               <div className="btn-wrap" onClick={handleEpisodeShare}>
-                  <img id="list-btn" src="/resources/icons/icon_list.svg" />
+                  <img id="share-btn" src="/resources/icons/icon_share.svg"/>
                   Share
                 </div>
                 <div className="btn-wrap" onClick={handleSeriesKeep}>
@@ -1291,9 +1323,13 @@ const BetaMainPage = ({}) => {
           <UIBottomSheetVideoOption
             ref={optionSheetRef}
             visible={visibleBottomSheetOption}
+            quality={quality}
+            speed={speed}
+            subtitle={subtitle}
             handleBottomSheetClose={handleOptionClose}
             handleQualityOpen={handleQualityOpen}
             handleSpeedOpen={handleSpeedOpen}
+            handleSubtitleOpen={handleSubtitleOpen}
           />
           <UIBottomSheetQuality
             ref={qualitySheetRef}
@@ -1308,6 +1344,13 @@ const BetaMainPage = ({}) => {
             speed={speed}
             handleBottomSheetClose={handleSpeedClose}
             handleSpeedChange={handleSpeedChange}
+          />
+          <UIBottomSheetSubtitle
+            ref={subtitleSheetRef}
+            visible={visibleBottomSheetSubtitle}
+            subtitle={subtitle}
+            handleBottomSheetClose={handleSubtitleClose}
+            handleSubtitleChange={handleSubtitleChange}
           />
         </>
         </div>

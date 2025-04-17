@@ -4,18 +4,22 @@ import { useGesture } from "@use-gesture/react"
 
 interface Props {
   visible: boolean;
+  quality: string;
+  speed: number;
+  subtitle: string;
   handleBottomSheetClose: () => any;
   handleQualityOpen: () => any;
   handleSpeedOpen: () => any;
+  handleSubtitleOpen: () => any;
 }
 
 type bottomSheetHandle = {
   handleClose: () => void;
 }
 
-const UIBottomSheetVideoOption = forwardRef<bottomSheetHandle, Props>(({visible, handleBottomSheetClose, handleQualityOpen, handleSpeedOpen}: any, ref) => {
+const UIBottomSheetVideoOption = forwardRef<bottomSheetHandle, Props>(({visible, quality, speed, subtitle, handleBottomSheetClose, handleQualityOpen, handleSpeedOpen, handleSubtitleOpen}: any, ref) => {
   const [springs, api] = useSpring(() => ({
-    from: { y: 200 },
+    from: { y: 230 },
     config: { mass: 0.6, tension: 270, friction: 25},
   }));
 
@@ -26,7 +30,7 @@ const UIBottomSheetVideoOption = forwardRef<bottomSheetHandle, Props>(({visible,
       },
       onDragEnd: ({movement: [_, my]}) => {
         if(my > 20) {
-          api.start({ y: 200 });
+          api.start({ y: 230 });
           handleBottomSheetClose();
         }
       }
@@ -34,7 +38,7 @@ const UIBottomSheetVideoOption = forwardRef<bottomSheetHandle, Props>(({visible,
   )
   
   const handleClose = () => {
-    api.start({ from: { y: 20 }, to: { y : 200 }});
+    api.start({ from: { y: 20 }, to: { y : 230 }});
 
     handleBottomSheetClose();
   }
@@ -45,7 +49,7 @@ const UIBottomSheetVideoOption = forwardRef<bottomSheetHandle, Props>(({visible,
 
   useEffect(() => {
     if(visible) {
-      api.start({ from: { y: 200 }, to: { y: 20 } });
+      api.start({ from: { y: 230 }, to: { y: 20 } });
     } 
   }, [visible])
 
@@ -59,7 +63,7 @@ const UIBottomSheetVideoOption = forwardRef<bottomSheetHandle, Props>(({visible,
     {...bind()}
       style={{
         ...springs,
-        height: 200,
+        height: 230,
         touchAction: 'none'
       }} 
       className="bottom-sheet-wrap">
@@ -69,11 +73,24 @@ const UIBottomSheetVideoOption = forwardRef<bottomSheetHandle, Props>(({visible,
       <div className='option-list-wrap'>
         <div className='option-item' onClick={handleQualityOpen}>
           해상도
-          <img src='resources/icons/icon_arrow_right_s.svg'/>
+          <div className='option-value'>
+            {quality}
+            <img src='resources/icons/icon_arrow_right_s.svg'/>
+          </div>
         </div>
         <div className='option-item' onClick={handleSpeedOpen}>
           재생속도
+          <div className='option-value'>
+            {`${speed}x`}
+            <img src='resources/icons/icon_arrow_right_s.svg'/>
+          </div>
+        </div>
+        <div className='option-item' onClick={handleSubtitleOpen}>
+          자막
+          <div className='option-value'>
+          {subtitle.name}
           <img src='resources/icons/icon_arrow_right_s.svg'/>
+          </div>
         </div>
       </div>
     </animated.div>

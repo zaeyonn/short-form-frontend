@@ -1094,7 +1094,7 @@ a {
 
 .bottom-sheet-wrap {
   position: fixed;
-  z-index: 4;
+  z-index: 5;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -1156,6 +1156,12 @@ a {
 
       img {
         opacity: 0.6;
+      }
+
+      .option-value {
+        display: flex;
+        align-items: center;
+        gap: 5px;
       }
     }
 
@@ -1774,7 +1780,10 @@ a {
       width: 33px;
       height: 33px;
     }
+
   }
+
+  
 
   .list-btn {
     width: 36px;
@@ -2520,8 +2529,34 @@ a {
       }
     }
   }
+}
 
+::cue {
+  color: #FFFFFF;
+  background: rgba(0, 0, 0, 0.5);
+  font-size: 18px;
+}
 
+.user-profile {
+  .nickname {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: 600;
+    font-size: 17px;
+
+    img {
+      margin-left: 4px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+  .email {
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #A2A2A2;
+  }
 }
 
 

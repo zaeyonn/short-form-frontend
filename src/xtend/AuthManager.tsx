@@ -48,8 +48,7 @@ const AuthManager = () => {
       const user = authGuestResult.data;
       localStorage.setItem("user-id", user.id);
       dispatch(userSlice.setUser(user));
-      dispatch(userSlice.setUserMissionList(user.userMissions))
-
+      dispatch(userSlice.setUserMissionList(user.userMissions));
       dispatch(userSlice.clearUserState("authGuestResult"));
       return;
     }
