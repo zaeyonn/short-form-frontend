@@ -61,6 +61,7 @@ const SeriesPlayerPage = ({}) => {
   const [videoLoading, setVideoLoading] = useState<boolean>(true);
   const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
 
+  const [subtitle, _setSubtitle] = useState<any>({name: '없음', code: 'none'});
   const [playing, setPlaying] = useState<boolean>(true);
   const [visibleTools, setVisibleTools] = useState(true);
   const [progress, setProgress] = useState<number>(0);
@@ -895,6 +896,7 @@ const SeriesPlayerPage = ({}) => {
         <div className={`${isMobile ? "player-wrap" : "page-wrap"}`}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
+            subtitle={subtitle}
               trackRef={trackRef}
               currentIndex={currentIndex}
               videoListRef={videoListRef}

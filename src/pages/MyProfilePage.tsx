@@ -226,7 +226,7 @@ const MyProfilePage = () => {
                     <img src='resources/icons/icon_pass.svg'/>
                     {subscriptionType[subscription.duration].name}
                   </div>
-                  <button disabled>구독 중</button>
+                  <button disabled className='subscribed'>구독 중</button>
                 </div>
                 )}
                 </div>
@@ -300,10 +300,10 @@ const MyProfilePage = () => {
               <div className="setting">
                 {/* <div className='head'>설정</div> */}
                 <div className="setting-list">
-                  {/* <div className='setting-item'>
+                  <Link to='/mission' className='setting-item'>
                     미션 & 이벤트
                     <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-                  </div> */}
+                  </Link>
                   {/* <Link className='setting-item' to='https://www.gala.biz/ko/contact-us' target='_blank'>
                     고객 센터
                     <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
@@ -312,24 +312,11 @@ const MyProfilePage = () => {
                     회사소개
                     <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
                   </Link> */}
-                  {/* <div className='setting-item'>
+                  <Link to='/setting' className='setting-item'>
                     설정
                     <img src='resources/icons/icon_arrow_right_s.svg' alt='icon-arrow-right' style={{marginLeft:'auto'}}/>
-                  </div> */}
-                  {/* Beta {!isMobile && (
-                    <div className="menu-item selected">시청 기록</div>
-                  )} */}
-                  {/* {user?.auth !== "guest" && (
-                    <div onClick={handleLogout} className="setting-item">
-                      로그아웃
-                      <img
-                        className="arrow-right"
-                        src="resources/icons/icon_arrow_right_s.svg"
-                        alt="icon-arrow-right"
-                        style={{ marginLeft: "auto" }}
-                      />
-                    </div>
-                  )} */}
+                  </Link>
+                 
                 </div>
               </div>
             </div>

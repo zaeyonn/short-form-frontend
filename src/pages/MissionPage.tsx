@@ -131,6 +131,7 @@ const MissionPage = () => {
 
       dispatch(userSlice.setUser(user));
       dispatch(userSlice.setUserMissionList(user.userMissions))
+      dispatch(userSlice.attendance({ userId: user.id }));
 
       localStorage.setItem("user-id", user.id);
 
@@ -187,6 +188,8 @@ const MissionPage = () => {
 
       if (attendanceResult.data.lastAttendance === today) {
         setIsAttended(true);
+      } else {
+        setIsAttended(false);
       }
 
       dispatch(userSlice.clearUserState("attendanceResult"));
@@ -413,7 +416,7 @@ const MissionPage = () => {
                             </animated.div>
                           </div>
                         )}
-                        <span>{`${userMission?.progress_value ? userMission?.progress_value : 0}/${mission.target_value ? mission.target_value : 0}`}</span>
+                        <span>{`${userMission?.progress_value ? (userMission?.progress_value > mission?.target_value ? mission.target_value : userMission.progress_value ) : 0}/${mission.target_value ? mission.target_value : 0}`}</span>
                       </div>
                     )}
                   </div>

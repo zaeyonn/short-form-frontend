@@ -266,7 +266,7 @@ const UIBottomSheetProductList = (props: Props) => {
                   주간 패스권
                 </div>
               </div>
-              <button onClick={() => handlePaymentStart(weeklySubProduct)}>{(weeklySubProduct.amount).toLocaleString()}<span>원</span></button>
+              <button onClick={() => handlePaymentStart(weeklySubProduct)}>{(weeklySubProduct?.amount).toLocaleString()}<span>원</span></button>
             </div>
           </div>
           <div className='product-list-wrap'>

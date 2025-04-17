@@ -521,7 +521,7 @@ const BetaMainPage = ({}) => {
           text: series.description,
           url: window.location.href,
         })
-      
+    
         dispatch(userSlice.missionsUpdate({ userId: user.id, missionType: 'share_ep' }));
       } catch (error) {
         console.error('공유 실패:', error);
@@ -845,7 +845,7 @@ const BetaMainPage = ({}) => {
 
       //videoListRef.current[currentEp.episode_num - 1].play();
       
-      videoRef.current.play();
+      // videoRef.current.play();
       setPlaying(true);
 
       dispatch(userSlice.clearUserState("updateSeriesUnlockEpisodeResult"));
@@ -1171,6 +1171,7 @@ const BetaMainPage = ({}) => {
         <div className={"player-wrap"}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
+              subtitle={subtitle}
               currentIndex={currentIndex}
               videoListRef={videoListRef}
               quality={quality}

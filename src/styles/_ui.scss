@@ -724,6 +724,13 @@ a {
       padding: 6px 10px;
       border-radius: 8px;
       background-color: $brand-color;
+
+      &.subscribed {
+        color: #4086FF;
+        border: 1px solid #1A6EFF;
+        box-shadow: 0 0 20px #004ACA;
+        background: linear-gradient(to bottom, rgba(0, 52, 142, 1), rgba(0, 26, 72, 1));
+      }
     }
   }
   
@@ -2532,9 +2539,20 @@ a {
 }
 
 ::cue {
+  width: 500px;
   color: #FFFFFF;
-  background: rgba(0, 0, 0, 0.5);
-  font-size: 18px;
+  font-size: 22px;
+  text-shadow: 
+  -1.2px -1.2px 0 #000,
+     1.2px -1.2px 0 #000,
+    -1.2px  1.2px 0 #000,
+     1.2px  1.2px 0 #000,
+    0px -1.2px 0 #000,
+    0px  1.2px 0 #000,
+    -1.2px 0px 0 #000,
+     1.2px 0px 0 #000;
+  background: none;
+  font-weight: 600;
 }
 
 .user-profile {

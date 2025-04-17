@@ -25,7 +25,7 @@ const AuthManager = () => {
       dispatch(userSlice.setUser(user));
       dispatch(userSlice.setUserMissionList(user.userMissions));
 
-      if(user.subscriptions.length > 0) {
+      if(user?.subscriptions?.length > 0) {
         user.subscriptions.forEach((subscription: Subscription) => {
           if(subscription.status === 'active') {
             dispatch(userSlice.setSubscription(subscription));

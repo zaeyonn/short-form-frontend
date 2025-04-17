@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
 interface SecureVideoPlayerProps {
+  subtitle: any;
   swiperRef: any;
   currentIndex: number;
   quality: string;
@@ -13,12 +14,13 @@ interface SecureVideoPlayerProps {
   trackRef: any;
   setVideoLoading: any;
   lastEpisode: number;
+  unlockEpisode: number;
   index: number
   handleTimeUpdate: (index: number) => any;
   handleEpisodeChange: (index: number) => any;
 }
 
-const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ videoRef, trackRef, swiperRef, currentIndex, quality, locked, muted, seriesId, episodeNum, setVideoLoading, index, handleTimeUpdate, handleEpisodeChange }) => {
+const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ unlockEpisode, subtitle, videoRef, trackRef, swiperRef, currentIndex, quality, locked, muted, seriesId, episodeNum, setVideoLoading, index, handleTimeUpdate, handleEpisodeChange }) => {
   const videoUrlsRef = useRef<any>({});
   
   useEffect(() => {
@@ -29,11 +31,16 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ videoRef, trackRe
           credentials: 'include',
         });
         const data = await res.json();
+        
+        setVideoLoading(false);
+
         if (videoRef.current) {
           videoRef.current.src = data.videos_url[quality];
           videoUrlsRef.current = data.videos_url;
 
-          setVideoLoading(false);
+          if(subtitle.code !== 'none') {
+            trackRef.current.src = trackRef.current.src = `/resources/subtitles/${seriesId}/ep${episodeNum}_${subtitle.code}.vtt`;
+          }
         }
       } catch (error) {
         console.error('fetchSignedUrl Error', error);
@@ -41,10 +48,11 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ videoRef, trackRe
     };
 
     if(currentIndex === index) {
+    console.log('currentIndex index', currentIndex, index, unlockEpisode);
       fetchSignedUrl();
 
     }
-  }, [seriesId, episodeNum, currentIndex, index]);
+  }, [seriesId, episodeNum, currentIndex, index, unlockEpisode]);
 
   return (
       <video
