@@ -14,6 +14,9 @@ export interface UserRootState {
   subscription: Subscription | null,
 
   userMissionList: UserMission [],
+
+  coinTransactionListResult: Response | null,
+  coinTransactionListError: Response | null,
 }
 
 export interface GlobalRootState {
@@ -120,6 +123,18 @@ export type UserMission = {
   created_at: Date;
   mission_id: number;
   status: string;
+  user_id: string;
+}
+
+export type CoinTransaction = {
+  id: number;
+  type: string;
+  source: string;
+  paid_point: number;
+  free_point: number;
+  related_id: number;
+  description: string | null;
+  created_at: Date;
   user_id: string;
 }
 

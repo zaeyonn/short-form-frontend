@@ -23,3 +23,8 @@ export const missionType: any = {
   'connect_sns': { name: '계정 연결하기', btn_label: '계정 연결' },
   'set_alarm': { name: '알림 받기', btn_label: '알림 받기' }
 }
+
+export const coinTransactionsType: any = {
+  'attendance_earn': { name: '출석 보상'},
+  'mission_earn': { name: '미션 보상'}
+}

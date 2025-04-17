@@ -212,3 +212,13 @@ export function* handleMissionsUpdate(action: PayloadAction<any>): Generator<any
     yield put(slice.missionsUpdateFailure(error));
   }
 }
+
+export function* handleCoinTransactionList(action: PayloadAction<any>): Generator<any> {
+  try {
+    const response = yield call(api.coinTransactionList, action.payload);
+
+    yield put(slice.coinTransactionListSuccess(response));
+  } catch (error) {
+    yield put(slice.coinTransactionListFailure(error));
+  }
+}

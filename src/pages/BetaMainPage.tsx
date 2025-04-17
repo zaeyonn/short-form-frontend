@@ -566,6 +566,9 @@ const BetaMainPage = ({}) => {
 
   const handlePaymentComplete = () => {
 
+    // 사용자 포인트 차감
+    dispatch(userSlice.usersPointDeduct({ userId: user.id, point: series.req_point }));
+
     // 사용자 잠금 회차 업데이트
     dispatch(
       userSlice.updateSeriesUnlockEpisode({
@@ -577,9 +580,18 @@ const BetaMainPage = ({}) => {
   };
 
   const handlePointUse = () => {
-
+    
     // 사용자 코인 차감
     dispatch(userSlice.usersPointDeduct({ userId: user.id, point: series.req_point }));
+    
+    // 사용자 잠금 회차 업데이트
+    dispatch(
+      userSlice.updateSeriesUnlockEpisode({
+        userId: user.id,
+        seriesId: seriesIdRef.current,
+        ep: unlockEpisode ? unlockEpisode + 1 : "",
+      })
+    );
   }
 
   const handleMuted = (event: any) => {
@@ -688,15 +700,6 @@ const BetaMainPage = ({}) => {
 
       // 사용자 코인 정보 업데이트
       dispatch(userSlice.setUser(usersPointDeductResult.data))
-
-      // 사용자 잠금 회차 업데이트
-      dispatch(
-        userSlice.updateSeriesUnlockEpisode({
-          userId: user.id,
-          seriesId: seriesIdRef.current,
-          ep: unlockEpisode ? unlockEpisode + 1 : "",
-        })
-      );
 
       dispatch(userSlice.clearUserState('usersPointDeductResult'));
     }

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import Cookies from 'js-cookie';
 
 import * as userSlice from "src/redux/userSlice";
 import { Subscription } from 'src/types';
@@ -58,6 +59,11 @@ const AuthManager = () => {
   //                               X -> 게스트 사용자 등록
   useEffect(() => {
     const uuid = localStorage.getItem("user-id");
+    console.log('uuid', uuid);
+
+    if(uuid == 'undefined') {
+      Cookies.remove('user-id');
+    }
 
     if (uuid && uuid !== 'undefined') {
       dispatch(userSlice.userInfo({ userId: uuid }));

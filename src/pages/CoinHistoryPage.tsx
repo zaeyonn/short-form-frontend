@@ -1,16 +1,72 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useSpring, animated } from '@react-spring/web';
+import moment from 'moment';
 
-import { UserRootState } from "src/types";
+import * as userSlice from 'src/redux/userSlice';
+import { UserRootState, CoinTransaction } from "src/types";
+import { coinTransactionsType } from 'common/define';
 
 const CoinHistoryPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const { user } = useSelector((state: UserRootState) => state.user);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [coinTransactions, setCoinTransactions] = useState<any>();
+  const [earnTransactions, setEarnTransactions] = useState<any>();
+
+  const { user, coinTransactionListResult, coinTransactionListError } = useSelector((state: UserRootState) => state.user);
+
+  const tabSpring: any = useSpring({
+    left: `calc(${(34 * selectedIndex)}% + ${selectedIndex === 0 ? '5px' : selectedIndex === 2 ? '-7px' : '-1px'})` ,
+    config: { mass: 1, friction: 18, tension: 150}
+  })
 
   const handleClose = () => {
     navigate(-1);
   };
+
+  const handleTabSelect = (index: number) => {
+    setSelectedIndex(index);
+  }
+
+  useEffect(() => {
+    if(coinTransactionListError) {
+      console.log('coinTransactionListError', coinTransactionListError);
+
+      dispatch(userSlice.clearUserState('coinTransactionListError'));
+    }
+
+    if(coinTransactionListResult && coinTransactionListResult.status === 200) {
+      console.log('coinTransactionListResult', coinTransactionListResult);
+      let tmpCoinTransations: any = {};
+
+      // 코인 획득 리스트
+      coinTransactionListResult.data.filter((i: CoinTransaction) => i.type === 'earn').forEach((item: CoinTransaction) => {
+        const createdDay = moment(item.created_at).format('YYYY.MM.DD');
+
+        if(!tmpCoinTransations[createdDay]) {
+          tmpCoinTransations[createdDay] = [];
+        }
+
+        tmpCoinTransations[createdDay] = [...tmpCoinTransations[createdDay], item];
+      })
+
+      setCoinTransactions(tmpCoinTransations);
+
+      dispatch(userSlice.clearUserState('coinTransactionListResult'));
+    }
+  }, [coinTransactionListError, coinTransactionListResult])
+
+  useEffect(() => {
+    dispatch(userSlice.coinTransactionList({userId: user.id}));
+  }, [])
+
+  useEffect(() => {
+    console.log('coinTransactions', coinTransactions);
+
+  }, [coinTransactions])
 
   return (
     <div className="page-wrap">
@@ -62,15 +118,37 @@ const CoinHistoryPage = () => {
         </div>
         <div className="coin-history-wrap">
             <div className="tab-wrap">
-                <div className="tab focused">
+                <animated.div className='tab-focused' style={tabSpring}/>
+                <div className={`tab ${selectedIndex === 0  ? 'focused' : ''}`} onClick={() => handleTabSelect(0)}>
                   획득
                 </div>
-                <div className="tab">
+                <div className={`tab ${selectedIndex === 1  ? 'focused' : ''}`} onClick={() => handleTabSelect(1)}>
                   사용
                 </div>
-                <div className="tab">
+                <div className={`tab ${selectedIndex === 2  ? 'focused' : ''}`} onClick={() => handleTabSelect(2)}>
                   소멸
                 </div>
+            </div>
+            <div className="coin-history-list-wrap">
+               {coinTransactions && Object.entries(coinTransactions).map(([createdDay, historyList]) => {
+                if(Array.isArray(historyList)) {
+                  return (
+                    <div key={createdDay} className='coin-history-section'>
+                      <div className='created-day'>{createdDay}</div>
+                      <div className='coin-history-list'>
+                        {historyList.length > 0 && historyList.map((item: CoinTransaction, index: number) => (
+                          <div key={item.id} className='coin-history-item'>
+                            {coinTransactionsType[`${item.source}_${item.type}`].name}
+                            <div className='coin-value'>
+                              {`${item.type === 'earn' ? '+' : '-'}${(Number(item.free_point) + Number(item.paid_point))}`}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                }
+              })}
             </div>
           </div>
       </div>

@@ -17,6 +17,9 @@ const initialState: UserRootState = {
   
   subscription: null,
   userMissionList: [],
+
+  coinTransactionListError: null,
+  coinTransactionListResult: null,
 }
 
 const userSlice = createSlice({
@@ -225,6 +228,15 @@ const userSlice = createSlice({
     },
     missionsUpdateFailure(state: any, action: PayloadAction<any>) {
       state.missionsUpdateError = action.payload
+    },
+    coinTransactionList(_state: UserRootState, _action: PayloadAction<any>) {
+
+    },
+    coinTransactionListSuccess(state: UserRootState, action: PayloadAction<any>) {
+      state.coinTransactionListResult = action.payload
+    },
+    coinTransactionListFailure(state: UserRootState, action: PayloadAction<any>) {
+      state.coinTransactionListError = action.payload;
     }
   }
 });
@@ -243,6 +255,6 @@ export const {
   usersPointDeduct, usersPointDeductSuccess, usersPointDeductFailure,
   attendance, attendanceSuccess, attendanceCheckFailure, attendanceCheck, attendanceCheckSuccess, attendanceFailure, setPaymentProduct,
   subscribe, subscribeSuccess, subscribeFailure, setSubscription, usersProfileUpdate, usersProfileUpdateSuccess, usersProfileUpdateFailure,
-  missionsCompleteSuccess, missionsCompleteFailure, missionsComplete, missionsUpdate, missionsUpdateFailure, missionsUpdateSuccess
+  missionsCompleteSuccess, missionsCompleteFailure, missionsComplete, missionsUpdate, missionsUpdateFailure, missionsUpdateSuccess, coinTransactionList, coinTransactionListSuccess, coinTransactionListFailure
 } = userSlice.actions;
 export default userSlice.reducer;

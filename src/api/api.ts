@@ -166,3 +166,8 @@ export const missionsUpdate = ({ userId, missionType }: missionParams) => client
   user_id: userId,
   mission_type: missionType
 })
+
+/* Coin API */
+
+// 사용자 코인 기록 리스트 조회
+export const coinTransactionList = ({ userId } : any) => client.get(`coin-transactions/${userId}`);
