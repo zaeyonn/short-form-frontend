@@ -38,9 +38,9 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ unlockEpisode, su
           videoRef.current.src = data.videos_url[quality];
           videoUrlsRef.current = data.videos_url;
 
-          if(subtitle.code !== 'none') {
-            trackRef.current.src = trackRef.current.src = `/resources/subtitles/${seriesId}/ep${episodeNum}_${subtitle.code}.vtt`;
-          }
+          // if(subtitle.code !== 'none') {
+          //   trackRef.current.src = trackRef.current.src = `/resources/subtitles/${seriesId}/ep${episodeNum}_${subtitle.code}.vtt`;
+          // }
         }
       } catch (error) {
         console.error('fetchSignedUrl Error', error);
@@ -71,6 +71,7 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ unlockEpisode, su
         onEnded={() => handleEpisodeChange(episodeNum + 1)} 
         poster={`resources/images/thumbnails/${seriesId}_thumbnail.png`}>
          <track 
+          src={subtitle.code !== 'none' ? `/resources/subtitles/${seriesId}/ep${episodeNum}_${subtitle.code}.vtt` : ''}
           default 
           ref={(el) => {
             if (swiperRef.current.activeIndex === index) {
