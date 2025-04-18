@@ -1743,36 +1743,31 @@ a {
         object-fit: cover;
       }
 
-      // video::cue {
-      //   color: #FFFFFF !important;
-      //   font-size: 22px !important;
-      //   text-shadow:
-      //     -1.2px -1.2px 0 #000,
-      //     1.2px -1.2px 0 #000,
-      //     -1.2px 1.2px 0 #000,
-      //     1.2px 1.2px 0 #000,
-      //     0px -1.2px 0 #000,
-      //     0px 1.2px 0 #000,
-      //     -1.2px 0px 0 #000,
-      //     1.2px 0px 0 #000 !important;
-      //   background: none !important;
-      //   font-weight: 600;
-      //   max-width: 50% !important;
-      //   width: 50% !important;
-      //   margin: 0 100px !important;
-      //   white-space: normal !important;
-      //   word-wrap: break-word !important;
-      //   overflow-wrap: break-word !important;
-      //   padding: 5em !important;
-      //   border-radius: 4px !important;
-      //   line-height: 1.4 !important;
-      //   text-align: center !important;
-      //   display: inline-block !important;
-      //   box-sizing: border-box !important;
-      //   position: absolute !important;
-      //   left: 50% !important;
-      //   transform: translateX(-50%) !important;
-      // }
+      video::cue {
+        color: #FFFFFF !important;
+        font-size: 22px !important;
+        text-shadow:
+          -1.2px -1.2px 0 #000,
+          1.2px -1.2px 0 #000,
+          -1.2px 1.2px 0 #000,
+          1.2px 1.2px 0 #000,
+          0px -1.2px 0 #000,
+          0px 1.2px 0 #000,
+          -1.2px 0px 0 #000,
+          1.2px 0px 0 #000 !important;
+        background: none !important;
+        font-weight: 600;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        padding: 5em !important;
+        text-align: center !important;
+        display: inline-block !important;
+        box-sizing: border-box !important;
+        position: absolute !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+      }
 
       // /* WebKit 브라우저용 추가 스타일 */
       // video::-webkit-media-text-track-display {
