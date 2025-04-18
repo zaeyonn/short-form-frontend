@@ -6,7 +6,7 @@ interface Props {
   visible: boolean;
   quality: string;
   speed: number;
-  subtitle: string;
+  subtitleLang: string;
   handleBottomSheetClose: () => any;
   handleQualityOpen: () => any;
   handleSpeedOpen: () => any;
@@ -17,7 +17,7 @@ type bottomSheetHandle = {
   handleClose: () => void;
 }
 
-const UIBottomSheetVideoOption = forwardRef<bottomSheetHandle, Props>(({visible, quality, speed, subtitle, handleBottomSheetClose, handleQualityOpen, handleSpeedOpen, handleSubtitleOpen}: any, ref) => {
+const UIBottomSheetVideoOption = forwardRef<bottomSheetHandle, Props>(({visible, quality, speed, subtitleLang, handleBottomSheetClose, handleQualityOpen, handleSpeedOpen, handleSubtitleOpen}: any, ref) => {
   const [springs, api] = useSpring(() => ({
     from: { y: 230 },
     config: { mass: 0.6, tension: 270, friction: 25},
@@ -88,7 +88,7 @@ const UIBottomSheetVideoOption = forwardRef<bottomSheetHandle, Props>(({visible,
         <div className='option-item' onClick={handleSubtitleOpen}>
           자막
           <div className='option-value'>
-          {subtitle.name}
+          {subtitleLang.name}
           <img src='resources/icons/icon_arrow_right_s.svg'/>
           </div>
         </div>

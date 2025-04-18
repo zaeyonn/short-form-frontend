@@ -1,0 +1,164 @@
+[
+  {
+    "index": 1,
+    "start": 5.7,
+    "end": 6.9,
+    "text": {
+      "ko": "어머, 아가씨!",
+      "en": "Oh my, miss!"
+    }
+  },
+  {
+    "index": 2,
+    "start": 15.3,
+    "end": 18.1,
+    "text": {
+      "ko": "괜찮아요? 정말 괜찮은 거죠?",
+      "en": "Are you okay? Are you really okay?"
+    }
+  },
+  {
+    "index": 3,
+    "start": 18.5,
+    "end": 22.5,
+    "text": {
+      "ko": "별일 아니었으면 좋겠네. 병원 꼭 가봐요.",
+      "en": "I hope it wasn't anything serious. Please make sure to go to the hospital."
+    }
+  },
+  {
+    "index": 4,
+    "start": 22.8,
+    "end": 26.1,
+    "text": {
+      "ko": "아줌마, 혹시 혼자 사세요? 그러면",
+      "en": "Ma'am, are you by any chance single? If so, would you like to meet my dad?"
+    }
+  },
+  {
+    "index": 5,
+    "start": 26.1,
+    "end": 31.2,
+    "text": {
+      "ko": "우리 아빠 한번 만나 보실래요? 진짜 괜찮은 사람이거든요.",
+      "en": "He's really a great person."
+    }
+  },
+  {
+    "index": 6,
+    "start": 31.4,
+    "end": 33.2,
+    "text": {
+      "ko": "아니에요. 저 일하러 가야 돼서.",
+      "en": "No, I have to go to work."
+    }
+  },
+  {
+    "index": 7,
+    "start": 33.5,
+    "end": 36.2,
+    "text": {
+      "ko": "아, 네. 방해 안 할게요. 근데",
+      "en": "Ah, okay. I won't disturb you. But I'm really grateful, so can we at least exchange numbers?"
+    }
+  },
+  {
+    "index": 8,
+    "start": 36.2,
+    "end": 39.2,
+    "text": {
+      "ko": "진짜 감사해서 그러는데 번호 교환만 해요.",
+      "en": "But I'm really grateful, so can we at least exchange numbers?"
+    }
+  },
+  {
+    "index": 9,
+    "start": 39.5,
+    "end": 39.9,
+    "text": {
+      "ko": "그래요.",
+      "en": "Okay"
+    }
+  },
+  {
+    "index": 10,
+    "start": 40.2,
+    "end": 40.5,
+    "text": {
+      "ko": "네.",
+      "en": "Yes."
+    }
+  },
+  {
+    "index": 11,
+    "start": 43.9,
+    "end": 46.3,
+    "text": {
+      "ko": "엄마 오셨어요?",
+      "en": "Mom, are you here?"
+    }
+  },
+  {
+    "index": 12,
+    "start": 46.5,
+    "end": 47.7,
+    "text": {
+      "ko": "어, 대호야.",
+      "en": "Oh, Daeho"
+    }
+  },
+  {
+    "index": 13,
+    "start": 47.7,
+    "end": 50.1,
+    "text": {
+      "ko": "집이 너무 좋다. 예쁘게 해놨네.",
+      "en": "The house is so nice. You've decorated it beautifully."
+    }
+  },
+  {
+    "index": 14,
+    "start": 50.4,
+    "end": 50.7,
+    "text": {
+      "ko": "그죠?",
+      "en": "Right."
+    }
+  },
+  {
+    "index": 15,
+    "start": 51.1,
+    "end": 54.0,
+    "text": {
+      "ko": "채린아, 엄마가 아침에 농산물 시장에서",
+      "en": "Serin, I bought some natural eggs at the farmers' market this morning."
+    }
+  },
+  {
+    "index": 16,
+    "start": 54.0,
+    "end": 56.7,
+    "text": {
+      "ko": "토종 달걀을 사 왔어. 출산한 지 얼마 안 됐잖아.",
+      "en": "You just gave birth recently, so you need to take good care of yourself."
+    }
+  },
+  {
+    "index": 17,
+    "start": 56.7,
+    "end": 60.8,
+    "text": {
+      "ko": "몸조리 잘해야 돼. 엄마가 이거로 맛있는 거 해줄게.",
+      "en": "I'll make something delicious with these for you."
+    }
+  },
+  {
+    "index": 18,
+    "start": 61.9,
+    "end": 67.2,
+    "text": {
+      "ko": "아, 이런 싸구려는 좀 그만 가져오세요. 더럽잖아요.",
+      "en": "Oh, please stop bringing such cheap stuff. It's dirty."
+    }
+  }
+]

@@ -7,7 +7,7 @@ import { Series } from "src/types";
 import ProgressivePlayer from "components/ProgressivePlayer";
 
 interface Props {
-  subtitle: any;
+  subtitleLang: any;
   currentIndex: number;
   quality: string;
   videoListRef: any;
@@ -35,7 +35,7 @@ interface Props {
   handleSlideTransitionStart: any;
 }
 
-const UIShortFormSwiper = ({subtitle, currentIndex, trackRef, videoListRef, quality, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, swiperRef, lastEpisode, setVideoLoading, unlockEpisode, handleSlideTransitionEnd, handleEpisodeChange, handleSlideTransitionStart}: Props) => {
+const UIShortFormSwiper = ({subtitleLang, currentIndex, trackRef, videoListRef, quality, locked, muted, episodeList, videoRef, handleTimeUpdate, toggleTools, swiperRef, lastEpisode, setVideoLoading, unlockEpisode, handleSlideTransitionEnd, handleEpisodeChange, handleSlideTransitionStart}: Props) => {
 
   return (
     <Swiper
@@ -68,7 +68,7 @@ const UIShortFormSwiper = ({subtitle, currentIndex, trackRef, videoListRef, qual
             /> */}
             <ProgressivePlayer
               unlockEpisode={unlockEpisode}
-              subtitle={subtitle}
+              subtitleLang={subtitleLang}
               swiperRef={swiperRef}
               trackRef={trackRef}
               currentIndex={currentIndex}

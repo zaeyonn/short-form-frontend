@@ -82,7 +82,7 @@ const BetaMainPage = ({}) => {
   const [muted, setMuted] = useState<boolean>(true);
   const [speed, setSpeed] = useState<number>(1);
   const [quality, setQuality] = useState<string>("720p");
-  const [subtitle, setSubtitle] = useState<any>({name: '없음', code: 'none'});
+  const [subtitleLang, setSubtitleLang] = useState<any>({name: '없음', code: 'none'});
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   // const [fullscreen, setFullscreen] = useState<boolean>(false);
 
@@ -501,17 +501,9 @@ const BetaMainPage = ({}) => {
   }, [videoRef.current, currentEp]);
 
   const handleSubtitleChange = useCallback((subtitle: any) => {
-    setSubtitle(subtitle);
-    subtitleSheetRef.current.handleClose();
-
-    if(subtitle.code === 'none') {
-      trackRef.current.src = '';
-    } else {
-      trackRef.current.src = `/resources/subtitles/${series.id}/ep${currentEp.episode_num}_${subtitle.code}.vtt`;
-    }
-
-    
-  }, [trackRef.current, series, currentEp]);
+    setSubtitleLang(subtitle);
+    subtitleSheetRef.current.handleClose();    
+  }, [series, currentEp]);
 
   const handleEpisodeShare = async () => {
     if (navigator.share) {
@@ -1174,7 +1166,7 @@ const BetaMainPage = ({}) => {
         <div className={"player-wrap"}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
-              subtitle={subtitle}
+              subtitleLang={subtitleLang}
               currentIndex={currentIndex}
               videoListRef={videoListRef}
               quality={quality}
@@ -1329,7 +1321,7 @@ const BetaMainPage = ({}) => {
             visible={visibleBottomSheetOption}
             quality={quality}
             speed={speed}
-            subtitle={subtitle}
+            subtitleLang={subtitleLang}
             handleBottomSheetClose={handleOptionClose}
             handleQualityOpen={handleQualityOpen}
             handleSpeedOpen={handleSpeedOpen}
@@ -1352,7 +1344,7 @@ const BetaMainPage = ({}) => {
           <UIBottomSheetSubtitle
             ref={subtitleSheetRef}
             visible={visibleBottomSheetSubtitle}
-            subtitle={subtitle}
+            subtitleLang={subtitleLang}
             handleBottomSheetClose={handleSubtitleClose}
             handleSubtitleChange={handleSubtitleChange}
           />

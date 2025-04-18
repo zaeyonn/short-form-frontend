@@ -1742,49 +1742,25 @@ a {
         height: 100%;
       }
 
-
-      video::cue {
-        color: #FFFFFF !important;
-        font-size: 22px !important;
+      .subtitle-wrap {
+        max-width: 80%;
+        width: 70%;
+        position: absolute;
+        text-align: center;
+        left: 50%;
+        transform: translate(-50%);
+        bottom: 100px;
+        font-size: 22px;
         text-shadow:
-          -1.2px -1.2px 0 #000,
-          1.2px -1.2px 0 #000,
-          -1.2px 1.2px 0 #000,
-          1.2px 1.2px 0 #000,
-          0px -1.2px 0 #000,
-          0px 1.2px 0 #000,
-          -1.2px 0px 0 #000,
-          1.2px 0px 0 #000 !important;
-          background: none !important;
-          background-color: transparent !important;
-          color: white;
-        font-weight: 600 !important;
-        max-width: 80% !important;
-        width: 80% !important;
-        padding: 0px !important;
-        white-space: normal !important;
-        line-height: 25px;
-          word-wrap: break-word !important;
-          overflow-wrap: break-word !important;
-          // padding: 5em !important;
-          text-align: center !important;
-          display: inline-block !important;
-          box-sizing: border-box !important;
-          position: absolute !important;
-          left: 50% !important;
-          transform: translateX(-50%) !important;
-      }
+        -1.2px -1.2px 0 #000,
+         1.2px -1.2px 0 #000,
+        -1.2px  1.2px 0 #000,
+         1.2px  1.2px 0 #000,
+         0px   -1.2px 0 #000,
+         0px    1.2px 0 #000,
+        -1.2px  0px   0 #000,
+         1.2px  0px   0 #000;
 
-
-
-      // /* WebKit 브라우저용 추가 스타일 */
-      video::-webkit-media-text-track-display {
-        max-width: 80% !important;
-        width: 80% !important;
-        margin: 0 auto !important;
-        position: absolute !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
       }
     }
 

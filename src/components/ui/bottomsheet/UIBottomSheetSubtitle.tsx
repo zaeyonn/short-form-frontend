@@ -4,7 +4,7 @@ import { useGesture } from "@use-gesture/react"
 
 interface Props {
   visible: boolean;
-  subtitle: string;
+  subtitleLang: string;
   handleBottomSheetClose: () => any;
   handleSubtitleChange: (quality: string) => any;
 }
@@ -13,9 +13,9 @@ type bottomSheetHandle = {
   handleClose: () => void;
 }
 
-const SUBTITLE_OPTION_LIST = [{name: '없음', code: 'none'}, {name: '한국어', code: 'kr'}, {name: 'English', code: 'en'}];
+const SUBTITLE_LANG_OPTION_LIST = [{name: '없음', code: 'none'}, {name: '한국어', code: 'ko'}, {name: 'English', code: 'en'}];
 
-const UIBottomSheetSubtitle = forwardRef<bottomSheetHandle, Props>(({visible, subtitle, handleBottomSheetClose, handleSubtitleChange}: any, ref) => {
+const UIBottomSheetSubtitle = forwardRef<bottomSheetHandle, Props>(({visible, subtitleLang, handleBottomSheetClose, handleSubtitleChange}: any, ref) => {
   const [springs, api] = useSpring(() => ({
     from: { y: 240 },
     config: { mass: 0.6, tension: 270, friction: 25},
@@ -69,12 +69,12 @@ const UIBottomSheetSubtitle = forwardRef<bottomSheetHandle, Props>(({visible, su
         <div className='title'>자막</div>
       </div>
       <div className='option-list-wrap'>
-        {SUBTITLE_OPTION_LIST.map((item, index) => {
+        {SUBTITLE_LANG_OPTION_LIST.map((item, index) => {
           return (
-            <div key={index} className={`option-value-item ${subtitle.code === item.code ? 'selected' : ''}`} onClick={() => handleSubtitleChange(item)}>
+            <div key={index} className={`option-value-item ${subtitleLang.code === item.code ? 'selected' : ''}`} onClick={() => handleSubtitleChange(item)}>
              <div>
               <div className='option-value'>
-              {subtitle.code === item.code && (
+              {subtitleLang.code === item.code && (
               <img src='resources/icons/icon_check_s.svg'/>
              )}
               {`${item.name}`}

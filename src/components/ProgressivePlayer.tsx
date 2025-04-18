@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface SecureVideoPlayerProps {
-  subtitle: any;
+  subtitleLang: any;
   swiperRef: any;
   currentIndex: number;
   quality: string;
@@ -20,9 +20,13 @@ interface SecureVideoPlayerProps {
   handleEpisodeChange: (index: number) => any;
 }
 
-const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ unlockEpisode, subtitle, videoRef, trackRef ,swiperRef, currentIndex, quality, locked, muted, seriesId, episodeNum, setVideoLoading, index, handleTimeUpdate, handleEpisodeChange }) => {
+const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ unlockEpisode, subtitleLang, videoRef, trackRef ,swiperRef, currentIndex, quality, locked, muted, seriesId, episodeNum, setVideoLoading, index, handleTimeUpdate, handleEpisodeChange }) => {
   const videoUrlsRef = useRef<any>({});
+  const [subtitle, setSubtitle] = useState<any>();
+  const [subtitleList, setSubtitleList] = useState<any>({"ko": [], "en": []}); 
+
   
+  // 영상 조회
   useEffect(() => {
     const fetchSignedUrl = async () => {
       try {
@@ -37,24 +41,60 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ unlockEpisode, su
         if (videoRef.current) {
           videoRef.current.src = data.videos_url[quality];
           videoUrlsRef.current = data.videos_url;
-
-          // if(subtitle.code !== 'none') {
-          //   trackRef.current.src = trackRef.current.src = `/resources/subtitles/${seriesId}/ep${episodeNum}_${subtitle.code}.vtt`;
-          // }
         }
       } catch (error) {
         console.error('fetchSignedUrl Error', error);
       }
     };
 
-    if(currentIndex === index) {
-    console.log('currentIndex index', currentIndex, index, unlockEpisode);
-      fetchSignedUrl();
 
+    if(currentIndex === index) {
+      fetchSignedUrl();
     }
-  }, [seriesId, episodeNum, currentIndex, index, unlockEpisode]);
+
+  }, [seriesId, episodeNum, currentIndex, index]);
+
+  // 자막 조회
+  useEffect(() => {
+    if(subtitleLang.code === 'none') return;
+
+    const fetchSubtitle = async () => {
+      try {
+        const res = await fetch(`/resources/subtitles/${seriesId}/ep${episodeNum}.json`);
+
+        const data = await res.json();        
+        setSubtitleList(data); 
+      } catch (error) {
+        console.error('fetchSubtitle error', error);
+      }
+    } 
+
+    if(currentIndex === index) {
+        fetchSubtitle();
+    }
+
+  }, [subtitleLang, currentIndex, index, episodeNum, seriesId])
+
+  useEffect(() => {
+    if(subtitleLang.code === 'none' || !(subtitleList.length > 0)) {
+      return; 
+    }
+
+    const interval = setInterval(() => {
+      const video = videoRef.current;
+      if (!video) return;
+
+      const currentTime = video.currentTime;
+      const activeCue: any = subtitleList.find((cue: any) => currentTime >= cue.start && currentTime <= cue.end);
+
+      setSubtitle(activeCue ? activeCue : "");
+    }, 200);
+
+    return () => clearInterval(interval);
+  }, [subtitleList, videoRef.current, subtitleLang]);
 
   return (
+    <>
       <video
         src={(quality && videoUrlsRef.current ? videoUrlsRef.current[quality] : '')}
         ref={(el) => {
@@ -70,7 +110,7 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ unlockEpisode, su
         onTimeUpdate={() => handleTimeUpdate(index)} 
         onEnded={() => handleEpisodeChange(episodeNum + 1)} 
         poster={`resources/images/thumbnails/${seriesId}_thumbnail.png`}>
-         <track 
+         {/* <track 
           src={subtitle.code !== 'none' ? `/resources/subtitles/${seriesId}/ep${episodeNum}_${subtitle.code}.vtt` : ''}
           default 
           ref={(el) => {
@@ -79,8 +119,14 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ unlockEpisode, su
             }
           }}
           kind="subtitles" 
-          srcLang='en'/>
+          srcLang='en'/> */}
       </video>
+      {subtitle && (
+        <div className='subtitle-wrap'>
+          {subtitle.text[subtitleLang.code]}
+        </div>
+      )}
+    </>
   );
 };
 
