@@ -28,13 +28,14 @@ export function* watcherSaga() {
     takeLatest(userSlice.updateSeriesUnlockEpisode.type, userHandler.handleUpdateSeriesUnlockEpisode),
     takeLatest(userSlice.paymentsRegist.type, userHandler.handlePaymentsRegist),
     takeLatest(userSlice.paymentsConfirm.type, userHandler.handlePaymentsConfirm),
-    takeLatest(userSlice.usersPointDeduct.type, userHandler.handleUsersPointDeduct),
     takeLatest(userSlice.attendance.type, userHandler.handleattendance),
     takeLatest(userSlice.attendanceCheck.type, userHandler.handleattendanceCheck),
     takeLatest(userSlice.subscribe.type, userHandler.handleSubscribe),
     takeLatest(userSlice.usersProfileUpdate.type, userHandler.handleUsersProfileUpdate),
     takeLatest(userSlice.missionsComplete.type, userHandler.handleMissionsComplete),
     takeLatest(userSlice.missionsUpdate.type, userHandler.handleMissionsUpdate),
-    takeLatest(userSlice.coinTransactionList.type, userHandler.handleCoinTransactionList),
+    takeLatest(userSlice.coinsTransactionList.type, userHandler.handleCoinsTransactionList),
+    takeLatest(userSlice.coinsBalance.type, userHandler.handleCoinsBalance),
+    takeLatest(userSlice.coinsConsume.type, userHandler.handleCoinsConsume),
   ])
 }

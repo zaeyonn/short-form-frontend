@@ -1,0 +1,245 @@
+[
+  {
+    "index": 1,
+    "start": 3.7,
+    "end": 7.0,
+    "text": {
+      "ko": "아니, 근데 이렇게 싸게 팔아서 돈 되겠어요?",
+      "en": "No, but will you make any money selling it this cheaply?"
+    }
+  },
+  {
+    "index": 2,
+    "start": 7.3,
+    "end": 10.4,
+    "text": {
+      "ko": "아, 여기 근처에서 일하는 사람도 돈 얼마 못 벌어요.",
+      "en": "Oh, even people working around here don't make much money."
+    }
+  },
+  {
+    "index": 3,
+    "start": 10.4,
+    "end": 13.3,
+    "text": {
+      "ko": "저는 좀 적게 벌어도 돼요.",
+      "en": "It's okay for me to earn a little less."
+    }
+  },
+  {
+    "index": 4,
+    "start": 13.3,
+    "end": 15.7,
+    "text": {
+      "ko": "아, 배고프죠? 이거 먼저 가서 드시고 계세요.",
+      "en": "Oh, you must be hungry. Please go ahead and eat this first."
+    }
+  },
+  {
+    "index": 5,
+    "start": 16.0,
+    "end": 17.4,
+    "text": {
+      "ko": "국 떠 가지고 갈게요.",
+      "en": "I'll bring the soup."
+    }
+  },
+  {
+    "index": 6,
+    "start": 17.6,
+    "end": 17.9,
+    "text": {
+      "ko": "예.",
+      "en": "Yes."
+    }
+  },
+  {
+    "index": 7,
+    "start": 18.2,
+    "end": 20.3,
+    "text": {
+      "ko": "감사합니다. 잘 먹겠습니다.",
+      "en": "Thank you. I will enjoy the meal."
+    }
+  },
+  {
+    "index": 8,
+    "start": 22.5,
+    "end": 25.5,
+    "text": {
+      "ko": "저기, 잠깐만요. 여기 뜯어졌는데요.",
+      "en": "Excuse me, just a moment. It's torn here."
+    }
+  },
+  {
+    "index": 9,
+    "start": 25.8,
+    "end": 26.4,
+    "text": {
+      "ko": "어, 그러네.",
+      "en": "Oh, you're right."
+    }
+  },
+  {
+    "index": 10,
+    "start": 26.4,
+    "end": 28.5,
+    "text": {
+      "ko": "아, 이리 주세요. 제가 꿰매 드릴게요.",
+      "en": "Please give it to me. I'll sew it for you."
+    }
+  },
+  {
+    "index": 11,
+    "start": 28.7,
+    "end": 31.0,
+    "text": {
+      "ko": "아, 괜찮아요. 신경 쓰지 마요.",
+      "en": "Oh, it's okay. Don't worry about it."
+    }
+  },
+  {
+    "index": 12,
+    "start": 31.3,
+    "end": 34.3,
+    "text": {
+      "ko": "아, 잠깐이면 돼요. 얼른 벗어 보세요.",
+      "en": "Ah, it will only take a moment. Please take it off quickly."
+    }
+  },
+  {
+    "index": 13,
+    "start": 34.3,
+    "end": 36.4,
+    "text": {
+      "ko": "금방 해 드릴게요. 벗어요.",
+      "en": "I'll do it right away. Take it off."
+    }
+  },
+  {
+    "index": 14,
+    "start": 36.5,
+    "end": 36.8,
+    "text": {
+      "ko": "아, 예.",
+      "en": "Ah, yes."
+    }
+  },
+  {
+    "index": 15,
+    "start": 38.4,
+    "end": 38.7,
+    "text": {
+      "ko": "여기요.",
+      "en": "Here you go."
+    }
+  },
+  {
+    "index": 16,
+    "start": 39.0,
+    "end": 40.4,
+    "text": {
+      "ko": "네, 드시고 계세요.",
+      "en": "Yes, please go ahead and eat."
+    }
+  },
+  {
+    "index": 17,
+    "start": 63.0,
+    "end": 63.3,
+    "text": {
+      "ko": "예.",
+      "en": "Yes."
+    }
+  },
+  {
+    "index": 18,
+    "start": 63.3,
+    "end": 64.8,
+    "text": {
+      "ko": "됐어요.",
+      "en": "It's done."
+    }
+  },
+  {
+    "index": 19,
+    "start": 64.8,
+    "end": 65.3,
+    "text": {
+      "ko": "아, 예.",
+      "en": "Ah, yes."
+    }
+  },
+  {
+    "index": 20,
+    "start": 65.3,
+    "end": 66.3,
+    "text": {
+      "ko": "감사합니다.",
+      "en": "Thank you."
+    }
+  },
+  {
+    "index": 21,
+    "start": 66.5,
+    "end": 67.9,
+    "text": {
+      "ko": "입어 보세요.",
+      "en": "Try it on."
+    }
+  },
+  {
+    "index": 22,
+    "start": 70.6,
+    "end": 73.9,
+    "text": {
+      "ko": "꿰매는 김에 단추도 다시 달았어요.",
+      "en": "I also reattached the buttons while mending it."
+    }
+  },
+  {
+    "index": 23,
+    "start": 73.9,
+    "end": 77.2,
+    "text": {
+      "ko": "이제 한참 입으실 수 있을 거예요.",
+      "en": "You should be able to wear it for a long time now."
+    }
+  },
+  {
+    "index": 24,
+    "start": 77.2,
+    "end": 79.4,
+    "text": {
+      "ko": "정희 씨, 참 든든한 사람 같아요.",
+      "en": "Junghee, you seem like a really reliable person."
+    }
+  },
+  {
+    "index": 25,
+    "start": 82.6,
+    "end": 83.2,
+    "text": {
+      "ko": "정희 씨.",
+      "en": "Junghee."
+    }
+  },
+  {
+    "index": 26,
+    "start": 84.9,
+    "end": 87.4,
+    "text": {
+      "ko": "우리 결혼합시다.",
+      "en": "Let's get married."
+    }
+  },
+  {
+    "index": 27,
+    "start": 87.7,
+    "end": 88.9,
+    "text": {
+      "ko": "아, 아.",
+      "en": "Ah, ah."
+    }
+  }
+]

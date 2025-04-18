@@ -69,18 +69,7 @@ const SettingPage = () => {
       if (loginSheetRef.current)
         loginSheetRef.current.handleClose();
 
-      if (user.free_point + user.paid_point < series.req_point) {
-        if (displayPopName) {
-          dispatch(
-            globalSlice.setDisplayPopName(
-              displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name
-            )
-          );
-        }
-      } else {
-        dispatch(globalSlice.setDisplayPopName(''));
-      }
-
+    
       dispatch(userSlice.setUser(user));
 
       localStorage.setItem("user-id", user.id);

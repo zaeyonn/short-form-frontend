@@ -1,0 +1,218 @@
+[
+  {
+    "index": 1,
+    "start": 3.0,
+    "end": 6.1,
+    "text": {
+      "ko": "왜 엄마한테 그렇게 말을 하는 거야?",
+      "en": "Why are you talking to mom like that?"
+    }
+  },
+  {
+    "index": 2,
+    "start": 6.5,
+    "end": 7.6,
+    "text": {
+      "ko": "아, 됐어. 됐어.",
+      "en": "Ah, it's okay, it's okay."
+    }
+  },
+  {
+    "index": 3,
+    "start": 7.6,
+    "end": 12.0,
+    "text": {
+      "ko": "우리 엄마 우리 아기 돌봐주려고 오신 거야. 심지어 아기도 돌보는데 부엌에서 주무신다고 했어.",
+      "en": "My mom came to take care of our baby. She even said she'd sleep in the kitchen."
+    }
+  },
+  {
+    "index": 4,
+    "start": 12.0,
+    "end": 15.0,
+    "text": {
+      "ko": "됐고, 야, 저 계란이나 치워. 냄새 나고 더러워.",
+      "en": "Enough. Just clean up those eggs. They smell and they're dirty."
+    }
+  },
+  {
+    "index": 5,
+    "start": 15.4,
+    "end": 16.9,
+    "text": {
+      "ko": "그리고 우리 아빠가 서울그룹 부사장이야.",
+      "en": "And my dad is the VP of Seoul Group."
+    }
+  },
+  {
+    "index": 6,
+    "start": 16.9,
+    "end": 18.9,
+    "text": {
+      "ko": "돈 써서 사람 쓰면 그만인데.",
+      "en": "We have enough money to just hire someone."
+    }
+  },
+  {
+    "index": 7,
+    "start": 18.9,
+    "end": 21.9,
+    "text": {
+      "ko": "네 엄마 좋으라고 우리가 그냥 참고 있는 거잖아.",
+      "en": "We're just putting up with it for your mom's sake."
+    }
+  },
+  {
+    "index": 8,
+    "start": 21.9,
+    "end": 23.8,
+    "text": {
+      "ko": "그리고 솔직히 나는 네 엄마가 우리 애기 돌보는 거 나 너무 싫어.",
+      "en": "Honestly, I hate her looking after our baby."
+    }
+  },
+  {
+    "index": 9,
+    "start": 23.8,
+    "end": 26.1,
+    "text": {
+      "ko": "괜히 병균 옮아서 아플까 봐 걱정된다고.",
+      "en": "I'm worried she might pass on some germs or something."
+    }
+  },
+  {
+    "index": 10,
+    "start": 26.1,
+    "end": 30.0,
+    "text": {
+      "ko": "너 왜 이렇게 말을 못되게 해?",
+      "en": "Why are you speaking so harshly?"
+    }
+  },
+  {
+    "index": 11,
+    "start": 30.0,
+    "end": 32.8,
+    "text": {
+      "ko": "야, 너 내 말 똑바로 들어.",
+      "en": "Hey, listen to me carefully."
+    }
+  },
+  {
+    "index": 12,
+    "start": 32.8,
+    "end": 34.7,
+    "text": {
+      "ko": "내가 희생해서 너랑 결혼한 거야.",
+      "en": "I sacrificed myself to marry you."
+    }
+  },
+  {
+    "index": 13,
+    "start": 34.9,
+    "end": 36.6,
+    "text": {
+      "ko": "내가 너한테 시집간 거라고.",
+      "en": "I married into your family."
+    }
+  },
+  {
+    "index": 14,
+    "start": 36.6,
+    "end": 41.0,
+    "text": {
+      "ko": "그게 싫으면 네 엄마랑 같이 꺼지던가.",
+      "en": "If you don't like it, you and your mom can just leave."
+    }
+  },
+  {
+    "index": 15,
+    "start": 41.0,
+    "end": 44.5,
+    "text": {
+      "ko": "야!",
+      "en": "Hey!"
+    }
+  },
+  {
+    "index": 16,
+    "start": 44.8,
+    "end": 45.1,
+    "text": {
+      "ko": "아유, 괜찮아. 엄마.",
+      "en": "Oh, it's okay. Mom."
+    }
+  },
+  {
+    "index": 17,
+    "start": 45.6,
+    "end": 46.9,
+    "text": {
+      "ko": "엄마 갈 데 있어. 엄마 갈게.",
+      "en": "I have somewhere to go. I'll leave now."
+    }
+  },
+  {
+    "index": 18,
+    "start": 47.1,
+    "end": 48.7,
+    "text": {
+      "ko": "엄마, 저희 집 마련해 주시려고 집까지 파셨잖아요.",
+      "en": "Mom, you even sold your house to help us get our own place."
+    }
+  },
+  {
+    "index": 19,
+    "start": 49.1,
+    "end": 52.0,
+    "text": {
+      "ko": "아, 지금 어딜 가신다는 거예요?",
+      "en": "Where are you going now?"
+    }
+  },
+  {
+    "index": 20,
+    "start": 52.0,
+    "end": 54.1,
+    "text": {
+      "ko": "아니야, 대호야. 채린이 막 출산했잖아. 어?",
+      "en": "No, Daeho. Chaerin just gave birth."
+    }
+  },
+  {
+    "index": 21,
+    "start": 54.4,
+    "end": 58.0,
+    "text": {
+      "ko": "출산한 아내한테 그렇게 화내고 그러면 안 돼. 알았지?",
+      "en": "You shouldn't be yelling at your wife who just had a baby."
+    }
+  },
+  {
+    "index": 22,
+    "start": 58.0,
+    "end": 60.8,
+    "text": {
+      "ko": "엄마는 요한이 잃어버리고 우리 대호밖에 없어.",
+      "en": "After losing Yohan, I only have you now."
+    }
+  },
+  {
+    "index": 23,
+    "start": 60.8,
+    "end": 62.8,
+    "text": {
+      "ko": "엄마가 바라는 거는 우리 대호 행복한 거 그거 하나만 돼. 알겠지?",
+      "en": "All I want is for you to be happy, Daeho."
+    }
+  },
+  {
+    "index": 24,
+    "start": 68.4,
+    "end": 68.8,
+    "text": {
+      "ko": "엄마.",
+      "en": "Mom."
+    }
+  }
+]

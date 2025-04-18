@@ -143,16 +143,6 @@ export function* handlePaymentsConfirm(action: PayloadAction<any>): Generator<an
   }
 }
 
-export function* handleUsersPointDeduct(action: PayloadAction<any>): Generator<any> {
-  try {
-    const response = yield call(api.usersPointDeduct, action.payload);
-
-    yield put(slice.usersPointDeductSuccess(response));
-  } catch (error) {
-    yield put(slice.usersPointDeductFailure(error));
-  }
-}
-
 export function* handleattendance(action: PayloadAction<any>): Generator<any> {
   try {
     const response = yield call(api.attendance, action.payload);
@@ -213,12 +203,32 @@ export function* handleMissionsUpdate(action: PayloadAction<any>): Generator<any
   }
 }
 
-export function* handleCoinTransactionList(action: PayloadAction<any>): Generator<any> {
+export function* handleCoinsTransactionList(action: PayloadAction<any>): Generator<any> {
   try {
-    const response = yield call(api.coinTransactionList, action.payload);
+    const response = yield call(api.coinsTransactionList, action.payload);
 
-    yield put(slice.coinTransactionListSuccess(response));
+    yield put(slice.coinsTransactionListSuccess(response));
   } catch (error) {
-    yield put(slice.coinTransactionListFailure(error));
+    yield put(slice.coinsTransactionListFailure(error));
+  }
+}
+
+export function* handleCoinsBalance(action: PayloadAction<any>): Generator<any> {
+  try {
+    const response = yield call(api.coinsBalance, action.payload);
+
+    yield put(slice.coinsBalanceSuccess(response));
+  } catch (error) {
+    yield put(slice.coinsBalanceFailure(error));
+  }
+}
+
+export function* handleCoinsConsume(action: PayloadAction<any>): Generator<any> {
+  try {
+    const response = yield call(api.coinsConsume, action.payload);
+
+    yield put(slice.coinsConsumeSuccess(response));
+  } catch (error) {
+    yield put(slice.coinsConsumeFailure(error));
   }
 }

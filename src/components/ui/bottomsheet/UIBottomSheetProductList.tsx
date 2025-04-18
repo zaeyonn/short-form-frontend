@@ -18,7 +18,7 @@ const UIBottomSheetProductList = (props: Props) => {
   const dispatch = useDispatch();
 
   const [_paymentLoading, setPaymentLoading] = useState<boolean>(false);
-  const { user, paymentProduct, paymentsConfirmResult, paymentsConfirmError, paymentsRegistError, paymentsRegistResult } = useSelector((state: UserRootState) => state.user);
+  const { user, coins, paymentProduct, paymentsConfirmResult, paymentsConfirmError, paymentsRegistError, paymentsRegistResult } = useSelector((state: UserRootState) => state.user);
   const { productList } = useSelector((state: any) => state.global);
 
   const orderIdRef = useRef();
@@ -52,8 +52,8 @@ const UIBottomSheetProductList = (props: Props) => {
       productId: product.id,
       productType: product.type,
       amount: product.amount,
-      paidPoint: product.paid_point,
-      freePoint: product.free_point,
+      paidCoin: product.paid_coin,
+      freeCoin: product.free_coin,
     }))
   }
 
@@ -158,8 +158,7 @@ const UIBottomSheetProductList = (props: Props) => {
 
       if(paymentsConfirmResult.data.product_type === 'coin') {
         // 사용자 코인 업데이트
-        
-        dispatch(userSlice.setUser({ ...user, paid_point: user.paid_point + paymentsConfirmResult.data.paid_point, free_point: user.free_point + paymentsConfirmResult.data.free_point }));
+        dispatch(userSlice.setCoins({ paid: coins.paid + paymentsConfirmResult.data.paid_coin, free: coins.free + paymentsConfirmResult.data.free_coin }));
       } else if(paymentsConfirmResult.data.product_type === 'subscription') {
         // 사용자 구독 업데이트
       }
@@ -253,7 +252,7 @@ const UIBottomSheetProductList = (props: Props) => {
         </div>
         <div className='body'>
           <div className='point-list-wrap' style={{ marginTop: 16 }}>
-            <div className='item'><div className='label'>보유한 코인</div><span className='point'>{(user?.paid_point + user?.free_point).toLocaleString()}<img src='/resources/icons/icon_coin_s.png' /></span></div>
+            <div className='item'><div className='label'>보유한 코인</div><span className='point'>{(coins?.paid + coins?.free).toLocaleString()}<img src='/resources/icons/icon_coin_s.png' /></span></div>
             {props.series && <div className='item'><div className='label'>다음 화 필요 코인</div><span className='point'>{props.series?.req_point}<img src='/resources/icons/icon_coin_s.png' /></span></div>}
           </div>
           <div className='product-list-wrap selected'>
@@ -279,10 +278,10 @@ const UIBottomSheetProductList = (props: Props) => {
                         <span className='discount-sign'>첫 구매 할인</span>
                       )}
                       <div className='product-name'>
-                        {item.paid_point.toLocaleString() + ' 코인'}
-                        {item.free_point > 0 && (
+                        {item.paid_coin.toLocaleString() + ' 코인'}
+                        {item.free_coin > 0 && (
                           <span className='bonus-point'>
-                            {'  + ' + (item.first_charging_event ? (item.paid_point * 0.3) : (item.free_point)).toLocaleString()}
+                            {'  + ' + (item.first_charging_event ? (item.paid_coin * 0.3) : (item.free_coin)).toLocaleString()}
                           </span>
                         )}
                       </div>

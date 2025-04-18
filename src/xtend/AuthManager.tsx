@@ -8,8 +8,7 @@ import { Subscription } from 'src/types';
 const AuthManager = () => {
   const dispatch = useDispatch();
 
-  const { authGuestResult, authGuestError, userInfoResult, userInfoError } =
-    useSelector((state: any) => state.user);
+  const { authGuestResult, authGuestError, userInfoResult, userInfoError, coinsBalanceResult, coinsBalanceError } = useSelector((state: any) => state.user);
 
   // 사용자 정보 조회 결과
   useEffect(() => {
@@ -36,6 +35,23 @@ const AuthManager = () => {
     }
   }, [userInfoResult, userInfoError]);
 
+
+  // 사용자 코인 조회 결과
+  useEffect(() => {
+    if (coinsBalanceError) {
+      console.log("coinsBalanceError ", coinsBalanceError);
+      dispatch(userSlice.clearUserState("coinsBalanceError"));
+      return;
+    }
+
+    if (coinsBalanceResult && coinsBalanceResult.status === 200) {
+      console.log("coinsBalanceResult ", coinsBalanceResult.data);
+      const coins = coinsBalanceResult.data;
+
+      dispatch(userSlice.setCoins(coins));
+    }
+  }, [coinsBalanceResult, coinsBalanceError])
+
   // 게스트 등록 결과
   useEffect(() => {
     if (authGuestError) {
@@ -59,7 +75,6 @@ const AuthManager = () => {
   //                               X -> 게스트 사용자 등록
   useEffect(() => {
     const uuid = localStorage.getItem("user-id");
-    console.log('uuid', uuid);
 
     if(uuid == 'undefined') {
       Cookies.remove('user-id');
@@ -67,6 +82,7 @@ const AuthManager = () => {
 
     if (uuid && uuid !== 'undefined') {
       dispatch(userSlice.userInfo({ userId: uuid }));
+      dispatch(userSlice.coinsBalance({ userId: uuid }));
     } else {
       dispatch(userSlice.authGuest());
     }

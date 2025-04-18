@@ -1,5 +1,6 @@
 export interface UserRootState {
-  user: any
+  user: any,
+  coins: any,
 
   loading: boolean,
 
@@ -15,8 +16,12 @@ export interface UserRootState {
 
   userMissionList: UserMission [],
 
-  coinTransactionListResult: Response | null,
-  coinTransactionListError: Response | null,
+  coinsTransactionListResult: Response | null,
+  coinsTransactionListError: Response | null,
+  coinsBalanceResult: Response | null,
+  coinsBalanceError: Response | null,
+  coinsConsumeResult: Response | null,
+  coinsConsumeError: Response | null,
 }
 
 export interface GlobalRootState {
@@ -47,8 +52,8 @@ export type User = {
   auth: string,
   email: string,
   profile_img: string,
-  paid_point: number,
-  free_point: number,
+  paid_coin: number,
+  free_coin: number,
   created_at: Date;
   userMissions: UserMission [];
 }
@@ -83,8 +88,8 @@ export type Product = {
   id: number,
   name: string,
   amount: number,
-  paid_point: number,
-  free_point: number,
+  paid_coin: number,
+  free_coin: number,
   discount_rate: number,
   first_charging_event: boolean,
   description: string,
@@ -129,9 +134,9 @@ export type UserMission = {
 export type CoinTransaction = {
   id: number;
   type: string;
-  source: string;
-  paid_point: number;
-  free_point: number;
+  source_type: string;
+  coin: number;
+  coin_type: string;
   related_id: number;
   description: string | null;
   created_at: Date;

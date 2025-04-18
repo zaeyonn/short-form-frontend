@@ -25,6 +25,7 @@ const MyProfilePage = () => {
 
   const {
     user,
+    coins,
     seriesWatchList,
     authSnsResult,
     authSnsError,
@@ -111,7 +112,7 @@ const MyProfilePage = () => {
       if (loginSheetRef.current)
         loginSheetRef.current.handleClose();
 
-      if (user.free_point + user.paid_point < series.req_point) {
+      if (coins.free + coins.paid < series.req_point) {
         if (displayPopName) {
           dispatch(
             globalSlice.setDisplayPopName(
@@ -248,7 +249,7 @@ const MyProfilePage = () => {
                         <img src='resources/icons/icon_bang.svg'/>
                       </label>
                       <div className="point-value">
-                        {(user?.paid_point) ? (user?.paid_point).toLocaleString() : 0}
+                        {(coins?.paid) ? (coins?.paid).toLocaleString() : 0}
                         <img src="resources/icons/icon_coin_s.png" />  
                       </div>
                     </div>
@@ -258,7 +259,7 @@ const MyProfilePage = () => {
                         <img src='resources/icons/icon_bang.svg'/>
                       </label>
                       <div className="point-value">
-                      {(user?.free_point) ? (user?.free_point).toLocaleString() : 0}
+                      {(coins?.free) ? (coins?.free).toLocaleString() : 0}
                         <img src="resources/icons/icon_coin_s.png" />  
                       </div>
                     </div>

@@ -20,7 +20,7 @@ const UILayerLockedEpisode = ({
   //const dispatch = useDispatch();
 
   const { series } = useSelector((state: any) => state.global);
-  const { user } = useSelector((state: any) => state.user);
+  const { user, coins } = useSelector((state: any) => state.user);
 
   const [visibleBtnList, setVisibleBtnList] = useState(true);
   const [visibleBottomSheetPayment, setVisibleBottomSheetPayment] =
@@ -56,7 +56,7 @@ const UILayerLockedEpisode = ({
   const renderPaymentButton = () => {
     return (
       <>
-        {user.paid_point + user.free_point > series.req_point ? (
+        {coins.paid + coins.free > series.req_point ? (
           <button className="payment-btn" onClick={() => handlePointUse()}>
             {'다음화 바로보기'}
             {<span className="req_point">{`${series.req_point.toLocaleString()} 코인 사용`}</span>}
@@ -76,11 +76,10 @@ const UILayerLockedEpisode = ({
         <div
           className="locked-episode"
           style={{ cursor: "default" }}
-          onClick={(event) => event.stopPropagation()}
-        >
+          onClick={(event) => event.stopPropagation()}>
           <>
           <div className="message">다음 화를 시청하시겠습니까?</div>
-          <div className="user-points">{`내 보유 코인 : ${user.paid_point + user.free_point}`}</div>
+          <div className="user-points">{`내 보유 코인 : ${coins?.paid + coins?.free}`}</div>
           </> 
           {renderPaymentButton()}
           <button className="view-ad-btn">

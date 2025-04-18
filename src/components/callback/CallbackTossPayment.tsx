@@ -22,7 +22,7 @@ const CallbackTossPayment = ({}) => {
 
     widgets.requestPayment({
       orderId: orderId.current,
-      orderName: `${product.current.paid_point} 코인 ${product.current.free_point ? `+ 보너스 ${product.current.free_point}` : ''}`,
+      orderName: `${product.current.paid_coin} 코인 ${product.current.free_coin ? `+ 보너스 ${product.current.free_coin}` : ''}`,
       successUrl: window.location.href,
       failUrl: window.location.href
     });

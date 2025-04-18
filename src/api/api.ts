@@ -67,12 +67,6 @@ export const removeSeriesKeep = ({userId, seriesIdList}: any) => client.delete('
   }
 });
 
-// 사용자 코인 감소
-export const usersPointDeduct = ({ userId, point }: any) => client.put('users/point/deduct', {
-  user_id: userId,
-  point,
-});
-
 // 사용자 프로필 업데이트
 export const usersProfileUpdate = ({userId, nickname}: any) => client.put('users/profile', {
   user_id: userId,
@@ -102,13 +96,13 @@ export const episodeList = ({seriesId}: any) => client.get(`episodes/${seriesId}
 /* Payment API */
 
 // 결제 요청
-export const paymentsRegist = ({userId, productId, productType, amount, paidPoint, freePoint}: any) => client.post('payments', {
+export const paymentsRegist = ({userId, productId, productType, amount, paidCoin, freeCoin}: any) => client.post('payments', {
   user_id: userId,
   product_id: productId,
   product_type: productType, 
   amount: amount,
-  paid_point: paidPoint,
-  free_point: freePoint,
+  paid_coin: paidCoin,
+  free_coin: freeCoin,
 });
 
 // 결제 승인
@@ -169,5 +163,14 @@ export const missionsUpdate = ({ userId, missionType }: missionParams) => client
 
 /* Coin API */
 
+// 사용자 코인 조회
+export const coinsBalance = ({ userId }: any) => client.get(`coins/balance/${userId}`);
+
 // 사용자 코인 기록 리스트 조회
-export const coinTransactionList = ({ userId } : any) => client.get(`coin-transactions/${userId}`);
+export const coinsTransactionList = ({ userId } : any) => client.get(`coins/transactions/${userId}`);
+
+// 사용자 코인 사용
+export const coinsConsume = ({ userId, cost } : any) => client.post('coins/consume', {
+  user_id: userId,
+  cost
+})

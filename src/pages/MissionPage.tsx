@@ -16,7 +16,7 @@ const MissionPage = () => {
   const navigate = useNavigate();
 
   const { missionList, visibleBottomSheetLogin, isMobile, missionListResult, missionListError } = useSelector((state: any) => state.global);
-  const { user, userMissionList, attendanceResult, attendanceError, attendanceCheckError, attendanceCheckResult, authSnsResult, authSnsError, missionsCompleteResult, missionsCompleteError } = useSelector((state: any) => state.user);
+  const { user, coins, userMissionList, attendanceResult, attendanceError, attendanceCheckError, attendanceCheckResult, authSnsResult, authSnsError, missionsCompleteResult, missionsCompleteError } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState(false);
   const [streak, setStreak] = useState(0);
@@ -161,9 +161,9 @@ const MissionPage = () => {
         duration: 1500,
       }))
 
-      dispatch(userSlice.setUser({
-        ...user,
-        free_point: user.free_point + attendanceCheckResult.data.reward
+      dispatch(userSlice.setCoins({
+        ...coins,
+        free: coins.free + attendanceCheckResult.data.reward
       }))
 
 
@@ -208,7 +208,7 @@ const MissionPage = () => {
       console.log("missionsCompleteResult ", missionsCompleteResult);
       const mission = missionsCompleteResult.data.mission;
 
-      const freePoint = user.free_point + mission.reward;
+      const freePoint = user.free_coin + mission.reward;
       const userMissions = userMissionList.map((item: any) => {
         if (item.mission_id === missionsCompleteResult.data.mission_id) {
           return {
@@ -226,7 +226,7 @@ const MissionPage = () => {
         message: `${missionsCompleteResult.data.mission.reward} 코인을 받았어요!`
       }))
 
-      dispatch(userSlice.setUser({ ...user, free_point: freePoint }));
+      dispatch(userSlice.setUser({ ...user, free_coin: freePoint }));
       dispatch(userSlice.setUserMissionList(userMissions));
 
       dispatch(userSlice.clearUserState("missionsCompleteResult"));
@@ -370,7 +370,7 @@ const MissionPage = () => {
                 내 보유 코인
                 <img src='resources/icons/icon_bang_fill.svg' />
               </div>
-              <div className='my-coin-count'>{((user.paid_point + user.free_point) ? (user.paid_point + user.free_point) : 0).toLocaleString()}
+              <div className='my-coin-count'>{((coins.paid + coins.free) ? (coins.paid + coins.free) : 0).toLocaleString()}
                 <img src={'resources/icons/icon_graphic_coin.png'} />
               </div>
             </div>

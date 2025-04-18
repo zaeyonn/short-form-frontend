@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { useDispatch,useSelector } from 'react-redux';
-import { useSpring, animated} from '@react-spring/web';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSpring, animated } from '@react-spring/web';
 
 import * as globalSlice from 'src/redux/globalSlice';
 import * as userSlice from 'src/redux/userSlice';
@@ -15,11 +15,11 @@ interface Props {
 const UIPopPaymentProductList = (props: Props) => {
   const dispatch = useDispatch();
   const springs = useSpring({
-    from: { 
+    from: {
       scale: 0.9,
       y: 0
     },
-    to: { 
+    to: {
       scale: 1,
       y: 0
     },
@@ -33,7 +33,7 @@ const UIPopPaymentProductList = (props: Props) => {
   });
 
   const { series, productList, productListResult, productListError } = useSelector((state: any) => state.global);
-  const { user, paymentsRegistResult, paymentsRegistError, paymentsConfirmResult, paymentsConfirmError } = useSelector((state: any) => state.user);
+  const { user, coins, paymentsRegistResult, paymentsRegistError, paymentsConfirmResult, paymentsConfirmError } = useSelector((state: any) => state.user);
 
   const [selectedProduct, setSelectedProduct] = useState<Product>(productList[0]);
 
@@ -49,17 +49,17 @@ const UIPopPaymentProductList = (props: Props) => {
   }
 
   const handlePaymentStart = () => {
-    dispatch(userSlice.paymentsRegist({         
+    dispatch(userSlice.paymentsRegist({
       userId: user.id,
       productId: selectedProduct.id,
       amount: selectedProduct.amount,
-      paidPoint: selectedProduct.paid_point,
-      freePoint: selectedProduct.free_point, 
+      paidCoin: selectedProduct.paid_coin,
+      freeCoin: selectedProduct.free_coin,
     }))
   }
 
-   // 결제창 로드
-   const handlePaymentLoad = (e: any) => {
+  // 결제창 로드
+  const handlePaymentLoad = (e: any) => {
     if (e.data.message === "onload") {
       e.source.postMessage({ product: selectedProduct, user_id: user.id, order_id: orderIdRef.current }, "*");
     }
@@ -117,7 +117,7 @@ const UIPopPaymentProductList = (props: Props) => {
       } else {
         modalMessage = '결제가 실패하였습니다.';
       }
-      
+
       return modalMessage;
     }
   };
@@ -128,7 +128,7 @@ const UIPopPaymentProductList = (props: Props) => {
   }
 
   useEffect(() => {
-    if(productListError) {
+    if (productListError) {
       console.log('productListError ', productListError);
     }
 
@@ -157,7 +157,7 @@ const UIPopPaymentProductList = (props: Props) => {
       props.setPaymentLoading(false);
 
       // 사용자 코인 업데이트
-      dispatch(userSlice.setUser({ ...user, paid_point: paymentsConfirmResult.paid_point, free_point: paymentsConfirmResult.free_point }));
+      dispatch(userSlice.setCoins({ paid: coins.paid + paymentsConfirmResult.data.paid_coin, free: coins.free + paymentsConfirmResult.data.free_coin }));
 
       // 에피소드 잠금 해제
       props.handlePaymentComplete();
@@ -194,11 +194,11 @@ const UIPopPaymentProductList = (props: Props) => {
 
       setTimeout(() => {
         paymentWindowRef.current = window.open(window.location.origin + "/callback/tosspayment", "toss-payment-widget", "height=580,width=480");
-        
+
         // 결제 팝업창 닫힌 경우 이벤트 등록
         if (paymentWindowRef.current) {
           paymentWindowRef.current.addEventListener('unload', () => {
-            
+
             // 팝업창이 닫혔는지 확인
             setTimeout(() => {
               if (paymentWindowRef.current?.closed) {
@@ -230,48 +230,49 @@ const UIPopPaymentProductList = (props: Props) => {
   return (
     <div className='popup-layer'>
       <animated.div
-      style={{
-        ...springs,
-        width: 530,
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        transform: springs.scale.to(s => 
-          `translate(-50%, -50%) scale(${s}) translateY(${springs.y.get()}px)`
-        ),
-      }}
-      className='popup-wrap payment-product-list'>    
-        <img className='close-btn' src='/resources/icons/icon_close.svg' alt='닫기' onClick={handleClose}/>
-        <div className='popup-body' style={{gap: 10}}>
+        style={{
+          ...springs,
+          width: 530,
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: springs.scale.to(s =>
+            `translate(-50%, -50%) scale(${s}) translateY(${springs.y.get()}px)`
+          ),
+        }}
+        className='popup-wrap payment-product-list'>
+        <img className='close-btn' src='/resources/icons/icon_close.svg' alt='닫기' onClick={handleClose} />
+        <div className='popup-body' style={{ gap: 10 }}>
           <div className='title'>
             다음화를 볼려면 코인가 필요해요.
           </div>
-          <div className='point-wrap' style={{marginTop: 20, cursor: 'default'}}>
-            <div className='item'><div className='label'>보유한 코인</div><span className='point'>{user?.paid_point + user?.free_point}<img src='/resources/icons/icon_point_s.svg'/></span></div>
-            {series && <div className='item'><div className='label'>다음 화 필요 코인</div><span className='point'>{series?.req_point}<img src='/resources/icons/icon_point_s.svg'/></span></div>}
+          <div className='point-wrap' style={{ marginTop: 20, cursor: 'default' }}>
+            <div className='item'><div className='label'>보유한 코인</div><span className='point'>{coins?.paid + coins?.free}<img src='/resources/icons/icon_point_s.svg' /></span></div>
+            {series && <div className='item'><div className='label'>다음 화 필요 코인</div><span className='point'>{series?.req_point}<img src='/resources/icons/icon_point_s.svg' /></span></div>}
           </div>
           <div className={`point-wrap ${selectedProduct.id === 1 ? 'selected' : ''}`} onClick={() => handleProductSelect(productList[0])}>
-            <div className='item'><div className='label light'><span className='discount-sign'>첫 충전 할인</span><div>{`${(productList[0].paid_point).toLocaleString()} 코인`}<span className='bonus'>{` + ${productList[0].free_point.toLocaleString()}`}</span></div></div><button>{`${(productList[0].amount).toLocaleString()}원`}<span></span></button></div>
+            <div className='item'><div className='label light'><span className='discount-sign'>첫 충전 할인</span><div>{`${(productList[0].paid_coin).toLocaleString()} 코인`}<span className='bonus'>{` + ${productList[0].free_coin.toLocaleString()}`}</span></div></div><button>{`${(productList[0].amount).toLocaleString()}원`}<span></span></button></div>
           </div>
           <div className='product-grid-wrap'>
-          { productList.map((product: Product, index: number) => {
-            if(index >= 1) {
-              return (
-                <div key={index} className={`product-item ${selectedProduct.id === product.id ? 'selected' : ''}`} onClick={() => handleProductSelect(product)}>
-                  <div className='paid-point'>
-                  {product.paid_point.toLocaleString()} 코인
+            {productList.map((product: Product, index: number) => {
+              if (index >= 1) {
+                return (
+                  <div key={index} className={`product-item ${selectedProduct.id === product.id ? 'selected' : ''}`} onClick={() => handleProductSelect(product)}>
+                    <div className='paid-point'>
+                      {product.paid_coin.toLocaleString()} 코인
+                    </div>
+                    <div className='bonus-point'>
+                      +{product.free_coin.toLocaleString()} 코인
+                    </div>
+                    <div className='price'>
+                      {product.amount.toLocaleString()} 원
+                    </div>
                   </div>
-                <div className='bonus-point'>
-                   +{product.free_point.toLocaleString()} 코인
-                </div>
-                  <div className='price'>
-                  {product.amount.toLocaleString()} 원
-                </div>
-                </div>
-              )}
-          })}
+                )
+              }
+            })}
           </div>
-          <div className='primary-btn' style={{marginTop: 7}} onClick={() => handlePaymentStart()}>
+          <div className='primary-btn' style={{ marginTop: 7 }} onClick={() => handlePaymentStart()}>
             충전하기
           </div>
         </div>

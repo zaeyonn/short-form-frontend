@@ -58,8 +58,8 @@ const BetaMainPage = ({}) => {
     userSeriesKeepListResult,
     authSnsError,
     authSnsResult,
-    usersPointDeductResult,
-    usersPointDeductError,
+    coinsConsumeResult,
+    coinsConsumeError,
     missionsUpdateResult,
     missionsUpdateError,
     
@@ -559,7 +559,7 @@ const BetaMainPage = ({}) => {
   const handlePaymentComplete = () => {
 
     // 사용자 포인트 차감
-    dispatch(userSlice.usersPointDeduct({ userId: user.id, point: series.req_point }));
+    dispatch(userSlice.coinsConsume({ userId: user.id, cost: series.req_point }));
 
     // 사용자 잠금 회차 업데이트
     dispatch(
@@ -574,7 +574,7 @@ const BetaMainPage = ({}) => {
   const handlePointUse = () => {
     
     // 사용자 코인 차감
-    dispatch(userSlice.usersPointDeduct({ userId: user.id, point: series.req_point }));
+    dispatch(userSlice.coinsConsume({ userId: user.id, cost: series.req_point }));
     
     // 사용자 잠금 회차 업데이트
     dispatch(
@@ -681,21 +681,21 @@ const BetaMainPage = ({}) => {
 
   // 사용자 코인 차감 결과
   useEffect(() => {
-    if (usersPointDeductError) {
-      console.log('usersPointDeductError ', usersPointDeductError);
+    if (coinsConsumeError) {
+      console.log('coinsConsumeError ', coinsConsumeError);
       
-      dispatch(userSlice.clearUserState('usersPointDeductError'));
+      dispatch(userSlice.clearUserState('coinsConsumeError'));
     }
 
-    if (usersPointDeductResult && usersPointDeductResult.status === 201) {
-      console.log('usersPointDeductResult ', usersPointDeductResult);
+    if (coinsConsumeResult && coinsConsumeResult.status === 201) {
+      console.log('coinsConsumeResult ', coinsConsumeResult);
 
       // 사용자 코인 정보 업데이트
-      dispatch(userSlice.setUser(usersPointDeductResult.data))
+      dispatch(userSlice.setCoins(coinsConsumeResult.data))
 
-      dispatch(userSlice.clearUserState('usersPointDeductResult'));
+      dispatch(userSlice.clearUserState('coinsConsumeResult'));
     }
-  }, [usersPointDeductResult, usersPointDeductError, unlockEpisode])
+  }, [coinsConsumeResult, coinsConsumeError, unlockEpisode])
 
   // SNS 로그인 결과
   useEffect(() => {
@@ -728,17 +728,6 @@ const BetaMainPage = ({}) => {
 
       if (loginSheetRef.current)
         loginSheetRef.current.handleClose();
-
-      if (user.free_point + user.paid_point < series.req_point) {
-        // if (displayPopName) {
-        //   dispatch(
-        //     globalSlice.setDisplayPopName(
-        //       displayPopType.POPUP_PAYMENT_PRODUCT_LIST.name
-        //     )
-        //   );
-        // }
-        
-      } 
 
       dispatch(globalSlice.addToast({
         id: Date.now(),

@@ -13,7 +13,7 @@ const PaymentProductListPage = () => {
   const dispatch = useDispatch();
 
   const { productList, productListResult, productListError } = useSelector((state: any) => state.global);
-  const { user, paymentProduct, paymentsConfirmError, paymentsConfirmResult, paymentsRegistError, paymentsRegistResult, subscribeResult, subscribeError } = useSelector((state: UserRootState) => state.user);
+  const { user, coins, paymentProduct, paymentsConfirmError, paymentsConfirmResult, paymentsRegistError, paymentsRegistResult, subscribeResult, subscribeError } = useSelector((state: UserRootState) => state.user);
 
   const [_paymentLoading, setPaymentLoading] = useState(false);
 
@@ -34,8 +34,8 @@ const PaymentProductListPage = () => {
       productId: product.id,
       productType: product.type,
       amount: product.amount,
-      paidPoint: product.paid_point,
-      freePoint: product.free_point,
+      paidCoin: product.paid_coin,
+      freeCoin: product.free_coin,
     }))
   }
 
@@ -135,7 +135,8 @@ const PaymentProductListPage = () => {
 
       if(paymentsConfirmResult.data.product_type === 'coin') {
         // 사용자 코인 업데이트
-        dispatch(userSlice.setUser({ ...user, paid_point: user.paid_point + paymentsConfirmResult.data.paid_point, free_point: user.free_point + paymentsConfirmResult.data.free_point }));
+        dispatch(userSlice.setCoins({ paid: coins.paid + paymentsConfirmResult.data.paid_coin, free: coins.free + paymentsConfirmResult.data.free_coin }));
+
         handleClose();
       } else if(paymentsConfirmResult.data.product_type === 'subscription') {
         // 사용자 구독 업데이트
@@ -272,7 +273,7 @@ const PaymentProductListPage = () => {
               <img src='resources/icons/icon_bang.svg' />
             </label>
             <div className="point-value">
-              {(user?.paid_point) ? (user?.paid_point).toLocaleString() : 0}
+              {(coins?.paid) ? (coins?.paid).toLocaleString() : 0}
               <img src="resources/icons/icon_coin_s.png" />
             </div>
           </div>
@@ -282,7 +283,7 @@ const PaymentProductListPage = () => {
               <img src='resources/icons/icon_bang.svg' />
             </label>
             <div className="point-value">
-              {(user?.free_point) ? (user?.free_point).toLocaleString() : 0}
+              {(user?.free_coin) ? (user?.free_coin).toLocaleString() : 0}
               <img src="resources/icons/icon_coin_s.png" />
             </div>
           </div>
@@ -300,10 +301,10 @@ const PaymentProductListPage = () => {
                         <span className='discount-sign'>첫 구매 할인</span>
                       )}
                       <div className='product-name'>
-                        {item.paid_point.toLocaleString() + ' 코인'}
-                        {item.free_point > 0 && (
+                        {item.paid_coin.toLocaleString() + ' 코인'}
+                        {item.free_coin > 0 && (
                           <span className='bonus-point'>
-                            {'  + ' + (item.first_charging_event ? (item.paid_point * 0.3) : (item.free_point)).toLocaleString()}
+                            {'  + ' + (item.first_charging_event ? (item.paid_coin * 0.3) : (item.free_coin)).toLocaleString()}
                           </span>
                         )}
                       </div>
@@ -326,9 +327,9 @@ const PaymentProductListPage = () => {
                       <div className='product-name'>
                         <img src='resources/icons/icon_pass.svg'/>
                         {subscriptionType[item2.name].name}
-                        {item2.free_point > 0 && (
+                        {item2.free_coin > 0 && (
                           <span className='bonus-point'>
-                            {'  + ' + (item2.first_charging_event ? (item2.paid_point * 0.3) : (item2.free_point)).toLocaleString()}
+                            {'  + ' + (item2.first_charging_event ? (item2.paid_coin * 0.3) : (item2.free_coin)).toLocaleString()}
                           </span>
                         )}
                       </div>

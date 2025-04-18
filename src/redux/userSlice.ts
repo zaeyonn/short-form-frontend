@@ -18,8 +18,13 @@ const initialState: UserRootState = {
   subscription: null,
   userMissionList: [],
 
-  coinTransactionListError: null,
-  coinTransactionListResult: null,
+  coins: {paid: 0, free: 0},
+  coinsTransactionListError: null,
+  coinsTransactionListResult: null,
+  coinsBalanceResult: null,
+  coinsBalanceError: null,
+  coinsConsumeResult: null,
+  coinsConsumeError: null,
 }
 
 const userSlice = createSlice({
@@ -47,6 +52,9 @@ const userSlice = createSlice({
     },
     setUserMissionList(state: UserRootState, action:PayloadAction<any>) {
       state.userMissionList = action.payload
+    },
+    setCoins(state: UserRootState, action: PayloadAction<any>) {
+      state.coins = action.payload;
     },
     authGuest(state: any) {
       state.loading = true;
@@ -173,13 +181,6 @@ const userSlice = createSlice({
     paymentsConfirmFailure(state: any, action: PayloadAction<any>) {
       state.paymentsConfirmError = action.payload
     },
-    usersPointDeduct(_state: any, _action: PayloadAction<any>) { },
-    usersPointDeductSuccess(state: any, action: PayloadAction<any>) {
-      state.usersPointDeductResult = action.payload
-    },
-    usersPointDeductFailure(state: any, action: PayloadAction<any>) {
-      state.usersPointDeductError = action.payload
-    },
     attendance(_state: any, _action: PayloadAction<any>) {},
     attendanceSuccess(state: any, action: PayloadAction<any>) {
       state.attendanceResult = action.payload
@@ -229,20 +230,34 @@ const userSlice = createSlice({
     missionsUpdateFailure(state: any, action: PayloadAction<any>) {
       state.missionsUpdateError = action.payload
     },
-    coinTransactionList(_state: UserRootState, _action: PayloadAction<any>) {
+    coinsTransactionList(_state: UserRootState, _action: PayloadAction<any>) {
 
     },
-    coinTransactionListSuccess(state: UserRootState, action: PayloadAction<any>) {
-      state.coinTransactionListResult = action.payload
+    coinsTransactionListSuccess(state: UserRootState, action: PayloadAction<any>) {
+      state.coinsTransactionListResult = action.payload
     },
-    coinTransactionListFailure(state: UserRootState, action: PayloadAction<any>) {
-      state.coinTransactionListError = action.payload;
+    coinsTransactionListFailure(state: UserRootState, action: PayloadAction<any>) {
+      state.coinsTransactionListError = action.payload;
+    },
+    coinsBalance(_state: UserRootState, _action: PayloadAction<any>) {},
+    coinsBalanceSuccess(state: UserRootState, action: PayloadAction<any>) {
+      state.coinsBalanceResult = action.payload;
+    },
+    coinsBalanceFailure(state: UserRootState, action: PayloadAction<any>) {
+      state.coinsBalanceError = action.payload;
+    },
+    coinsConsume(_state: UserRootState, _action: PayloadAction<any>) {},
+    coinsConsumeSuccess(state: UserRootState, action: PayloadAction<any>) {
+      state.coinsConsumeResult = action.payload;
+    },
+    coinsConsumeFailure(state: UserRootState, action: PayloadAction<any>) {
+      state.coinsConsumeError = action.payload;
     }
   }
 });
 
 export const {
-  clearUserState, setUser, setSeriesKeepList, setSeriesWatchList, setUserMissionList,
+  clearUserState, setUser, setSeriesKeepList, setSeriesWatchList, setUserMissionList, setCoins,
   authGuest, authGuestSuccess, authGuestFailure, authSns, authSnsSuccess, authSnsFailure,
   addVideoWatched, addSeriesKeep, addSeriesKeepSuccess, addSeriesKeepFailure,
   addSeriesWatched, removeSeriesWatched, removeSeriesKeep, removeSeriesKeepSuccess, removeSeriesKeepFailure, 
@@ -252,9 +267,9 @@ export const {
   updateSeriesProgress, updateSeriesProgressSuccess, updateSeriesProgressFailure,
   userInfo, userInfoSuccess, userInfoFailure, updateSeriesUnlockEpisode, updateSeriesUnlockEpisodeSuccess, updateSeriesUnlockEpisodeFailure,
   paymentsRegist, paymentsRegistSuccess, paymentsRegistFailure, paymentsConfirm, paymentsConfirmFailure, paymentsConfirmSuccess,
-  usersPointDeduct, usersPointDeductSuccess, usersPointDeductFailure,
   attendance, attendanceSuccess, attendanceCheckFailure, attendanceCheck, attendanceCheckSuccess, attendanceFailure, setPaymentProduct,
   subscribe, subscribeSuccess, subscribeFailure, setSubscription, usersProfileUpdate, usersProfileUpdateSuccess, usersProfileUpdateFailure,
-  missionsCompleteSuccess, missionsCompleteFailure, missionsComplete, missionsUpdate, missionsUpdateFailure, missionsUpdateSuccess, coinTransactionList, coinTransactionListSuccess, coinTransactionListFailure
+  missionsCompleteSuccess, missionsCompleteFailure, missionsComplete, missionsUpdate, missionsUpdateFailure, missionsUpdateSuccess, coinsTransactionList, coinsTransactionListSuccess, coinsTransactionListFailure,
+  coinsBalance, coinsBalanceSuccess, coinsBalanceFailure, coinsConsume, coinsConsumeSuccess, coinsConsumeFailure
 } = userSlice.actions;
 export default userSlice.reducer;

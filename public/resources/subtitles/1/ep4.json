@@ -1,0 +1,281 @@
+[
+  {
+    "index": 1,
+    "start": 9.8,
+    "end": 11.4,
+    "text": {
+      "ko": "어디로 가지?",
+      "en": "Where should I go?"
+    }
+  },
+  {
+    "index": 2,
+    "start": 15.8,
+    "end": 19.3,
+    "text": {
+      "ko": "아줌마, 이분이 저희 아빠예요. 외모 괜찮지 않아요?",
+      "en": "Ma'am, this is my dad. Doesn't he look nice?"
+    }
+  },
+  {
+    "index": 3,
+    "start": 19.3,
+    "end": 22.2,
+    "text": {
+      "ko": "두 분을 식당에서 만나게 할게요. 약속 장소에서 꼭 만나요.",
+      "en": "I'll arrange for you two to meet at a restaurant. Please make sure to meet at the agreed location."
+    }
+  },
+  {
+    "index": 4,
+    "start": 26.7,
+    "end": 30.9,
+    "text": {
+      "ko": "회장님, 정말로 소개팅하실 겁니까?",
+      "en": "Chairman, are you really going on a blind date?"
+    }
+  },
+  {
+    "index": 5,
+    "start": 30.9,
+    "end": 32.8,
+    "text": {
+      "ko": "뭐, 만나긴 만나야겠는데.",
+      "en": "Well, I guess I have to meet them."
+    }
+  },
+  {
+    "index": 6,
+    "start": 32.8,
+    "end": 35.0,
+    "text": {
+      "ko": "어떻게 만나야 좋을까요?",
+      "en": "How should I meet them?"
+    }
+  },
+  {
+    "index": 7,
+    "start": 35.0,
+    "end": 37.0,
+    "text": {
+      "ko": "제가 결정을 해야겠죠.",
+      "en": "I should make a decision, right?"
+    }
+  },
+  {
+    "index": 8,
+    "start": 37.0,
+    "end": 38.4,
+    "text": {
+      "ko": "어? 저기요.",
+      "en": "Oh? Excuse me."
+    }
+  },
+  {
+    "index": 9,
+    "start": 38.7,
+    "end": 38.9,
+    "text": {
+      "ko": "예?",
+      "en": "Yes?"
+    }
+  },
+  {
+    "index": 10,
+    "start": 39.3,
+    "end": 40.8,
+    "text": {
+      "ko": "그 옷 좀 빌립시다.",
+      "en": "Let me borrow those clothes."
+    }
+  },
+  {
+    "index": 11,
+    "start": 41.0,
+    "end": 41.9,
+    "text": {
+      "ko": "이 옷이요?",
+      "en": "These clothes?"
+    }
+  },
+  {
+    "index": 12,
+    "start": 43.5,
+    "end": 46.7,
+    "text": {
+      "ko": "안녕하세요. 처음 뵙겠습니다. 소개팅이라",
+      "en": "Hello, nice to meet you. Since this is a blind date, I'll be honest."
+    }
+  },
+  {
+    "index": 13,
+    "start": 46.7,
+    "end": 50.8,
+    "text": {
+      "ko": "솔직하게 말씀드리겠습니다. 저는 김현수라고 하고요.",
+      "en": "My name is Kim Hyunsoo, and I work as a janitor."
+    }
+  },
+  {
+    "index": 14,
+    "start": 50.8,
+    "end": 53.5,
+    "text": {
+      "ko": "어, 청소부 일을 하고 있습니다.",
+      "en": "I earn about 200 a month. As you can see, my situation isn't very good."
+    }
+  },
+  {
+    "index": 15,
+    "start": 53.5,
+    "end": 57.5,
+    "text": {
+      "ko": "월 200 정도 벌고 있고요. 보시다시피 사정이 별로 안 좋아요.",
+      "en": "I earn about 200 a month. As you can see, my situation isn't very good."
+    }
+  },
+  {
+    "index": 16,
+    "start": 57.8,
+    "end": 60.0,
+    "text": {
+      "ko": "아, 저도 뭐 비슷해요.",
+      "en": "Oh, I'm in a similar situation."
+    }
+  },
+  {
+    "index": 17,
+    "start": 60.0,
+    "end": 62.7,
+    "text": {
+      "ko": "저는 식당에서 일해요. 아들이 하나 있고",
+      "en": "I work at a restaurant. I have one son, and he's married and living on his own now."
+    }
+  },
+  {
+    "index": 18,
+    "start": 62.7,
+    "end": 65.7,
+    "text": {
+      "ko": "지금은 결혼해서 따로 살아요. 사실은 저는",
+      "en": "Actually, I'm looking for someone to marry."
+    }
+  },
+  {
+    "index": 19,
+    "start": 65.7,
+    "end": 69.6,
+    "text": {
+      "ko": "결혼할 사람을 찾고 있어요. 아들한테 민폐 끼치고 싶지도 않고",
+      "en": "I don't want to be a burden to my son, and it would be nice to have someone to rely on and live with."
+    }
+  },
+  {
+    "index": 20,
+    "start": 69.6,
+    "end": 73.0,
+    "text": {
+      "ko": "서로 의지하면서 살 사람이 있었으면 좋겠어요.",
+      "en": "I don't want to be a burden to my son, and it would be nice to have someone to rely on and live with."
+    }
+  },
+  {
+    "index": 21,
+    "start": 73.4,
+    "end": 75.0,
+    "text": {
+      "ko": "전 차도 없어요. 뭐",
+      "en": "I don't even have a car."
+    }
+  },
+  {
+    "index": 22,
+    "start": 75.0,
+    "end": 78.3,
+    "text": {
+      "ko": "허름한 빌라 24평짜리에서 살고 있고요.",
+      "en": "I live in a modest 24-pyeong villa."
+    }
+  },
+  {
+    "index": 23,
+    "start": 78.3,
+    "end": 80.5,
+    "text": {
+      "ko": "예전에 몇 분 만났는데 다들 안 좋아하시더라고요.",
+      "en": "I met a few people before, but they didn't seem to like it."
+    }
+  },
+  {
+    "index": 24,
+    "start": 80.8,
+    "end": 83.6,
+    "text": {
+      "ko": "재산이 뭐가 중요해요. 마음 편하게 사는 게 중요하죠.",
+      "en": "What's important about wealth? Living with peace of mind is what matters."
+    }
+  },
+  {
+    "index": 25,
+    "start": 84.0,
+    "end": 87.3,
+    "text": {
+      "ko": "근데 제가 정희 씨한테 짐이 될까 봐 그러죠.",
+      "en": "But I'm worried I might be a burden to you, Junghee."
+    }
+  },
+  {
+    "index": 26,
+    "start": 87.5,
+    "end": 89.7,
+    "text": {
+      "ko": "오늘 식사나 하고 헤어지죠.",
+      "en": "Let's just have a meal today and part ways."
+    }
+  },
+  {
+    "index": 27,
+    "start": 89.9,
+    "end": 90.9,
+    "text": {
+      "ko": "주문하세요.",
+      "en": "Go ahead and order."
+    }
+  },
+  {
+    "index": 28,
+    "start": 91.1,
+    "end": 91.4,
+    "text": {
+      "ko": "네.",
+      "en": "Yes."
+    }
+  },
+  {
+    "index": 29,
+    "start": 93.7,
+    "end": 96.1,
+    "text": {
+      "ko": "이게 아, 너무 비싸네요.",
+      "en": "Oh, this is too expensive."
+    }
+  },
+  {
+    "index": 30,
+    "start": 96.4,
+    "end": 99.5,
+    "text": {
+      "ko": "아깝게 저희 식당에 가서 드시죠. 제가 해 드릴게요.",
+      "en": "It's a shame. Why don't you come to our restaurant and eat? I'll make it for you."
+    }
+  },
+  {
+    "index": 31,
+    "start": 99.8,
+    "end": 100.5,
+    "text": {
+      "ko": "예, 그래요.",
+      "en": "Yes, that's right."
+    }
+  }
+]

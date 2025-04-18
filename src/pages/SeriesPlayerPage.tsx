@@ -37,6 +37,7 @@ const SeriesPlayerPage = ({}) => {
   } = useSelector((state: any) => state.global);
   const {
     user,
+    coins,
     addSeriesProgressResult,
     addSeriesProgressError,
     userSeriesProgressResult,
@@ -53,8 +54,8 @@ const SeriesPlayerPage = ({}) => {
     userSeriesKeepListResult,
     authSnsError,
     authSnsResult,
-    usersPointDeductResult,
-    usersPointDeductError,
+    coinsConsumeResult,
+    coinsConsumeError,
   } = useSelector((state: any) => state.user);
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -341,7 +342,7 @@ const SeriesPlayerPage = ({}) => {
   const handlePointUse = () => {
 
     // 사용자 코인 차감
-    dispatch(userSlice.usersPointDeduct({ userId: user.id, point: series.req_point }));
+    dispatch(userSlice.coinsConsume({ userId: user.id, cost: series.req_point }));
   }
 
   const handleMuted = (event: any) => {
@@ -482,17 +483,17 @@ const SeriesPlayerPage = ({}) => {
 
   // 사용자 코인 차감 결과
   useEffect(() => {
-    if (usersPointDeductError) {
-      console.log('usersPointDeductError ', usersPointDeductError);
+    if (coinsConsumeError) {
+      console.log('coinsConsumeError ', coinsConsumeError);
       
-      dispatch(userSlice.clearUserState('usersPointDeductError'));
+      dispatch(userSlice.clearUserState('coinsConsumeError'));
     }
 
-    if (usersPointDeductResult && usersPointDeductResult.status === 201) {
-      console.log('usersPointDeductResult ', usersPointDeductResult);
+    if (coinsConsumeResult && coinsConsumeResult.status === 201) {
+      console.log('coinsConsumeResult ', coinsConsumeResult);
 
       // 사용자 코인 정보 업데이트
-      dispatch(userSlice.setUser(usersPointDeductResult.data))
+      dispatch(userSlice.setUser(coinsConsumeResult.data))
 
       // 사용자 잠금 회차 업데이트
       dispatch(
@@ -503,9 +504,9 @@ const SeriesPlayerPage = ({}) => {
         })
       );
 
-      dispatch(userSlice.clearUserState('usersPointDeductResult'));
+      dispatch(userSlice.clearUserState('coinsConsumeResult'));
     }
-  }, [usersPointDeductResult, usersPointDeductError, unlockEpisode])
+  }, [coinsConsumeResult, coinsConsumeError, unlockEpisode])
 
   // 구글 로그인 결과
   useEffect(() => {
@@ -528,7 +529,7 @@ const SeriesPlayerPage = ({}) => {
       if (loginSheetRef.current && isMobile)
         loginSheetRef.current.handleClose();
 
-      if (user.free_point + user.paid_point < series.req_point) {
+      if (coins.free + coins.paid < series.req_point) {
         if (displayPopName) {
           dispatch(
             globalSlice.setDisplayPopName(

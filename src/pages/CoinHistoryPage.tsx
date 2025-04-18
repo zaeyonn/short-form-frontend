@@ -16,7 +16,7 @@ const CoinHistoryPage = () => {
   const [coinTransactions, setCoinTransactions] = useState<any>();
   // const [earnTransactions, setEarnTransactions] = useState<any>();
 
-  const { user, coinTransactionListResult, coinTransactionListError } = useSelector((state: UserRootState) => state.user);
+  const { user, coins, coinsTransactionListResult, coinsTransactionListError } = useSelector((state: UserRootState) => state.user);
 
   const tabSpring: any = useSpring({
     left: `calc(${(34 * selectedIndex)}% + ${selectedIndex === 0 ? '5px' : selectedIndex === 2 ? '-7px' : '-1px'})` ,
@@ -32,18 +32,18 @@ const CoinHistoryPage = () => {
   }
 
   useEffect(() => {
-    if(coinTransactionListError) {
-      console.log('coinTransactionListError', coinTransactionListError);
+    if(coinsTransactionListError) {
+      console.log('coinsTransactionListError', coinsTransactionListError);
 
-      dispatch(userSlice.clearUserState('coinTransactionListError'));
+      dispatch(userSlice.clearUserState('coinsTransactionListError'));
     }
 
-    if(coinTransactionListResult && coinTransactionListResult.status === 200) {
-      console.log('coinTransactionListResult', coinTransactionListResult);
+    if(coinsTransactionListResult && coinsTransactionListResult.status === 200) {
+      console.log('coinsTransactionListResult', coinsTransactionListResult);
       let tmpCoinTransations: any = {};
 
       // 코인 획득 리스트
-      coinTransactionListResult.data.filter((i: CoinTransaction) => i.type === 'earn').forEach((item: CoinTransaction) => {
+      coinsTransactionListResult.data.filter((i: CoinTransaction) => i.type === 'earn').forEach((item: CoinTransaction) => {
         const createdDay = moment(item.created_at).format('YYYY.MM.DD');
 
         if(!tmpCoinTransations[createdDay]) {
@@ -55,12 +55,12 @@ const CoinHistoryPage = () => {
 
       setCoinTransactions(tmpCoinTransations);
 
-      dispatch(userSlice.clearUserState('coinTransactionListResult'));
+      dispatch(userSlice.clearUserState('coinsTransactionListResult'));
     }
-  }, [coinTransactionListError, coinTransactionListResult])
+  }, [coinsTransactionListError, coinsTransactionListResult])
 
   useEffect(() => {
-    dispatch(userSlice.coinTransactionList({userId: user.id}));
+    dispatch(userSlice.coinsTransactionList({userId: user.id}));
   }, [])
 
   useEffect(() => {
@@ -87,8 +87,8 @@ const CoinHistoryPage = () => {
           <div className="total-coin">
             보유 코인
             <span className="value">
-              {user.paid_point
-                ? (user.paid_point + user.free_point).toLocaleString()
+              {coins.paid
+                ? (coins.paid + coins.free).toLocaleString()
                 : 0}
             </span>
           </div>
@@ -100,7 +100,7 @@ const CoinHistoryPage = () => {
                 <img src="/resources/icons/icon_bang.svg" />
               </label>
               <div className="point-value">
-                {user?.paid_point ? (user?.paid_point).toLocaleString() : 0}
+                {coins?.paid ? (coins?.paid).toLocaleString() : 0}
                 <img src="/resources/icons/icon_coin_s.png" />
               </div>
             </div>
@@ -110,7 +110,7 @@ const CoinHistoryPage = () => {
                 <img src="/resources/icons/icon_bang.svg" />
               </label>
               <div className="point-value">
-                {user?.free_point ? (user?.free_point).toLocaleString() : 0}
+                {coins?.free ? (coins?.free).toLocaleString() : 0}
                 <img src="/resources/icons/icon_coin_s.png" />
               </div>
             </div>
@@ -138,9 +138,9 @@ const CoinHistoryPage = () => {
                       <div className='coin-history-list'>
                         {historyList.length > 0 && historyList.map((item: CoinTransaction) => (
                           <div key={item.id} className='coin-history-item'>
-                            {coinTransactionsType[`${item.source}_${item.type}`].name}
+                            {coinTransactionsType[`${item.source_type}_${item.type}`].name}
                             <div className='coin-value'>
-                              {`${item.type === 'earn' ? '+' : '-'}${(Number(item.free_point) + Number(item.paid_point))}`}
+                              {`${item.type === 'earn' ? '+' : '-'}${(Number(item.coin))}`}
                             </div>
                           </div>
                         ))}

@@ -26,5 +26,7 @@ export const missionType: any = {
 
 export const coinTransactionsType: any = {
   'attendance_earn': { name: '출석 보상'},
-  'mission_earn': { name: '미션 보상'}
+  'mission_earn': { name: '미션 보상'},
+  'payment_earn': { name: '코인 구매'},
+  'payment_event_earn': { name: '코인 구매 보너스'}
 }
