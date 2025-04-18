@@ -504,14 +504,21 @@ const BetaMainPage = ({}) => {
     setSubtitle(subtitle);
     subtitleSheetRef.current.handleClose();
 
+    
+
     if(subtitle.code === 'none') {
-      trackRef.current.src = '';
+      // trackRef.current.src = '';
     } else {
-      trackRef.current.src = `/resources/subtitles/${series.id}/ep${currentEp.episode_num}_${subtitle.code}.vtt`;
+      // trackRef.current.src = `/resources/subtitles/${series.id}/ep${currentEp.episode_num}_${subtitle.code}.vtt`;
+      const track = document.createElement('track');
+      track.src = `/resources/subtitles/${series.id}/ep${currentEp.episode_num}_${subtitle.code}.vtt`;
+      track.default = true;
+
+      videoRef.current.appendChild(track);
     }
 
     
-  }, [trackRef.current, series, currentEp]);
+  }, [trackRef.current, series, currentEp, videoRef.current]);
 
   const handleEpisodeShare = async () => {
     if (navigator.share) {
