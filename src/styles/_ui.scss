@@ -1755,8 +1755,9 @@ a {
           0px 1.2px 0 #000,
           -1.2px 0px 0 #000,
           1.2px 0px 0 #000 !important;
-        background: #FFFFFF00 !important;
-        background-color: #FFFFFF00 !important;
+          background: none !important;
+          background-color: transparent !important;
+          color: white;
         font-weight: 600 !important;
         max-width: 80% !important;
         width: 80% !important;
