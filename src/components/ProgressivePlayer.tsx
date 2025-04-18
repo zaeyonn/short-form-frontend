@@ -20,7 +20,7 @@ interface SecureVideoPlayerProps {
   handleEpisodeChange: (index: number) => any;
 }
 
-const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ unlockEpisode, subtitle, videoRef, trackRef, swiperRef, currentIndex, quality, locked, muted, seriesId, episodeNum, setVideoLoading, index, handleTimeUpdate, handleEpisodeChange }) => {
+const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ unlockEpisode, subtitle, videoRef, swiperRef, currentIndex, quality, locked, muted, seriesId, episodeNum, setVideoLoading, index, handleTimeUpdate, handleEpisodeChange }) => {
   const videoUrlsRef = useRef<any>({});
   
   useEffect(() => {
@@ -66,7 +66,7 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ unlockEpisode, su
         onTimeUpdate={() => handleTimeUpdate(index)} 
         onEnded={() => handleEpisodeChange(episodeNum + 1)} 
         poster={`resources/images/thumbnails/${seriesId}_thumbnail.png`}>
-         <track default ref={(el) => swiperRef.current.activeIndex === index ? trackRef.current = el : ''} kind="subtitles" srcLang='en'/>
+         {/* <track default ref={(el) => swiperRef.current.activeIndex === index ? trackRef.current = el : ''} kind="subtitles" srcLang='en'/> */}
       </video>
   );
 };
