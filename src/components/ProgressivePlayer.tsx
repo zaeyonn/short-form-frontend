@@ -20,7 +20,7 @@ interface SecureVideoPlayerProps {
   handleEpisodeChange: (index: number) => any;
 }
 
-const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ unlockEpisode, subtitleLang, videoRef, trackRef ,swiperRef, currentIndex, quality, locked, muted, seriesId, episodeNum, setVideoLoading, index, handleTimeUpdate, handleEpisodeChange }) => {
+const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ subtitleLang, videoRef ,swiperRef, currentIndex, quality, locked, muted, seriesId, episodeNum, setVideoLoading, index, handleTimeUpdate, handleEpisodeChange }) => {
   const videoUrlsRef = useRef<any>({});
   const [subtitle, setSubtitle] = useState<any>();
   const [subtitleList, setSubtitleList] = useState<any>({"ko": [], "en": []}); 

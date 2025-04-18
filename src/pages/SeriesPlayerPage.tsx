@@ -896,7 +896,7 @@ const SeriesPlayerPage = ({}) => {
         <div className={`${isMobile ? "player-wrap" : "page-wrap"}`}>
           <div className="short-form-swiper">
             <UIShortFormSwiper
-            subtitle={subtitle}
+            subtitleLang={subtitle}
               trackRef={trackRef}
               currentIndex={currentIndex}
               videoListRef={videoListRef}
