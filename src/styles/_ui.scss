@@ -1759,16 +1759,16 @@ a {
         font-weight: 600 !important;
         max-width: 80% !important;
         width: 80% !important;
-        white-space: normal !important;
-          word-wrap: break-word !important;
-          overflow-wrap: break-word !important;
-          padding: 5em !important;
-          text-align: center !important;
-          display: inline-block !important;
-          box-sizing: border-box !important;
-          position: absolute !important;
-          left: 50% !important;
-          transform: translateX(-50%) !important;
+        // white-space: normal !important;
+        //   word-wrap: break-word !important;
+        //   overflow-wrap: break-word !important;
+        //   padding: 5em !important;
+        //   text-align: center !important;
+        //   display: inline-block !important;
+        //   box-sizing: border-box !important;
+        //   position: absolute !important;
+        //   left: 50% !important;
+        //   transform: translateX(-50%) !important;
       }
 
 
@@ -1781,6 +1781,13 @@ a {
         position: absolute !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
+        white-space: normal !important;
+          word-wrap: break-word !important;
+          overflow-wrap: break-word !important;
+          padding: 5em !important;
+          text-align: center !important;
+          display: inline-block !important;
+          box-sizing: border-box !important;
       }
     }
 
