@@ -1,4 +1,4 @@
-import { takeLatest, all, take } from 'redux-saga/effects';
+import { takeLatest, all } from 'redux-saga/effects';
 import * as globalHandler from './global.ts';
 import * as globalSlice from '../globalSlice';
 import * as userHandler from './user.ts';

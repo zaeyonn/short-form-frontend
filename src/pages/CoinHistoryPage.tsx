@@ -14,7 +14,7 @@ const CoinHistoryPage = () => {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [coinTransactions, setCoinTransactions] = useState<any>();
-  const [earnTransactions, setEarnTransactions] = useState<any>();
+  // const [earnTransactions, setEarnTransactions] = useState<any>();
 
   const { user, coinTransactionListResult, coinTransactionListError } = useSelector((state: UserRootState) => state.user);
 
@@ -136,7 +136,7 @@ const CoinHistoryPage = () => {
                     <div key={createdDay} className='coin-history-section'>
                       <div className='created-day'>{createdDay}</div>
                       <div className='coin-history-list'>
-                        {historyList.length > 0 && historyList.map((item: CoinTransaction, index: number) => (
+                        {historyList.length > 0 && historyList.map((item: CoinTransaction) => (
                           <div key={item.id} className='coin-history-item'>
                             {coinTransactionsType[`${item.source}_${item.type}`].name}
                             <div className='coin-value'>
