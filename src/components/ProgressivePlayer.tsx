@@ -39,7 +39,7 @@ const ProgressivePlayer: React.FC<SecureVideoPlayerProps> = ({ unlockEpisode, su
           videoUrlsRef.current = data.videos_url;
 
           if(subtitle.code !== 'none') {
-            trackRef.current.src = trackRef.current.src = `/resources/subtitles/${seriesId}/ep${episodeNum}_${subtitle.code}.vtt`;
+            // trackRef.current.src = trackRef.current.src = `/resources/subtitles/${seriesId}/ep${episodeNum}_${subtitle.code}.vtt`;
           }
         }
       } catch (error) {
